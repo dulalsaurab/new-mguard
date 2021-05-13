@@ -1,0 +1,9 @@
+prefix=@PREFIX@
+libdir=@LIBDIR@
+includedir=@INCLUDEDIR@
+
+Name: mguard
+Description: mguard library
+Version: @VERSION@
+Libs: -L${libdir} -lmguard
+Cflags: -I${includedir}abc
