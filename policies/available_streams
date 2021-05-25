@@ -1,0 +1,23 @@
+
+; naming conventions
+; {
+   ; raw-stream <namespace>--<study-name>--<user-id>--<sensor>--<device-name>--<attachment>
+   ; derived-stream <namespace>--<study-name>--<user-id>--<algorithm/package name>--<string (represents name)>
+; }
+
+;available streams
+; {
+  ; org.md2k--<study-name>--<user-id>--LOCATION--PHONE
+  ; org.md2k--<study-name>--<user-id>--ACCELEROMETER--PHONE
+  ; org.md2k--<study-name>--<user-id>--GYROSCOPE--PHONE
+  ; org.md2k--<study-name>--<user-id>--ACCELEROMETER--MOTION_SENSE--LEFT_WRIST
+  ; org.md2k--<study-name>--<user-id>--data_analysis--gps_episodes_and_semantic_location
+; }
+
+; current users
+{
+  user A
+  user B
+  user C
+  user D
+}

@@ -1,0 +1,24 @@
+; C shall be able to access all the streams except gps-coordinates streams
+
+policy-id 3
+study-name studyA
+data-owner-id 123
+shared-with C
+data-stream-name org.md2k.*
+type None
+
+data-window
+{
+  deny
+  {
+    stream-name org.md2k--studyA--123--LOCATION--PHONE
+    column-name *
+    value *
+   }
+  allow
+  {
+    stream-name *
+    column-name *
+    value *
+  }
+}

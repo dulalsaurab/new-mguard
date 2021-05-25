@@ -1,0 +1,18 @@
+; A shall access all the streams
+
+policy-id 1
+study-name studyA
+data-owner-id 123
+shared-with * ;or data-requester-user-id or data-requester-group-id
+data-stream-name org.md2k.*
+
+data-window
+{
+  deny None
+  allow
+  {
+    stream-name *
+    column-name *
+    value *
+  }
+}

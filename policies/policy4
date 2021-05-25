@@ -1,0 +1,24 @@
+; D shall be able to access all the streams when a participant is at work
+
+policy-id 4
+study-name studyA
+data-owner-id 123
+shared-with C
+data-stream-name org.md2k.*
+type None
+
+data-window
+{
+  deny ; no need of deny, can re-write allow with access at work ?
+  {
+    stream-name *
+    column-name *
+    value not-work
+   }
+  allow
+  {
+    stream-name *
+    column-name *
+    value * ; access when at work ?
+  }
+}
