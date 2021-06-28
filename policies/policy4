@@ -1,9 +1,9 @@
 ; D shall be able to access all the streams when a participant is at work
 
 policy-id 4
-study-name studyA
+study-id studyA
 data-owner-id 123
-shared-with C
+data-requester-ids [C]
 data-stream-name org.md2k.*
 type None
 
@@ -13,7 +13,10 @@ data-window
   {
     stream-name *
     column-name *
-    value not-work
+    value 
+      {
+        not work  ;if needed, can have comma seperated list work,gym,home
+      }
    }
   allow
   {

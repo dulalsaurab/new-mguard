@@ -1,9 +1,9 @@
 ; C shall be able to access all the streams except gps-coordinates streams
 
 policy-id 3
-study-name studyA
+study-id studyA
 data-owner-id 123
-shared-with C
+data-requester-ids [C]
 data-stream-name org.md2k.*
 type None
 
