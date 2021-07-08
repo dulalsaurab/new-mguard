@@ -2,30 +2,30 @@ This document describes the mGuard policy language specifications.
 
 Current Policy Structure
 ------------------------
+.. code-block:: python
+   :emphasize-lines: 3,5
 
-POLICY-ID:          <id>
-STUDY-ID:           <sutdy name>
-DATA-OWNER-ID:      <participant id>
-DATA-REQUESTER-IDs: <[requesters ids]>
-DATA-STREAM-NAME:   
-DATA-WINDOW:
-  ALLOW:
-    StreamName: <...--*--GYRO>                      /* allowed stream within the widow */
+    POLICY-ID:          <id>
+    STUDY-ID:           <sutdy name>  
+    DATA-OWNER-ID:      <participant id>
+    DATA-REQUESTER-IDs: <[requesters ids]>
+    DATA-STREAM-NAME:   
+    DATA-WINDOW:
+      ALLOW:
+        StreamName: <...--*--GYRO>                      /* allowed stream within the widow */
+        ColumnNameValue
+          Name:      [Allowed attributes]    /* e.g. "/attribute/location/work" */
+          Value:      {{1900, 2000}, work}
+      DENY:
+        StreamName: name
+        ColumnName: time
 
-    HOW TO SPECIFY MULTIPLE COLUMNS AND VALUES
 
-    Value:      [Allowed attributes]    /* e.g. "/attribute/location/work" */
-    Value:      {{1900, 2000}, work}
-
-
-  DENY:
-    StreamName: name
-    ColumnName: time
 
 DENY ALL ACCESS
 ALLOW FROM STREAM-NAME
 DENY FROM ALL BUT VALUE
-
+```
 DENY ALL ACCESS
 ALLOW ALL TIME ACCORDING TO VALUE WITHIN STREAM-NAME
 
