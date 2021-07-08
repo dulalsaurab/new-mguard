@@ -1,27 +1,27 @@
-; D shall be able to access all the streams when a participant is at work
+; brief: D shall be able to access all the streams when a participant is at work
 
 policy-id 4
-study-id studyA
-data-owner-id 123
-data-requester-ids [C]
-data-stream-name org.md2k.*
-type None
+study-id mperf
+data-owner-id dd40c
+data-requester-ids D
+data-stream-name org.md2k--*
 
 data-window
 {
-  deny ; no need of deny, can re-write allow with access at work ?
-  {
-    stream-name *
-    column-name *
-    value 
-      {
-        not work  ;if needed, can have comma seperated list work,gym,home
-      }
-   }
   allow
   {
     stream-name *
-    column-name *
-    value * ; access when at work ?
+    column-name-value
+    {
+      * * ;<column-name> <value>
+    }
+  }
+  deny
+  {
+    stream-name org.md2k--mperf--dd40c--cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
+    column-name-value
+    {
+      * not-work    ;value can be comma separated list e.g. work,gym,home
+    }
   }
 }

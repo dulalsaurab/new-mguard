@@ -1,17 +1,35 @@
-; naming conventions
+; md2k streams naming conventions
 ; {
-   ; raw-stream <namespace>--<study-name>--<participant-id>--<sensor>--<device-name>--<attachment>
-   ; derived-stream <namespace>--<study-name>--<participant-id>--<algorithm/package name>--<string (represents name)>
+   ; raw-stream <namespace>--<study-name>--<participant-id>--<device-name>--<sensor>--<attachment>
+   ; derived-stream <namespace>--<study-name>--<participant-id>--<algorithm/package name>
 ; }
 
-;available streams
+;ndn data streams naming conventions
 ; {
-  ; org.md2k--<study-name>--<participant-id>--LOCATION--PHONE
-  ; org.md2k--<study-name>--<participant-id>--ACCELEROMETER--PHONE
-  ; org.md2k--<study-name>--<participant-id>--GYROSCOPE--PHONE
-  ; org.md2k--<study-name>--<participant-id>--ACCELEROMETER--MOTION_SENSE--LEFT_WRIST
-  ; org.md2k--<study-name>--<participant-id>--data_analysis--gps_episodes_and_semantic_location
+   ; raw-stream <namespace>/<study-name>/<participant-id>/<device-name>/<sensor>/<attachment>
+   ; derived-stream <namespace>/<study-name>/<participant-id>/<algorithm/package name>
 ; }
+
+
+;available md2k streams
+; {
+  ; org.md2k--mperf--dd40c--PHONE--LOCATION
+  ; org.md2k--mperf--dd40c--PHONE--ACCELEROMETER
+  ; org.md2k--mperf--dd40c--PHONE--GYROSCOPE
+  ; org.md2k--mperf--dd40c--MOTION_SENSE--ACCELEROMETER--LEFT_WRIST
+  ; org.md2k--mperf--dd40c--cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
+; }
+
+;md2k streams converted into ndn data streams
+; {
+  ; org.md2k/mperf/dd40c/PHONE/LOCATION
+  ; org.md2k/mperf/dd40c/PHONE/ACCELEROMETER
+  ; org.md2k/mperf/dd40c/PHONE/GYROSCOPE
+  ; org.md2k/mperf/dd40c/MOTION_SENSE/ACCELEROMETER/LEFT_WRIST
+  ; org.md2k/mperf/dd40c/cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
+; }
+
+; attributes
 
 ; current users
 {

@@ -1,17 +1,20 @@
-; A shall access all the streams
+; brief: A shall access all the streams
 
 policy-id 1
-study-id studyA
-data-owner-id 123
-data-requester-ids [*] ;or data-requester-user-id or data-requester-group-id
-data-stream-name org.md2k.*
+study-id mperf
+data-owner-id dd40c
+data-requester-ids A   ;if needed, we can have ',' separated list e.g. A, B, C 
+data-stream-name org.md2k--*
 data-window
 {
-  deny None
   allow
   {
     stream-name *
-    column-name *
-    value *
+    column-name-value
+    {
+      ; will be of foramt <column-name> <value>, value can be comma separated list
+      * * 
+    }
   }
+  deny None
 }
