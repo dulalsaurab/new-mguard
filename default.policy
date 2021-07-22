@@ -1,0 +1,14 @@
+; brief: A shall access all the streams
+POLICY-ID           123
+STUDY-ID            org.md2k
+DATA-OWNER-ID       alpha123
+DATA-REQUESTER-IDs  one,two,red,blue
+DATA-STREAM-NAME    stream-name
+DATA-WINDOW {
+    ALLOW {
+        one thing
+    }
+    DENY {
+        many things
+    }
+}

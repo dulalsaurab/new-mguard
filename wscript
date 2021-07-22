@@ -40,7 +40,7 @@ def configure(conf):
 
     # Loading "late" to prevent tests from being compiled with profiling flags
     conf.load('coverage')
-    conf.load('sanitizers')
+    conf.loadAndParse('sanitizers')
 
     conf.env.prepend_value('STLIBPATH', ['.'])
     # conf.define_cond('WITH_TESTS', conf.env.WITH_TESTS)
