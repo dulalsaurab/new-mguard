@@ -1,6 +1,7 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <ostream>
+#include "dataWindowParameter.h"
 
 namespace mguard {
     using ConfigSection = boost::property_tree::ptree;
@@ -10,22 +11,28 @@ namespace mguard {
 
         bool processFile();
 
+        static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
+
     private:
+
         bool loadAndParse(std::istream& input);
 
-        bool processSectionAllow(ConfigSection &section);
-
-        bool processSectionDeny(ConfigSection &section);
-
         // full path of the config/policy file
-        std::string m_confFileName;
+        std::string configFilePath;
+
+        // if no data window, all from stream is allowed
+        bool hasDataWindow;
 
         int policyID;
         std::string studyID;
         std::string dataOwnerID;
-        std::string dataRequesterIDs; // this should be a list or array of some sort
+        std::list<std::string> dataRequesterIDs; // this should be a list or array of some sort
         std::string dataStreamName;
 
+        std::list<dataWindowParameter> parameters;
+
         void printForDebug();
+
+        bool processDWSection(ConfigSection &section, bool isAllowed);
     };
 }
