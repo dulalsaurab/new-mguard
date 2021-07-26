@@ -1,6 +1,6 @@
 ; brief: C, D shall be able to access accelerometer data
 
-policy-id 4
+policy-id 6
 study-id mperf
 data-owner-id dd40c
 data-requester-ids C,D
@@ -20,6 +20,9 @@ data-window
 }
 
 ; AFTER PARSING
+;
+; Policy ID
+;  6
 ; Data Consumer
 ;  B, C
 ; Accessible Streams
