@@ -1,0 +1,39 @@
+; brief: A, B shall be able to access data from the phone stream
+
+policy-id 4
+study-id mperf
+data-owner-id dd40c
+data-requester-ids A,B
+data-stream-name org.md2k--mperf--dd40c--phone--*
+
+data-window
+{
+  allow
+  {
+    stream-name *
+    column-name-value 
+    {
+      * * ;<column-name> <value>
+    }
+  }
+  deny
+  {
+    stream-name org.md2k--mperf--dd40c--cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
+    column-name-value
+    {
+      * not-work    ;value can be comma separated list e.g. work,gym,home
+    }
+  }
+}
+
+; AFTER PARSING
+; streams user A,B are eligibler access
+;   org.md2k/mperf/dd40c/phone/location
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;
+; Required Attributes
+;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope}
+;
+; ABE policy
+; org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope
