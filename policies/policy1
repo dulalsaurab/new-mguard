@@ -5,6 +5,8 @@ study-id mperf
 data-owner-id dd40c
 data-requester-ids A   ;if needed, we can have ',' separated list e.g. A, B, C 
 data-stream-name org.md2k--*
+
+; data-window field can be options?
 data-window
 {
   allow
@@ -16,5 +18,31 @@ data-window
       * * 
     }
   }
-  deny None
 }
+
+
+; AFTER PARSING
+;
+; Policy ID
+;  1
+; Data Consumers
+;  A
+; Accessible Streams
+;   org.md2k/mperf/dd40c/phone/location
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery
+;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;
+; Required Attributes
+;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery, org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location}
+;
+; ABE policy
+;   <wild-card> ? 
+;
+;   alt: org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR
+;   org.md2k/mperf/dd40c/phone/battery OR org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location  ???
