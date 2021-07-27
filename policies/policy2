@@ -1,4 +1,3 @@
-; this policy needs discussion
 ; B shall only access battery stream
 
 policy-id 2
