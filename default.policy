@@ -3,11 +3,11 @@ POLICY-ID           123
 STUDY-ID            org.md2k
 DATA-OWNER-ID       alpha123
 DATA-REQUESTER-IDs  one,two,red,blue
-DATA-STREAM-NAME    stream-name
+DATA-STREAM-NAME    phone
 DATA-WINDOW {
     ALLOW {
         ColumnNameValue "time 1200"
-        StreamName /phone/gyro/
+        StreamName phone--gyro
         ColumnName x-coordinate
     }
     DENY {
