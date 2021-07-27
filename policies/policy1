@@ -1,4 +1,4 @@
-; brief: A shall access all the streams
+; brief: A shall access all the defined streams
 
 policy-id 1
 study-id mperf
