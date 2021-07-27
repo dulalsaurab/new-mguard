@@ -1,4 +1,4 @@
-; brief: D shall be able to access all the streams when a participant is at work
+; brief: D shall be able to access all the defined streams when a participant is at work
 
 policy-id 4
 study-id mperf
