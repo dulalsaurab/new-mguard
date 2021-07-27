@@ -1,6 +1,6 @@
 #include "parser.hpp"
 
-#include "dataWindowParameter.cpp"
+//#include "dataWindowParameter.cpp"
 
 #include "boost/property_tree/info_parser.hpp"
 
@@ -47,8 +47,6 @@ namespace mguard {
             std::cerr << exception.what() << std::endl;
             return false;
         }
-        // used for debugging to make sure instance variables are set correctly
-        printForDebug();
 
         // optional data-window section
         try {
@@ -63,13 +61,6 @@ namespace mguard {
         } catch (std::exception& e) {
             // just means there is no data-window portion
             hasDataWindow = false;
-        }
-
-        // TODO: figure out if the columnNameValue objects should be stored in the same place as the other parameters
-        // I'm unsure if there is a clean way to access the columnNameValue objects from the parameters list, so it may be better to store them separately
-        for (dataWindowParameter& p : parameters){
-            p.print();
-            std::cout << std::endl;
         }
 
         return true;
@@ -87,29 +78,19 @@ namespace mguard {
                 std::cout << "inValid key " << key << std::endl;
                 return false;
             }
+            // TODO: change this to make it a section/block like how data-window is
             if (key == "ColumnNameValue"){
                 // splits into column name and value
                 std::list<std::string> keyValue = split(value, " ");
-                // add columnNameValue object to master list
-                parameters.push_back(columnNameValue(isAllowed, keyValue.front(), keyValue.back()));
+                parameters.emplace_back(isAllowed, dataStreamName, keyValue.front(), keyValue.back());
             } else {
                 // add new parameter object to master list
-                parameters.emplace_back(isAllowed, key,value);
+                parameters.emplace_back(isAllowed, key, value);
             }
         }
         return true;
     }
 
-    void PolicyParser::printForDebug (){
-        std::cout << "policyID: " << policyID << " studyID: " << studyID << " dataOwnerID: "
-           << dataOwnerID << " dataRequesterIDs: ";
-        for (const auto &iD : dataRequesterIDs) {
-            std::cout << iD << ",";
-        }
-        std::cout
-           << " dataStreamName: "
-           << dataStreamName << std::endl;
-    }
 
     // splitting string into list of strings along delimiter
     std::list<std::string> PolicyParser::split(const std::string &basicString, const std::string &delimiter) {
@@ -124,4 +105,46 @@ namespace mguard {
         return output;
     }
 
+    std::ostream &operator<<(std::ostream &os, const PolicyParser &parser) {
+        os << "PolicyParser Object {" << std::endl << " configFilePath:\t" << parser.configFilePath  << std::endl<< " hasDataWindow:\t\t" << parser.hasDataWindow  << std::endl<< " policyID:\t\t"
+           << parser.policyID  << std::endl<< " studyID:\t\t" << parser.studyID  << std::endl<< " dataOwnerID:\t\t" << parser.dataOwnerID << std::endl
+           << " dataRequesterIDs:\t" ;
+        for (const auto &item : parser.dataRequesterIDs) {
+            os << item << " ";
+        }
+        std::cout  << std::endl<< " dataStreamName:\t" << parser.dataStreamName  << std::endl << " parameters {" << std::endl;
+        for (const auto &item : parser.parameters) {
+           os << "  " << item << std::endl;
+        };
+        os << " }" << std::endl << "}" << std::endl;
+        return os;
+    }
+
+    dataWindowParameter::dataWindowParameter(bool isAllowed, std::string key, std::string value)
+            :isAllowed(isAllowed)
+            ,key(std::move(key))
+            ,value(std::move(value))
+    {}
+
+    bool dataWindowParameter::isValidKey(const std::string& key) {
+        std::list<std::string> allowedKeys = {"StreamName", "ColumnName", "ColumnNameValue"};
+        if (std::find(allowedKeys.begin(), allowedKeys.end(), key) == std::end(allowedKeys)){
+            return false;
+        }
+        return true;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const dataWindowParameter &parameter) {
+        os << "dataWindowParameter Object {" << std::endl << "   isAllowed:\t" << parameter.isAllowed << std::endl << "   key:\t\t" << parameter.key << std::endl << "   value:\t" << parameter.value << std::endl
+           << "   streamName:\t" << parameter.streamName << std::endl << "   columnName:\t" << parameter.columnName << std::endl << "  }";
+        return os;
+    }
+
+    dataWindowParameter::dataWindowParameter(bool isAllowed, std::string streamName, std::string columnName,std::string value)
+            :isAllowed(isAllowed)
+            ,streamName(std::move(streamName))
+            ,columnName(std::move(columnName))
+            ,value(std::move(value))
+            ,key("columnNameValue")
+    {}
 }

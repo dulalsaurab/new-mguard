@@ -1,9 +1,23 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <ostream>
-#include "dataWindowParameter.h"
+//#include "dataWindowParameter.hpp"
 
 namespace mguard {
+    class dataWindowParameter {
+    private:
+        bool isAllowed;
+        std::string key, value, streamName, columnName;
+    public:
+        dataWindowParameter(bool isAllowed, std::string key, std::string value);
+
+        dataWindowParameter(bool isAllowed, std::string streamName, std::string columnName, std::string value);
+
+        static bool isValidKey(const std::string& key);
+
+        friend std::ostream &operator<<(std::ostream &os, const dataWindowParameter &parameter);
+
+    };
     using ConfigSection = boost::property_tree::ptree;
     class PolicyParser {
     public:
@@ -12,6 +26,8 @@ namespace mguard {
         bool processFile();
 
         static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
+
+        friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
     private:
 
@@ -35,4 +51,5 @@ namespace mguard {
 
         bool processDWSection(ConfigSection &section, bool isAllowed);
     };
+
 }
