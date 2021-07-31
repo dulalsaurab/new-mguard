@@ -1,20 +1,7 @@
-; brief: A shall access all the streams
+; brief: A shall access all the streams under org.md2k
 
-policy-id 1
-study-id mperf
-data-owner-id dd40c
-data-requester-ids A   ;if needed, we can have ',' separated list e.g. A, B, C 
-data-stream-name org.md2k--*
-data-window
-{
-  allow
-  {
-    stream-name *
-    column-name-value
-    {
-      ; will be of foramt <column-name> <value>, value can be comma separated list
-      * * 
-    }
-  }
-  deny None
-}
+policy-id           1
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  A               ;if needed, we can have ',' separated list e.g. A, B, C
+data-stream-name    org.md2k

@@ -1,27 +1,14 @@
-; brief: D shall be able to access all the streams when a participant is at work
+; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
-policy-id 4
-study-id mperf
-data-owner-id dd40c
-data-requester-ids D
-data-stream-name org.md2k--*
-
-data-window
+policy-id           4
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  D
+data-stream-name    org.md2k
+attribute-filters   ;or attribute-restrictions
 {
-  allow
-  {
-    stream-name *
-    column-name-value
+    allow
     {
-      * * ;<column-name> <value>
+        semantic-location--work     ;attribute for data generated when participant is at work
     }
-  }
-  deny
-  {
-    stream-name org.md2k--mperf--dd40c--cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
-    column-name-value
-    {
-      * not-work    ;value can be comma separated list e.g. work,gym,home
-    }
-  }
 }
