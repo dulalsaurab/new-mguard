@@ -1,7 +1,7 @@
 ; brief: A shall access all the x-coordinate data under any stream in /phone/gyro/ during the 1200 hrs block unless the user is at work
 POLICY-ID           123
 STUDY-ID            org.md2k
-DATA-OWNER-ID       alpha123
+DATA-OWNER-ID       ;alpha123
 DATA-REQUESTER-IDs  one,two,red,blue
 DATA-STREAM-NAME    phone
 DATA-WINDOW {

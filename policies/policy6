@@ -1,0 +1,7 @@
+; brief: C, D shall be able to access accelerometer data
+
+policy-id           6
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  C,D
+data-stream-name    org.md2k--mperf--*--*--accelerometer

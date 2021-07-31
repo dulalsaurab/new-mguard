@@ -1,0 +1,15 @@
+; brief: C, D shall be able to access accelerometer data        ;this is the same as policy6, but a different implementation
+
+policy-id           6
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  C,D
+data-stream-name    org.md2k--mperf     ;a finer-grained stream name will reduce the amount of streams to check against the given attribute
+data-stream-name    org.md2k            ;unless some accelerometer data isn't in org.md2k--mperf, a wider scope will not change the data accessed, but will take longer to process
+attribute-filters
+{
+    allow
+    {
+        accelerometer--attribute        ;attribute associated with any/all accelerometer data
+    }
+}
