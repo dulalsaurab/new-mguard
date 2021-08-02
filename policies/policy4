@@ -9,6 +9,6 @@ attribute-filters   ;or attribute-restrictions
 {
     allow
     {
-        semantic-location--work     ;attribute for data generated when participant is at work
+        attribute/location/work     ;attribute for data generated when participant is at work
     }
 }

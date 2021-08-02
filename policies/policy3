@@ -9,6 +9,6 @@ attribute-filters   ;or attribute-restrictions
 {
     deny
     {
-        org.md2k--mperf--dd40c--phone--location
+        org.md2k/mperf/dd40c/phone/location
     }
 }
