@@ -2,28 +2,31 @@
 
 policy-id           3
 data-requester-ids  C
-data-stream-name    org.md2k--mperf--dd40c
-attribute-filters   ;or attribute-restrictions
+data-stream-name    org.md2k
+attribute-filters
 {
     deny
     {
-        org.md2k/mperf/dd40c/phone/location ; or org.md2k/mperf/dd40c/phone/gps-coordinate
+        org.md2k/mperf/dd40c/phone/gps-coordinate
     }
 }
 
 ; AFTER PARSING
 ;
 ; Policy ID
-;  3
+;   3
 ; Data Consumers
-;  C
+;   C
 ; Accessible Streams
 ;   org.md2k/mperf/dd40c/phone/accelerometer
 ;   org.md2k/mperf/dd40c/phone/gyroscope
 ;   org.md2k/mperf/dd40c/phone/battery
-;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;   org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
 ;
 ; ABE policy
-;   org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR org.md2k/mperf/dd40c/phone/battery OR org.md2k/mperf/0000/
-;   motion_sense/accelerometer/left_wrist OR org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;   (   org.md2k/mperf/dd40c/phone/accelerometer
+;   OR  org.md2k/mperf/dd40c/phone/gyroscope
+;   OR  org.md2k/mperf/dd40c/phone/battery
+;   OR  org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+;   OR  org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location )

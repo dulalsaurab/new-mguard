@@ -1,9 +1,9 @@
-; brief: D shall be able to access all the streams under org.md2k--mperf--dd40c when a participant is at work
+; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
 policy-id           4
 data-requester-ids  D
-data-stream-name    org.md2k--mperf--dd40c
-attribute-filters   ;or attribute-restrictions
+data-stream-name    org.md2k
+attribute-filters
 {
     allow
     {
@@ -24,7 +24,10 @@ attribute-filters   ;or attribute-restrictions
 ;   org.md2k/mperf/dd40c/phone/battery
 ;
 ; ABE policy
-;   /attribute/location/work
-
-;   alt: (org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR org.md2k/mperf/dd40c/phone/battery) AND /attribute/location/work ?
+    (   org.md2k/mperf/dd40c/phone/location
+    OR  org.md2k/mperf/dd40c/phone/accelerometer
+    OR  org.md2k/mperf/dd40c/phone/gyroscope
+    OR  org.md2k/mperf/dd40c/phone/battery )
+    AND
+    (   attribute/location/work )
 

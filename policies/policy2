@@ -7,12 +7,11 @@ data-stream-name    org.md2k--mperf--dd40c--phone--battery
 ; AFTER PARSING
 ;
 ; Policy ID
-;  2
+;   2
 ; Data Consumers
-;  B
+;   B
 ; Accessible Streams
 ;   org.md2k/mperf/dd40c/phone/battery
-;
-;
+
 ; ABE policy
 ;   org.md2k/mperf/dd40c/phone/battery

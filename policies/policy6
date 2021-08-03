@@ -15,7 +15,8 @@ data-stream-name    org.md2k--mperf--*--*--accelerometer
 ;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
 ;
 ; ABE policy
-; org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
+;   (   org.md2k/mperf/dd40c/phone/accelerometer
+    OR  org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist )
 ;
-;   Alt: /attributes/sensor/accelerometer
+;   Alt /attributes/sensor/accelerometer
 ;
