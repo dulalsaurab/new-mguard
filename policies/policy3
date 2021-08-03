@@ -1,4 +1,4 @@
-; brief: C shall be able to access all the streams under org.md2k except gps-coordinates streams
+; brief: C shall be able to access all the streams except gps-coordinates streams
 
 policy-id           3
 study-id            mperf
@@ -12,3 +12,26 @@ attribute-filters   ;or attribute-restrictions
         org.md2k/mperf/dd40c/phone/location
     }
 }
+
+; AFTER PARSING
+;
+; Policy ID
+;  3
+; Data Consumers
+;  C
+; Accessible Streams
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery
+;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;
+; OPTIONAL
+; Required Attributes
+;   attributes : {org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope, org.md2k/mperf/dd40c/phone/battery, org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist, org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location}
+;
+; ABE policy
+;   org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR org.md2k/mperf/dd40c/phone/battery OR org.md2k/mperf/0000/
+;   motion_sense/accelerometer/left_wrist OR org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;
+;   alt: NOT org.md2k/mperf/dd40c/phone/location ?

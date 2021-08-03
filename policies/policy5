@@ -1,7 +1,28 @@
 ; brief: A, B shall be able to access data from the phone stream
 
-policy-id 5
-study-id mperf
-data-owner-id dd40c
-data-requester-ids A,B
-data-stream-name org.md2k--mperf--dd40c--phone
+policy-id           5
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  A,B
+data-stream-name    org.md2k--mperf--dd40c--phone
+
+; AFTER PARSING
+;
+; Policy ID
+;  5
+; Data Consumers
+;  A,B
+; Accessible Streams
+;   org.md2k/mperf/dd40c/phone/location
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery
+;
+; Required Attributes
+;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope, org.md2k/mperf/dd40c/phone/battery}
+;
+; ABE policy
+;   org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR org.md2k/mperf/dd40c/phone/battery
+;
+; Alt: /attribute/device/phone
+;
