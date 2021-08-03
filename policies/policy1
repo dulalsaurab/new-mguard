@@ -20,14 +20,6 @@ data-stream-name    org.md2k
 ;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
 ;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
 ;
-; Required Attributes
-;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope
-;   org.md2k/mperf/dd40c/phone/battery, org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location}
 ;
 ; ABE policy
-;   <wild-card> ?
-;
-;   alt: org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR
-;   org.md2k/mperf/dd40c/phone/battery OR org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location  ???
+;   org.md2k ;all the data under this stream will be encrypted with stream-name prefix i.e. org.md2k 
