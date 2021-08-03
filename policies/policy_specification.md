@@ -4,8 +4,6 @@ Current Policy Structure
 ------------------------
 ```
   POLICY-ID             ID
-  STUDY-ID              STUDY-NAME
-  DATA-OWNER-ID         PARTICIPANT-ID
   DATA-REQUESTER-IDs    REQUESTER-IDs
   DATA-STREAM-NAME      DATA-STREAM-NAME
   ATTRIBUTE-FILTERS
@@ -32,8 +30,6 @@ Specification Detail
 ```
 GLOBAL OPTIONS      REQUIRED  TYPE
 POLICY-ID           *         int
-STUDY-ID            *         alpha-numeric
-DATA-OWNER          *         alpha-numeric
 DATA-REQUESTER-IDs  *         "alpha-numeric, alpha-numeric, ..."
 DATA-STREAM-NAME    *
 ATTRIBUTE-FILTERS

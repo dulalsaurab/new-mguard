@@ -1,8 +1,6 @@
 ; brief: D shall be able to access all the streams under org.md2k--mperf--dd40c when a participant is at work
 
 policy-id           4
-study-id            mperf
-data-owner-id       dd40c
 data-requester-ids  D
 data-stream-name    org.md2k--mperf--dd40c
 attribute-filters   ;or attribute-restrictions

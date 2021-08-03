@@ -1,8 +1,6 @@
 ; brief: A, B shall be able to access data from the phone stream
 
 policy-id           5
-study-id            mperf
-data-owner-id       dd40c
 data-requester-ids  A,B
 data-stream-name    org.md2k--mperf--dd40c--phone
 
