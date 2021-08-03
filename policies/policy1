@@ -1,25 +1,10 @@
-; brief: A shall access all the defined streams
+; brief: A shall access all the streams under org.md2k
 
-policy-id 1
-study-id mperf
-data-owner-id dd40c
-data-requester-ids A   ;if needed, we can have ',' separated list e.g. A, B, C 
-data-stream-name org.md2k--*
-
-; data-window field can be options?
-data-window
-{
-  allow
-  {
-    stream-name *
-    column-name-value
-    {
-      ; will be of foramt <column-name> <value>, value can be comma separated list
-      * * 
-    }
-  }
-}
-
+policy-id           1
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  A               ;if needed, we can have ',' separated list e.g. A, B, C
+data-stream-name    org.md2k
 
 ; AFTER PARSING
 ;
@@ -41,7 +26,7 @@ data-window
 ;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location}
 ;
 ; ABE policy
-;   <wild-card> ? 
+;   <wild-card> ?
 ;
 ;   alt: org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR
 ;   org.md2k/mperf/dd40c/phone/battery OR org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist

@@ -1,54 +1,20 @@
-; brief: C shall be able to access the defined stream/s except gps-coordinates streams
+; brief: C shall be able to access all the streams except gps-coordinates streams
 
-policy-id 3
-study-id mperf
-data-owner-id dd40c
-data-requester-ids C
-data-stream-name org.md2k--*
-data-window
+policy-id           3
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  C
+data-stream-name    org.md2k
+attribute-filters   ;or attribute-restrictions
 {
-  allow
-  {
-    stream-name *
-    column-name-value
+    deny
     {
-      * *   ; <column-name> <value>
+        org.md2k/mperf/dd40c/phone/location
     }
-  }
-  deny
-  {
-    
-    column-name-value 
-    {
-        stream-name     ""
-        column-name     ""
-        value           ""
-    }
-    
-    column-name-value 
-    {
-        stream-name     ""
-        column-name     ""
-        value           ""
-    }
-
-    stream-name org.md2k--mperf--dd40c--phone--location
-    column-name-value
-    {
-      * * ; <column-name> <value>
-    }
-
-    stream-name org.md2k--mperf--dd40c--phone--xyg
-    column-name-value
-    {
-      * * ; <column-name> <value>
-    }
-
-  }
 }
 
 ; AFTER PARSING
-; 
+;
 ; Policy ID
 ;  3
 ; Data Consumers

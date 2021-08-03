@@ -1,23 +1,10 @@
 ; brief: C, D shall be able to access accelerometer data
 
-policy-id 6
-study-id mperf
-data-owner-id dd40c
-data-requester-ids C,D
-data-stream-name org.md2k--mperf--dd40c--*--accelerometer--*
-
-; data window block can be optional? 
-data-window
-{
-  allow
-  {
-    stream-name *
-    column-name-value 
-    {
-      * * ;<column-name> <value>
-    }
-  }
-}
+policy-id           6
+study-id            mperf
+data-owner-id       dd40c
+data-requester-ids  C,D
+data-stream-name    org.md2k--mperf--*--*--accelerometer
 
 ; AFTER PARSING
 ;
