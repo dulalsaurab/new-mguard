@@ -18,9 +18,6 @@ data-stream-name    org.md2k--mperf--dd40c--phone
 ;   org.md2k/mperf/dd40c/phone/gyroscope
 ;   org.md2k/mperf/dd40c/phone/battery
 ;
-; Required Attributes
-;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope, org.md2k/mperf/dd40c/phone/battery}
-;
 ; ABE policy
 ;   org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR org.md2k/mperf/dd40c/phone/battery
 ;
