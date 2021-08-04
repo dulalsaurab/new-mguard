@@ -1,10 +1,8 @@
 ; brief: C, D shall be able to access accelerometer data
 
 policy-id           6
-study-id            mperf
-data-owner-id       dd40c
 data-requester-ids  C,D
-data-stream-name    org.md2k--mperf--*--*--accelerometer
+data-stream-name    org.md2k/mperf/*/*/accelerometer
 
 ; AFTER PARSING
 ;
@@ -16,11 +14,9 @@ data-stream-name    org.md2k--mperf--*--*--accelerometer
 ;   org.md2k/mperf/dd40c/phone/accelerometer
 ;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
 ;
-; Required Attributes
-;   attributes : {org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist}
-;
 ; ABE policy
-; org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
+;   (   org.md2k/mperf/dd40c/phone/accelerometer
+    OR  org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist )
 ;
-;   Alt: /attributes/sensor/accelerometer
+;   Alt /attributes/sensor/accelerometer
 ;

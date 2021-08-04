@@ -1,10 +1,8 @@
-; brief: C, D shall be able to access accelerometer data        ;this is the same as policy6, but a different implementation
+; brief: C, D shall be able to access accelerometer data under org.md2k        ;this is the same as policy6, but a different implementation
 
 policy-id           6
-study-id            mperf
-data-owner-id       dd40c
 data-requester-ids  C,D
-data-stream-name    org.md2k--mperf     ;a finer-grained stream name will reduce the amount of streams to check against the given attribute
+data-stream-name    org.md2k
 attribute-filters
 {
     allow
@@ -12,3 +10,7 @@ attribute-filters
         attributes/sensor/accelerometer ;attribute associated with any/all accelerometer data
     }
 }
+
+; AFTER PARSING
+;
+;   same as policy6

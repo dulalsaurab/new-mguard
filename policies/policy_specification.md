@@ -3,73 +3,62 @@ This document describes the mGuard policy language specifications.
 Current Policy Structure
 ------------------------
 ```
-  POLICY-ID:          <id>
-  STUDY-ID:           <sutdy name>  
-  DATA-OWNER-ID:      <participant id>
-  DATA-REQUESTER-IDs: <[requesters ids]>
-  DATA-STREAM-NAME:   
-  DATA-WINDOW:
-    ALLOW:
-      StreamName: <...--*--GYRO>                      /* allowed stream within the widow */
-      ColumnNameValue
-        Name:      [Allowed attributes]    /* e.g. "/attribute/location/work" */
-        Value:      {{1900, 2000}, work}
-    DENY:
-      StreamName: name
-      ColumnName: time
+  POLICY-ID             ID
+  DATA-REQUESTER-IDs    REQUESTER-IDs
+  DATA-STREAM-NAME      DATA-STREAM-NAME
+  ATTRIBUTE-FILTERS
+  {
+    ALLOW
+    {
+        ATTRIBUTE/1
+        ATTRIBUTE/2
+        ATTRIBUTE/3
+        ...
+    }
+    DENY
+    {
+        ATTRIBUTE/4
+        ATTRIBUTE/5
+        ATTRIBUTE/6
+        ...
+    }
+}
 ```
 
 Specification Detail
 -----------------------
-GLOBAL OPTIONS      REQUIRED  TYPE
-
 ```
+GLOBAL OPTIONS      REQUIRED  TYPE
 POLICY-ID           *         int
-STUDY-ID            *         alpha-numeric
-DATA-OWNER          *         alpha-numeric
-DATA-REQUESTER-IDs  *         {alpha-numeric, alpha-numeric, ...}
+DATA-REQUESTER-IDs  *         "alpha-numeric, alpha-numeric, ..."
 DATA-STREAM-NAME    *
-DATA-WINDOW            
+ATTRIBUTE-FILTERS
 ```
 ```
 DATA-STREAM-NAME
-  FUNCTION:
-    confirms ownerID and studyID
-    allows all under specified node only if no ALLOW or DENY
-  TYPE : <alpha-numeric with regex>
-    regex Allowed
-    component SPECS
-      separated by --
-      only . and _ allowed within name
-        <top.level--cell.phone--gyro>   VALID
-        <top.level--cell-phone--gyro>   INVALID
-    regex allowed on tree level, not within component
-      <top.level--*phone--gyro>       INVALID
-      <top.level--*--gyro>            VALID 
+    FUNCTION:
+        confirms ownerID and studyID
+        allows all under specified node only if no ALLOW or DENY
+    TYPE : <alpha-numeric with wildcard>
+        regex Limited
+    COMPONENT specs
+        separated by /
+        only . and _ allowed within name
+            top.level/cell.phone/gyro   VALID
+            top.level/cell-phone/gyro   INVALID
+        wildcard allowed on tree level, not within component
+            top.level/*phone/gyro       INVALID
+            top.level/*/gyro            VALID 
 ```
 ```
-DATA-WINDOW:
-    ALLOW/DENY (all support NONE) not required
-      StreamName
-        same as DATA-STREAM-NAME but without regex
-          
-      ColumnName
-        allowed:
-          alpha-numeric
-          _
-        disallow:
-          string regex
-
-      ColumnNameValue
-        format
-          {ColumnName, {Value}}
-        ColumnName:
-          same as ColumnName above
-        Value:
-          TODO: specify format depending on type of data, EX timestamp
-          allowed formats:
-            {alpha-numeric and _, alpha-numeric and _, ...}
-            {startTimestamp, endTimestamp} 
+ATTRIBUTE-FILTERS
+    FUNCTION
+        allows for access control on an attribute level
+        specifies which attributes data requesters should be allowed or denied
+        
+        NOTE: this is all within the scope of the given STREAM-NAME
+    TYPE
+        lines of attributes that follow the attribute naming format
 ```
 
 Comments
