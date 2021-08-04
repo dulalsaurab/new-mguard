@@ -2,7 +2,7 @@
 
 policy-id           2
 data-requester-ids  B       ;or data-requester-user-id or data-requester-group-id
-data-stream-name    org.md2k--mperf--dd40c--phone--battery
+data-stream-name    org.md2k/mperf/dd40c/phone/battery
 
 ; AFTER PARSING
 ;

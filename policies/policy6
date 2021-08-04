@@ -2,7 +2,7 @@
 
 policy-id           6
 data-requester-ids  C,D
-data-stream-name    org.md2k--mperf--*--*--accelerometer
+data-stream-name    org.md2k/mperf/*/*/accelerometer
 
 ; AFTER PARSING
 ;

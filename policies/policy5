@@ -2,7 +2,7 @@
 
 policy-id           5
 data-requester-ids  A,B
-data-stream-name    org.md2k--mperf--dd40c--phone
+data-stream-name    org.md2k/mperf/dd40c/phone
 
 ; AFTER PARSING
 ;

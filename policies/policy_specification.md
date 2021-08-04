@@ -36,19 +36,19 @@ ATTRIBUTE-FILTERS
 ```
 ```
 DATA-STREAM-NAME
-  FUNCTION:
-    confirms ownerID and studyID
-    allows all under specified node only if no ALLOW or DENY
-  TYPE : <alpha-numeric with wildcard>
-    regex Limited
-    component SPECS
-      separated by --
-      only . and _ allowed within name
-        <top.level--cell.phone--gyro>   VALID
-        <top.level--cell-phone--gyro>   INVALID
-    wildcard allowed on tree level, not within component
-      <top.level--*phone--gyro>       INVALID
-      <top.level--*--gyro>            VALID 
+    FUNCTION:
+        confirms ownerID and studyID
+        allows all under specified node only if no ALLOW or DENY
+    TYPE : <alpha-numeric with wildcard>
+        regex Limited
+    COMPONENT specs
+        separated by /
+        only . and _ allowed within name
+            top.level/cell.phone/gyro   VALID
+            top.level/cell-phone/gyro   INVALID
+        wildcard allowed on tree level, not within component
+            top.level/*phone/gyro       INVALID
+            top.level/*/gyro            VALID 
 ```
 ```
 ATTRIBUTE-FILTERS
