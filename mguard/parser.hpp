@@ -1,27 +1,24 @@
 #include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <ostream>
-//#include "dataWindowParameter.hpp"
+//#include "attributeFilter.hpp"
 
 namespace mguard {
-    class dataWindowParameter {
+    class attributeFilter {
     private:
         bool isAllowed;
-        std::string key, value, streamName, columnName;
+        std::string attribute;
     public:
-        dataWindowParameter(bool isAllowed, std::string key, std::string value);
+        attributeFilter(bool isAllowed, std::string attribute);
 
-        dataWindowParameter(bool isAllowed, std::string streamName, std::string columnName, std::string value);
-
-        static bool isValidKey(const std::string& key);
-
-        friend std::ostream &operator<<(std::ostream &os, const dataWindowParameter &parameter);
-
+        friend std::ostream &operator<<(std::ostream &os, const attributeFilter &parameter);
     };
     using ConfigSection = boost::property_tree::ptree;
     class PolicyParser {
     public:
         explicit PolicyParser(std::string &fileName);
+
+        static bool isValidKey(const std::string& key);
 
         bool processFile();
 
@@ -37,19 +34,15 @@ namespace mguard {
         std::string configFilePath;
 
         // if no data window, all from stream is allowed
-        bool hasDataWindow;
+        bool hasFilters{}, hasAllow{}, hasDeny{};
 
-        int policyID;
-        std::string studyID;
-        std::string dataOwnerID;
+        int policyID{};
         std::list<std::string> dataRequesterIDs; // this should be a list or array of some sort
         std::string dataStreamName;
 
-        std::list<dataWindowParameter> parameters;
+        std::list<attributeFilter> filters;
 
-        void printForDebug();
-
-        bool processDWSection(ConfigSection &section, bool isAllowed);
+        bool processAttributeFilter(ConfigSection &section, bool isAllowed);
     };
 
 }

@@ -1,10 +1,11 @@
 #include "parser.hpp"
 
-//#include "dataWindowParameter.cpp"
+//#include "attributeFilter.cpp"
 
 #include "boost/property_tree/info_parser.hpp"
 
 #include <iostream>
+#include <utility>
 
 namespace pt = boost::property_tree;
 
@@ -17,10 +18,10 @@ namespace mguard {
         // input for file
         std::ifstream inputFile (configFilePath.c_str());
         if (!inputFile.is_open()){
-            std::string msg = "ifstream input failed for " + configFilePath;
-            std::cerr << msg << std::endl;
+            std::cerr   <<  "ifstream input failed for "    <<  configFilePath  <<  std::endl;
             return false;
         }
+
         bool out = loadAndParse(inputFile);
         inputFile.close();
 
@@ -38,8 +39,6 @@ namespace mguard {
         try {
             // set all instance variables (all required in policy)
             policyID = section.get<int>("POLICY-ID");
-            studyID = section.get<std::string>("STUDY-ID");
-            dataOwnerID = section.get<std::string>("DATA-OWNER-ID");
             dataRequesterIDs = split(section.get<std::string>("DATA-REQUESTER-IDs"), ",");
             dataStreamName = section.get<std::string>("DATA-STREAM-NAME");
         } catch (const std::exception &exception) {
@@ -48,45 +47,35 @@ namespace mguard {
             return false;
         }
 
-        // optional data-window section
+        // optional attribute-filters section
+        // todo: figure out better way to structure this part
         try {
-            pt::ptree dw = section.get_child("DATA-WINDOW");
-            hasDataWindow = true;
-            if (!(
-                    processDWSection(dw.get_child("ALLOW"), true) &&
-                    processDWSection(dw.get_child("DENY"), false))
-                    ) {
-                return false;
+            pt::ptree filterTree = section.get_child("ATTRIBUTE-FILTERS");
+            hasFilters = true;
+            try {
+                processAttributeFilter(filterTree.get_child("ALLOW"), true);
             }
-        } catch (std::exception& e) {
-            // just means there is no data-window portion
-            hasDataWindow = false;
+            catch (std::exception &e){
+                hasAllow = false;
+            }
+            try {
+                processAttributeFilter(filterTree.get_child("DENY"), false);
+            }
+            catch (std::exception &e) {
+                hasDeny = false;
+            }
         }
-
+         catch (std::exception& e) {
+            // just means there is no attribute-filter section
+            hasFilters = false;
+        }
         return true;
     }
 
-    bool PolicyParser::processDWSection(pt::ptree &section, bool isAllowed) {
-        std::string key, value;
-        // go through all parameters in the allow/deny section
+    bool PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed) {
+        // go through all filters in the allow/deny section
         for (const auto &parameter : section) {
-            // set key, value
-            key = parameter.first;
-            value = parameter.second.get_value<std::string>();
-            // check for valid key
-            if (!dataWindowParameter::isValidKey(key)) {
-                std::cout << "inValid key " << key << std::endl;
-                return false;
-            }
-            // TODO: change this to make it a section/block like how data-window is
-            if (key == "ColumnNameValue"){
-                // splits into column name and value
-                std::list<std::string> keyValue = split(value, " ");
-                parameters.emplace_back(isAllowed, dataStreamName, keyValue.front(), keyValue.back());
-            } else {
-                // add new parameter object to master list
-                parameters.emplace_back(isAllowed, key, value);
-            }
+            filters.emplace_back(isAllowed, parameter.first);
         }
         return true;
     }
@@ -102,49 +91,60 @@ namespace mguard {
             }
             output.push_back(basicString.substr(start, end - start));
         }
+        for (const auto &item : output) {
+            // todo: strip the item of leading and trailing spaces
+        }
         return output;
     }
 
+    // printing for PolicyParser object
     std::ostream &operator<<(std::ostream &os, const PolicyParser &parser) {
-        os << "PolicyParser Object {" << std::endl << " configFilePath:\t" << parser.configFilePath  << std::endl<< " hasDataWindow:\t\t" << parser.hasDataWindow  << std::endl<< " policyID:\t\t"
-           << parser.policyID  << std::endl<< " studyID:\t\t" << parser.studyID  << std::endl<< " dataOwnerID:\t\t" << parser.dataOwnerID << std::endl
-           << " dataRequesterIDs:\t" ;
+        os <<
+        "PolicyParser Object {" <<  std::endl   <<
+        "\t"    <<  "configFilePath"    <<  "\t\t"  <<  parser.configFilePath   <<  std::endl   <<
+        "\t"    <<  "hasFilters"        <<  "\t\t"  <<  parser.hasFilters       <<  std::endl   <<
+        "\t"    <<  "policyID"          <<  "\t\t"  <<  parser.policyID         <<  std::endl   <<
+        "\t"    <<  "dataRequesterIDs"  <<  "\t" ;
+
         for (const auto &item : parser.dataRequesterIDs) {
             os << item << " ";
         }
-        std::cout  << std::endl<< " dataStreamName:\t" << parser.dataStreamName  << std::endl << " parameters {" << std::endl;
-        for (const auto &item : parser.parameters) {
-           os << "  " << item << std::endl;
+
+        os      <<  std::endl           <<
+        "\t"    <<  "dataStreamName"    <<  "\t\t"  <<  parser.dataStreamName   <<  std::endl   <<
+        "\t"    <<  "filters {"         <<  std::endl;
+
+        for (const auto &item : parser.filters) {
+           os << item;
         };
-        os << " }" << std::endl << "}" << std::endl;
+
+        os  <<
+        "\t"    <<  "}"     <<  std::endl <<
+        "}"                 <<  std::endl;
+
         return os;
     }
 
-    dataWindowParameter::dataWindowParameter(bool isAllowed, std::string key, std::string value)
+    attributeFilter::attributeFilter(bool isAllowed, std::string attribute)
             :isAllowed(isAllowed)
-            ,key(std::move(key))
-            ,value(std::move(value))
+            ,attribute(std::move(attribute))
     {}
 
-    bool dataWindowParameter::isValidKey(const std::string& key) {
-        std::list<std::string> allowedKeys = {"StreamName", "ColumnName", "ColumnNameValue"};
+    bool PolicyParser::isValidKey(const std::string& key) {
+        std::list<std::string> allowedKeys = {"policy-id", "data-requester-IDs", "data-stream-name"};
         if (std::find(allowedKeys.begin(), allowedKeys.end(), key) == std::end(allowedKeys)){
             return false;
         }
         return true;
     }
 
-    std::ostream &operator<<(std::ostream &os, const dataWindowParameter &parameter) {
-        os << "dataWindowParameter Object {" << std::endl << "   isAllowed:\t" << parameter.isAllowed << std::endl << "   key:\t\t" << parameter.key << std::endl << "   value:\t" << parameter.value << std::endl
-           << "   streamName:\t" << parameter.streamName << std::endl << "   columnName:\t" << parameter.columnName << std::endl << "  }";
+    // printing for attribute filter
+    std::ostream &operator<<(std::ostream &os, const attributeFilter &filter) {
+        os <<
+        "\t\t"      <<  "attributeFilter Object {"                      <<  std::endl   <<
+        "\t\t\t"    <<  "isAllowed:"    <<  "\t"    << filter.isAllowed <<  std::endl   <<
+        "\t\t\t"    <<  "attribute:"    <<  "\t"    << filter.attribute <<  std::endl   <<
+        "\t\t"      <<  "}"                                             <<  std::endl;
         return os;
     }
-
-    dataWindowParameter::dataWindowParameter(bool isAllowed, std::string streamName, std::string columnName,std::string value)
-            :isAllowed(isAllowed)
-            ,streamName(std::move(streamName))
-            ,columnName(std::move(columnName))
-            ,value(std::move(value))
-            ,key("columnNameValue")
-    {}
 }
