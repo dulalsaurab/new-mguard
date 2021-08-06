@@ -4,8 +4,8 @@ Current Policy Structure
 ------------------------
 ```
   POLICY-ID             ID
-  DATA-REQUESTER-IDs    REQUESTER-IDs
-  DATA-STREAM-NAME      DATA-STREAM-NAME
+  REQUESTER-IDs         REQUESTER-IDs
+  STREAM-NAME           STREAM-NAME
   ATTRIBUTE-FILTERS
   {
     ALLOW
@@ -30,22 +30,22 @@ Specification Detail
 ```
 GLOBAL OPTIONS      REQUIRED  TYPE
 POLICY-ID           *         int
-DATA-REQUESTER-IDs  *         "alpha-numeric, alpha-numeric, ..."
-DATA-STREAM-NAME    *
+REQUESTER-IDs       *         "alpha-numeric, alpha-numeric, ..."
+STREAM-NAME         *
 ATTRIBUTE-FILTERS
 ```
 ```
-DATA-STREAM-NAME
+STREAM-NAME
     FUNCTION:
-        confirms ownerID and studyID
         allows all under specified node only if no ALLOW or DENY
     TYPE : <alpha-numeric with wildcard>
         regex Limited
     COMPONENT specs
         separated by /
-        only . and _ allowed within name
+        only "." "_" and "-" allowed within name
             top.level/cell.phone/gyro   VALID
-            top.level/cell-phone/gyro   INVALID
+            top.level/cell-phone/gyro   VALID
+            $top.level/cell_phone/gyro  INVALID
         wildcard allowed on tree level, not within component
             top.level/*phone/gyro       INVALID
             top.level/*/gyro            VALID 

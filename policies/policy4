@@ -1,8 +1,8 @@
 ; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
 policy-id           4
-data-requester-ids  D
-data-stream-name    org.md2k
+requester-ids       D
+stream-name         org.md2k
 attribute-filters
 {
     allow
