@@ -16,29 +16,31 @@ namespace mguard {
     using ConfigSection = boost::property_tree::ptree;
     class PolicyParser {
     public:
-        explicit PolicyParser(std::string &fileName);
+        PolicyParser(std::string &configFilePath, std::string &availableStreams);
 
-        static bool isValidKey(const std::string& key);
-
-        bool processFile();
+        bool processFiles();
 
         static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
 
         friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
     private:
+        bool parseAvailableStreams(std::istream &input);
+        std::list<std::string> availableStreams, availableUsers;
 
-        bool loadAndParse(std::istream& input);
+        bool parsePolicy(std::istream &input);
+
+        bool prelimCheck();
 
         // full path of the config/policy file
-        std::string configFilePath;
+        std::string configFilePath, availableStreamsPath;
 
         // if no data window, all from stream is allowed
         bool hasFilters{}, hasAllow{}, hasDeny{};
 
         int policyID{};
-        std::list<std::string> dataRequesterIDs; // this should be a list or array of some sort
-        std::string dataStreamName;
+        std::list<std::string> requesterIDs; // this should be a list or array of some sort
+        std::string streamName;
 
         std::list<attributeFilter> filters;
 
