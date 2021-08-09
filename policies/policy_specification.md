@@ -3,39 +3,40 @@ This document describes the mGuard policy language specifications.
 Current Policy Structure
 ------------------------
 ```
-  POLICY-ID             ID
-  REQUESTER-IDs         REQUESTER-IDs
-  STREAM-NAME           STREAM-NAME
-  ATTRIBUTE-FILTERS
-  {
-    ALLOW
+policy-id             id
+requester-ids         requester-ids
+stream-name           stream-name
+attribute-filters
+{
+    allow
     {
-        ATTRIBUTE/1
-        ATTRIBUTE/2
-        ATTRIBUTE/3
-        ...
+       attribute/1
+       attribute/2
+       attribute/3
+       ...
     }
-    DENY
+    deny
     {
-        ATTRIBUTE/4
-        ATTRIBUTE/5
-        ATTRIBUTE/6
+        attribute/4
+        attribute/5
+        attribute/6
         ...
     }
 }
+
 ```
 
 Specification Detail
 -----------------------
 ```
 GLOBAL OPTIONS      REQUIRED  TYPE
-POLICY-ID           *         int
-REQUESTER-IDs       *         "alpha-numeric, alpha-numeric, ..."
-STREAM-NAME         *
-ATTRIBUTE-FILTERS
+policy-id           *         int
+requester-ids       *         "alpha-numeric, alpha-numeric, ..."
+stream-name         *
+attribute-filters
 ```
 ```
-STREAM-NAME
+stream-name
     FUNCTION:
         allows all under specified node only if no ALLOW or DENY
     TYPE : <alpha-numeric with wildcard>
@@ -51,7 +52,7 @@ STREAM-NAME
             top.level/*/gyro            VALID 
 ```
 ```
-ATTRIBUTE-FILTERS
+attribute-filters
     FUNCTION
         allows for access control on an attribute level
         specifies which attributes data requesters should be allowed or denied
