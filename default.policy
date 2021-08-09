@@ -1,14 +1,14 @@
-; brief: A shall access all the x-coordinate data under any stream in /phone/gyro/ during the 1200 hrs block unless the user is at work
-POLICY-ID           123
-DATA-REQUESTER-IDs  "one, two, red, blue"
-DATA-STREAM-NAME    phone
-ATTRIBUTE-FILTERS {
-    DENY {
-        attribute/location/work
-        other/attribute
+policy-id       1
+requester-ids   A
+stream-name     org.md2k
+attribute-filters
+{
+    allow
+    {
+
     }
-    ALLOW {
-        something
-        special
+    deny
+    {
+
     }
 }
