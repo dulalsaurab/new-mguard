@@ -1,8 +1,8 @@
 ; brief: C, D shall be able to access accelerometer data
 
 policy-id           6
-data-requester-ids  C,D
-data-stream-name    org.md2k/mperf/*/*/accelerometer
+requester-ids       C,D
+stream-name         org.md2k/mperf/*/*/accelerometer
 
 ; AFTER PARSING
 ;

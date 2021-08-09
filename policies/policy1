@@ -1,8 +1,8 @@
 ; brief: A shall access all the streams under org.md2k
 
 policy-id           1
-data-requester-ids  A           ;if needed, we can have ',' separated list e.g. A, B, C
-data-stream-name    org.md2k
+requester-ids       A           ;if needed, we can have ',' separated list e.g. A, B, C
+stream-name         org.md2k
 
 ; AFTER PARSING
 ;
