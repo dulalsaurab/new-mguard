@@ -310,16 +310,18 @@ namespace mguard {
 
     bool PolicyParser::isAlike(std::string &attribute, std::string &checking) {
         std::list<std::string> first = split(attribute, "/"), second = split(checking, "/");
-
-        // scuffed, but should work
-        // attributes currently follow "attribute/type/name"
-        // if the first two are the same, they're of the same type
-
         int matches = 0;
         std::string workingFirst, workingSecond;
-        first.remove(first.front());
-        second.remove(second.front());
-        for (int index = 1; index < 3; index++) {
+
+        // removes first element if the attributes have leading "/"
+        if (first.front().empty()) {
+            first.remove(first.front());
+        }
+        if (second.front().empty()) {
+            second.remove(second.front());
+        }
+
+        for (int n = 1; n < 3; n++) {
             if (first.front() == second.front()) {
                 matches ++;
             }
