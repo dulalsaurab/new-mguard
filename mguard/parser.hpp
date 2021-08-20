@@ -7,11 +7,12 @@ namespace mguard {
     class attributeFilter {
     private:
         bool isAllowed;
-        std::string attribute;
     public:
         attributeFilter(bool isAllowed, std::string attribute);
 
         friend std::ostream &operator<<(std::ostream &os, const attributeFilter &parameter);
+
+        std::string attribute;
     };
     using ConfigSection = boost::property_tree::ptree;
     class PolicyParser {
@@ -22,15 +23,19 @@ namespace mguard {
 
         static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
 
+        static std::string doStringThing(const std::list<std::string>& list, const std::string& operation);
+
         friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
     private:
         bool parseAvailableStreams(std::istream &input);
-        std::list<std::string> availableStreams, availableUsers;
+        std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
 
         bool parsePolicy(std::istream &input);
 
-        bool prelimCheck();
+        bool processAttributeFilter(ConfigSection &section, bool isAllowed);
+
+        bool generateABEPolicy();
 
         // full path of the config/policy file
         std::string configFilePath, availableStreamsPath;
@@ -40,11 +45,14 @@ namespace mguard {
 
         int policyID{};
         std::list<std::string> requesterIDs; // this should be a list or array of some sort
-        std::string streamName;
+        std::string streamName, abePolicy, prefix;
 
         std::list<attributeFilter> filters;
+        std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
 
-        bool processAttributeFilter(ConfigSection &section, bool isAllowed);
+        static bool isAlike(std::string& attribute, std::string& checking);
+
+        static std::string processAttributes(const std::list<std::string>& attrList);
     };
 
 }
