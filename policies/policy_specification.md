@@ -39,6 +39,7 @@ attribute-filters
 stream-name
     FUNCTION:
         allows all under specified node only if no ALLOW or DENY
+        wildcard is implied at the end of stream
     TYPE : <alpha-numeric with wildcard>
         regex Limited
     COMPONENT specs
@@ -47,9 +48,9 @@ stream-name
             top.level/cell.phone/gyro   VALID
             top.level/cell-phone/gyro   VALID
             $top.level/cell_phone/gyro  INVALID
-        wildcard allowed on tree level, not within component
+        wildcard not allowed
             top.level/*phone/gyro       INVALID
-            top.level/*/gyro            VALID 
+            top.level/*/gyro            INVALID 
 ```
 ```
 attribute-filters
