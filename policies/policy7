@@ -1,13 +1,14 @@
 ; brief: C, D shall be able to access accelerometer data under org.md2k        ;this is the same as policy6, but a different implementation
 
-policy-id           6
+policy-id           7
 requester-ids       C,D
 stream-name         org.md2k
 attribute-filters
 {
     allow
     {
-        attributes/sensor/accelerometer ;attribute associated with any/all accelerometer data
+        org.md2k/mperf/dd40c/phone/accelerometer
+        org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
     }
 }
 
