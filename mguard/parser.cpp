@@ -235,23 +235,28 @@ namespace mguard {
             // AND allow attributes
             if (!allowedAttributes.empty()) {
                 policy.emplace_back(processAttributes(allowedAttributes));
-//                policy.emplace_back(doStringThing(allowedAttributes, "AND"));
             }
 
             // OR deny attributes
-            // todo: fix edge case where every attribute is denied which would cause no attributes to be denied in the ABE policy
             if (!deniedAttributes.empty()) {
-                std::list<std::string> workingAttribute = availableAttributes;
+                std::list<std::string> workingAttributes = availableAttributes;
                 for (std::string &toRemove : deniedAttributes) {
-                    workingAttribute.remove(toRemove);
+                    workingAttributes.remove(toRemove);
                 }
-                if (!workingAttribute.empty()) {
-                    policy.emplace_back(doStringThing(workingAttribute, "OR"));
+                if (!workingAttributes.empty()) {
+                    policy.emplace_back(doStringThing(workingAttributes, "OR"));
+                } else {
+                    // all attributes are denied
+                    policy.clear();
                 }
             }
 
-            // putting all together
-            abePolicy = doStringThing(policy, "AND");
+            // putting it all all together
+            if (policy.empty()) {
+                abePolicy = "NONE";
+            } else {
+                abePolicy = doStringThing(policy, "AND");
+            }
 
         } else {
             std::string streams;
