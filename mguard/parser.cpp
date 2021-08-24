@@ -248,15 +248,13 @@ namespace mguard {
                 } else {
                     // all attributes are denied
                     policy.clear();
+                    std::cerr   <<  "Cannot deny all given attributes"  <<  std::endl;
+                    return false;
                 }
             }
 
             // putting it all all together
-            if (policy.empty()) {
-                abePolicy = "NONE";
-            } else {
-                abePolicy = doStringThing(policy, "AND");
-            }
+            abePolicy = doStringThing(policy, "AND");
 
         } else {
             std::string streams;
