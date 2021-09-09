@@ -61,7 +61,7 @@ public:
   subscribe(const ndn::Name& topic);
 
   void
-  unsubscribe(const ndn::Name& topic)
+  unsubscribe(const ndn::Name& topic);
 
   void
   changePolicy();

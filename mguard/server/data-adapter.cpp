@@ -1,80 +1,152 @@
 #include "data-adapter.hpp"
-
 #include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/util/random.hpp>
+#include <ndn-cxx/security/signing-helpers.hpp>
+#include <ndn-cxx/encoding/block-helpers.hpp>
+#include <ndn-cxx/security/verification-helpers.hpp>
 
 #include <iostream>
+#include <string>
+
+#include "common.hpp"
 
 NDN_LOG_INIT(mguard.DataAdapter);
 
 namespace mguard
 {
 
-DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& syncPrefix,
-                         const ndn::Name& userPrefix,
-                         ndn::time::milliseconds syncInterestLifetime)
-
- : m_producer(face, syncPrefix, userPrefix, syncInterestLifetime,
-              std::bind(&DataAdapter::processSyncUpdate, this, _1))
+DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& attrAuthorityPrefix, const ndn::Name& producerPrefix)
+: m_face (face) 
+, m_scheduler(m_face.getIoService())
+, m_attrAuthorityPrefix(attrAuthorityPrefix)
+, m_producerPrefix(producerPrefix)
+, m_producerCert(m_keyChain.getPib().getIdentity(m_producerPrefix).getDefaultKey().getDefaultCertificate())
+, m_authorityCert(m_keyChain.getPib().getIdentity(m_attrAuthorityPrefix).getDefaultKey().getDefaultCertificate())
+, m_kpAttributeAuthority (m_authorityCert, m_face, m_keyChain)
+, m_producer (m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
 }
 
-void
-DataAdapter::run()
+bool 
+DataAdapter::readData(std::vector<std::string> streamNames)
 {
-  try {
-    m_face.processEvents();
-  }
-  catch (const std::exception& ex)
+  for (auto name: streamNames)
   {
-    NDN_THROW(Error(ex.what()));
-    NDN_LOG_ERROR("Face error: " << ex.what());
+    auto mGuardName = name;
+    std::replace(mGuardName.begin(), mGuardName.end(), '/', '-'); // converting name to mguard name
+    auto streamPath = DATA_DIR + "/" + mGuardName;
+    makeDataContent(m_fileProcessor.readStream(streamPath), name);
   }
 }
 
-void
-DataAdapter::stop()
+ndn::Name
+DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 {
-  NDN_LOG_DEBUG("Shutting down face: ");
-  m_face.shutdown();
-  // m_face.getIoService().stop();
+  return streamName.append(timestamp);
 }
 
 void
-DataAdapter::setInterestFilter(const ndn::Name& name, const bool loopback)
+DataAdapter::makeDataContent(std::vector<std::string>data, ndn::Name streamName)
 {
-  NDN_LOG_INFO("Setting interest filter on: " << name);
-  m_face.setInterestFilter(ndn::InterestFilter(name).allowLoopback(false),
-                           std::bind(&DataAdapter::processInterest, this, _1, _2),
-                           std::bind(&DataAdapter::onRegistrationSuccess, this, _1),
-                           std::bind(&DataAdapter::registrationFailed, this, _1));
+  for (auto row : data)
+  {
+    m_tempRow = row;
+    std::string delimiter = ",";
+    auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
+    auto dataName = makeDataName(streamName, timestamp);
+    ndn::Data d_row(dataName);
+    d_row.setContent(wireEncode());
+    m_keyChain.sign(d_row);
+    // now here we need to use NAC-ABE
+
+  }
 }
 
-
-void
-DataAdapter::processInterest(const ndn::Name& name, const ndn::Interest& interest)
+const ndn::Block &
+DataAdapter::wireEncode()
 {
-  // check if the interest is for mainfest or data.
+  if (m_wire.hasWire()) {
+    return m_wire;
+  }
+  ndn::EncodingEstimator estimator;
+  size_t estimatedSize = wireEncode(estimator);
+
+  ndn::EncodingBuffer buffer(estimatedSize, 0);
+  wireEncode(buffer);
+
+  m_wire = buffer.block();
+  return m_wire;
 }
 
-void
-DataAdapter::onRegistrationSuccess(const ndn::Name& name)
+template <ndn::encoding::Tag TAG>
+size_t
+DataAdapter::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
 {
-  NDN_LOG_DEBUG("Successfully registered prefix: " << name);
+  size_t totalLength = 0;
+  totalLength += prependStringBlock(encoder, tlv::DataRow, m_tempRow);
+  totalLength += encoder.prependVarNumber(totalLength);
+  totalLength += encoder.prependVarNumber(tlv::mGuardContent);
+
+  return totalLength;
 }
 
-void
-DataAdapter::registrationFailed(const ndn::Name& name)
-{
-  NDN_LOG_ERROR("ERROR: Failed to register prefix " << name << " in local hub's daemon");
-}
+// void
+// DataAdapter::run()
+// {
+//   try {
+//     m_face.processEvents();
+//   }
+//   catch (const std::exception& ex)
+//   {
+//     NDN_THROW(Error(ex.what()));
+//     NDN_LOG_ERROR("Face error: " << ex.what());
+//   }
+// }
 
-void
-DataAdapter::processSyncUpdate(const std::vector<mguard::producer::SyncDataInfo> & syncInfo)
-{
-}
+// void
+// DataAdapter::stop()
+// {
+//   NDN_LOG_DEBUG("Shutting down face: ");
+//   m_face.shutdown();
+//   // m_face.getIoService().stop();
+// }
 
-void
-DataAdapter::sendData(const ndn::Name& name)
-{}
+// void
+// DataAdapter::setInterestFilter(const ndn::Name& name, const bool loopback)
+// {
+//   NDN_LOG_INFO("Setting interest filter on: " << name);
+//   m_face.setInterestFilter(ndn::InterestFilter(name).allowLoopback(false),
+//                            std::bind(&DataAdapter::processInterest, this, _1, _2),
+//                            std::bind(&DataAdapter::onRegistrationSuccess, this, _1),
+//                            std::bind(&DataAdapter::registrationFailed, this, _1));
+// }
+
+
+// void
+// DataAdapter::processInterest(const ndn::Name& name, const ndn::Interest& interest)
+// {
+//   // check if the interest is for mainfest or data.
+// }
+
+// void
+// DataAdapter::onRegistrationSuccess(const ndn::Name& name)
+// {
+//   NDN_LOG_DEBUG("Successfully registered prefix: " << name);
+// }
+
+// void
+// DataAdapter::registrationFailed(const ndn::Name& name)
+// {
+//   NDN_LOG_ERROR("ERROR: Failed to register prefix " << name << " in local hub's daemon");
+// }
+
+// void
+// DataAdapter::processSyncUpdate(const std::vector<mguard::producer::SyncDataInfo> & syncInfo)
+// {
+// }
+
+// void
+// DataAdapter::sendData(const ndn::Name& name)
+// {}
 
 } //mguard

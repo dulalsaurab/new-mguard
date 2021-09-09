@@ -16,22 +16,29 @@ def options(opt):
     optgrp.add_option('--with-examples', action='store_true', default=False,
                       help='Build examples')
 
+    optgrp.add_option('--with-tests', action='store_true', default=False,
+                      help='Build unit tests')
+    
 def configure(conf):
     conf.load(['compiler_c', 'compiler_cxx', 'gnu_dirs',
                'default-compiler-flags', 'boost'])
 
     conf.env.WITH_EXAMPLES = conf.options.with_examples
-    
+    conf.env.WITH_TESTS = conf.options.with_tests    
+
     pkg_config_path = os.environ.get('PKG_CONFIG_PATH', '%s/pkgconfig' % conf.env.LIBDIR)
     conf.check_cfg(package='libndn-cxx', args=['--cflags', '--libs'], uselib_store='NDN_CXX',
                    pkg_config_path=pkg_config_path)
 
     boost_libs = ['system', 'iostreams', 'filesystem', 'regex']
+    
+    if conf.env.WITH_TESTS:
+        boost_libs.append('unit_test_framework')
 
     conf.check_boost(lib=boost_libs, mt=True)
 
-    # conf.check_cfg(package='ChronoSync', args=['--cflags', '--libs'], uselib_store='SYNC',
-                   # pkg_config_path=pkg_config_path)
+    conf.check_cfg(package='libnac-abe', args=['--cflags', '--libs'], uselib_store='NAC-ABE',
+                   pkg_config_path=pkg_config_path)
 
     conf.check_cfg(package='PSync', args=['--cflags', '--libs'], uselib_store='PSYNC',
                    pkg_config_path=pkg_config_path)
@@ -43,7 +50,7 @@ def configure(conf):
     conf.load('sanitizers')
 
     conf.env.prepend_value('STLIBPATH', ['.'])
-    # conf.define_cond('WITH_TESTS', conf.env.WITH_TESTS)
+    conf.define_cond('WITH_TESTS', conf.env.WITH_TESTS)
     # The config header will contain all defines that were added using conf.define()
     # or conf.define_cond().  Everything that was added directly to conf.env.DEFINES
     # will not appear in the config header, but will instead be passed directly to the
@@ -60,6 +67,9 @@ def build(bld):
               use='NDN_CXX BOOST PSYNC',
               includes='.',
               export_includes='.')
+
+    if bld.env.WITH_TESTS:
+        bld.recurse('tests')
 
     if bld.env.WITH_EXAMPLES:
         bld.recurse('examples')
