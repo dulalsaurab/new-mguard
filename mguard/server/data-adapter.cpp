@@ -15,15 +15,13 @@ NDN_LOG_INIT(mguard.DataAdapter);
 namespace mguard
 {
 
-DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& attrAuthorityPrefix, const ndn::Name& producerPrefix)
-: m_face (face) 
-, m_scheduler(m_face.getIoService())
-, m_attrAuthorityPrefix(attrAuthorityPrefix)
+DataAdapter::DataAdapter(const ndn::Name& attrAuthorityPrefix, const ndn::Name& producerPrefix)
+: m_attrAuthorityPrefix(attrAuthorityPrefix)
 , m_producerPrefix(producerPrefix)
-, m_producerCert(m_keyChain.getPib().getIdentity(m_producerPrefix).getDefaultKey().getDefaultCertificate())
-, m_authorityCert(m_keyChain.getPib().getIdentity(m_attrAuthorityPrefix).getDefaultKey().getDefaultCertificate())
-, m_kpAttributeAuthority (m_authorityCert, m_face, m_keyChain)
-, m_producer (m_face, m_keyChain, m_producerCert, m_authorityCert)
+, m_producerCert(m_keyChain.getPib().getIdentity("/mguard/producer").getDefaultKey().getDefaultCertificate())
+, m_authorityCert(m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate())
+, m_kpAttributeAuthority(m_authorityCert, m_face, m_keyChain)
+, m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
 }
 
@@ -50,15 +48,17 @@ DataAdapter::makeDataContent(std::vector<std::string>data, ndn::Name streamName)
 {
   for (auto row : data)
   {
+    std::shared_ptr<ndn::Data> drow, ckData;
+    ndn::Data d_row;
     m_tempRow = row;
     std::string delimiter = ",";
     auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
     auto dataName = makeDataName(streamName, timestamp);
-    ndn::Data d_row(dataName);
+    d_row.setName(dataName);
     d_row.setContent(wireEncode());
     m_keyChain.sign(d_row);
-    // now here we need to use NAC-ABE
-
+    const uint8_t PLAIN_TEXT[1024] = {1};
+    // std::tie(drow, ckData) = m_producer.produce(dataName, "attr1 or attr2", PLAIN_TEXT, sizeof(PLAIN_TEXT));
   }
 }
 

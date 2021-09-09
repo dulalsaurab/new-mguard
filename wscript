@@ -64,7 +64,7 @@ def build(bld):
               vnum=VERSION,
               cnum=VERSION,
               source=bld.path.ant_glob('mguard/**/*.cpp'),
-              use='NDN_CXX BOOST PSYNC',
+              use='NDN_CXX BOOST PSYNC NAC-ABE',
               includes='.',
               export_includes='.')
 
