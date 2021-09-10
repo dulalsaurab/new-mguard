@@ -1,13 +1,13 @@
 #ifndef MGUARD_FILE_PROCESSOR_HPP
 #define MGUARD_FILE_PROCESSOR_HPP
 
-#include <iostream>
-#include <map>
+#include "common.hpp"
 
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/info_parser.hpp>
 
-#include "common.hpp"
+#include <iostream>
+#include <map>
 
 namespace mguard {
 
