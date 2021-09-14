@@ -1,0 +1,99 @@
+
+streams
+{
+  ;<stream-id> <stream-name> 
+  1, org.md2k/mguard/dd40c/phone/gps_coordinates
+  2, org.md2k/mguard/dd40c/phone/accelerometer
+  3, org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+  4, org.md2k/mguard/dd40c/phone/gyroscope
+  5, org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+  6, org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.physical_acitivity
+}
+
+attribute-mapping
+{
+    /attribtues/location/home
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/location/work
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/location/commuting
+    {
+      source 5  
+      column semantic_location
+      applied_to 1 
+    }
+    /attribtues/location/casino
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/location/oakland
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/location/SoCal
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/location/gym
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/location/shopping-mall
+    {
+      source 5  
+      column semantic_location
+      applied_to 1
+    }
+    /attribtues/activity/smoking
+    {
+      source 5  
+      column semoking_episodes
+      applied_to 2,3,4
+    }
+    /attribtues/activity/walking
+    {
+      source 6 
+      column activity_type
+      applied_to 2,3,4
+    }
+    /attribtues/activity/running
+    {
+      source 6 
+      column activity_type
+      applied_to 2,3,4
+    }
+    /attribtues/activity/eating
+    {
+      source 6 
+      column activity_type
+      applied_to 2,3,4
+    }
+    /attribtues/activity/drinking
+    {
+      source 6 
+      column activity_type
+      applied_to 2,3,4
+    }
+    /attribtues/activity/sleeping
+    {
+      source 6 
+      column activity_type
+      applied_to 2,3,4
+    }
+}

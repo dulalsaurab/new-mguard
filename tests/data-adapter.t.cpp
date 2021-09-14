@@ -1,7 +1,11 @@
 #include <mguard/server/data-adapter.hpp>
+#include <mguard/server/util/stream.hpp>
+
+#include <mguard/server/common.hpp>
 #include "tests/boost-test.hpp"
-#include <ndn-cxx/name.hpp>
+// #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/util/dummy-client-face.hpp>
+#include <ndn-cxx/security/key-chain.hpp>
 
 namespace mguard {
 
@@ -9,23 +13,16 @@ BOOST_AUTO_TEST_SUITE(TestDataAdapter)
 
 BOOST_AUTO_TEST_CASE(Constructor)
 {
-  ndn::util::DummyClientFace c1;
-  // ndn::security::KeyChain keychain;
-  std::vector<std::string> streams;
-  // ndn::security::Certificate producerCert, authorityCert;
-//  try
-//  {
-//    producerCert = keychain.getPib().getIdentity("/mguard/producer").getDefaultKey().getDefaultCertificate();
-//    authorityCert = keychain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate();
-//  }
-//  catch(const std::exception& e)
-//  {
-//    std::cerr << e.what() << '\n';
-//  }
-  // std::cout << producerCert.getMetaInfo() << std::endl;
-  // streams.push_back("org.md2k/mguard/dd40c/gps/phone.csv");
-  DataAdapter da("/mguard/aa", "/mguard/producer");
-  // da.readData(streams);
+  std::vector<std::string> attributes = {"org.md2k", "/org.md2k/mguard/dd40c/gps/phone"};
+  auto dataPath = DATA_DIR + "/" + "org.md2k-mguard-dd40c-gps-phone.csv";
+  util::Stream stream("/org.md2k/mguard/dd40c/gps/phone", attributes, dataPath);
+
+  ndn::util::DummyClientFace face;
+  ndn::security::KeyChain k1;
+  // std::vector<std::string> streams;
+  // streams.push_back("/org.md2k/mguard/dd40c/gps/phone.csv");
+  DataAdapter da(face, k1, "/mguard/aa", "/mguard/producer");
+  da.readData(stream);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

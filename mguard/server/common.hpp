@@ -1,9 +1,7 @@
-
 #ifndef MGUARD_COMMON_HPP
 #define MGUARD_COMMON_HPP
 
 #include <ndn-cxx/face.hpp>
-
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/util/time.hpp>
 

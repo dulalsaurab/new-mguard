@@ -1,13 +1,14 @@
 #include "pre-processor.hpp"
 #include <ndn-cxx/util/logger.hpp>
 
-#include <fstream>
-#include <iostream>
-#include <filesystem>
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/info_parser.hpp>
 
-NDN_LOG_INIT(mguard.Preprocessor);
+#include <fstream>
+#include <iostream>
+#include <filesystem>
+
+// NDN_LOG_INIT(mguard.Preprocessor);
 
 namespace mguard
 {

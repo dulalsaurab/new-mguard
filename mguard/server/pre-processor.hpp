@@ -1,4 +1,3 @@
-
 #ifndef MGUARD_PRE_PROCESSOR_HPP
 #define MGUARD_PRE_PROCESSOR_HPP
 
@@ -12,6 +11,7 @@
 #include <iostream>
 #include <map>
 #include <vector>
+
 namespace mguard
 {
 

@@ -6,12 +6,12 @@
  **/
 
 // #include "conf-file-processor.hpp"
-#include <iostream>
+// #include <iostream>
 
-#include "server/pre-processor.hpp"
+// #include "server/pre-processor.hpp"
 
-int main ()
-{
-  mguard::DataPreprocessor preprocessor("attribute-mapping-table.info");
+// int main ()
+// {
+//   mguard::DataPreprocessor preprocessor("attribute-mapping-table.info");
 
-}
+// }

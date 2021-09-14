@@ -1,29 +1,27 @@
+#ifndef MGUARD_PUBLISHER_HPP
+#define MGUARD_PUBLISHER_HPP
 
+#include <PSync/full-producer.hpp>
 
-// #ifndef MGUARD_PUBLISHER_HPP
-// #define MGUARD_PUBLISHER_HPP
+#include <ndn-cxx/face.hpp>
+#include <ndn-cxx/util/random.hpp>
+#include <ndn-cxx/util/scheduler.hpp>
+#include <ndn-cxx/util/time.hpp>
 
-// #include <PSync/full-producer.hpp>
+#include <string>
+#include <iostream>
 
-// #include <string>
-// #include <iostream>
+using namespace ndn::time_literals;
 
-// #include <ndn-cxx/face.hpp>
-// #include <ndn-cxx/util/random.hpp>
-// #include <ndn-cxx/util/scheduler.hpp>
-// #include <ndn-cxx/util/time.hpp>
+namespace mguard {
+namespace publisher {
 
-// using namespace ndn::time_literals;
-
-// namespace mguard {
-// namespace publisher {
-
-// struct SyncDataInfo
-// {
-//   ndn::Name prefix;
-//   uint64_t highSeq;
-//   uint64_t lowSeq;
-// };
+struct SyncDataInfo
+{
+  ndn::Name prefix;
+  uint64_t highSeq;
+  uint64_t lowSeq;
+};
 
 // typedef std::function<void(const std::vector<SyncDataInfo>& updates)> SyncUpdateCallback;
 
@@ -72,7 +70,7 @@
 
 // };
 
-// } //namespace publisher
-// } //namespace mguard
+} //namespace publisher
+} //namespace mguard
 
-// #endif // MGUARD_PUBLISHER_HPP
+#endif // MGUARD_PUBLISHER_HPP
