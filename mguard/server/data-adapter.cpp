@@ -26,7 +26,6 @@ DataAdapter::DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain, con
 , m_kpAttributeAuthority(m_authorityCert, m_face, m_keyChain)
 , m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
-  run();
 }
 
 void
@@ -53,24 +52,18 @@ DataAdapter::makeDataContent(std::vector<std::string>data, util::Stream& stream)
   for (auto row : data)
   {
     // TODO: create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
-    
     std::shared_ptr<ndn::Data> enc_data, ckData;
-    ndn::Data d_row;
-    m_tempRow = row;
 
     // get timestamp from the data row
     std::string delimiter = ",";
     auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
     auto dataName = makeDataName(stream.getName(), timestamp);
-    d_row.setName(dataName);
-    d_row.setContent(wireEncode());
-    m_keyChain.sign(d_row);
     try
     {
       NDN_LOG_DEBUG("Encrypting data: " << dataName);
-      // unsigned char* byteptr = reinterpret_cast<unsigned char *>(&d_row);
-      uint8_t *byteptr = reinterpret_cast<uint8_t* >(&d_row);
+      unsigned char* byteptr = reinterpret_cast<unsigned char *>(&row);
       std::tie(enc_data, ckData) = m_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
+      NDN_LOG_INFO("here");
     }
     catch(const std::exception& e)
     {
@@ -79,6 +72,7 @@ DataAdapter::makeDataContent(std::vector<std::string>data, util::Stream& stream)
       return false;
     }
     //  encrypted data is created, store it in the buffer and publish it
+    NDN_LOG_INFO("data: " << enc_data << " ckData: " << ckData);
     m_dataBuffer.emplace(dataName, enc_data);
   }
   return true;
@@ -150,10 +144,14 @@ DataAdapter::setInterestFilter(const ndn::Name& name, const bool loopback)
 void
 DataAdapter::processInterest(const ndn::Name& name, const ndn::Interest& interest)
 {
+  // need to encapsulate this data into mguard data packet
   auto it = m_dataBuffer.find(name);
   if (it != m_dataBuffer.end()) {
     auto data = it->second;
-    m_face.put(*data);
+    NDN_LOG_INFO("Sending data for name: " << name << "data" << *data);
+    ndn::Data _data (*it->second);
+    m_keyChain.sign(_data);
+    m_face.put(_data);
     // once the data is schedule the corresponding entry deletion from the buffer
     m_dataBuffer.erase(it);
   }
