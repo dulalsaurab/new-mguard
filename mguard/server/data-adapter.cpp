@@ -15,8 +15,9 @@ NDN_LOG_INIT(mguard.DataAdapter);
 namespace mguard
 {
 
-DataAdapter::DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain, const ndn::Name& attrAuthorityPrefix, 
-                                            const ndn::Name& producerPrefix)
+DataAdapter::DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain,
+                         const ndn::Name& attrAuthorityPrefix,
+                         const ndn::Name& producerPrefix)
 : m_face(face)
 , m_keyChain(keyChain)
 , m_attrAuthorityPrefix(attrAuthorityPrefix)
@@ -24,8 +25,13 @@ DataAdapter::DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain, con
 , m_producerCert(m_keyChain.getPib().getIdentity(m_producerPrefix).getDefaultKey().getDefaultCertificate())
 , m_authorityCert(m_keyChain.getPib().getIdentity(m_attrAuthorityPrefix).getDefaultKey().getDefaultCertificate())
 , m_kpAttributeAuthority(m_authorityCert, m_face, m_keyChain)
-, m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
+// , m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
+  
+  // m_kpAttributeAuthority(m_authorityCert, m_face, m_keyChain);
+  // usleep(10000);
+  // m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert);
+
 }
 
 void
@@ -62,7 +68,7 @@ DataAdapter::makeDataContent(std::vector<std::string>data, util::Stream& stream)
     {
       NDN_LOG_DEBUG("Encrypting data: " << dataName);
       unsigned char* byteptr = reinterpret_cast<unsigned char *>(&row);
-      std::tie(enc_data, ckData) = m_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
+      // std::tie(enc_data, ckData) = m_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
       NDN_LOG_INFO("here");
     }
     catch(const std::exception& e)
@@ -108,7 +114,7 @@ DataAdapter::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
   return totalLength;
 }
 
-// Data adaptor only communicates with REPO, consumers interest should either go to publisher or repo directly
+// Data adapter only communicates with REPO, consumers interest should either go to publisher or repo directly
 void
 DataAdapter::run()
 {
@@ -164,7 +170,7 @@ DataAdapter::processInterest(const ndn::Name& name, const ndn::Interest& interes
 void
 DataAdapter::sendApplicationNack(const ndn::Name& name)
 {
-  NDN_LOG_DEBUG("Sending application nack");
+  NDN_LOG_INFO("Sending application nack");
   ndn::Name dataName(name);
   ndn::Data data(dataName);
   data.setContentType(ndn::tlv::ContentType_Nack);
@@ -176,13 +182,13 @@ DataAdapter::sendApplicationNack(const ndn::Name& name)
 void
 DataAdapter::onRegistrationSuccess(const ndn::Name& name)
 {
-  NDN_LOG_DEBUG("Successfully registered prefix: " << name);
+  NDN_LOG_INFO("Successfully registered prefix: " << name);
 }
 
 void
 DataAdapter::onRegistrationFailed(const ndn::Name& name)
 {
-  NDN_LOG_ERROR("ERROR: Failed to register prefix " << name << " in local hub's daemon");
+  NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
 }
 
 } //mguard

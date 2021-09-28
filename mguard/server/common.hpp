@@ -13,7 +13,7 @@
 
 namespace mguard
 {
-  const std::string DATA_DIR = "/Users/saurabdulal/Documents/PROJECTS/mGuard/data";
+  const std::string DATA_DIR = "data";
   
   struct AttributeMappingTable
   {
