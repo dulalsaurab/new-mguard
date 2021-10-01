@@ -14,13 +14,17 @@ namespace mguard {
     PolicyParser::PolicyParser(std::string &configFilePath, std::string &availableStreams)
     : configFilePath      (std::move(configFilePath))
     , availableStreamsPath    (std::move(availableStreams))
-    {}
+    {
+        // store data from input files
+        processFiles();
+
+        // process stored data to create ABE policy
+        generateABEPolicy();
+    }
 
     bool PolicyParser::processFiles() {
-        // todo:    move processing of available_streams to separate method to only be called once
-        // todo:    the processPolicy() method should be called separately from main
-        // input for available streams
 
+        // input for available streams
         std::ifstream availableStreamsFile(availableStreamsPath.c_str());
         if (!availableStreamsFile.is_open()){
             std::cerr   <<  "ifstream input failed for "    <<  availableStreamsPath    <<  std::endl;
@@ -33,7 +37,7 @@ namespace mguard {
         }
         availableStreamsFile.close();
 
-        // input for file
+        // input for config file
         std::ifstream policyFile (configFilePath.c_str());
         if (!policyFile.is_open()){
             std::cerr   <<  "ifstream input failed for "    <<  configFilePath          <<  std::endl;
@@ -45,9 +49,6 @@ namespace mguard {
             return false;
         }
         policyFile.close();
-
-        // process policy data
-        generateABEPolicy();
 
         return true;
     }
@@ -210,18 +211,23 @@ namespace mguard {
             if (allowedStreams.empty()) {
                 allowedStreams.push_back(streamName);
             }
+
             // add everything under all allowed stream names
             for (const std::string &available : availableStreams) {
                 for (const std::string &allowed : allowedStreams) {
+
                     // if it's allowed and not a duplicate, add it to the list
                     if ((available.rfind(allowed, 0) == 0) && (std::find(workingStreams.begin(), workingStreams.end(), available) == std::end(workingStreams))) {
                         bool add = true;
+                        // for each allowed stream, check against the denied streams
                         for (const std::string &denied : deniedStreams) {
                             if (available.rfind(denied, 0) == 0) {
                                 add = false;
                                 break;
                             }
                         }
+
+                        // if it passed all checks against the denied streams, add it to the list
                         if (add) {
                             workingStreams.push_back(available);
                         }
@@ -369,11 +375,11 @@ namespace mguard {
             output.push_back(basicString);
         }
 
-        for (const auto &item : output) {
-            // todo: strip the item of leading and trailing spaces
-        }
-
         return output;
+    }
+
+    const std::string &PolicyParser::getABEPolicy() const {
+        return abePolicy;
     }
 
     // printing for PolicyParser object

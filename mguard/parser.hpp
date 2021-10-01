@@ -27,6 +27,8 @@ namespace mguard {
 
         friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
+        const std::string &getABEPolicy() const;
+
     private:
         bool parseAvailableStreams(std::istream &input);
         std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;

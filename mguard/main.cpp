@@ -1,6 +1,8 @@
 #include "iostream"
 #include "parser.cpp"
 
+// todo: make default.policy the default one unless given other arguments
+// todo: possibly change stream-name to data-stream
 int main(int argc, char** argv){
     std::string configFilePath("default.policy"), availableStreamsFilePath ("policies/available_streams");
 
@@ -15,13 +17,17 @@ int main(int argc, char** argv){
         }
     }
 
+    // this createsa a parser with the path to the config file and the available_streams file
+    // the resulting ABE policy is automatically generated
     mguard::PolicyParser pp(configFilePath, availableStreamsFilePath);
 
-    if (!pp.processFiles()){
-        return -1;
-    }
+//    // this is just for testing purposes
+//    std::cout << pp << std::endl;
 
-    std::cout << pp << std::endl;
+    // this is how you grab the ABE policy
+    const std::string& ABEPolicy = pp.getABEPolicy();
+
+    std::cout   <<  ABEPolicy   <<  std::endl;
 
     return 0;
 
