@@ -90,7 +90,7 @@ private:
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_authorityCert;
   ndn::nacabe::KpAttributeAuthority m_kpAttributeAuthority;
-  ndn::nacabe::CacheProducer m_producer;
+  // ndn::nacabe::CacheProducer m_producer;
 
   std::unordered_map<ndn::Name, std::shared_ptr<ndn::Data>> m_dataBuffer; //need to limit the size of the buffer
 };
