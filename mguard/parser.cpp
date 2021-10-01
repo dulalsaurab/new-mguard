@@ -1,6 +1,7 @@
 #include "parser.hpp"
 
 //#include "attributeFilter.cpp"
+// todo: change from org.md2k/study/participantID to org/md2k/study/participantID
 
 #include "boost/property_tree/info_parser.hpp"
 
