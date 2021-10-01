@@ -36,6 +36,14 @@ stream-name         *
 attribute-filters
 ```
 ```
+requester-ids
+    FUNCTION:   
+        identifies who is requesting data
+    TYPE:
+        list of alpha-numberic values separated by commas
+        closed by double quotes if more than one in list
+    SPECS:
+        ids should be requesters' full ndn names to allow for key generation
 stream-name
     FUNCTION:
         allows all under specified node only if no ALLOW or DENY
