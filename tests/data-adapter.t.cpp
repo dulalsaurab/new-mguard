@@ -2,9 +2,9 @@
 #include <mguard/server/util/stream.hpp>
 
 #include <mguard/server/common.hpp>
-#include "tests/boost-test.hpp"
+#include "boost-test.hpp"
 
-#include "tests/io-fixture.hpp"
+#include "io-fixture.hpp"
 
 #include <ndn-cxx/util/dummy-client-face.hpp>
 #include <ndn-cxx/security/key-chain.hpp>

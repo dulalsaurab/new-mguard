@@ -1,5 +1,5 @@
 #include <mguard/server/pre-processor.hpp>
-#include "tests/boost-test.hpp"
+#include "boost-test.hpp"
 #include <ndn-cxx/name.hpp>
 
 namespace mguard {
