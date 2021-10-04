@@ -55,7 +55,7 @@ def configure(conf):
     # or conf.define_cond().  Everything that was added directly to conf.env.DEFINES
     # will not appear in the config header, but will instead be passed directly to the
     # compiler on the command line.
-    conf.write_config_header('mguard/config.hpp')
+    conf.write_config_header('src/mguard/config.hpp')
 
 
 def build(bld):
@@ -63,10 +63,10 @@ def build(bld):
               target='mguard',
               vnum=VERSION,
               cnum=VERSION,
-              source=bld.path.ant_glob('mguard/**/*.cpp'),
+              source=bld.path.ant_glob('src/**/*.cpp'),
               use='NDN_CXX BOOST PSYNC NAC-ABE',
-              includes='.',
-              export_includes='.')
+              includes='./src',
+              export_includes='./src')
 
     if bld.env.WITH_TESTS:
         bld.recurse('tests')
@@ -76,11 +76,11 @@ def build(bld):
 
     # bld.recurse('tools')
 
-    headers = bld.path.ant_glob('mguard/**/*.hpp')
+    headers = bld.path.ant_glob('src/**/*.hpp')
     bld.install_files(bld.env.INCLUDEDIR, headers, relative_trick=True)
 
     bld.install_files('${INCLUDEDIR}/mguard/',
-                      bld.path.find_resource('mguard/config.hpp'))
+                      bld.path.find_resource('src/mguard/config.hpp'))
 
     bld(features='subst',
         source='mguard.pc.in',
