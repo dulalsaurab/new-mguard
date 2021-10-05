@@ -29,8 +29,10 @@ class DataAdapter
 {
 
 public:
-  DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain, 
-                        const ndn::Name& attrAuthorityPrefix, const ndn::Name& producerPrefix);
+  DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain,
+              const ndn::Name& producerPrefix,
+              const ndn::security::Certificate& producerCert,
+              const ndn::security::Certificate& attrAuthorityCertificate);
 
   /*
     read the CSV file corresponding to the names
@@ -79,7 +81,7 @@ public:
 private:
   ndn::Face& m_face;
   ndn::KeyChain& m_keyChain;
-
+  ndn::Scheduler m_scheduler;
   mutable ndn::Block m_wire;
   // DataPreprocessor m_preProcessor;
   FileProcessor m_fileProcessor;
@@ -89,9 +91,7 @@ private:
   ndn::Name m_producerPrefix;
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_authorityCert;
-  ndn::nacabe::KpAttributeAuthority m_kpAttributeAuthority;
-  // ndn::nacabe::CacheProducer m_producer;
-
+  ndn::nacabe::CacheProducer m_producer;
   std::unordered_map<ndn::Name, std::shared_ptr<ndn::Data>> m_dataBuffer; //need to limit the size of the buffer
 };
 

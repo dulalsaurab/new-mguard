@@ -74,7 +74,7 @@ def build(bld):
     if bld.env.WITH_EXAMPLES:
         bld.recurse('examples')
 
-    # bld.recurse('tools')
+    bld.recurse('abe-helper')
 
     headers = bld.path.ant_glob('mguard/**/*.hpp')
     bld.install_files(bld.env.INCLUDEDIR, headers, relative_trick=True)

@@ -6,6 +6,7 @@
 #include <ndn-cxx/security/signing-helpers.hpp>
 #include <ndn-cxx/encoding/block-helpers.hpp>
 #include <ndn-cxx/security/verification-helpers.hpp>
+#include <ndn-cxx/util/scheduler.hpp>
 
 #include <iostream>
 #include <string>
@@ -16,23 +17,37 @@ namespace mguard
 {
 
 DataAdapter::DataAdapter(ndn::Face& face, ndn::security::KeyChain& keyChain,
-                         const ndn::Name& attrAuthorityPrefix,
-                         const ndn::Name& producerPrefix)
+                         const ndn::Name& producerPrefix,
+                         const ndn::security::Certificate& producerCert,
+                         const ndn::security::Certificate& attrAuthorityCertificate)
 : m_face(face)
 , m_keyChain(keyChain)
-, m_attrAuthorityPrefix(attrAuthorityPrefix)
+, m_scheduler(m_face.getIoService())
 , m_producerPrefix(producerPrefix)
-, m_producerCert(m_keyChain.getPib().getIdentity(m_producerPrefix).getDefaultKey().getDefaultCertificate())
-, m_authorityCert(m_keyChain.getPib().getIdentity(m_attrAuthorityPrefix).getDefaultKey().getDefaultCertificate())
-, m_kpAttributeAuthority(m_authorityCert, m_face, m_keyChain)
-// , m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
+, m_producerCert(producerCert)
+, m_authorityCert(attrAuthorityCertificate)
+, m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
+  // we should not constrain producer and authority to run with this lib
+  // so we need to get them via references
+  // they can be initialized outside of this module, especially authority
   
-  // m_kpAttributeAuthority(m_authorityCert, m_face, m_keyChain);
-  // usleep(10000);
-  // m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert);
-
 }
+
+// Data adapter only communicates with REPO, consumers interest should either go to publisher or repo directly
+void
+DataAdapter::run()
+{
+  try {
+    m_face.processEvents();
+  }
+  catch (const std::exception& ex)
+  {
+    NDN_THROW(Error(ex.what()));
+    NDN_LOG_ERROR("Face error: " << ex.what());
+  }
+}
+
 
 void
 DataAdapter::readData(util::Stream& stream)
@@ -68,7 +83,7 @@ DataAdapter::makeDataContent(std::vector<std::string>data, util::Stream& stream)
     {
       NDN_LOG_DEBUG("Encrypting data: " << dataName);
       unsigned char* byteptr = reinterpret_cast<unsigned char *>(&row);
-      // std::tie(enc_data, ckData) = m_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
+      std::tie(enc_data, ckData) = m_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
       NDN_LOG_INFO("here");
     }
     catch(const std::exception& e)
@@ -112,20 +127,6 @@ DataAdapter::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
   totalLength += encoder.prependVarNumber(tlv::mGuardContent);
 
   return totalLength;
-}
-
-// Data adapter only communicates with REPO, consumers interest should either go to publisher or repo directly
-void
-DataAdapter::run()
-{
-  try {
-    m_face.processEvents();
-  }
-  catch (const std::exception& ex)
-  {
-    NDN_THROW(Error(ex.what()));
-    NDN_LOG_ERROR("Face error: " << ex.what());
-  }
 }
 
 void
