@@ -5,7 +5,7 @@
 
 #include "tests/boost-test.hpp"
 
-#include "tests/io-fixture.hpp"
+#include "io-fixture.hpp"
 
 #include "tests/clock-fixture.hpp"
 

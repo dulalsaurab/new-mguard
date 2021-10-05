@@ -17,7 +17,7 @@
  * PSync, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "tests/clock-fixture.hpp"
+#include "clock-fixture.hpp"
 
 namespace ndn {
 namespace tests {

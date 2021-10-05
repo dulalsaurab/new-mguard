@@ -24,4 +24,4 @@
  */
 
 #define BOOST_TEST_MODULE mguard
-#include "tests/boost-test.hpp"
+#include "boost-test.hpp"

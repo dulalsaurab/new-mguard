@@ -20,7 +20,7 @@
 #ifndef MGUARD_TESTS_IO_FIXTURE_HPP
 #define MGUARD_TESTS_IO_FIXTURE_HPP
 
-#include "tests/clock-fixture.hpp"
+#include "clock-fixture.hpp"
 
 #include <boost/asio/io_service.hpp>
 
