@@ -1,8 +1,9 @@
 #include <mguard/server/pre-processor.hpp>
-#include "boost-test.hpp"
+#include "test-common.hpp"
 #include <ndn-cxx/name.hpp>
 
 namespace mguard {
+namespace tests {
 
 BOOST_AUTO_TEST_SUITE(TestDataPreprocessor)
 
@@ -13,4 +14,5 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
 BOOST_AUTO_TEST_SUITE_END()
 
+} // tests
 } // mguard
