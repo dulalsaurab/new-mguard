@@ -35,7 +35,6 @@ BOOST_AUTO_TEST_CASE(Constructor)
   // init data adapter, this will also init abe producer
   DataAdapter da(face, m_keyChain, "/mguard/producer", pCert, aaCert);
 
-  da.run();
   advanceClocks(time::milliseconds(20), 5);
   da.readData(stream);
 
