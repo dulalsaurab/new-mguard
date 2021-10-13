@@ -26,6 +26,8 @@ BOOST_AUTO_TEST_CASE(Constructor)
   util::Stream stream("/org.md2k/mguard/dd40c/gps/phone", attributes, dataPath);
 
   DummyClientFace face(io, m_keyChain, {true, true});
+  DummyClientFace aaFace(io, m_keyChain, {true, true});
+  face.linkTo(aaFace);
 
   auto aaIdentity = addIdentity("/mguard/aa");
   auto pIdentity = addIdentity("/mguard/producer");
@@ -34,6 +36,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
   
   // init data adapter, this will also init abe producer
   DataAdapter da(face, m_keyChain, "/mguard/producer", pCert, aaCert);
+  ndn::nacabe::KpAttributeAuthority aa(aaCert, aaFace, m_keyChain);
 
   advanceClocks(time::milliseconds(20), 5);
   da.readData(stream);
