@@ -19,7 +19,7 @@ namespace mguard {
     public:
         PolicyParser(std::string &configFilePath, std::string &availableStreams);
 
-        bool processFiles();
+        bool parseFiles();
 
         static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
 
@@ -46,7 +46,7 @@ namespace mguard {
         bool hasFilters{}, hasAllow{}, hasDeny{};
 
         int policyID{};
-        std::list<std::string> requesterIDs; // this should be a list or array of some sort
+        std::list<std::string> requesterNames; // this should be a list or array of some sort
         std::string streamName, abePolicy, prefix;
 
         std::list<attributeFilter> filters;

@@ -13,27 +13,31 @@ namespace pt = boost::property_tree;
 namespace mguard {
 
     PolicyParser::PolicyParser(std::string &configFilePath, std::string &availableStreams)
-    : configFilePath      (std::move(configFilePath))
-    , availableStreamsPath    (std::move(availableStreams))
+    : configFilePath        (std::move(configFilePath))
+    , availableStreamsPath  (std::move(availableStreams))
     {
         // store data from input files
-        processFiles();
+        bool successfulParse = parseFiles();
 
-        // process stored data to create ABE policy
-        generateABEPolicy();
+        // if parsing went well, process stored data to create ABE policy
+        if (successfulParse){
+            generateABEPolicy();
+        }
     }
 
-    bool PolicyParser::processFiles() {
+    bool PolicyParser::parseFiles() {
 
         // input for available streams
         std::ifstream availableStreamsFile(availableStreamsPath.c_str());
         if (!availableStreamsFile.is_open()){
             std::cerr   <<  "ifstream input failed for "    <<  availableStreamsPath    <<  std::endl;
+            availableStreamsFile.close();
             return false;
         }
         // parsing of available streams file
         if (!parseAvailableStreams(availableStreamsFile)){
             std::cerr   <<  "parsing of available-streams failed"   <<  std::endl;
+            availableStreamsFile.close();
             return false;
         }
         availableStreamsFile.close();
@@ -42,13 +46,16 @@ namespace mguard {
         std::ifstream policyFile (configFilePath.c_str());
         if (!policyFile.is_open()){
             std::cerr   <<  "ifstream input failed for "    <<  configFilePath          <<  std::endl;
+            policyFile.close();
             return false;
         }
         // parsing of policy
         if (!parsePolicy(policyFile)) {
             std::cerr   <<  "parsing of policy failed"      <<  std::endl;
+            policyFile.close();
             return false;
         }
+
         policyFile.close();
 
         return true;
@@ -122,7 +129,7 @@ namespace mguard {
         try {
             // set all instance variables (all required in policy)
             policyID = section.get<int>("policy-id");
-            requesterIDs = split(section.get<std::string>("requester-ids"), ",");
+            requesterNames = split(section.get<std::string>("requester-names"), ",");
             streamName = section.get<std::string>("stream-name");
         } catch (const std::exception &exception) {
             // this is usually a syntax error within the policy
@@ -131,13 +138,14 @@ namespace mguard {
         }
 
         // check requester against allowed requesters
-        for (const std::string &requester : requesterIDs) {
+        for (const std::string &requester : requesterNames) {
             if (std::find(allowedRequesters.begin(), allowedRequesters.end(), requester) == std::end(allowedRequesters)) {
                 // requester is not in allowedRequesters
                 std::cerr   <<  "requester " <<  requester   <<  " not in given requesters"    << std::endl   ;
                 return false;
             }
         }
+        // REMOVED with stream name
         // check stream name against available streams
         if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), streamName) == std::end(availableStreamLevels)) {
             std::cerr   <<  streamName  <<  " not in  given stream names"       <<  std::endl   ;
@@ -156,6 +164,7 @@ namespace mguard {
                 }
             }
             catch (std::exception &e){
+                // WITH CHANGE, THIS WOULD RETURN FALSE
                 hasAllow = false;
             }
             try {
@@ -207,21 +216,30 @@ namespace mguard {
     bool PolicyParser::generateABEPolicy() {
         if (hasFilters) {
             std::list<std::string> policy;
+
             // stream name processing
+
             std::list<std::string> workingStreams;
+
             if (allowedStreams.empty()) {
                 allowedStreams.push_back(streamName);
             }
 
+            // all stream names
             // add everything under all allowed stream names
             for (const std::string &available : availableStreams) {
                 for (const std::string &allowed : allowedStreams) {
-
                     // if it's allowed and not a duplicate, add it to the list
-                    if ((available.rfind(allowed, 0) == 0) && (std::find(workingStreams.begin(), workingStreams.end(), available) == std::end(workingStreams))) {
+
+                    // if the available stream is a child of the allowed stream, that available stream should be allowed
+                    if ((available.rfind(allowed, 0) == 0) &&
+                    // if the available stream is already in workingStreams, don't add it again
+                    (std::find(workingStreams.begin(), workingStreams.end(), available) == std::end(workingStreams))) {
                         bool add = true;
                         // for each allowed stream, check against the denied streams
                         for (const std::string &denied : deniedStreams) {
+                            // checks if available stream is a child of any of the denied streams
+                            // if it is, don't add it to the allowed streams list
                             if (available.rfind(denied, 0) == 0) {
                                 add = false;
                                 break;
@@ -260,10 +278,15 @@ namespace mguard {
                 }
             }
 
+            // todo: add checks for denied and allowed attributes to make sure there are no collisions
+            // THIS SECTION WOULD ONLY CHANGE BY ADDING A FEW MORE CHECKS FOR STREAM NAMES
+
             // putting it all all together
+            // AND together all separate conditions made for the output policy
             abePolicy = doStringThing(policy, "AND");
 
         } else {
+            // THIS WOULD ALL BE TAKEN AWAY WITH THE CHANGE
             std::string streams;
             // no filters means it just gets everything under the stream name
             if (streamName == prefix) {
@@ -296,6 +319,11 @@ namespace mguard {
             if (std::find(alreadyCounted.begin(), alreadyCounted.end(), searching) != std::end(alreadyCounted)){
                 continue;
             }
+
+            // because of the previous check, the next steps only happen for the amount of types of attributes listed
+
+            // search through attributes for ones of the same type as the current one
+            // OR attributes of similar types
             for (std::string attr : attrList) {
                 if (isAlike(searching, attr)) {
                     if (!building.empty()) {
@@ -305,6 +333,8 @@ namespace mguard {
                     alreadyCounted.push_back(attr);
                 }
             }
+
+            // AND together sets of similar attributes
             if (!building.empty()) {
                 building = "(" + building + ")";
                 if (!output.empty()) {
@@ -319,10 +349,13 @@ namespace mguard {
     }
 
     bool PolicyParser::isAlike(std::string &attribute, std::string &checking) {
-        std::list<std::string> first = split(attribute, "/"), second = split(checking, "/");
         int matches = 0;
-        std::string workingFirst, workingSecond;
+        std::list<std::string> first = split(attribute, "/");
+        std::list<std::string> second = split(checking, "/");
 
+//        std::string workingFirst, workingSecond;
+
+        // todo: change this for /org/md2k instead of /org.md2k/
         // removes first element if the attributes have leading "/"
         if (first.front().empty()) {
             first.remove(first.front());
@@ -391,8 +424,8 @@ namespace mguard {
 //        "\t\t"  <<  "configFilePath"    <<  "\t\t"  <<  parser.configFilePath   <<  std::endl   <<
 //        "\t\t"  <<  "hasFilters"        <<  "\t\t"  <<  parser.hasFilters       <<  std::endl   <<
         "\t\t"  <<  "policyID"          <<  "\t\t"  <<  parser.policyID         <<  std::endl   <<
-        "\t\t"  <<  "requesterIDs"      <<  "\t\t"  ;
-        for (const auto &item : parser.requesterIDs) {
+        "\t\t"  <<  "requesterNames"      <<  "\t\t"  ;
+        for (const auto &item : parser.requesterNames) {
             os  <<  item        <<  " " ;
         }
         os      <<  std::endl   <<
