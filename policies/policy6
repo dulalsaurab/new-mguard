@@ -2,7 +2,13 @@
 
 policy-id           6
 requester-ids       C,D
-stream-name         org.md2k/mperf/*/*/accelerometer
+attribute-filters
+{
+    allow
+    {
+        /org/md2k/mperf/*/*/accelerometer
+    }
+}
 
 ; AFTER PARSING
 ;

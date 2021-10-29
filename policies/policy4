@@ -1,13 +1,12 @@
 ; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
 policy-id           4
-requester-ids       D
-stream-name         org.md2k
+requester-names     D
 attribute-filters
 {
     allow
     {
-        attribute/location/work     ;attribute for data generated when participant is at work
+        /org/md2k/attribute/location/work     ;attribute for data generated when participant is at work
     }
 }
 
