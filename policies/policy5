@@ -1,8 +1,14 @@
 ; brief: A, B shall be able to access data from the phone stream
 
 policy-id           5
-requester-ids       A,B
-stream-name         org.md2k/mperf/dd40c/phone
+requester-names     A,B
+attribute-filters
+{
+    allow
+    {
+        /org/md2k/mperf/dd40c/phone
+    }
+}
 
 ; AFTER PARSING
 ;

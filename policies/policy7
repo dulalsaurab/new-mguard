@@ -2,12 +2,11 @@
 
 policy-id           6
 requester-ids       C,D
-stream-name         org.md2k
 attribute-filters
 {
     allow
     {
-        attributes/sensor/accelerometer ;attribute associated with any/all accelerometer data
+        /org/md2k/attribute/sensor/accelerometer ;attribute associated with any/all accelerometer data
     }
 }
 
