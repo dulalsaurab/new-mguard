@@ -4,22 +4,21 @@ Current Policy Structure
 ------------------------
 ```
 policy-id             id
-requester-ids         requester-ids
-stream-name           stream-name
+requester-names       requester-names
 attribute-filters
 {
     allow
     {
-       attribute/1
-       attribute/2
-       attribute/3
-       ...
+        /attribute/1
+        /attribute/2
+        /attribute/3
+        ...
     }
     deny
     {
-        attribute/4
-        attribute/5
-        attribute/6
+        /attribute/4
+        /attribute/5
+        /attribute/6
         ...
     }
 }
@@ -33,31 +32,21 @@ GLOBAL OPTIONS      REQUIRED  TYPE
 policy-id           *         int
 requester-ids       *         "alpha-numeric, alpha-numeric, ..."
 stream-name         *
-attribute-filters
-```
-```
-stream-name
-    FUNCTION:
-        allows all under specified node only if no ALLOW or DENY
-    TYPE : <alpha-numeric with wildcard>
-        regex Limited
-    COMPONENT specs
-        separated by /
-        only "." "_" and "-" allowed within name
-            top.level/cell.phone/gyro   VALID
-            top.level/cell-phone/gyro   VALID
-            $top.level/cell_phone/gyro  INVALID
-        wildcard allowed on tree level, not within component
-            top.level/*phone/gyro       INVALID
-            top.level/*/gyro            VALID 
+attribute-filters   *
+
+ATTRIBUTE-FILTERS   REQUIRED
+allow               *
+deny
 ```
 ```
 attribute-filters
+    NOTE: stream names are treated as attributes
     FUNCTION
-        allows for access control on an attribute level
+        allows for access control on an attribute and stream level
+        specifies streams to be allowed or denied
         specifies which attributes data requesters should be allowed or denied
-        
-        NOTE: this is all within the scope of the given STREAM-NAME
+    REQUIREMENTS
+        must have "allow" section with at least one attribute
     TYPE
         lines of attributes that follow the attribute naming format
 ```
@@ -65,8 +54,8 @@ attribute-filters
 Comments
 ```
 DENY ALL ACCESS
-ALLOW FROM STREAM-NAME
+ALLOW FROM GIVEN STREAMS
 DENY FROM ALL BUT VALUE
 DENY ALL ACCESS
-ALLOW ALL TIME ACCORDING TO VALUE WITHIN STREAM-NAME
+ALLOW ALL TIME ACCORDING TO VALUE WITHIN GIVEN STREAMS
 ```
