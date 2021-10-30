@@ -30,8 +30,7 @@ Specification Detail
 ```
 GLOBAL OPTIONS      REQUIRED  TYPE
 policy-id           *         int
-requester-ids       *         "alpha-numeric, alpha-numeric, ..."
-stream-name         *
+requester-names     *         "ndn-name, ndn-name, ..."
 attribute-filters   *
 
 ATTRIBUTE-FILTERS   REQUIRED
