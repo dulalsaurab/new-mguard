@@ -41,8 +41,7 @@ deny
 attribute-filters
     NOTE: stream names are treated as attributes
     FUNCTION
-        allows for access control on an attribute and stream level
-        specifies streams to be allowed or denied
+        allows for access control on the attribute level
         specifies which attributes data requesters should be allowed or denied
     REQUIREMENTS
         must have "allow" section with at least one attribute
