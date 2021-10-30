@@ -46,7 +46,7 @@ attribute-filters
     REQUIREMENTS
         must have "allow" section with at least one attribute
     TYPE
-        lines of attributes that follow the attribute naming format
+        following the attribute naming format, each line within the "allow" and "deny" fields names a single attribute
 ```
 
 Comments
