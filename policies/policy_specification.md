@@ -30,8 +30,7 @@ Specification Detail
 ```
 GLOBAL OPTIONS      REQUIRED  TYPE
 policy-id           *         int
-requester-ids       *         "alpha-numeric, alpha-numeric, ..."
-stream-name         *
+requester-names     *         "ndn-name, ndn-name, ..."
 attribute-filters   *
 
 ATTRIBUTE-FILTERS   REQUIRED
@@ -42,13 +41,13 @@ deny
 attribute-filters
     NOTE: stream names are treated as attributes
     FUNCTION
-        allows for access control on an attribute and stream level
-        specifies streams to be allowed or denied
+        allows for access control on the attribute level
         specifies which attributes data requesters should be allowed or denied
     REQUIREMENTS
         must have "allow" section with at least one attribute
+        cannot allow and deny the same attribute
     TYPE
-        lines of attributes that follow the attribute naming format
+        following the attribute naming format, each line within the "allow" and "deny" fields names a single attribute
 ```
 
 Comments
