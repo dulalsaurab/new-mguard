@@ -45,6 +45,7 @@ attribute-filters
         specifies which attributes data requesters should be allowed or denied
     REQUIREMENTS
         must have "allow" section with at least one attribute
+        cannot allow and deny the same attribute
     TYPE
         following the attribute naming format, each line within the "allow" and "deny" fields names a single attribute
 ```
