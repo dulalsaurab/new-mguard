@@ -1,48 +1,22 @@
-; brief: A shall access all the defined streams
+; brief: A shall access all the streams under org.md2k
 
-policy-id 1
-study-id mperf
-data-owner-id dd40c
-data-requester-ids A   ;if needed, we can have ',' separated list e.g. A, B, C 
-data-stream-name org.md2k--*
-
-; data-window field can be options?
-data-window
-{
-  allow
-  {
-    stream-name *
-    column-name-value
-    {
-      ; will be of foramt <column-name> <value>, value can be comma separated list
-      * * 
-    }
-  }
-}
-
+policy-id           1
+requester-ids       A           ;if needed, we can have ',' separated list e.g. A, B, C
+stream-name         org.md2k
 
 ; AFTER PARSING
 ;
 ; Policy ID
-;  1
+;   1
 ; Data Consumers
-;  A
+;   A
 ; Accessible Streams
 ;   org.md2k/mperf/dd40c/phone/location
 ;   org.md2k/mperf/dd40c/phone/accelerometer
 ;   org.md2k/mperf/dd40c/phone/gyroscope
 ;   org.md2k/mperf/dd40c/phone/battery
-;   org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
-;
-; Required Attributes
-;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope
-;   org.md2k/mperf/dd40c/phone/battery, org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location}
+;   org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
 ;
 ; ABE policy
-;   <wild-card> ? 
-;
-;   alt: org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR
-;   org.md2k/mperf/dd40c/phone/battery OR org.md2k/mperf/0000/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/0000/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location  ???
+;   org.md2k    ;all the data under this stream will be encrypted with stream-name prefix i.e. org.md2k

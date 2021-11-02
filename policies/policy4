@@ -1,25 +1,14 @@
-; brief: D shall be able to access all the defined streams when a participant is at work
+; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
-policy-id 4
-study-id mperf
-data-owner-id dd40c
-data-requester-ids D
-
-data-stream-name org.md2k--mperf--dd40c--battery
-
-; QUERY: (cc.getStream().join(cc.getStream(<streamName>), how='full')).filter(columName='work')
-
-data-window
+policy-id           4
+requester-ids       D
+stream-name         org.md2k
+attribute-filters
 {
-  allow
-  {
-    column-name-value
+    allow
     {
-      stream-name org.md2k--mperf--dd40c--cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
-      column-name semantic-location 
-      value work    ;value can be comma separated list e.g. work,gym,home
+        attribute/location/work     ;attribute for data generated when participant is at work
     }
-  }
 }
 
 ; AFTER PARSING
@@ -34,11 +23,11 @@ data-window
 ;   org.md2k/mperf/dd40c/phone/gyroscope
 ;   org.md2k/mperf/dd40c/phone/battery
 ;
-; Required Attributes
-;   attributes : {org.md2k/mperf/dd40c/phone/location, org.md2k/mperf/dd40c/phone/accelerometer, org.md2k/mperf/dd40c/phone/gyroscope, org.md2k/mperf/dd40c/phone/battery}
-;
 ; ABE policy
-;   /attribute/location/work
-
-;   alt: (org.md2k/mperf/dd40c/phone/location OR org.md2k/mperf/dd40c/phone/accelerometer OR org.md2k/mperf/dd40c/phone/gyroscope OR org.md2k/mperf/dd40c/phone/battery) AND /attribute/location/work ? 
+    (   org.md2k/mperf/dd40c/phone/location
+    OR  org.md2k/mperf/dd40c/phone/accelerometer
+    OR  org.md2k/mperf/dd40c/phone/gyroscope
+    OR  org.md2k/mperf/dd40c/phone/battery )
+    AND
+    (   attribute/location/work )
 
