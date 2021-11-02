@@ -97,6 +97,7 @@ namespace mguard {
                     levels.erase(levels.begin());
                 }
             }
+            // todo: probably don't need this with new changes
             // set prefix to the first value in calculated availableStreamLevels
             prefix = availableStreamLevels.front();
 
