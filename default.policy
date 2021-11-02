@@ -1,5 +1,5 @@
 policy-id       1
-requester-ids   A
+requester-names   A
 stream-name     org.md2k
 attribute-filters
 {
