@@ -43,7 +43,7 @@ namespace mguard {
         std::string configFilePath, availableStreamsPath;
 
         // if no data window, all from stream is allowed
-        bool hasFilters{}, hasAllow{}, hasDeny{};
+        bool hasAllow{}, hasDeny{};
 
         int policyID{};
         std::list<std::string> requesterNames; // this should be a list or array of some sort
