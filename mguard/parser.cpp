@@ -148,7 +148,6 @@ namespace mguard {
                 return false;
             }
         }
-        // REMOVED with stream name
 
         // optional attribute-filters section
         // todo: figure out better way to structure this part
