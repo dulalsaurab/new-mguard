@@ -140,7 +140,7 @@ namespace mguard {
             return false;
         }
 
-        // check requester against allowed requesters
+        // check given requesters against allowed requesters
         for (const std::string &requester : requesterNames) {
             if (std::find(allowedRequesters.begin(), allowedRequesters.end(), requester) == std::end(allowedRequesters)) {
                 // requester is not in allowedRequesters
@@ -149,7 +149,7 @@ namespace mguard {
             }
         }
 
-        // optional attribute-filters section
+        // REQUIRED attribute-filters section
         // todo: figure out better way to structure this part
         // this could possibly be done with section.get_child_optional()
         try {
