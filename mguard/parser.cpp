@@ -1,15 +1,9 @@
 #include "parser.hpp"
-
-//#include "attributeFilter.cpp"
-// todo: change from org.md2k/study/participantID to org/md2k/study/participantID
-
 #include "boost/property_tree/info_parser.hpp"
 
 #include <iostream>
-#include <utility>
 
 namespace pt = boost::property_tree;
-
 namespace mguard {
 
     PolicyParser::PolicyParser(std::string &configFilePath, std::string &availableStreams)
