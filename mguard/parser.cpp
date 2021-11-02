@@ -149,11 +149,6 @@ namespace mguard {
             }
         }
         // REMOVED with stream name
-        // check stream name against available streams
-        if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), streamName) == std::end(availableStreamLevels)) {
-            std::cerr   <<  streamName  <<  " not in  given stream names"       <<  std::endl   ;
-            return false;
-        }
 
         // optional attribute-filters section
         // todo: figure out better way to structure this part
@@ -224,9 +219,7 @@ namespace mguard {
 
             std::list<std::string> workingStreams;
 
-            if (allowedStreams.empty()) {
-                allowedStreams.push_back(streamName);
-            }
+            // REMOVED check for if allowedStreams is empty
 
             // all stream names
             // add everything under all allowed stream names
@@ -288,26 +281,6 @@ namespace mguard {
             // AND together all separate conditions made for the output policy
             abePolicy = doStringThing(policy, "AND");
 
-        } else {
-            // THIS WOULD ALL BE TAKEN AWAY WITH THE CHANGE
-            std::string streams;
-            // no filters means it just gets everything under the stream name
-            if (streamName == prefix) {
-                abePolicy = "(" + streamName + ")";
-            } else {
-                for (const std::string &stream : availableStreams) {
-                    if (stream.rfind(streamName, 0) == 0) {
-                        if (!streams.empty()) {
-                            streams += " OR ";
-                        } else {
-                            streams += "(";
-                        }
-                        streams += stream;
-                    }
-                }
-                streams += ")";
-                abePolicy = streams;
-            }
         }
         return true;
     }
@@ -432,8 +405,7 @@ namespace mguard {
         for (const auto &item : parser.requesterNames) {
             os  <<  item        <<  " " ;
         }
-        os      <<  std::endl   <<
-        "\t\t"  <<  "streamName"        <<  "\t\t"  <<  parser.streamName       <<  std::endl   ;
+        os      <<  std::endl   ;
         if (parser.hasFilters){
             os  <<
             "\t\t"  <<  "filters"   <<  std::endl   ;
