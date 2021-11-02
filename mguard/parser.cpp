@@ -404,6 +404,7 @@ namespace mguard {
             if (end == -1){ // this means it hit the end, so it just adds the rest of the string
                 end = (int)basicString.size();
             }
+            // todo: strip leading and trailing spaces before push_back()
             output.push_back(basicString.substr(start, end - start));
         }
 
