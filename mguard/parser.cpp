@@ -76,7 +76,9 @@ namespace mguard {
             std::list<std::string> levels;
             std::string buildingName;
             for (const auto &item : section.get_child("available-streams")) {
+                // add stream to list of streams
                 availableStreams.push_back(item.first);
+                // adding all parents of given stream to list
                 levels = split(item.first, "/");
                 buildingName = "";
                 for (int index = 0; !levels.empty(); index ++) {
@@ -91,7 +93,7 @@ namespace mguard {
                         // buildingName not in availableStreamLevels
                         availableStreamLevels.push_back(buildingName);
                     }
-                    // remove first because it's already been used
+                    // remove first because it's already been used in buildingName
                     levels.erase(levels.begin());
                 }
             }
