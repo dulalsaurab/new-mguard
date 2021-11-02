@@ -47,7 +47,7 @@ namespace mguard {
 
         int policyID{};
         std::list<std::string> requesterNames; // this should be a list or array of some sort
-        std::string streamName, abePolicy, prefix;
+        std::string abePolicy, prefix;
 
         std::list<attributeFilter> filters;
         std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;

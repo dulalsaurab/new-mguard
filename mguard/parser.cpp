@@ -134,7 +134,6 @@ namespace mguard {
             // set all instance variables (all required in policy)
             policyID = section.get<int>("policy-id");
             requesterNames = split(section.get<std::string>("requester-names"), ",");
-            streamName = section.get<std::string>("stream-name");
         } catch (const std::exception &exception) {
             // this is usually a syntax error within the policy
             std::cerr << exception.what() << std::endl;
