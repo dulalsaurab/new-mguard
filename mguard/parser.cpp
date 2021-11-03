@@ -222,7 +222,12 @@ namespace mguard {
 
         // REMOVED check for if allowedStreams is empty
 
-        // all stream names
+        // todo: include check for allowed
+
+//        when denying a stream, if that stream's parent is not allowed, then no change to ABE policy is made
+//
+//        add warning where child of allowed stream is also allowed (redundant)
+
         // add everything under all allowed stream names
         for (const std::string &available : availableStreams) {
             for (const std::string &allowed : allowedStreams) {
@@ -230,7 +235,7 @@ namespace mguard {
 
                 // if the available stream is a child of the allowed stream, that available stream should be allowed
                 if ((available.rfind(allowed, 0) == 0) &&
-                // if the available stream is already in workingStreams, don't add it again
+                // if the available stream isn't already in workingStreams
                 (std::find(workingStreams.begin(), workingStreams.end(), available) == std::end(workingStreams))) {
                     bool add = true;
                     // for each allowed stream, check against the denied streams
