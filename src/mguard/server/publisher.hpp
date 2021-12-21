@@ -1,76 +1,109 @@
 #ifndef MGUARD_PUBLISHER_HPP
 #define MGUARD_PUBLISHER_HPP
 
-#include <PSync/full-producer.hpp>
+#include "pre-processor.hpp"
+#include "file-processor.hpp"
+#include "util/stream.hpp"
 
 #include <ndn-cxx/face.hpp>
-#include <ndn-cxx/util/random.hpp>
-#include <ndn-cxx/util/scheduler.hpp>
-#include <ndn-cxx/util/time.hpp>
+#include <PSync/full-producer.hpp>
 
-#include <string>
-#include <iostream>
+#include <nac-abe/attribute-authority.hpp>
+#include <nac-abe/cache-producer.hpp>
 
-using namespace ndn::time_literals;
+#include <unordered_map>
 
 namespace mguard {
-namespace publisher {
 
-struct SyncDataInfo
+/*
+if use_manifest is set to false, manifest will not be used, application data will be publised directly.
+*/
+const bool USE_MANIFEST = true;
+
+// manifest will be published after receiving 100 data units
+const int MANIFEST_BATCH_SIZE = 100;
+
+// if next update is not received withing 100 ms, the manifest will be publised, this can override batch size
+const int MAX_UPDATE_WAIT_TIME = 100;
+
+namespace tlv {
+
+enum
 {
-  ndn::Name prefix;
-  uint64_t highSeq;
-  uint64_t lowSeq;
+  mGuardContent = 128,
+  DataRow = 129
 };
-
-// typedef std::function<void(const std::vector<SyncDataInfo>& updates)> SyncUpdateCallback;
-
-// namespace tlv {
-
-// }
-
-// class Error : public std::runtime_error
-// {
-// public:
-//   using std::runtime_error::runtime_error;
-// };
+} // namespace tlv
 
 
-// class Publisher
-// {
+class Publisher
+{
 
-// public:
-//   Publisher(ndn::Face& face, const ndn::Name& syncPrefix,
-//            const ndn::Name& userPrefix,
-//            ndn::time::milliseconds syncInterestLifetime,
-//            const SyncUpdateCallback& syncUpdateCallback);
+public:
+  Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
+              const ndn::Name& producerPrefix,
+              const ndn::security::Certificate& producerCert,
+              const ndn::security::Certificate& attrAuthorityCertificate);
 
+  /*
+    read the CSV file corresponding to the names
+    names will be provided by pre-processor
+  */
+  // ~ Publisher() {}
+  
+  void
+  publish(ndn::Name dataName, std::string data, std::vector<std::string>& attributes);
+
+  // bool
+  // makeDataContent(std::vector<std::string> data, util::Stream &stream);
+
+  template<ndn::encoding::Tag TAG>
+  size_t
+  wireEncode(ndn::EncodingImpl<TAG>& block) const;
+
+  const ndn::Block&
+  wireEncode();
+
+
+// // communication
 //   void
 //   run();
 
-//   void 
-//   stop();
+  // void
+  // stop();
 
-//   void
-//   addUserNode(const ndn::Name& userPrefix); //might need to change the name "user" here
+  void
+  setInterestFilter(const ndn::Name& name, const bool loopback = false);
 
-//   void
-//   publishUpdate(const ndn::Name& userPrefix);
+  void
+  processInterest(const ndn::Name& name, const ndn::Interest& interest);
 
-//   void
-//   onSyncUpdate(const std::vector<psync::MissingDataInfo>& updates);
+  void
+  onRegistrationSuccess(const ndn::Name& name);
 
-//   void 
-//   printSyncUPdate(const std::vector<SyncDataInfo> updates);
+  void
+  onRegistrationFailed(const ndn::Name& name);
+  
+  void
+  sendApplicationNack(const ndn::Name& name);
 
-// private:
-//   std::shared_ptr<psync::FullProducer> m_syncLogic;
-//   ndn::Face& m_face;
-//   SyncUpdateCallback m_syncUpdateCallback;
+private:
+  ndn::Face& m_face;
+  ndn::KeyChain& m_keyChain;
+  ndn::Scheduler m_scheduler;
+  mutable ndn::Block m_wire;
+  // DataPreprocessor m_preProcessor;
+  FileProcessor m_fileProcessor;
+  // AttributeMappingFileProcessor m_attributeMappingFileProcessor;
+  std::string m_tempRow;
+  ndn::Name m_attrAuthorityPrefix;
+  ndn::Name m_producerPrefix;
+  ndn::security::Certificate m_producerCert;
+  ndn::security::Certificate m_authorityCert;
+  ndn::nacabe::CacheProducer m_producer;
+  std::unordered_map<ndn::Name, std::shared_ptr<ndn::Data>> m_dataBuffer; //need to limit the size of the buffer
+};
 
-// };
-
-} //namespace publisher
-} //namespace mguard
+} // mguard
 
 #endif // MGUARD_PUBLISHER_HPP

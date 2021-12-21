@@ -1,76 +1,150 @@
-// #include "publisher.hpp"
+#include "common.hpp"
+#include "publisher.hpp"
 
-// #include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/util/random.hpp>
+#include <ndn-cxx/security/signing-helpers.hpp>
+#include <ndn-cxx/encoding/block-helpers.hpp>
+#include <ndn-cxx/security/verification-helpers.hpp>
+#include <ndn-cxx/util/scheduler.hpp>
+#include <ndn-cxx/util/sha256.hpp>
 
-// #include <string>
-// #include <iostream>
+#include <iostream>
+#include <string>
 
-// using namespace ndn::time_literals;
+NDN_LOG_INIT(mguard.Publisher);
 
-// NDN_LOG_INIT(mguard.publisher);
+namespace mguard
+{
 
-// namespace mguard {
-// namespace Publisher {
+Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
+                    const ndn::Name& producerPrefix,
+                    const ndn::security::Certificate& producerCert,
+                    const ndn::security::Certificate& attrAuthorityCertificate)
+: m_face(face)
+, m_keyChain(keyChain)
+, m_scheduler(m_face.getIoService())
+, m_producerPrefix(producerPrefix)
+, m_producerCert(producerCert)
+, m_authorityCert(attrAuthorityCertificate)
+, m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
+{
+}
 
-// Publisher::Publisher(ndn::Face& face, const ndn::Name& syncPrefix, 
-//                    const ndn::Name& userPrefix, ndn::time::milliseconds syncInterestLifetime,
-//                    const SyncUpdateCallback& syncUpdateCallback)
-// : m_syncUpdateCallback(syncUpdateCallback)
-// , m_face(face)
+void
+Publisher::publish(ndn::Name dataName, std::string data, std::vector<std::string>& attributes)
+{
+    // TODO: create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
+    // Manifest name: <stream name>/manifest/<seq-num>
+    std::shared_ptr<ndn::Data> enc_data, ckData;
+    try
+    {
+        NDN_LOG_DEBUG("Encrypting data: " << dataName);
+        unsigned char* byteptr = reinterpret_cast<unsigned char *>(&data);
+        std::tie(enc_data, ckData) = m_producer.produce(dataName, attributes, byteptr, sizeof(byteptr));
+        // m_keyChain.sign(*enc_data, ndn::signingWithSha256());
+    }
+    catch(const std::exception& e)
+    {
+        NDN_LOG_ERROR("Encryption failled");
+        std::cerr << e.what() << '\n';
+        // return false;
+    }
+    //  encrypted data is created, store it in the buffer and publish it
+    NDN_LOG_INFO("data: " << enc_data << " ckData: " << ckData);
+    m_dataBuffer.emplace(dataName, enc_data);
+  // sendNotificationInterest();
+}
 
-// {
-//   m_syncLogic = std::make_shared<psync::FullProducer>(80,
-//                      face, syncPrefix, userPrefix,
-//                      std::bind(&Publisher::onSyncUpdate, this, _1),
-//                      syncInterestLifetime);
-// }
+const ndn::Block &
+Publisher::wireEncode()
+{
+  if (m_wire.hasWire()) {
+    return m_wire;
+  }
+  ndn::EncodingEstimator estimator;
+  size_t estimatedSize = wireEncode(estimator);
+
+  ndn::EncodingBuffer buffer(estimatedSize, 0);
+  wireEncode(buffer);
+
+  m_wire = buffer.block();
+  return m_wire;
+}
+
+template <ndn::encoding::Tag TAG>
+size_t
+Publisher::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
+{
+  size_t totalLength = 0;
+  totalLength += prependStringBlock(encoder, tlv::DataRow, m_tempRow);
+  totalLength += encoder.prependVarNumber(totalLength);
+  totalLength += encoder.prependVarNumber(tlv::mGuardContent);
+
+  return totalLength;
+}
 
 // void
-// Publisher::addUserNode(const ndn::Name& userPrefix)
+// Publisher::stop()
 // {
-//     m_syncLogic->addUserNode(userPrefix);
+//   NDN_LOG_DEBUG("Shutting down face: ");
+//   m_face.shutdown();
+//   // m_face.getIoService().stop();
 // }
 
-// void
-// Publisher::publishUpdate(const ndn::Name& userPrefix)
-// {
-//   NDN_LOG_TRACE("Publish sync update for prefix: " << userPrefix);
-//   auto seq_p = m_syncLogic->getSeqNo(userPrefix);
-//   NDN_LOG_INFO("Publishing update for: " << userPrefix << "/" << seq_p.value()+1);
-//   m_syncLogic->publishName(userPrefix);
+void
+Publisher::setInterestFilter(const ndn::Name& name, const bool loopback)
+{
+  NDN_LOG_INFO("Setting interest filter on: " << name);
+  m_face.setInterestFilter(ndn::InterestFilter(name).allowLoopback(false),
+                           std::bind(&Publisher::processInterest, this, _1, _2),
+                           std::bind(&Publisher::onRegistrationSuccess, this, _1),
+                           std::bind(&Publisher::onRegistrationFailed, this, _1));
+}
 
-// }
 
-// void
-// Publisher::onSyncUpdate(const std::vector<psync::MissingDataInfo>& updates)
-// {
-//   NDN_LOG_INFO("Received Sync update event");
-//   std::vector<SyncDataInfo> dinfo;
+void
+Publisher::processInterest(const ndn::Name& name, const ndn::Interest& interest)
+{
+  // need to encapsulate this data into mguard data packet
+  auto it = m_dataBuffer.find(name);
+  if (it != m_dataBuffer.end()) {
+    auto data = it->second;
+    NDN_LOG_INFO("Sending data for name: " << name << "data" << *data);
+    ndn::Data _data (*it->second);
+    m_keyChain.sign(_data);
+    m_face.put(_data);
+    // once the data is schedule the corresponding entry deletion from the buffer
+    m_dataBuffer.erase(it);
+  }
+  else {
+    // data is not available in the buffer, send application nack
+    sendApplicationNack(name);
+  } 
+}
 
-//   for (const auto& update : updates) {
-//     SyncDataInfo di;
-//     di.prefix = update.prefix;
-//     di.highSeq = update.highSeq;
-//     di.lowSeq = update.lowSeq;
-//     dinfo.insert(dinfo.begin(), di);
-//   }
-//   // For debug: print all the received updates
-//   printSyncUPdate(dinfo);
-//   m_syncUpdateCallback(dinfo);
-// }
+void
+Publisher::sendApplicationNack(const ndn::Name& name)
+{
+  NDN_LOG_INFO("Sending application nack");
+  ndn::Name dataName(name);
+  ndn::Data data(dataName);
+  data.setContentType(ndn::tlv::ContentType_Nack);
+  m_keyChain.sign(data);
+  m_face.put(data);
+}
 
-// void 
-// Publisher::printSyncUPdate(const std::vector<SyncDataInfo> updates)
-// {
-//   for (auto item: updates)
-//     {
-//       for (auto seq = item.lowSeq; seq <= item.highSeq; seq++)
-//       {
-//         ndn::Name prefix = item.prefix;
-//         NDN_LOG_DEBUG("Sync update received for prefix: " << prefix << "/" << seq);
-//       }
-//     }
-// }
 
-// } // publisher
-// } // mguard
+void
+Publisher::onRegistrationSuccess(const ndn::Name& name)
+{
+  NDN_LOG_INFO("Successfully registered prefix: " << name);
+}
+
+void
+Publisher::onRegistrationFailed(const ndn::Name& name)
+{
+  NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
+}
+
+} //mguard

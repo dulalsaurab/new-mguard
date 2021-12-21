@@ -2,10 +2,15 @@
 top = '..'
 
 def build(bld):
+    
+    # tmp_path = 'TMP_TESTS_PATH="%s"' % bld.bldnode.make_node('tmp-tests')
+
     # List all .cpp files (whole example in one .cpp)
     for ex in bld.path.ant_glob('*.cpp'):
         name = ex.change_ext('').path_from(bld.path.get_bld())
         bld.program(name='aa-%s' % name,
                     target='%s' % name,
                     source=[ex],
-                    use='mguard')
+                    use='mguard',
+                    # defines=[tmp_path],
+                    )

@@ -24,22 +24,43 @@ BOOST_AUTO_TEST_CASE(Constructor)
   std::vector<std::string> attributes = {"org.md2k", "/org.md2k/mguard/dd40c/gps/phone"};
   auto dataPath = DATA_DIR + "/" + "org.md2k-mguard-dd40c-gps-phone.csv";
   util::Stream stream("/org.md2k/mguard/dd40c/gps/phone", attributes, dataPath);
-
-  DummyClientFace face(io, m_keyChain, {true, true});
-  DummyClientFace aaFace(io, m_keyChain, {true, true});
-  face.linkTo(aaFace);
-
-  auto aaIdentity = addIdentity("/mguard/aa");
-  auto pIdentity = addIdentity("/mguard/producer");
-  auto aaCert = aaIdentity.getDefaultKey().getDefaultCertificate();
-  auto pCert = pIdentity.getDefaultKey().getDefaultCertificate();
   
-  // init data adapter, this will also init abe producer
-  DataAdapter da(face, m_keyChain, "/mguard/producer", pCert, aaCert);
-  ndn::nacabe::KpAttributeAuthority aa(aaCert, aaFace, m_keyChain);
+  // DummyClientFace face(io, m_keyChain, {true, true});
+  // DummyClientFace aaFace(io, m_keyChain, {true, true});
+
+
+
+  // face.linkTo(aaFace);
+  // ndn::security::KeyChain m_keyChain;
+  
+  // ndn::Face m_face;
+  // ndn::security::KeyChain m_keyChain;
+  
+  // auto aaIdentity = addIdentity("/mguard/aa");
+  // auto pIdentity = addIdentity("/mguard/producer");
+  // auto aaCert = aaIdentity.getDefaultKey().getDefaultCertificate();
+  // auto pCert = pIdentity.getDefaultKey().getDefaultCertificate();
+  // boost::filesystem::path dir;
+  // dir = "/Users/sdulal/Documents/PROJECTS/mguard/certs/";
+  // ::setenv("HOME", dir.c_str(), 1);
+  
+
+  // auto aaIdentity = addIdentity("/mguard/aa");
+  // auto pIdentity = addIdentity("/mguard/producer");
+  // auto aaCert = aaIdentity.getDefaultKey().getDefaultCertificate();
+  // auto pCert = pIdentity.getDefaultKey().getDefaultCertificate();
+  // ndn::security::KeyChain m_keyChain("pib-sqlite3:/Users/sdulal/Documents/PROJECTS/mguard/certs/.ndn", "tpm-file");
+  // ndn::security::Keychain m_keyChain("pib-sqlite3:/Users/sdulal/Documents/PROJECTS/mguard/certs/.ndn", "tpm-file")
+  // auto abc = m_keyChain.createIdentity("/mguard/producer").getDefaultKey().getDefaultCertificate();
+  // auto abc = m_keyChain.getPib().getIdentity("/mguard/producer").getDefaultKey().getDefaultCertificate();
+  // std::cout << abc;
+  // // init data adapter, this will also init abe producer
+  mguard::DataAdapter da("/mguard/producer", "/mguard/aa");
+  // // ndn::nacabe::KpAttributeAuthority aa(aaCert, aaFace, m_keyChain);
 
   advanceClocks(time::milliseconds(20), 5);
-  da.readData(stream);
+  da.publishDataUnit(stream);
+  da.run();
 
 }
 
@@ -47,3 +68,13 @@ BOOST_AUTO_TEST_SUITE_END() //TestDataAdapter
 
 } // tests
 } // mguard
+
+
+
+// BOOST_AUTO_TEST_CASE(Constructor)
+// {
+//   // ndn::Face m_face;
+//   ndn::security::KeyChain m_keyChain;
+//   std::cout << m_keyChain.getPib().getIdentity("/mguard/producer").getDefaultKey().getDefaultCertificate();
+//   DataAdapter da("/mguard/producer", "/mguard/aa");
+// }
