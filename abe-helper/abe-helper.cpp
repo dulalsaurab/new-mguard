@@ -15,12 +15,11 @@ class ABEHelper
 {
 public:
   ABEHelper(const ndn::Name& aaPrefix)
-  : m_keyChain("pib-sqlite3:/Users/sdulal/Documents/PROJECTS/mguard/certs/.ndn", "tpm-file")
+  : m_keyChain("pib-sqlite3:/Users/sdulal/.ndn/", "tpm-file:/Users/sdulal/.ndn/ndnsec-tpm-file")
   , m_aaCert(m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate())
   , m_attrAuthority(m_aaCert, m_face, m_keyChain)
   {
-    std::cout << m_aaCert;
-    std::cout << m_keyChain.getPib().getIdentity("/mguard/producer").getDefaultKey().getDefaultCertificate();
+    std::cout << "Authority cert" << m_aaCert << std::endl;
   }
   
   ndn::nacabe::KpAttributeAuthority&
@@ -46,20 +45,6 @@ private:
 
 int main ()
 {
-  // boost::filesystem::path dir;
-  // dir = "/Users/sdulal/Documents/PROJECTS/mguard/certs/";
-  // ::setenv("HOME", dir.c_str(), 1);
-  
-  // DummyClientFace aaFace(io, m_keyChain, {true, true});
-
-  // // // ndn::security::KeyChain keyChain
-  // auto identity = m_keyChain.createIdentity(identityName, params);
-  // m_identities.insert(identityName);
-  // return identity;
-
-  // auto aaIdentity = addIdentity("/mguard/aa");
-  // auto aaCert = aaIdentity.getDefaultKey().getDefaultCertificate();
-
   ABEHelper abe("/mguard/aa");
   abe.run();
 }

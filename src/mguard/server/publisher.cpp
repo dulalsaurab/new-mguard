@@ -11,6 +11,8 @@
 
 #include <iostream>
 #include <string>
+#include <chrono>
+#include <thread>
 
 NDN_LOG_INIT(mguard.Publisher);
 
@@ -29,6 +31,8 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 , m_authorityCert(attrAuthorityCertificate)
 , m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
+  // sleep to init kp-abe producer
+  std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 
 void
@@ -36,6 +40,9 @@ Publisher::publish(ndn::Name dataName, std::string data, std::vector<std::string
 {
     // TODO: create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
     // Manifest name: <stream name>/manifest/<seq-num>
+
+    NDN_LOG_DEBUG("Publishing data: " << data);
+
     std::shared_ptr<ndn::Data> enc_data, ckData;
     try
     {

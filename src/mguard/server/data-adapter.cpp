@@ -22,15 +22,17 @@ namespace mguard
 
 DataAdapter::DataAdapter(const ndn::Name& producerPrefix,
                          const ndn::Name& aaPrefix)
-: m_keyChain("pib-sqlite3:/Users/sdulal/Documents/PROJECTS/mguard/certs/.ndn", "tpm-file")
+: m_keyChain("pib-sqlite3:/Users/sdulal/.ndn/", "tpm-file:/Users/sdulal/.ndn/ndnsec-tpm-file")
 , m_producerPrefix(producerPrefix)
 , m_producerCert(m_keyChain.getPib().getIdentity(producerPrefix).getDefaultKey().getDefaultCertificate())
 , m_ABE_authorityCert(m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate())
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
 {
-  std::cout << m_ABE_authorityCert;
-  std::cout << "--------------------" << std::endl;
-  std::cout << m_producerCert;
+  NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
+  NDN_LOG_DEBUG ("Producer cert: " << m_producerCert);
+  NDN_LOG_DEBUG ("---------------------------------------------");
+  NDN_LOG_DEBUG ("ABE authority cert: " << m_ABE_authorityCert);
+  
 }
 
 void
