@@ -38,6 +38,14 @@ allow               *
 deny
 ```
 ```
+requester-names
+    FUNCTION
+        specifies what users the access control policy should apply to
+    TYPE
+        list of ndn-formatted names separated by spaces, commas, or both
+        list should be surrounded by quotes
+    NOTE:
+        incorrect formatting will result in inacurate outputs without warning from parser
 attribute-filters
     NOTE: stream names are treated as attributes
     FUNCTION
