@@ -6,6 +6,7 @@
 namespace pt = boost::property_tree;
 namespace mguard {
 
+// todo: remove root func
     PolicyParser::PolicyParser(std::string &configFilePath, std::string &availableStreams)
     : configFilePath        (std::move(configFilePath))
     , availableStreamsPath  (std::move(availableStreams))
@@ -14,8 +15,19 @@ namespace mguard {
         bool successfulParse = parseFiles();
 
         // if parsing went well, process stored data to create ABE policy
-        if (successfulParse){
+        if (successfulParse) {
             generateABEPolicy();
+            // todo: make it output this to a file
+            //        "name1, name2"
+            //        output: (could be output file)
+            //        (name1, abeExpression),
+            //                (name2, abeExpression)
+            std::fstream file;
+            file.open("parser_output", std::ios::app);
+            for (const auto &requester: requesterNames) {
+                file << requester << '\t' << abePolicy << std::endl;
+            }
+            file.close();
         }
     }
 
@@ -127,6 +139,9 @@ namespace mguard {
         try {
             // set all instance variables (all required in policy)
             policyID = section.get<int>("policy-id");
+            // todo: requesterNames split isn't working right
+            auto raw = section.get<std::string>("requester-names");
+            auto splitted = split(raw, ",");
             requesterNames = split(section.get<std::string>("requester-names"), ",");
         } catch (const std::exception &exception) {
             // this is usually a syntax error within the policy
@@ -227,36 +242,42 @@ namespace mguard {
 //        when denying a stream, if that stream's parent is not allowed, then no change to ABE policy is made
 //
 //        add warning where child of allowed stream is also allowed (redundant)
+        if (allowedStreams.empty()) {
+            prefix = getPrefix(allowedAttributes.front());
+            policy.push_back(prefix);
+        }
 
         // add everything under all allowed stream names
-        for (const std::string &available : availableStreams) {
-            for (const std::string &allowed : allowedStreams) {
-                // if it's allowed and not a duplicate, add it to the list
+        if (!allowedStreams.empty() || !deniedStreams.empty()) {
+            for (const std::string &available: availableStreams) {
+                for (const std::string &allowed: allowedStreams) {
+                    // if it's allowed and not a duplicate, add it to the list
 
-                // if the available stream is a child of the allowed stream, that available stream should be allowed
-                if ((available.rfind(allowed, 0) == 0) &&
-                // if the available stream isn't already in workingStreams
-                (std::find(workingStreams.begin(), workingStreams.end(), available) == std::end(workingStreams))) {
-                    bool add = true;
-                    // for each allowed stream, check against the denied streams
-                    for (const std::string &denied : deniedStreams) {
-                        // checks if available stream is a child of any of the denied streams
-                        // if it is, don't add it to the allowed streams list
-                        if (available.rfind(denied, 0) == 0) {
-                            add = false;
-                            break;
+                    // if the available stream is a child of the allowed stream, that available stream should be allowed
+                    if ((available.rfind(allowed, 0) == 0) &&
+                        // if the available stream isn't already in workingStreams
+                        (std::find(workingStreams.begin(), workingStreams.end(), available) ==
+                         std::end(workingStreams))) {
+                        bool add = true;
+                        // for each allowed stream, check against the denied streams
+                        for (const std::string &denied: deniedStreams) {
+                            // checks if available stream is a child of any of the denied streams
+                            // if it is, don't add it to the allowed streams list
+                            if (available.rfind(denied, 0) == 0) {
+                                add = false;
+                                break;
+                            }
                         }
-                    }
 
-                    // if it passed all checks against the denied streams, add it to the list
-                    if (add) {
-                        workingStreams.push_back(available);
+                        // if it passed all checks against the denied streams, add it to the list
+                        if (add) {
+                            workingStreams.push_back(available);
+                        }
                     }
                 }
             }
+            policy.emplace_back(doStringThing(workingStreams, "OR"));
         }
-
-        policy.emplace_back(doStringThing(workingStreams, "OR"));
 
         // attribute processing
         // AND allow attributes
@@ -374,6 +395,8 @@ namespace mguard {
         return out;
     }
 
+
+
     // splitting string into list of strings along delimiter
     std::list<std::string> PolicyParser::split(const std::string &basicString, const std::string &delimiter) {
         std::list<std::string> output;
@@ -431,6 +454,28 @@ namespace mguard {
         return os;
     }
 
+    std::string PolicyParser::getPrefix(const std::string &ndnName) {
+        std::string output;
+        std::list<std::string> splitted = split(ndnName, "/");
+        int index = 0;
+        for (const auto &item: splitted) {
+            if (index == 2) {
+                break;
+            }
+            if (item.empty()){
+                continue;
+            }
+            output.append("/" + item);
+            index ++;
+        }
+        output.append("/");
+
+        if (index < 2) {
+            std::cerr << "Warning: Tried to get prefix for ndn name of less than 2 levels" << std::endl;
+        }
+
+        return output;
+    }
 
     attributeFilter::attributeFilter(bool isAllowed, std::string attribute)
             :isAllowed(isAllowed)

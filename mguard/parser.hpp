@@ -19,6 +19,8 @@ namespace mguard {
     public:
         PolicyParser(std::string &configFilePath, std::string &availableStreams);
 
+        static std::string getPrefix(const std::string& ndnName);
+
         bool parseFiles();
 
         static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
