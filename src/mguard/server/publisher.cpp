@@ -1,5 +1,6 @@
 #include "common.hpp"
 #include "publisher.hpp"
+#include "util/stream.hpp"
 
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/util/random.hpp>
@@ -29,18 +30,28 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
 , m_authorityCert(attrAuthorityCertificate)
-, m_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
+, m_abe_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
+// 40 = IBF size, can be adjusted
+// syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/user <--- this will be changed
+, m_partialProducer(40, m_face, "/org.md2k/sync", "/org.md2k/producer")
 {
   // sleep to init kp-abe producer
   std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 
 void
-Publisher::publish(ndn::Name dataName, std::string data, std::vector<std::string>& attributes)
+Publisher::doUpdate(ndn::Name& manifestName)
+{
+  m_partialProducer.publishName(manifestName);
+  uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
+  NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
+}
+
+void
+Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
 {
     // TODO: create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
     // Manifest name: <stream name>/manifest/<seq-num>
-
     NDN_LOG_DEBUG("Publishing data: " << data);
 
     std::shared_ptr<ndn::Data> enc_data, ckData;
@@ -48,7 +59,7 @@ Publisher::publish(ndn::Name dataName, std::string data, std::vector<std::string
     {
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         unsigned char* byteptr = reinterpret_cast<unsigned char *>(&data);
-        std::tie(enc_data, ckData) = m_producer.produce(dataName, attributes, byteptr, sizeof(byteptr));
+        std::tie(ckData, enc_data) = m_abe_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
         // m_keyChain.sign(*enc_data, ndn::signingWithSha256());
     }
     catch(const std::exception& e)
@@ -58,9 +69,18 @@ Publisher::publish(ndn::Name dataName, std::string data, std::vector<std::string
         // return false;
     }
     //  encrypted data is created, store it in the buffer and publish it
-    NDN_LOG_INFO("data: " << enc_data << " ckData: " << ckData);
-    m_dataBuffer.emplace(dataName, enc_data);
-  // sendNotificationInterest();
+    NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
+    // m_dataBuffer.emplace(dataName, enc_data); // we dont need data buffer : erase this
+    
+    bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
+
+    if(doPublishManifest) {
+      // use partial sync to publish data;
+      doUpdate(stream.getManifestName());
+    }
+
+    // only for testing, will remove later
+    std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 
 const ndn::Block &
@@ -91,14 +111,6 @@ Publisher::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
   return totalLength;
 }
 
-// void
-// Publisher::stop()
-// {
-//   NDN_LOG_DEBUG("Shutting down face: ");
-//   m_face.shutdown();
-//   // m_face.getIoService().stop();
-// }
-
 void
 Publisher::setInterestFilter(const ndn::Name& name, const bool loopback)
 {
@@ -127,7 +139,7 @@ Publisher::processInterest(const ndn::Name& name, const ndn::Interest& interest)
   else {
     // data is not available in the buffer, send application nack
     sendApplicationNack(name);
-  } 
+  }
 }
 
 void

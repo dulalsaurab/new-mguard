@@ -12,6 +12,15 @@ class Stream
 public:
   Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, const std::string& path);
 
+  /*
+   This function will update the manifest list and send status whether it is reedy to be published or not
+   e.g. if 20 new data names are added or X ms/s time has passed since addition of the last data poing,
+   manifest will be read to be published
+   for time expiration, we need to use signal ??
+  */
+  bool
+  updateManifestList(ndn::Name dataNameWithDigest);
+
   ndn::Name&
   getName()
   {
@@ -25,7 +34,7 @@ public:
   }
 
 	ndn::Name&
-	getManifestName(ndn::Name manifestName)
+	getManifestName()
   {
     return m_manifestName;
   }
@@ -36,6 +45,8 @@ public:
       m_attributeSet = attributeSet;
   }
 
+  // TODO: data points from a same stream can be encrypted with different set 
+  // of attribtues, need to consider it in the future
   std::vector<std::string>&
   getAttributes()
   {
@@ -60,6 +71,9 @@ private:
   ndn::Name m_manifestName;
   std::vector<std::string> m_attributeSet;
   std::string m_streamDataPath;
+  std::vector<std::string> m_manifestList;
+  int m_manifestCounter;
+
 };
 } // util
 } // mguard

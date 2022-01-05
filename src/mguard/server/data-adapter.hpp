@@ -20,17 +20,13 @@ class DataAdapter
 {
 
 public:
-  DataAdapter(const ndn::Name& producerPrefix,
-              const ndn::Name& aaPrefix);
-              // const ndn::security::Certificate& producerCert,
-              // const ndn::security::Certificate& attrAuthorityCertificate);
-  /*
-    read the CSV file corresponding to the names
-    names will be provided by pre-processor
-  */
-  // ~ DataAdapter() {}
+  DataAdapter(const ndn::Name& producerPrefix, const ndn::Name& aaPrefix);
+  
   void
   run();
+
+  void
+  stop();
 
   ndn::Name
   makeDataName(ndn::Name streamName, std::string timestamp);

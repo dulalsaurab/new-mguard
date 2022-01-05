@@ -15,13 +15,8 @@ NDN_LOG_INIT(mguard.DataAdapter);
 
 namespace mguard
 {
-
-// DataAdapter::DataAdapter(const ndn::Name& producerPrefix,
-//                          const ndn::security::Certificate& producerCert,
-//                          const ndn::security::Certificate& attrAuthorityCertificate)
-
-DataAdapter::DataAdapter(const ndn::Name& producerPrefix,
-                         const ndn::Name& aaPrefix)
+DataAdapter::DataAdapter(const ndn::Name& producerPrefix, const ndn::Name& aaPrefix)
+// TODO: need to fix this
 : m_keyChain("pib-sqlite3:/Users/sdulal/.ndn/", "tpm-file:/Users/sdulal/.ndn/ndnsec-tpm-file")
 , m_producerPrefix(producerPrefix)
 , m_producerCert(m_keyChain.getPib().getIdentity(producerPrefix).getDefaultKey().getDefaultCertificate())
@@ -48,6 +43,14 @@ DataAdapter::run()
   }
 }
 
+void
+DataAdapter::stop()
+{
+  NDN_LOG_DEBUG("Shutting down face: ");
+  m_face.shutdown();
+  // m_face.getIoService().stop();
+}
+
 ndn::Name
 DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 {
@@ -69,7 +72,9 @@ DataAdapter::publishDataUnit(util::Stream& stream)
     auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
     auto dataName = makeDataName(stream.getName(), timestamp);
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
-    m_publisher.publish(dataName, data, stream.getAttributes());
+    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
+    
+    m_publisher.publish(dataName, data, stream);
   }
 }
 

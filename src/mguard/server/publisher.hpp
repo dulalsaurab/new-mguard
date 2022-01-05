@@ -6,7 +6,7 @@
 #include "util/stream.hpp"
 
 #include <ndn-cxx/face.hpp>
-#include <PSync/full-producer.hpp>
+#include <PSync/partial-producer.hpp>
 
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/cache-producer.hpp>
@@ -45,17 +45,12 @@ public:
               const ndn::security::Certificate& producerCert,
               const ndn::security::Certificate& attrAuthorityCertificate);
 
-  /*
-    read the CSV file corresponding to the names
-    names will be provided by pre-processor
-  */
-  // ~ Publisher() {}
   
   void
-  publish(ndn::Name dataName, std::string data, std::vector<std::string>& attributes);
+  doUpdate(ndn::Name& manifestName);
 
-  // bool
-  // makeDataContent(std::vector<std::string> data, util::Stream &stream);
+  void
+  publish(ndn::Name dataName, std::string data, util::Stream& stream);
 
   template<ndn::encoding::Tag TAG>
   size_t
@@ -63,14 +58,6 @@ public:
 
   const ndn::Block&
   wireEncode();
-
-
-// // communication
-//   void
-//   run();
-
-  // void
-  // stop();
 
   void
   setInterestFilter(const ndn::Name& name, const bool loopback = false);
@@ -92,16 +79,17 @@ private:
   ndn::KeyChain& m_keyChain;
   ndn::Scheduler m_scheduler;
   mutable ndn::Block m_wire;
-  // DataPreprocessor m_preProcessor;
+
   FileProcessor m_fileProcessor;
-  // AttributeMappingFileProcessor m_attributeMappingFileProcessor;
   std::string m_tempRow;
   ndn::Name m_attrAuthorityPrefix;
   ndn::Name m_producerPrefix;
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_authorityCert;
-  ndn::nacabe::CacheProducer m_producer;
+  ndn::nacabe::CacheProducer m_abe_producer;
   std::unordered_map<ndn::Name, std::shared_ptr<ndn::Data>> m_dataBuffer; //need to limit the size of the buffer
+  psync::PartialProducer m_partialProducer;
+
 };
 
 } // mguard
