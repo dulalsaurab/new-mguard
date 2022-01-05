@@ -397,24 +397,22 @@ namespace mguard {
 
 
 
-    // splitting string into list of strings along delimiter
-    std::list<std::string> PolicyParser::split(const std::string &basicString, const std::string &delimiter) {
-        std::list<std::string> output;
-        for (int end, start = 0; start < basicString.size() - 1; start = end + delimiter.size()){
-            end = (int)basicString.find(delimiter, start);
-            if (end == -1){ // this means it hit the end, so it just adds the rest of the string
-                end = (int)basicString.size();
-            }
-            // todo: strip leading and trailing spaces before push_back()
-            output.push_back(basicString.substr(start, end - start));
+    // splitting string into list of strings along delimeter
+    std::list<std::string> PolicyParser::split(const std::string &basicString, const std::string &delimeter) {
+        std::list<std::string> splittedString;
+        int startIndex = 0;
+        int endIndex;
+        std::string val;
+        while ((endIndex = basicString.find(delimeter, startIndex)) < basicString.size()){
+            val = basicString.substr(startIndex, endIndex - startIndex);
+            splittedString.push_back(val);
+            startIndex = endIndex + delimeter.size();
         }
-
-        // edge case where the loop doesn't run
-        if (basicString.size() == 1) {
-            output.push_back(basicString);
+        if  (startIndex < basicString.size()) {
+            val = basicString.substr(startIndex);
+            splittedString.push_back(val);
         }
-
-        return output;
+        return splittedString;
     }
 
     const std::string &PolicyParser::getABEPolicy() const {

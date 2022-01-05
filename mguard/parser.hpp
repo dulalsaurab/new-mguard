@@ -23,7 +23,7 @@ namespace mguard {
 
         bool parseFiles();
 
-        static std::list<std::string> split(const std::string& basicString, const std::string& delimiter);
+        static std::list<std::string> split(const std::string& basicString, const std::string& delimeter);
 
         static std::string doStringThing(const std::list<std::string>& list, const std::string& operation);
 
