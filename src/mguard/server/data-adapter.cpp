@@ -57,7 +57,7 @@ DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
   return streamName.append("DATA").append(timestamp);
 }
 
-bool
+void
 DataAdapter::publishDataUnit(util::Stream& stream)
 {
   NDN_LOG_INFO("Processing stream: " << stream.getName());
@@ -73,7 +73,6 @@ DataAdapter::publishDataUnit(util::Stream& stream)
     auto dataName = makeDataName(stream.getName(), timestamp);
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    
     m_publisher.publish(dataName, data, stream);
   }
 }

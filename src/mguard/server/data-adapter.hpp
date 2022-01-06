@@ -31,7 +31,7 @@ public:
   ndn::Name
   makeDataName(ndn::Name streamName, std::string timestamp);
   
-  bool
+  void
   publishDataUnit(util::Stream& stream);
 
 private:

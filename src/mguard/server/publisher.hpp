@@ -79,8 +79,9 @@ private:
   ndn::KeyChain& m_keyChain;
   ndn::Scheduler m_scheduler;
   mutable ndn::Block m_wire;
-
-  FileProcessor m_fileProcessor;
+  psync::PartialProducer m_partialProducer;
+  
+  // FileProcessor m_fileProcessor;
   std::string m_tempRow;
   ndn::Name m_attrAuthorityPrefix;
   ndn::Name m_producerPrefix;
@@ -88,7 +89,7 @@ private:
   ndn::security::Certificate m_authorityCert;
   ndn::nacabe::CacheProducer m_abe_producer;
   std::unordered_map<ndn::Name, std::shared_ptr<ndn::Data>> m_dataBuffer; //need to limit the size of the buffer
-  psync::PartialProducer m_partialProducer;
+
 
 };
 

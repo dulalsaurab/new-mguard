@@ -27,13 +27,15 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 : m_face(face)
 , m_keyChain(keyChain)
 , m_scheduler(m_face.getIoService())
+
+// 10 = expected number of entries
+// syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/user <--- this will be changed
+, m_partialProducer(10, m_face, m_keyChain, "/org.md2k", "/org.md2k/producer")
+
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
 , m_authorityCert(attrAuthorityCertificate)
 , m_abe_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
-// 40 = IBF size, can be adjusted
-// syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/user <--- this will be changed
-, m_partialProducer(40, m_face, "/org.md2k/sync", "/org.md2k/producer")
 {
   // sleep to init kp-abe producer
   std::this_thread::sleep_for (std::chrono::seconds(1));

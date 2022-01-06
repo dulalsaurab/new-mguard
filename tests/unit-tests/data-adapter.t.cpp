@@ -28,8 +28,9 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
   // // init data adapter, this will also init abe producer
   mguard::DataAdapter da("/mguard/producer", "/mguard/aa");
+  advanceClocks(20_ms);
   da.run();
-  da.publishDataUnit(stream);
+  // da.publishDataUnit(stream);
 
 }
 

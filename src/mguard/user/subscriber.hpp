@@ -67,7 +67,7 @@ public:
   changePolicy();
 
 private:
-  std::shared_ptr<psync::FullProducer> m_syncLogic;
+  // std::shared_ptr<psync::PartialConsumer> m_partialConsumer;
   ndn::Face m_face;
   SyncUpdateCallback m_syncUpdateCallback;
 
