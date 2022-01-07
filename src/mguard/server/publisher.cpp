@@ -28,9 +28,9 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 , m_keyChain(keyChain)
 , m_scheduler(m_face.getIoService())
 
-// 10 = expected number of entries
-// syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/user <--- this will be changed
-, m_partialProducer(10, m_face, m_keyChain, "/org.md2k", "/org.md2k/producer")
+// 40 = expected number of entries also will be used as IBF size
+// syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
+, m_partialProducer(40, m_face, m_keyChain, m_scheduler, "/org.md2k", "/org.md2k/uprefix")
 
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
@@ -74,15 +74,12 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
     // m_dataBuffer.emplace(dataName, enc_data); // we dont need data buffer : erase this
     
-    bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
+    bool publishManifest = stream.updateManifestList(enc_data->getFullName());
 
-    if(doPublishManifest) {
+    if(publishManifest) {
       // use partial sync to publish data;
       doUpdate(stream.getManifestName());
     }
-
-    // only for testing, will remove later
-    std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 
 const ndn::Block &

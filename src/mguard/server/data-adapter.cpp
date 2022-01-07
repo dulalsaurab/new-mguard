@@ -1,13 +1,6 @@
 #include "common.hpp"
 #include "data-adapter.hpp"
 
-#include <ndn-cxx/util/logger.hpp>
-#include <ndn-cxx/util/random.hpp>
-#include <ndn-cxx/security/signing-helpers.hpp>
-#include <ndn-cxx/encoding/block-helpers.hpp>
-#include <ndn-cxx/security/verification-helpers.hpp>
-#include <ndn-cxx/util/scheduler.hpp>
-
 #include <iostream>
 #include <string>
 
@@ -15,14 +8,14 @@ NDN_LOG_INIT(mguard.DataAdapter);
 
 namespace mguard
 {
-DataAdapter::DataAdapter(const ndn::Name& producerPrefix, const ndn::Name& aaPrefix)
-// TODO: need to fix this
-: m_keyChain("pib-sqlite3:/Users/sdulal/.ndn/", "tpm-file:/Users/sdulal/.ndn/ndnsec-tpm-file")
+DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const ndn::Name& aaPrefix)
+: m_face(face)
 , m_producerPrefix(producerPrefix)
 , m_producerCert(m_keyChain.getPib().getIdentity(producerPrefix).getDefaultKey().getDefaultCertificate())
 , m_ABE_authorityCert(m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate())
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
 {
+  NDN_LOG_DEBUG("default identity" <<  m_keyChain.getPib().getDefaultIdentity());
   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
   NDN_LOG_DEBUG ("Producer cert: " << m_producerCert);
   NDN_LOG_DEBUG ("---------------------------------------------");

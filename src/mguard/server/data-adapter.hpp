@@ -7,6 +7,13 @@
 #include "util/stream.hpp"
 
 #include <ndn-cxx/face.hpp>
+#include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/util/random.hpp>
+#include <ndn-cxx/security/signing-helpers.hpp>
+#include <ndn-cxx/encoding/block-helpers.hpp>
+#include <ndn-cxx/security/verification-helpers.hpp>
+#include <ndn-cxx/util/scheduler.hpp>
+
 #include <PSync/full-producer.hpp>
 
 #include <nac-abe/attribute-authority.hpp>
@@ -20,7 +27,7 @@ class DataAdapter
 {
 
 public:
-  DataAdapter(const ndn::Name& producerPrefix, const ndn::Name& aaPrefix);
+  DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const ndn::Name& aaPrefix);
   
   void
   run();
@@ -35,8 +42,8 @@ public:
   publishDataUnit(util::Stream& stream);
 
 private:
-  ndn::Face m_face;
   ndn::KeyChain m_keyChain;
+  ndn::Face& m_face;
   FileProcessor m_fileProcessor;
   std::string m_tempRow;
   ndn::Name m_producerPrefix;

@@ -76,7 +76,7 @@ public:
 
 private:
   ndn::Face& m_face;
-  ndn::KeyChain& m_keyChain;
+  ndn::security::KeyChain& m_keyChain;
   ndn::Scheduler m_scheduler;
   mutable ndn::Block m_wire;
   psync::PartialProducer m_partialProducer;
