@@ -180,7 +180,7 @@ namespace mguard {
         }
 
         // REQUIRED attribute-filters section
-        // todo: figure out better way to structure this part
+        // NOTE: I should figure out better way to structure this part
         // this could possibly be done with section.get_child_optional()
         try {
             pt::ptree filterTree = section.get_child("attribute-filters");
