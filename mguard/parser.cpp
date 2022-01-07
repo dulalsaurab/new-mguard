@@ -256,6 +256,9 @@ namespace mguard {
             return false;
         }
 
+        // warning variables
+        std::list<std::string> allowDenyWarning;
+        std::string warn;
         // add everything under all allowed stream names
         if (!allowedStreams.empty() || !deniedStreams.empty()) {
             for (const std::string &available: availableStreams) {
@@ -270,6 +273,13 @@ namespace mguard {
                         bool add = true;
                         // for each allowed stream, check against the denied streams
                         for (const std::string &denied: deniedStreams) {
+                            // add to warning if allowed stream is the stream or child of denied stream
+                            if (allowed.rfind(denied, 0) == 0) {
+                                warn = "WARNING: " + allowed + " is the same stream or a child of the denied stream " + denied;
+                                if (std::find(allowDenyWarning.begin(), allowDenyWarning.end(), warn) == std::end(allowDenyWarning)) {
+                                    allowDenyWarning.push_back(warn);
+                                }
+                            }
                             // checks if available stream is a child of any of the denied streams
                             // if it is, don't add it to the allowed streams list
                             if (available.rfind(denied, 0) == 0) {
@@ -284,6 +294,16 @@ namespace mguard {
                         }
                     }
                 }
+            }
+
+            // warning for denied stream covering all of an allowed stream
+            for (const std::string& warning : allowDenyWarning) {
+                std::cout << warning << std::endl;
+            }
+            // error for if no streams are allowed
+            if (workingStreams.empty()) {
+                std::cerr << "ERROR: No streams allowed by policy" << std::endl;
+                return false;
             }
             policy.emplace_back(doStringThing(workingStreams, "OR"));
         }
@@ -309,9 +329,6 @@ namespace mguard {
                 return false;
             }
         }
-
-        // todo: add checks for denied and allowed attributes to make sure there are no collisions
-        // THIS SECTION WOULD ONLY CHANGE BY ADDING A FEW MORE CHECKS FOR STREAM NAMES
 
         // putting it all all together
         // AND together all separate conditions made for the output policy
