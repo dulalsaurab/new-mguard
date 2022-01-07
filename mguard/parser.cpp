@@ -85,21 +85,43 @@ namespace mguard {
                 // note: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
                 // adding all parents of given stream to list
                 levels = split(item.first, "/");
-                buildingName = "";
+                std::string adding;
+                // all names should start with a /
+                buildingName = "/";
                 for (int index = 0; !levels.empty(); index ++) {
-                    // doesn't follow ndn naming convention, but this is how it's currently formatted
-                    // current implementation doesn't have a leading '/' for any of the names
-                    if (index > 0) {
+                    adding = levels.front();
+                    // then remove it from the list we're grabbing from
+                    levels.erase(levels.begin());
+                    // first character things
+                    if (index == 0 ) {
+                        // checking to make sure it starts with a /
+                        if (!adding.empty()) {
+                            return false;
+                        }
+                        // don't add the first one
+                        continue;
+                    }
+
+                    // formatting
+                    // store first value in the name you're building
+                    buildingName += adding;
+                    if (!levels.empty()) {
+                        // always add a / after each part of the stream if it's not the very last one
                         buildingName += "/";
                     }
-                    buildingName += levels.front();
-                    // only add to list if it's not already there. this prevents duplicates
-                    if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), buildingName) == availableStreamLevels.end()) {
-                        // buildingName not in availableStreamLevels
-                        availableStreamLevels.push_back(buildingName);
+
+                    // adds the first two together instead of one by one
+                    if (index < 2) {
+                        continue;
                     }
-                    // remove first because it's already been used in buildingName
-                    levels.erase(levels.begin());
+
+                    // only add to list if it's not already there. this prevents duplicates
+                    if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), buildingName) != availableStreamLevels.end()) {
+                        // buildingName in availableStreamLevels
+                        continue;
+                    }
+
+                    availableStreamLevels.push_back(buildingName);
                 }
             }
 
