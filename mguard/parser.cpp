@@ -2,12 +2,13 @@
 #include "boost/property_tree/info_parser.hpp"
 
 #include <iostream>
+#include <utility>
 
 namespace pt = boost::property_tree;
 namespace mguard {
 
 // todo: remove root func
-    PolicyParser::PolicyParser(std::string &configFilePath, std::string &availableStreams)
+    PolicyParser::PolicyParser(std::basic_string<char> configFilePath, std::basic_string<char> availableStreams)
     : configFilePath        (std::move(configFilePath))
     , availableStreamsPath  (std::move(availableStreams))
     {
@@ -142,7 +143,7 @@ namespace mguard {
             // todo: requesterNames split isn't working right
             auto raw = section.get<std::string>("requester-names");
             auto splitted = split(raw, ",");
-            requesterNames = split(section.get<std::string>("requester-names"), ",");
+            requesterNames = splitRequesters(section.get<std::string>("requester-names"));
         } catch (const std::exception &exception) {
             // this is usually a syntax error within the policy
             std::cerr << exception.what() << std::endl;
@@ -415,7 +416,7 @@ namespace mguard {
         return splittedString;
     }
 
-    std::list<std::string> PolicyParser::test(const std::string& basicString) {
+    std::list<std::string> PolicyParser::splitRequesters(const std::string& basicString) {
         std::list<std::string> output;
         std::list<std::string> n = mguard::PolicyParser::split(basicString, ",");
         for (const auto& item : n) {

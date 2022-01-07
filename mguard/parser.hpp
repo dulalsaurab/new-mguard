@@ -17,7 +17,7 @@ namespace mguard {
     using ConfigSection = boost::property_tree::ptree;
     class PolicyParser {
     public:
-        PolicyParser(std::string &configFilePath, std::string &availableStreams);
+        PolicyParser(std::basic_string<char> configFilePath, std::basic_string<char> availableStreams);
 
         static std::string getPrefix(const std::string& ndnName);
 
@@ -33,7 +33,7 @@ namespace mguard {
 
         const std::string &getABEPolicy() const;
 
-        static std::list<std::string> test(const std::string& basicString);
+        static std::list<std::string> splitRequesters(const std::string& basicString);
 
     private:
         bool parseAvailableStreams(std::istream &input);
