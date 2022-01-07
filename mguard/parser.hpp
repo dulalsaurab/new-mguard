@@ -26,7 +26,6 @@ namespace mguard {
 
         friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
-
     private:
         static std::list<std::string> splitRequesters(const std::string& basicString);
 
