@@ -1,14 +1,11 @@
-policy-id       1
-requester-names   A
-stream-name     org.md2k
+policy-id           1
+requester-names     /org/md2k/A
 attribute-filters
 {
     allow
     {
-
     }
     deny
     {
-
     }
 }

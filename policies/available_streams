@@ -23,37 +23,36 @@
 ;md2k streams converted into ndn data streams
 available-streams
 {
-    org.md2k/mperf/dd40c/phone/location
-    org.md2k/mperf/dd40c/phone/accelerometer
-    org.md2k/mperf/dd40c/phone/gyroscope
-    org.md2k/mperf/dd40c/phone/battery
-    org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
-    org.md2k/mperf/dd40c/cerebralcortex.algo.dataanalysis.gps_episodes_and_semantic_location
+    /org/md2k/mperf/dd40c/phone/accelerometer
+    /org/md2k/mperf/dd40c/phone/battery
+    /org/md2k/mperf/dd40c/phone/gps-coordinate
+    /org/md2k/mperf/dd40c/phone/gyroscope
+    /org/md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
 }
 
 attributes
 {
-    /attributes/location/home
-    /attributes/location/work
-    /attributes/location/commuting
-    /attributes/location/casino
-    /attributes/location/oakland
-    /attributes/location/SoCal
-    /attributes/location/gym
-    /attributes/location/shopping-mall
-    /attributes/activity/smoking
-    /attributes/activity/walking
-    /attributes/activity/running
-    /attributes/activity/eating
-    /attributes/activity/drinking
-    /attributes/activity/sleeping
+    /org/md2k/attribute/location/home
+    /org/md2k/attribute/location/work
+    /org/md2k/attribute/location/commuting
+    /org/md2k/attribute/location/casino
+    /org/md2k/attribute/location/oakland
+    /org/md2k/attribute/location/SoCal
+    /org/md2k/attribute/location/gym
+    /org/md2k/attribute/location/shopping-mall
+    /org/md2k/attribute/activity/smoking
+    /org/md2k/attribute/activity/walking
+    /org/md2k/attribute/activity/running
+    /org/md2k/attribute/activity/eating
+    /org/md2k/attribute/activity/drinking
+    /org/md2k/attribute/activity/sleeping
 }
 
 ; current users
 requesters
 {
-  user A
-  user B
-  user C
-  user D
+  user /org/md2k/A
+  user /org/md2k/B
+  user /org/md2k/C
+  user /org/md2k/D
 }
