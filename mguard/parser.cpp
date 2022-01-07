@@ -18,11 +18,8 @@ namespace mguard {
         // if parsing went well, process stored data to create ABE policy
         if (successfulParse) {
             generateABEPolicy();
-            // todo: make it output this to a file
-            //        "name1, name2"
-            //        output: (could be output file)
-            //        (name1, abeExpression),
-            //                (name2, abeExpression)
+
+            // output
             std::fstream file;
             file.open("parser_output", std::ios::app);
             for (const auto &requester: requesterNames) {
