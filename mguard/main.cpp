@@ -2,7 +2,6 @@
 #include "parser.cpp"
 
 // todo: make default.policy the default one unless given other arguments
-// todo: possibly change stream-name to data-stream
 int main(int argc, char** argv){
     std::string policyFilePath("default.policy"), availableStreamsFilePath ("policies/available_streams");
 
