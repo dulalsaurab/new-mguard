@@ -195,6 +195,8 @@ namespace mguard {
                 }
             }
             catch (std::exception &e) {
+                // probably better way of doing this, but I'm only setting that variable
+                // because something needs to be in the catch block
                 hasDeny = false;
             }
         }
