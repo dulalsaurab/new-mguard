@@ -237,7 +237,6 @@ namespace mguard {
             }
         }
 
-        // todo: add this check to generation of ABE policy after rewrite
         if (isAllowed && (allowedStreams.empty() && allowedAttributes.empty())) {
             std::cerr   <<  "\"allow\" section needs at least one attribute"        <<  std::endl;
             return false;
