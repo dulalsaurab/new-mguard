@@ -85,7 +85,7 @@ namespace mguard {
             for (const auto &item : section.get_child("available-streams")) {
                 // add stream to list of streams
                 availableStreams.push_back(item.first);
-                // todo: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
+                // note: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
                 // adding all parents of given stream to list
                 levels = split(item.first, "/");
                 buildingName = "";
