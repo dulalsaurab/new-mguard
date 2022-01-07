@@ -436,8 +436,6 @@ namespace mguard {
         return out;
     }
 
-
-
     // splitting string into list of strings along delimeter
     std::list<std::string> PolicyParser::split(const std::string &basicString, const std::string &delimeter) {
         std::list<std::string> splittedString;
