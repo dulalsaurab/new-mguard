@@ -7,7 +7,12 @@
 namespace pt = boost::property_tree;
 namespace mguard {
 
-// todo: remove root func
+    // todo: functionality for wildcard within stream names
+
+    // todo: change calling of parser
+    // 1.) initialize by parsing available_streams first
+    // 2.) call parser with policy input and parser will output to file
+
     PolicyParser::PolicyParser(std::basic_string<char> configFilePath, std::basic_string<char> availableStreams)
     : configFilePath        (std::move(configFilePath))
     , availableStreamsPath  (std::move(availableStreams))
