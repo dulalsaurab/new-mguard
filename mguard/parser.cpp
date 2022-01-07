@@ -251,13 +251,6 @@ namespace mguard {
 
         std::list<std::string> workingStreams;
 
-        // REMOVED check for if allowedStreams is empty
-
-        // todo: include check for allowed
-
-//        when denying a stream, if that stream's parent is not allowed, then no change to ABE policy is made
-//
-//        add warning where child of allowed stream is also allowed (redundant)
         if (allowedStreams.empty()) {
             std::cerr << "User needs at least one stream name in input policy" << std::endl;
             return false;
