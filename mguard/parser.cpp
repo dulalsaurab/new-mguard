@@ -185,7 +185,6 @@ namespace mguard {
                 }
             }
             catch (std::exception &e){
-                hasAllow = false;
                 std::cerr   <<  R"(Policy needs an "allow" block within the "attribute-filters" block.)"   <<  std::endl;
                 // returns false because
                 return false;
@@ -367,31 +366,41 @@ namespace mguard {
     }
 
     bool PolicyParser::isAlike(std::string &attribute, std::string &checking) {
-        int matches = 0;
-        std::list<std::string> first = split(attribute, "/");
-        std::list<std::string> second = split(checking, "/");
+        // assumes /attribute/type/value format for attributes
 
-//        std::string workingFirst, workingSecond;
+        // split the inputs into the different levels
+        std::list<std::string> given = split(attribute, "/");
+        std::list<std::string> testing = split(checking, "/");
 
-        // todo: change this for /org/md2k instead of /org.md2k/
-        // removes first element if the attributes have leading "/"
-        if (first.front().empty()) {
-            first.remove(first.front());
-        }
-        if (second.front().empty()) {
-            second.remove(second.front());
-        }
+        // will store the attribute types in these variables
+        std::string givenType;
+        std::string checkingType;
 
-        for (int n = 1; n < 3; n++) {
-            if (first.front() == second.front()) {
-                matches ++;
+        // once you find "attribute", store the next value and stop
+        bool foundAttribute = false;
+        for (const std::string& item : given) {
+            if (foundAttribute) {
+                givenType = item;
+                break;
             }
-            first.remove(first.front());
-            second.remove(second.front());
+            if (item == "attribute") {
+                foundAttribute = true;
+            }
         }
 
-        // if matches == 2, the first two parts of the attributes are the same
-        return matches == 2;
+        foundAttribute = false;
+        for (const std::string& checkingItem : testing) {
+            if (foundAttribute) {
+                checkingType = checkingItem;
+                break;
+            }
+            if (checkingItem == "attribute") {
+                foundAttribute = true;
+            }
+        }
+
+        // if the values are the same, the types of attributes are also the same
+        return givenType == checkingType;
     }
 
     std::string PolicyParser::doStringThing(const std::list<std::string> &list, const std::string& operation) {
