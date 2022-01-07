@@ -467,21 +467,6 @@ namespace mguard {
         return output;
     }
 
-    std::string PolicyParser::trim(const std::string &basicString) {
-        size_t first = basicString.find_first_not_of(' ');
-
-        // empty string
-        if (std::string::npos == first) {
-            return basicString;
-        }
-        size_t last = basicString.find_last_not_of(' ');
-        return basicString.substr(first, (last - first + 1));
-    }
-
-    const std::string &PolicyParser::getABEPolicy() const {
-        return abePolicy;
-    }
-
     // printing for PolicyParser object
     std::ostream &operator<<(std::ostream &os, const PolicyParser &parser) {
         os <<
