@@ -415,6 +415,19 @@ namespace mguard {
         return splittedString;
     }
 
+    std::list<std::string> PolicyParser::test(const std::string& basicString) {
+        std::list<std::string> output;
+        std::list<std::string> n = mguard::PolicyParser::split(basicString, ",");
+        for (const auto& item : n) {
+            for (const auto& thing : mguard::PolicyParser::split(item, " ")) {
+                if (!thing.empty()) {
+                    output.push_back(thing);
+                }
+            }
+        }
+        return output;
+    }
+
     std::string PolicyParser::trim(const std::string &basicString) {
         size_t first = basicString.find_first_not_of(' ');
 

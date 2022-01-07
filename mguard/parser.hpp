@@ -33,6 +33,8 @@ namespace mguard {
 
         const std::string &getABEPolicy() const;
 
+        static std::list<std::string> test(const std::string& basicString);
+
     private:
         bool parseAvailableStreams(std::istream &input);
         std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
