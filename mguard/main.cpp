@@ -24,11 +24,6 @@ int main(int argc, char** argv){
 //    // this is just for testing purposes
 //    std::cout << pp << std::endl;
 
-    // this is how you grab the ABE policy
-    const std::string& ABEPolicy = pp.getABEPolicy();
-
-    std::cout   <<  ABEPolicy   <<  std::endl;
-
     return 0;
 
 }
