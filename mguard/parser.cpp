@@ -156,7 +156,6 @@ namespace mguard {
         try {
             // set all instance variables (all required in policy)
             policyID = section.get<int>("policy-id");
-            // todo: requesterNames split isn't working right
             auto raw = section.get<std::string>("requester-names");
             auto splitted = split(raw, ",");
             requesterNames = splitRequesters(section.get<std::string>("requester-names"));
