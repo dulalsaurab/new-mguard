@@ -102,9 +102,6 @@ namespace mguard {
                     levels.erase(levels.begin());
                 }
             }
-            // todo: probably don't need this with new changes
-            // set prefix to the first value in calculated availableStreamLevels
-            prefix = availableStreamLevels.front();
 
             // store available requesters
             for (const auto &item : section.get_child("requesters")) {
@@ -241,8 +238,8 @@ namespace mguard {
 //
 //        add warning where child of allowed stream is also allowed (redundant)
         if (allowedStreams.empty()) {
-            prefix = getPrefix(allowedAttributes.front());
-            policy.push_back(prefix);
+            std::cerr << "User needs at least one stream name in input policy" << std::endl;
+            return false;
         }
 
         // add everything under all allowed stream names
@@ -469,32 +466,8 @@ namespace mguard {
 
         os      <<
         "\t"    <<  "ABE info"      <<  std::endl       <<
-        "\t\t"  <<  "prefix"        <<  "\t\t"          <<  parser.prefix       <<  std::endl   <<
         "\t\t"  <<  "abe policy"    <<  "\t"            <<  parser.abePolicy    <<  std::endl   ;
         return os;
-    }
-
-    std::string PolicyParser::getPrefix(const std::string &ndnName) {
-        std::string output;
-        std::list<std::string> splitted = split(ndnName, "/");
-        int index = 0;
-        for (const auto &item: splitted) {
-            if (index == 2) {
-                break;
-            }
-            if (item.empty()){
-                continue;
-            }
-            output.append("/" + item);
-            index ++;
-        }
-        output.append("/");
-
-        if (index < 2) {
-            std::cerr << "Warning: Tried to get prefix for ndn name of less than 2 levels" << std::endl;
-        }
-
-        return output;
     }
 
     attributeFilter::attributeFilter(bool isAllowed, std::string attribute)
