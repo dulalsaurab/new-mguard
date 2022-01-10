@@ -72,10 +72,14 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     }
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
-    // m_dataBuffer.emplace(dataName, enc_data); // we dont need data buffer : erase this
     
     bool publishManifest = stream.updateManifestList(enc_data->getFullName());
 
+    // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
+    // "t" time has passed after receiving the last application data.
+
+    // TODO: insert enc_data and ckData to the repo
+    
     if(publishManifest) {
       // use partial sync to publish data;
       doUpdate(stream.getManifestName());
