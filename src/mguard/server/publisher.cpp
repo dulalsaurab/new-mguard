@@ -17,8 +17,7 @@
 
 NDN_LOG_INIT(mguard.Publisher);
 
-namespace mguard
-{
+namespace mguard {
 
 Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
                     const ndn::Name& producerPrefix,

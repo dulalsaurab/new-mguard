@@ -6,8 +6,8 @@
 
 NDN_LOG_INIT(mguard.DataAdapter);
 
-namespace mguard
-{
+namespace mguard {
+
 DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const ndn::Name& aaPrefix)
 : m_face(face)
 , m_producerPrefix(producerPrefix)
