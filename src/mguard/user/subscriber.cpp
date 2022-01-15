@@ -16,10 +16,10 @@ Subscriber::Subscriber(ndn::Face& face, const ndn::Name& syncPrefix,
 : m_syncUpdateCallback(syncUpdateCallback)
 {
   NDN_LOG_DEBUG("Using PSync");
-  m_syncLogic = std::make_shared<psync::FullProducer>(80,
-                   face, syncPrefix, userPrefix,
-                   std::bind(&Subscriber::onSyncUpdate, this, _1),
-                   syncInterestLifetime);
+//   m_syncLogic = std::make_shared<psync::FullConsumer>(80,
+//                    face, syncPrefix, userPrefix,
+//                    std::bind(&Subscriber::onSyncUpdate, this, _1),
+//                    syncInterestLifetime);
 }
 
 void

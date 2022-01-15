@@ -1,12 +1,9 @@
 
 
-#ifndef MGUARD_PUBLISHER_HPP
-#define MGUARD_PUBLISHER_HPP
+#ifndef MGUARD_SUBSCRIBER_HPP
+#define MGUARD_SUBSCRIBER_HPP
 
 #include <PSync/full-producer.hpp>
-
-#include <string>
-#include <iostream>
 
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/util/random.hpp>
@@ -16,7 +13,6 @@
 using namespace ndn::time_literals;
 
 namespace mguard {
-namespace publisher {
 
 struct SyncDataInfo
 {
@@ -27,6 +23,7 @@ struct SyncDataInfo
 
 typedef std::function<void(const std::vector<SyncDataInfo>& updates)> SyncUpdateCallback;
 
+namespace subscriber {
 namespace tlv {
 
 }
@@ -38,41 +35,46 @@ public:
 };
 
 
-class Publisher
+class Subscriber
 {
-
 public:
-  Publisher(ndn::Face& face, const ndn::Name& syncPrefix,
-           const ndn::Name& userPrefix,
-           ndn::time::milliseconds syncInterestLifetime,
+  Subscriber(ndn::Face& face, const ndn::Name& syncPrefix,
+           const ndn::Name& userPrefix, ndn::time::milliseconds syncInterestLifetime,
            const SyncUpdateCallback& syncUpdateCallback);
 
   void
-  run();
-
-  void 
-  stop();
+  setInterestFilter(const ndn::Name& name, const bool loopback);
 
   void
-  addUserNode(const ndn::Name& userPrefix); //might need to change the name "user" here
+  processInterest(const ndn::Name& name, const ndn::Interest& interest);
 
   void
-  publishUpdate(const ndn::Name& userPrefix);
+  sendData(const ndn::Name& name);
 
+  void
+  sendInterest();
+  
   void
   onSyncUpdate(const std::vector<psync::MissingDataInfo>& updates);
 
-  void 
-  printSyncUPdate(const std::vector<SyncDataInfo> updates);
+  void
+  subscribe(const ndn::Name& topic);
+
+  void
+  unsubscribe(const ndn::Name& topic);
+
+  void
+  changePolicy();
 
 private:
-  std::shared_ptr<psync::FullProducer> m_syncLogic;
-  ndn::Face& m_face;
+  // std::shared_ptr<psync::PartialConsumer> m_partialConsumer;
+  ndn::Face m_face;
   SyncUpdateCallback m_syncUpdateCallback;
+
 
 };
 
-} //namespace publisher
+} //namespace subscriber
 } //namespace mguard
 
-#endif // MGUARD_PUBLISHER_HPP
+#endif // MGUARD_SUBSCRIBER_HPP
