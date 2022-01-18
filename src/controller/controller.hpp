@@ -11,7 +11,7 @@
 class Controller
 {
 public:
-  Controller ();
+  Controller (const ndn::Name& aaPrefix);
 
   ndn::nacabe::KpAttributeAuthority&
   getAttrAuthority()

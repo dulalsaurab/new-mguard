@@ -10,9 +10,3 @@ Controller::Controller(const ndn::Name& aaPrefix)
 {
   std::cout << "Authority cert" << m_aaCert << std::endl;
 }
-
-// int main ()
-// {
-//   Controller abe("/mguard/aa");
-//   abe.run();
-// }

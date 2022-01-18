@@ -2,7 +2,7 @@
 #define MGUARD_DATA_ADAPTER_HPP
 
 #include "publisher.hpp"
-#include "pre-processor.hpp"
+// #include "pre-processor.hpp"
 #include "file-processor.hpp"
 #include "util/stream.hpp"
 
@@ -22,6 +22,12 @@
 #include <unordered_map>
 
 namespace mguard {
+
+class Error : public std::runtime_error
+{
+public:
+  using std::runtime_error::runtime_error;
+};
 
 class DataAdapter
 {

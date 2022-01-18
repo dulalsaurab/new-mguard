@@ -47,7 +47,7 @@ def configure(conf):
 
     # Loading "late" to prevent tests from being compiled with profiling flags
     conf.load('coverage')
-    conf.loadAndParse('sanitizers')
+    conf.load('sanitizers')
 
     conf.env.prepend_value('STLIBPATH', ['.'])
     conf.define_cond('WITH_TESTS', conf.env.WITH_TESTS)
@@ -55,7 +55,7 @@ def configure(conf):
     # or conf.define_cond().  Everything that was added directly to conf.env.DEFINES
     # will not appear in the config header, but will instead be passed directly to the
     # compiler on the command line.
-    conf.write_config_header('src/mguard/config.hpp')
+    conf.write_config_header('src/config.hpp')
 
 
 def build(bld):
@@ -74,13 +74,13 @@ def build(bld):
     if bld.env.WITH_EXAMPLES:
         bld.recurse('examples')
 
-    bld.recurse('abe-helper')
+    # bld.recurse('controller')
 
     headers = bld.path.ant_glob('src/**/*.hpp')
     bld.install_files(bld.env.INCLUDEDIR, headers, relative_trick=True)
 
-    bld.install_files('${INCLUDEDIR}/mguard/',
-                      bld.path.find_resource('src/mguard/config.hpp'))
+    bld.install_files('${INCLUDEDIR}/',
+                      bld.path.find_resource('src/config.hpp'))
 
     bld(features='subst',
         source='mguard.pc.in',
