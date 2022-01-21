@@ -11,10 +11,10 @@ class attributeFilter {
 public:
   attributeFilter(bool isAllowed, std::string attribute);
   friend std::ostream &operator<<(std::ostream &os, const attributeFilter &parameter);
-  std::string attribute;
 
 private:
   bool isAllowed;
+  std::string attribute;
 };
 
 class PolicyParser 
