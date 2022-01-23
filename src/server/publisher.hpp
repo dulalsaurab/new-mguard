@@ -47,6 +47,13 @@ public:
 
   
   void
+  resetDataBuffer()
+  {
+    m_ckDataBuffer.clear();
+    m_dataBuffer.clear();
+  }
+
+  void
   doUpdate(ndn::Name& manifestName);
 
   void
@@ -88,9 +95,8 @@ private:
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_authorityCert;
   ndn::nacabe::CacheProducer m_abe_producer;
-  std::unordered_map<ndn::Name, std::shared_ptr<ndn::Data>> m_dataBuffer; //need to limit the size of the buffer
-
-
+  std::vector<std::shared_ptr<ndn::Data>> m_dataBuffer;
+  std::vector<std::shared_ptr<ndn::Data>> m_ckDataBuffer;
 };
 
 } // mguard

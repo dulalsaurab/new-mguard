@@ -31,8 +31,8 @@ DataAdapter::run()
   }
   catch (const std::exception& ex)
   {
+    NDN_LOG_ERROR("Face error: " << ex.what()); 
     NDN_THROW(Error(ex.what()));
-    NDN_LOG_ERROR("Face error: " << ex.what());
   }
 }
 

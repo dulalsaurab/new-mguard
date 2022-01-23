@@ -43,7 +43,9 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 void
 Publisher::doUpdate(ndn::Name& manifestName)
 {
+  m_partialProducer.addUserNode(manifestName); // won't get added if already present.
   m_partialProducer.publishName(manifestName);
+
   uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
   NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
 }
@@ -72,6 +74,10 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
     
+    // store the data into the buffer for bulk insertion to the repo;
+    m_dataBuffer.push_back(enc_data);
+    m_ckDataBuffer.push_back(ckData);
+
     bool publishManifest = stream.updateManifestList(enc_data->getFullName());
 
     // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
@@ -80,8 +86,13 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     // TODO: insert enc_data and ckData to the repo
     
     if(publishManifest) {
-      // use partial sync to publish data;
+      /*
+       1. insert buffered data into repo (TODO)
+       2. publish manifest using psync
+       3. reset the data buffer (TODO)
+      */
       doUpdate(stream.getManifestName());
+      // reset data buffer after 
     }
 }
 
@@ -128,31 +139,31 @@ void
 Publisher::processInterest(const ndn::Name& name, const ndn::Interest& interest)
 {
   // need to encapsulate this data into mguard data packet
-  auto it = m_dataBuffer.find(name);
-  if (it != m_dataBuffer.end()) {
-    auto data = it->second;
-    NDN_LOG_INFO("Sending data for name: " << name << "data" << *data);
-    ndn::Data _data (*it->second);
-    m_keyChain.sign(_data);
-    m_face.put(_data);
-    // once the data is schedule the corresponding entry deletion from the buffer
-    m_dataBuffer.erase(it);
-  }
-  else {
-    // data is not available in the buffer, send application nack
-    sendApplicationNack(name);
-  }
+  // auto it = m_dataBuffer.find(name);
+  // if (it != m_dataBuffer.end()) {
+  //   auto data = it->second;
+  //   NDN_LOG_INFO("Sending data for name: " << name << "data" << *data);
+  //   ndn::Data _data (*it->second);
+  //   m_keyChain.sign(_data);
+  //   m_face.put(_data);
+  //   // once the data is schedule the corresponding entry deletion from the buffer
+  //   m_dataBuffer.erase(it);
+  // }
+  // else {
+  //   // data is not available in the buffer, send application nack
+  //   sendApplicationNack(name);
+  // }
 }
 
 void
 Publisher::sendApplicationNack(const ndn::Name& name)
 {
-  NDN_LOG_INFO("Sending application nack");
-  ndn::Name dataName(name);
-  ndn::Data data(dataName);
-  data.setContentType(ndn::tlv::ContentType_Nack);
-  m_keyChain.sign(data);
-  m_face.put(data);
+  // NDN_LOG_INFO("Sending application nack");
+  // ndn::Name dataName(name);
+  // ndn::Data data(dataName);
+  // data.setContentType(ndn::tlv::ContentType_Nack);
+  // m_keyChain.sign(data);
+  // m_face.put(data);
 }
 
 

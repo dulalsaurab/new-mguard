@@ -71,7 +71,7 @@ private:
   ndn::Name m_manifestName;
   std::vector<std::string> m_attributeSet;
   std::string m_streamDataPath;
-  std::vector<std::string> m_manifestList;
+  std::vector<ndn::Name> m_manifestList;
   int m_manifestCounter;
 
 };

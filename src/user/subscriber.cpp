@@ -1,30 +1,87 @@
 #include "subscriber.hpp"
-#include <string>
-#include <iostream>
-#include <ndn-cxx/util/logger.hpp>
 
-using namespace ndn::time_literals;
+#include <iostream>
+
+// using namespace ndn::time_literals;
 
 NDN_LOG_INIT(mguard.subscriber);
 
 namespace mguard {
 namespace subscriber {
 
-Subscriber::Subscriber(ndn::Face& face, const ndn::Name& syncPrefix, 
-                   const ndn::Name& userPrefix, ndn::time::milliseconds syncInterestLifetime,
-                   const SyncUpdateCallback& syncUpdateCallback)
-: m_syncUpdateCallback(syncUpdateCallback)
+Subscriber::Subscriber(const ndn::Name& syncPrefix, 
+                       ndn::time::milliseconds syncInterestLifetime,
+                       std::unordered_set<ndn::Name>& eligibleStreams,
+                       const SyncUpdateCallback& syncUpdateCallback)
+: m_syncPrefix(syncPrefix)
+, m_eligibleStreams(eligibleStreams)
+, m_consumer(m_syncPrefix, m_face,
+             std::bind(&Subscriber::receivedHelloData, this, _1),
+             std::bind(&Subscriber::receivedSyncUpdates, this, _1),
+             m_eligibleStreams.size(), 0.001)
+, m_syncUpdateCallback(syncUpdateCallback)
 {
-  NDN_LOG_DEBUG("Using PSync");
-//   m_syncLogic = std::make_shared<psync::FullConsumer>(80,
-//                    face, syncPrefix, userPrefix,
-//                    std::bind(&Subscriber::onSyncUpdate, this, _1),
-//                    syncInterestLifetime);
+  NDN_LOG_DEBUG("Subscriber initialized");
+  /* TODO: 
+    1. fetch consumer's decryption key, and the eligible streams from controller
+    2. store the key and the streams
+  */
+}
+
+  void
+Subscriber::run()
+{
+  try {
+    m_face.processEvents();
+  }
+  catch (const std::exception& ex)
+  {
+    NDN_LOG_ERROR("Face error: " << ex.what()); 
+    NDN_THROW(Error(ex.what()));
+  }
 }
 
 void
-Subscriber::onSyncUpdate(const std::vector<psync::MissingDataInfo>& updates)
-{}
+Subscriber::stop()
+{
+  NDN_LOG_DEBUG("Shutting down face: ");
+  m_face.shutdown();
+  // m_face.getIoService().stop();
+}
 
-} // producer
+void
+Subscriber::subscribe(ndn::Name& streamName)
+{
+  auto it = m_availableStreams.find(streamName);
+  if (it == m_availableStreams.end()) {
+    NDN_LOG_INFO("Stream" << streamName << "not available for subscription");
+    return;
+  }
+  NDN_LOG_INFO("Subscribing to: " << streamName);
+  m_consumer.addSubscription(streamName, it->second);
+  m_consumer.sendSyncInterest();
+}
+
+void
+Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
+{
+  // store all the streams names and their latest seq number
+  for (const auto& it: availStreams) {
+    NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
+    m_availableStreams[it.first] = it.second;
+  }
+}
+
+void
+Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates)
+{
+  for (const auto& update : updates) {
+    for (uint64_t i = update.lowSeq; i <= update.highSeq; i++) {
+      NDN_LOG_INFO("Update: " << update.prefix << "/" << i);
+    }
+  }
+}
+
+
+} // subscriber
 } // mguard

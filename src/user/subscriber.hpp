@@ -1,14 +1,14 @@
-
-
 #ifndef MGUARD_SUBSCRIBER_HPP
 #define MGUARD_SUBSCRIBER_HPP
 
-#include <PSync/full-producer.hpp>
+#include <PSync/consumer.hpp>
 
+#include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/util/random.hpp>
-#include <ndn-cxx/util/scheduler.hpp>
 #include <ndn-cxx/util/time.hpp>
+
+#include <string>
 
 using namespace ndn::time_literals;
 
@@ -38,40 +38,41 @@ public:
 class Subscriber
 {
 public:
-  Subscriber(ndn::Face& face, const ndn::Name& syncPrefix,
-           const ndn::Name& userPrefix, ndn::time::milliseconds syncInterestLifetime,
-           const SyncUpdateCallback& syncUpdateCallback);
+  Subscriber(const ndn::Name& syncPrefix, ndn::time::milliseconds syncInterestLifetime,
+             std::unordered_set<ndn::Name>& eligibleStreams, const SyncUpdateCallback& syncUpdateCallback);
 
   void
-  setInterestFilter(const ndn::Name& name, const bool loopback);
+  run();
 
   void
-  processInterest(const ndn::Name& name, const ndn::Interest& interest);
+  stop();
 
   void
-  sendData(const ndn::Name& name);
-
-  void
-  sendInterest();
+  subscribe(ndn::Name& streamName);
   
-  void
-  onSyncUpdate(const std::vector<psync::MissingDataInfo>& updates);
-
-  void
-  subscribe(const ndn::Name& topic);
-
   void
   unsubscribe(const ndn::Name& topic);
 
   void
-  changePolicy();
+  receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams);
+
+  void
+  receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates);
+
+  void
+  sendInterest();
 
 private:
-  // std::shared_ptr<psync::PartialConsumer> m_partialConsumer;
   ndn::Face m_face;
+
+  ndn::Name m_syncPrefix;
+  // available streams are the ones received from psync
+  // and eligible streams are determined from the policy
+  std::unordered_map<ndn::Name, uint64_t> m_availableStreams;
+  std::unordered_set<ndn::Name> m_eligibleStreams;
+
+  psync::Consumer m_consumer;
   SyncUpdateCallback m_syncUpdateCallback;
-
-
 };
 
 } //namespace subscriber

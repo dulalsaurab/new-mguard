@@ -22,7 +22,7 @@ Stream::Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, co
 bool
 Stream::updateManifestList(ndn::Name dataNameWithDigest)
 {
-  m_manifestName.push_back(dataNameWithDigest);
+  m_manifestList.push_back(dataNameWithDigest);
   if (m_manifestCounter == MANIFEST_BATCH_SIZE - 1)
     {
       m_manifestCounter = 0; // reset the counter
