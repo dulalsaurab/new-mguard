@@ -453,8 +453,8 @@ std::list<std::string>
 PolicyParser::split(const std::string &basicString, const std::string &delimeter) 
 {
     std::list<std::string> splittedString;
-    int startIndex = 0;
-    int endIndex;
+    std::size_t startIndex = 0;
+    std::size_t endIndex;
     std::string val;
     while ((endIndex = basicString.find(delimeter, startIndex)) < basicString.size()){
         val = basicString.substr(startIndex, endIndex - startIndex);
