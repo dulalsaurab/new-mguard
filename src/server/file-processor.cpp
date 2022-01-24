@@ -1,12 +1,5 @@
 #include "file-processor.hpp"
 
-#include <boost/filesystem.hpp>
-#include <boost/property_tree/info_parser.hpp>
-
-#include <fstream>
-#include <iostream>
-#include <filesystem>
-
 namespace mguard
 {
 

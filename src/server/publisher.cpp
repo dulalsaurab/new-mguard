@@ -1,19 +1,5 @@
-#include "common.hpp"
 #include "publisher.hpp"
-#include "util/stream.hpp"
-
-#include <ndn-cxx/util/logger.hpp>
-#include <ndn-cxx/util/random.hpp>
-#include <ndn-cxx/security/signing-helpers.hpp>
-#include <ndn-cxx/encoding/block-helpers.hpp>
-#include <ndn-cxx/security/verification-helpers.hpp>
-#include <ndn-cxx/util/scheduler.hpp>
-#include <ndn-cxx/util/sha256.hpp>
-
-#include <iostream>
-#include <string>
-#include <chrono>
-#include <thread>
+#include "common.hpp"
 
 NDN_LOG_INIT(mguard.Publisher);
 

@@ -1,17 +1,21 @@
 #ifndef MGUARD_PUBLISHER_HPP
 #define MGUARD_PUBLISHER_HPP
 
-// #include "pre-processor.hpp"
 #include "file-processor.hpp"
 #include "util/stream.hpp"
 
-#include <ndn-cxx/face.hpp>
 #include <PSync/partial-producer.hpp>
-
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/cache-producer.hpp>
 
+#include <ndn-cxx/face.hpp>
+#include <ndn-cxx/util/logger.hpp>
+
 #include <unordered_map>
+#include <iostream>
+#include <string>
+#include <chrono>
+#include <thread>
 
 namespace mguard {
 

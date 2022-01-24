@@ -5,8 +5,6 @@
 
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
-#include <ndn-cxx/util/random.hpp>
-#include <ndn-cxx/util/time.hpp>
 
 #include <string>
 
@@ -39,7 +37,7 @@ class Subscriber
 {
 public:
   Subscriber(const ndn::Name& syncPrefix, ndn::time::milliseconds syncInterestLifetime,
-             std::unordered_set<ndn::Name>& eligibleStreams, const SyncUpdateCallback& syncUpdateCallback);
+             const SyncUpdateCallback& syncUpdateCallback);
 
   void
   run();

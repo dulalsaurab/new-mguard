@@ -2,8 +2,6 @@
 
 #include <iostream>
 
-// using namespace ndn::time_literals;
-
 NDN_LOG_INIT(mguard.subscriber);
 
 namespace mguard {
@@ -11,24 +9,23 @@ namespace subscriber {
 
 Subscriber::Subscriber(const ndn::Name& syncPrefix, 
                        ndn::time::milliseconds syncInterestLifetime,
-                       std::unordered_set<ndn::Name>& eligibleStreams,
                        const SyncUpdateCallback& syncUpdateCallback)
 : m_syncPrefix(syncPrefix)
-, m_eligibleStreams(eligibleStreams)
 , m_consumer(m_syncPrefix, m_face,
              std::bind(&Subscriber::receivedHelloData, this, _1),
              std::bind(&Subscriber::receivedSyncUpdates, this, _1),
-             m_eligibleStreams.size(), 0.001)
+             2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
 , m_syncUpdateCallback(syncUpdateCallback)
 {
   NDN_LOG_DEBUG("Subscriber initialized");
+  m_eligibleStreams.insert("/org.md2k/mguard/dd40c/gps/phone/manifest");
   /* TODO: 
     1. fetch consumer's decryption key, and the eligible streams from controller
     2. store the key and the streams
   */
 }
 
-  void
+void
 Subscriber::run()
 {
   try {

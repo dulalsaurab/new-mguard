@@ -1,9 +1,6 @@
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/cache-producer.hpp>
 
-#include <ndn-cxx/security/key-chain.hpp>
-#include <ndn-cxx/util/scheduler.hpp>
-
 #include <chrono>
 #include <unistd.h>
 #include <iostream>

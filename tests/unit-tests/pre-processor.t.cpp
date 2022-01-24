@@ -1,5 +1,5 @@
-#include <mguard/server/pre-processor.hpp>
 #include "test-common.hpp"
+#include <mguard/server/pre-processor.hpp>
 #include <ndn-cxx/name.hpp>
 
 namespace mguard {

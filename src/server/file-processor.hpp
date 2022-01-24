@@ -3,6 +3,8 @@
 
 #include "common.hpp"
 
+#include <ndn-cxx/face.hpp>
+
 #include <boost/filesystem.hpp>
 #include <boost/property_tree/info_parser.hpp>
 

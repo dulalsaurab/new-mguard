@@ -2,20 +2,10 @@
 #define MGUARD_DATA_ADAPTER_HPP
 
 #include "publisher.hpp"
-// #include "pre-processor.hpp"
 #include "file-processor.hpp"
 #include "util/stream.hpp"
 
-#include <ndn-cxx/face.hpp>
-#include <ndn-cxx/util/logger.hpp>
-#include <ndn-cxx/util/random.hpp>
-#include <ndn-cxx/security/signing-helpers.hpp>
-#include <ndn-cxx/encoding/block-helpers.hpp>
-#include <ndn-cxx/security/verification-helpers.hpp>
-#include <ndn-cxx/util/scheduler.hpp>
-
 #include <PSync/full-producer.hpp>
-
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/cache-producer.hpp>
 

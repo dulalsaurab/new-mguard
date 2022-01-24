@@ -1,6 +1,7 @@
-#include <iostream>
 #include <controller/parser.hpp>
 #include <controller/controller.hpp>
+
+#include <iostream>
 
 int main()
 {
