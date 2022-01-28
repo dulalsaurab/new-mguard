@@ -1,13 +1,12 @@
-#include <controller/parser.hpp>
 #include <controller/controller.hpp>
-
+#include <controller/parser.hpp>
 #include <iostream>
 
 int main()
 {
   // init controller
   Controller abe("/mguard/aa");
-  
+
   // todo: make default.policy the default one unless given other arguments
   std::string policyFilePath("../default.policy"), availableStreamsFilePath ("../policies/available_streams");
 

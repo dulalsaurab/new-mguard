@@ -1,8 +1,8 @@
 #include "test-common.hpp"
 
-#include <mguard/server/data-adapter.hpp>
-#include <mguard/server/util/stream.hpp>
-#include <mguard/server/common.hpp>
+#include <server/data-adapter.hpp>
+#include <server/util/stream.hpp>
+#include <server/common.hpp>
 
 #include <ndn-cxx/util/dummy-client-face.hpp>
 
