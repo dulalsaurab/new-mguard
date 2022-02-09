@@ -14,53 +14,55 @@ namespace mguard {
   2.) call parser with policy input and parser will output to file
 */
 
-PolicyParser::PolicyParser(std::basic_string<char> configFilePath, std::basic_string<char> availableStreams)
-: configFilePath (std::move(configFilePath))
-, availableStreamsPath (std::move(availableStreams))
+PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
+: availableStreamsPath (std::move(availableStreams))
 {
   // store data from input files
-  bool successfulParse = parseFiles();
-
-  // if parsing went well, process stored data to create ABE policy
-  if (successfulParse) {
-      generateABEPolicy();
-
-      // output
-      std::fstream file;
-      file.open("parser_output", std::ios::app);
-      for (const auto &requester: requesterNames) {
-          file << requester << '\t' << abePolicy << std::endl;
-      }
-      file.close();
+  if (!inputStreams()) {
+      std::cerr << "inputStreams failed" << std::endl;
   }
-}
-std::string
-PolicyParser::getABEPolicy() {
-    return abePolicy;
+
 }
 
-bool 
-PolicyParser::parseFiles() 
-{
-  // input for available streams
-  std::ifstream availableStreamsFile(availableStreamsPath.c_str());
-  if (!availableStreamsFile.is_open()){
-      std::cerr   <<  "ifstream input failed for "    <<  availableStreamsPath    <<  std::endl;
-      availableStreamsFile.close();
-      return false;
-  }
-  // parsing of available streams file
-  if (!parseAvailableStreams(availableStreamsFile)){
-      std::cerr   <<  "parsing of available-streams failed"   <<  std::endl;
-      availableStreamsFile.close();
-      return false;
-  }
-  availableStreamsFile.close();
+PolicyParser::policyDetails
+PolicyParser::getPolicyInfo() {
+    policyDetails a = {policyID, allowedStreams,allowedRequesters};
+    return a;
+}
 
+bool PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
+    // todo: should probably reset everything that would be stored in parser
+    // just so that you can't get old data after redoing global variables
+    availableStreamsPath = streamsFilePath;
+    return inputStreams();
+}
+
+bool
+PolicyParser::inputStreams() {
+    // input for available streams
+    std::ifstream availableStreamsFile(availableStreamsPath.c_str());
+    if (!availableStreamsFile.is_open()) {
+        std::cerr << "ifstream input failed for " << availableStreamsPath << std::endl;
+        availableStreamsFile.close();
+        return false;
+    }
+    // parsing of available streams file
+    if (!parseAvailableStreams(availableStreamsFile)) {
+        std::cerr << "parsing of available-streams failed" << std::endl;
+        availableStreamsFile.close();
+        return false;
+    }
+    availableStreamsFile.close();
+
+    return true;
+}
+
+bool
+PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   // input for config file
-  std::ifstream policyFile (configFilePath.c_str());
+  std::ifstream policyFile (policyFilePath.c_str());
   if (!policyFile.is_open()){
-      std::cerr   <<  "ifstream input failed for "    <<  configFilePath          <<  std::endl;
+      std::cerr << "ifstream input failed for " << policyFilePath << std::endl;
       policyFile.close();
       return false;
   }
@@ -72,6 +74,7 @@ PolicyParser::parseFiles()
   }
 
   policyFile.close();
+  generateABEPolicy();
   return true;
 }
 
@@ -170,7 +173,7 @@ bool PolicyParser::parsePolicy(std::istream& input) {
     }
     try {
         // set all instance variables (all required in policy)
-        policyID = section.get<int>("policy-id");
+        policyID = section.get<std::string>("policy-id");
         auto raw = section.get<std::string>("requester-names");
         auto splitted = split(raw, ",");
         requesterNames = splitRequesters(section.get<std::string>("requester-names"));
@@ -349,6 +352,14 @@ bool PolicyParser::generateABEPolicy() {
     // putting it all all together
     // AND together all separate conditions made for the output policy
     abePolicy = doStringThing(policy, "AND");
+
+    // output
+    std::fstream file;
+    file.open("parser_output", std::ios::app);
+    for (const auto &requester: requesterNames) {
+        file << requester << '\t' << abePolicy << std::endl;
+    }
+    file.close();
 
     return true;
 }

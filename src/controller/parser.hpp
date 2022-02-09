@@ -25,18 +25,32 @@ private:
 class PolicyParser 
 {
 public:
-  PolicyParser(std::basic_string<char> configFilePath, std::basic_string<char> availableStreams);
+  explicit PolicyParser(std::basic_string<char> availableStreams);
 
   friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
-    std::string getABEPolicy();
+    struct policyDetails
+    {
+        std::string abe_policy;
+        std::list <std::string> streams;
+        std::list<std::string> requesters;
+    };
+
+    policyDetails
+    getPolicyInfo();
+
+    bool
+    inputPolicy(const std::basic_string<char>& policyFilePath);
+
+    bool
+    inputStreams(const std::basic_string<char>& streamsFilePath);
 
 private:
   bool
   generateABEPolicy();
 
-  bool
-  parseFiles();
+    bool
+    inputStreams();
 
   static std::list<std::string>
   splitRequesters(const std::string& basicString);
@@ -67,11 +81,10 @@ private:
   processAttributes(const std::list<std::string>& attrList);
 
   // full path of the config/policy file
-  std::string configFilePath, availableStreamsPath;
+  std::string availableStreamsPath;
 
-  int policyID{};
   std::list<std::string> requesterNames; // this should be a list or array of some sort
-  std::string abePolicy;
+  std::string policyID, abePolicy;
 
   std::list<attributeFilter> filters;
   std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
