@@ -27,16 +27,18 @@ class PolicyParser
 public:
   PolicyParser(std::basic_string<char> configFilePath, std::basic_string<char> availableStreams);
 
-  bool 
-  parseFiles();
-
-  bool 
-  generateABEPolicy();
-
   friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
+    std::string getABEPolicy();
+
 private:
-  static std::list<std::string> 
+  bool
+  generateABEPolicy();
+
+  bool
+  parseFiles();
+
+  static std::list<std::string>
   splitRequesters(const std::string& basicString);
 
   static std::string 
@@ -74,7 +76,7 @@ private:
   std::list<attributeFilter> filters;
   std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
   std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
-  
+
 };
 
 }

@@ -34,6 +34,10 @@ PolicyParser::PolicyParser(std::basic_string<char> configFilePath, std::basic_st
       file.close();
   }
 }
+std::string
+PolicyParser::getABEPolicy() {
+    return abePolicy;
+}
 
 bool 
 PolicyParser::parseFiles() 
