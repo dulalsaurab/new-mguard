@@ -36,7 +36,9 @@ public:
 class Subscriber
 {
 public:
-  Subscriber(const ndn::Name& syncPrefix, ndn::time::milliseconds syncInterestLifetime,
+  Subscriber(const ndn::Name& syncPrefix, 
+             ndn::time::milliseconds syncInterestLifetime,
+             std::vector<std::string>& subscriptionList,
              const SyncUpdateCallback& syncUpdateCallback);
 
   void
@@ -46,7 +48,7 @@ public:
   stop();
 
   void
-  subscribe(ndn::Name& streamName);
+  subscribe(ndn::Name streamName);
   
   void
   unsubscribe(const ndn::Name& topic);
@@ -64,6 +66,7 @@ private:
   ndn::Face m_face;
 
   ndn::Name m_syncPrefix;
+  std::vector<std::string>& m_subscriptionList;
   // available streams are the ones received from psync
   // and eligible streams are determined from the policy
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams;

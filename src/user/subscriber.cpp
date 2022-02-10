@@ -9,8 +9,10 @@ namespace subscriber {
 
 Subscriber::Subscriber(const ndn::Name& syncPrefix, 
                        ndn::time::milliseconds syncInterestLifetime,
+                       std::vector<std::string>& subscriptionList,
                        const SyncUpdateCallback& syncUpdateCallback)
 : m_syncPrefix(syncPrefix)
+, m_subscriptionList(subscriptionList)
 , m_consumer(m_syncPrefix, m_face,
              std::bind(&Subscriber::receivedHelloData, this, _1),
              std::bind(&Subscriber::receivedSyncUpdates, this, _1),
@@ -18,7 +20,12 @@ Subscriber::Subscriber(const ndn::Name& syncPrefix,
 , m_syncUpdateCallback(syncUpdateCallback)
 {
   NDN_LOG_DEBUG("Subscriber initialized");
-  m_eligibleStreams.insert("/org.md2k/mguard/dd40c/gps/phone/manifest");
+  
+  // This starts the consumer side by sending a hello interest to the producer
+  // When the producer responds with hello data, receivedHelloData is called
+  m_consumer.sendHelloInterest();
+
+  // m_eligibleStreams.insert("/org.md2k/mguard/dd40c/gps/phone/manifest");
   /* TODO: 
     1. fetch consumer's decryption key, and the eligible streams from controller
     2. store the key and the streams
@@ -29,6 +36,7 @@ void
 Subscriber::run()
 {
   try {
+    NDN_LOG_INFO("Starting Face");
     m_face.processEvents();
   }
   catch (const std::exception& ex)
@@ -43,12 +51,13 @@ Subscriber::stop()
 {
   NDN_LOG_DEBUG("Shutting down face: ");
   m_face.shutdown();
-  // m_face.getIoService().stop();
 }
 
 void
-Subscriber::subscribe(ndn::Name& streamName)
+Subscriber::subscribe(ndn::Name streamName)
 {
+  // convert the streamName into manifest, because that's what is published by the sync
+  streamName.append("manifest");
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
     NDN_LOG_INFO("Stream" << streamName << "not available for subscription");
@@ -67,6 +76,12 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
   }
+  
+  // subscribe to streams present in the subscription list 
+  for (auto stream : m_subscriptionList)
+  {
+    subscribe(stream);
+  }
 }
 
 void
@@ -78,7 +93,5 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
     }
   }
 }
-
-
 } // subscriber
 } // mguard

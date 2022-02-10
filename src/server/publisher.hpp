@@ -3,6 +3,7 @@
 
 #include "file-processor.hpp"
 #include "util/stream.hpp"
+#include "util/repo-inserter.cpp"
 
 #include <PSync/partial-producer.hpp>
 #include <nac-abe/attribute-authority.hpp>
@@ -49,19 +50,14 @@ public:
               const ndn::security::Certificate& producerCert,
               const ndn::security::Certificate& attrAuthorityCertificate);
 
-  
-  void
-  resetDataBuffer()
-  {
-    m_ckDataBuffer.clear();
-    m_dataBuffer.clear();
-  }
-
   void
   doUpdate(ndn::Name& manifestName);
 
   void
   publish(ndn::Name dataName, std::string data, util::Stream& stream);
+
+  void
+  publishManifest(const uint64_t currentSeqNum, util::Stream& stream);
 
   template<ndn::encoding::Tag TAG>
   size_t
@@ -91,7 +87,8 @@ private:
   ndn::Scheduler m_scheduler;
   mutable ndn::Block m_wire;
   psync::PartialProducer m_partialProducer;
-  
+  util::RepoInserter m_repoInserter;
+
   // FileProcessor m_fileProcessor;
   std::string m_tempRow;
   ndn::Name m_attrAuthorityPrefix;
@@ -99,8 +96,6 @@ private:
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_authorityCert;
   ndn::nacabe::CacheProducer m_abe_producer;
-  std::vector<std::shared_ptr<ndn::Data>> m_dataBuffer;
-  std::vector<std::shared_ptr<ndn::Data>> m_ckDataBuffer;
 };
 
 } // mguard

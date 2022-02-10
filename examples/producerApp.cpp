@@ -3,10 +3,6 @@
 #include <server/common.hpp>
 
 #include <ndn-cxx/util/logger.hpp>
-// #include <ndn-cxx/util/random.hpp>
-// #include <ndn-cxx/security/signing-helpers.hpp>
-// #include <ndn-cxx/encoding/block-helpers.hpp>
-// #include <ndn-cxx/security/verification-helpers.hpp>
 #include <ndn-cxx/util/scheduler.hpp>
 
 #include <chrono>
@@ -54,9 +50,9 @@ private:
 int main ()
 {
   streamInfo A;
-  A.streamName = "/org.md2k/mguard/dd40c/gps/phone";
-  A.attributes = {"org.md2k", "/org.md2k/mguard/dd40c/gps/phone"};
-  A.dataPath = mguard::DATA_DIR + "/" + "org.md2k-mguard-dd40c-gps-phone.csv";
+  A.streamName = "/org/md2k/mguard/dd40c/gps/phone";
+  A.attributes = {"/org/md2k", "/org/md2k/mguard/dd40c/gps/phone"};
+  A.dataPath = mguard::DATA_DIR + "/" + "org-md2k-mguard-dd40c-gps-phone.csv";
 
   mguard::util::Stream stream(A.streamName, A.attributes, A.dataPath);
   mGuardProducer producerApp(stream);

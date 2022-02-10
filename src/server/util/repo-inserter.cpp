@@ -18,6 +18,9 @@
  * See AUTHORS.md for complete list of ndncert authors and contributors.
  */
 
+#include <ndn-cxx/face.hpp>
+#include <ndn-cxx/util/logger.hpp>
+
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
 #include <iostream>
@@ -27,7 +30,12 @@
 /**
  * A repo inserter using TCP bulk insertion protocol
  */
-class RepoInserter {
+
+namespace mguard {
+namespace util {
+
+class RepoInserter 
+{
 public:
 
   RepoInserter(std::string repoHost = "localhost", std::string repoPort = "7376")
@@ -36,13 +44,13 @@ public:
   {}
 
   bool
-  writeDataToRepo(const Data &data) {
+  writeDataToRepo(const ndn::Data &data) {
     boost::asio::ip::tcp::iostream requestStream;
-#if BOOST_VERSION >= 106600
-    requestStream.expires_after(std::chrono::seconds(3));
-#else
-    requestStream.expires_from_now(boost::posix_time::seconds(3));
-#endif //BOOST_VERSION >= 106600
+    #if BOOST_VERSION >= 106600
+        requestStream.expires_after(std::chrono::seconds(3));
+    #else
+        requestStream.expires_from_now(boost::posix_time::seconds(3));
+    #endif //BOOST_VERSION >= 106600
     requestStream.connect(m_repoHost, m_repoPort);
     if (!requestStream) {
       std::cerr << "ERROR: Cannot publish the data to repo-ng"
@@ -58,3 +66,6 @@ private:
   std::string m_repoPort;
   boost::asio::io_service m_ioService;
 };
+
+} // util
+} // mguard

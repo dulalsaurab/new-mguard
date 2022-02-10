@@ -6,7 +6,7 @@ int main()
 {
   // init controller
   Controller abe("/mguard/aa");
-
+  
   // todo: make default.policy the default one unless given other arguments
   std::string policyFilePath("../default.policy"), availableStreamsFilePath ("../policies/available_streams");
 

@@ -21,6 +21,12 @@ public:
   bool
   updateManifestList(ndn::Name dataNameWithDigest);
 
+  std::vector<ndn::Name>&
+  getManifestList()
+  {
+    return m_manifestList;
+  }
+
   ndn::Name&
   getName()
   {
@@ -31,6 +37,12 @@ public:
 	getMD2KName()
   {
     return m_md2kName;
+  }
+
+  void
+  setUpdateManifestName(ndn::Name& name)
+  {
+    m_manifestName = name;
   }
 
 	ndn::Name&
@@ -68,7 +80,7 @@ public:
 private:
   std::string m_md2kName;
   ndn::Name m_name;
-  ndn::Name m_manifestName;
+  ndn::Name m_manifestName; // will contain the manifest name with latest sequence number
   std::vector<std::string> m_attributeSet;
   std::string m_streamDataPath;
   std::vector<ndn::Name> m_manifestList;
