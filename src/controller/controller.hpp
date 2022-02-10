@@ -5,6 +5,8 @@
 #include <unistd.h>
 #include <iostream>
 
+#include "parser.cpp"
+
 class Controller
 {
 public:
