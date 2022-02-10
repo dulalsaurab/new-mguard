@@ -15,7 +15,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 
 // 40 = expected number of entries also will be used as IBF size
 // syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
-, m_partialProducer(40, m_face, "/org.md2k", "/org.md2k/uprefix")
+, m_partialProducer(40, m_face, "/org/md2k", "/org/md2k/uprefix")
 
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
@@ -39,7 +39,7 @@ Publisher::doUpdate(ndn::Name& manifestName)
 void
 Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
 {
-    // TODO: create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
+    // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
     // Manifest name: <stream name>/manifest/<seq-num>
     NDN_LOG_DEBUG("Publishing data: " << data);
 
@@ -60,27 +60,43 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
     
-    // store the data into the buffer for bulk insertion to the repo;
-    m_dataBuffer.push_back(enc_data);
-    m_ckDataBuffer.push_back(ckData);
+    // store the data into the repo, the insertion uses tcp bulk insertion protocol
+    m_repoInserter.writeDataToRepo(*enc_data);
+    m_repoInserter.writeDataToRepo(*ckData);
 
-    bool publishManifest = stream.updateManifestList(enc_data->getFullName());
+    bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
 
     // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
     // "t" time has passed after receiving the last application data.
-
-    // TODO: insert enc_data and ckData to the repo
-    
-    if(publishManifest) {
-      /*
-       1. insert buffered data into repo (TODO)
-       2. publish manifest using psync
-       3. reset the data buffer (TODO)
-      */
+    if(doPublishManifest) {
+      
+      // create manifest data packet, and insert it into the repo
+      auto currentSeqNum = m_partialProducer.getSeqNo(stream.getManifestName()).value();
+      // publishManifest(currentSeqNum, stream);
       doUpdate(stream.getManifestName());
-      // reset data buffer after 
     }
 }
+
+void
+Publisher::publishManifest(const uint64_t currentSeqNum, util::Stream& stream)
+{
+  auto dataName = stream.getManifestName();
+  dataName.appendNumber(currentSeqNum);
+  auto manifestData = std::make_shared<ndn::Data>(dataName);
+
+  auto manifestContent = std::accumulate(std::begin(stream.getManifestList()), 
+                          std::end(stream.getManifestList()), std::string(),
+                          [](std::string &content, ndn::Name &dataName) {
+                           return content.empty() ? dataName.toUri() : content + "|" + dataName.toUri();
+                          });
+
+  NDN_LOG_DEBUG ("seqNumber: " << currentSeqNum << ": Manifest content" << manifestContent);
+  
+  // data->setContent(reinterpret_cast<const uint8_t*>(content.data()), content.size());
+  // m_keyChain.sign(*data);
+
+}
+
 
 const ndn::Block &
 Publisher::wireEncode()
