@@ -26,7 +26,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 
 PolicyParser::policyDetails
 PolicyParser::getPolicyInfo() {
-    policyDetails a = {policyID, allowedStreams,allowedRequesters};
+    policyDetails a = {policyID, calculatedStreams,requesterNames, abePolicy};
     return a;
 }
 
@@ -324,6 +324,7 @@ bool PolicyParser::generateABEPolicy() {
             std::cerr << "ERROR: No streams allowed by policy" << std::endl;
             return false;
         }
+        calculatedStreams = workingStreams;
         policy.emplace_back(doStringThing(workingStreams, "OR"));
     }
 

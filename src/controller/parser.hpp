@@ -31,9 +31,10 @@ public:
 
     struct policyDetails
     {
-        std::string abe_policy;
+        std::string policyIdentifier;
         std::list <std::string> streams;
         std::list<std::string> requesters;
+        std::string abePolicy;
     };
 
     policyDetails
@@ -87,7 +88,7 @@ private:
   std::string policyID, abePolicy;
 
   std::list<attributeFilter> filters;
-  std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
+  std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
   std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
 
 };
