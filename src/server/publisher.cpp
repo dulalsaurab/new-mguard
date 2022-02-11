@@ -29,7 +29,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 void
 Publisher::doUpdate(ndn::Name& manifestName)
 {
-  m_partialProducer.addUserNode(manifestName); // won't get added if already present.
+  // m_partialProducer.addUserNode(manifestName); // won't get added if already present.
   m_partialProducer.publishName(manifestName);
 
   uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
@@ -44,66 +44,75 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     NDN_LOG_DEBUG("Publishing data: " << data);
 
     std::shared_ptr<ndn::Data> enc_data, ckData;
-    try
-    {
+    try {
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         unsigned char* byteptr = reinterpret_cast<unsigned char *>(&data);
         std::tie(ckData, enc_data) = m_abe_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
         // m_keyChain.sign(*enc_data, ndn::signingWithSha256());
     }
-    catch(const std::exception& e)
-    {
-        NDN_LOG_ERROR("Encryption failled");
-        std::cerr << e.what() << '\n';
+    catch(const std::exception& e) {
+      NDN_LOG_ERROR("Encryption failled");
+      std::cerr << e.what() << '\n';
         // return false;
     }
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
     
     // store the data into the repo, the insertion uses tcp bulk insertion protocol
-    m_repoInserter.writeDataToRepo(*enc_data);
-    m_repoInserter.writeDataToRepo(*ckData);
+    try {
+      if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
+        NDN_LOG_ERROR("data and cKdata insertion completed"); 
+    }
+    catch(const std::exception& e) {
+      NDN_LOG_ERROR("data and cKdata insertion failed");
+      std::cerr << e.what() << '\n';
+    }
 
     bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
 
     // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
     // "t" time has passed after receiving the last application data.
     if(doPublishManifest) {
-      
       // create manifest data packet, and insert it into the repo
-      auto currentSeqNum = m_partialProducer.getSeqNo(stream.getManifestName()).value();
-      // publishManifest(currentSeqNum, stream);
+      publishManifest(stream);
       doUpdate(stream.getManifestName());
     }
 }
 
 void
-Publisher::publishManifest(const uint64_t currentSeqNum, util::Stream& stream)
+Publisher::publishManifest(util::Stream& stream)
 {
   auto dataName = stream.getManifestName();
-  dataName.appendNumber(currentSeqNum);
+  m_partialProducer.addUserNode(dataName);
+
+  auto prevSeqNum = m_partialProducer.getSeqNo(stream.getManifestName()).value();
+  dataName.appendNumber(prevSeqNum + 1);
   auto manifestData = std::make_shared<ndn::Data>(dataName);
-
-  auto manifestContent = std::accumulate(std::begin(stream.getManifestList()), 
-                          std::end(stream.getManifestList()), std::string(),
-                          [](std::string &content, ndn::Name &dataName) {
-                           return content.empty() ? dataName.toUri() : content + "|" + dataName.toUri();
-                          });
-
-  NDN_LOG_DEBUG ("seqNumber: " << currentSeqNum << ": Manifest content" << manifestContent);
   
-  // data->setContent(reinterpret_cast<const uint8_t*>(content.data()), content.size());
-  // m_keyChain.sign(*data);
+  auto m_temp = stream.getManifestList();
 
+  manifestData->setContent(wireEncode());
+  NDN_LOG_DEBUG ("seqNumber: " << prevSeqNum + 1);
+  
+  m_keyChain.sign(*manifestData);
+  
+   try {
+      if ((m_repoInserter.writeDataToRepo(*manifestData)))
+        NDN_LOG_ERROR("Successfully inserted manifest into the repo");
+    }
+    catch(const std::exception& e) {
+      NDN_LOG_ERROR("Failed to insert mainfest into the repo");
+      std::cerr << e.what() << '\n';
+    }
 }
 
-
-const ndn::Block &
-Publisher::wireEncode()
+const ndn::Block&
+Publisher::wireEncode() const
 {
   if (m_wire.hasWire()) {
     return m_wire;
   }
+
   ndn::EncodingEstimator estimator;
   size_t estimatedSize = wireEncode(estimator);
 
@@ -119,7 +128,11 @@ size_t
 Publisher::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
 {
   size_t totalLength = 0;
-  totalLength += prependStringBlock(encoder, tlv::DataRow, m_tempRow);
+  
+  for (auto it = m_temp.rbegin(); it != m_temp.rend(); ++it) {
+    totalLength += it->wireEncode(encoder);
+  }
+
   totalLength += encoder.prependVarNumber(totalLength);
   totalLength += encoder.prependVarNumber(tlv::mGuardContent);
 
@@ -134,38 +147,6 @@ Publisher::setInterestFilter(const ndn::Name& name, const bool loopback)
                            std::bind(&Publisher::processInterest, this, _1, _2),
                            std::bind(&Publisher::onRegistrationSuccess, this, _1),
                            std::bind(&Publisher::onRegistrationFailed, this, _1));
-}
-
-
-void
-Publisher::processInterest(const ndn::Name& name, const ndn::Interest& interest)
-{
-  // need to encapsulate this data into mguard data packet
-  // auto it = m_dataBuffer.find(name);
-  // if (it != m_dataBuffer.end()) {
-  //   auto data = it->second;
-  //   NDN_LOG_INFO("Sending data for name: " << name << "data" << *data);
-  //   ndn::Data _data (*it->second);
-  //   m_keyChain.sign(_data);
-  //   m_face.put(_data);
-  //   // once the data is schedule the corresponding entry deletion from the buffer
-  //   m_dataBuffer.erase(it);
-  // }
-  // else {
-  //   // data is not available in the buffer, send application nack
-  //   sendApplicationNack(name);
-  // }
-}
-
-void
-Publisher::sendApplicationNack(const ndn::Name& name)
-{
-  // NDN_LOG_INFO("Sending application nack");
-  // ndn::Name dataName(name);
-  // ndn::Data data(dataName);
-  // data.setContentType(ndn::tlv::ContentType_Nack);
-  // m_keyChain.sign(data);
-  // m_face.put(data);
 }
 
 
