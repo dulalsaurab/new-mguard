@@ -57,20 +57,17 @@ public:
   publish(ndn::Name dataName, std::string data, util::Stream& stream);
 
   void
-  publishManifest(const uint64_t currentSeqNum, util::Stream& stream);
+  publishManifest(util::Stream& stream);
 
   template<ndn::encoding::Tag TAG>
   size_t
   wireEncode(ndn::EncodingImpl<TAG>& block) const;
 
   const ndn::Block&
-  wireEncode();
+  wireEncode() const;
 
   void
   setInterestFilter(const ndn::Name& name, const bool loopback = false);
-
-  void
-  processInterest(const ndn::Name& name, const ndn::Interest& interest);
 
   void
   onRegistrationSuccess(const ndn::Name& name);
@@ -78,9 +75,6 @@ public:
   void
   onRegistrationFailed(const ndn::Name& name);
   
-  void
-  sendApplicationNack(const ndn::Name& name);
-
 private:
   ndn::Face& m_face;
   ndn::security::KeyChain& m_keyChain;
@@ -90,7 +84,7 @@ private:
   util::RepoInserter m_repoInserter;
 
   // FileProcessor m_fileProcessor;
-  std::string m_tempRow;
+  std::vector<ndn::Name> m_temp;
   ndn::Name m_attrAuthorityPrefix;
   ndn::Name m_producerPrefix;
   ndn::security::Certificate m_producerCert;
