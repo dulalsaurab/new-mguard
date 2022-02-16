@@ -1,5 +1,5 @@
 #include "stream.hpp"
-#include "../common.hpp"
+#include "common.hpp"
 
 namespace mguard {
 namespace util {

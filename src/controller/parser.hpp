@@ -1,3 +1,9 @@
+#ifndef MGUARD_PARSER_HPP
+#define MGUARD_PARSER_HPP
+
+#include "common.hpp"
+
+#include <ndn-cxx/name.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>
@@ -8,6 +14,15 @@
 #include <ostream>
 
 namespace mguard {
+namespace parser {
+
+struct PolicyDetail
+{
+    std::string policyIdentifier;
+    std::list<std::string> streams;
+    std::list<std::string> requesters;
+    std::string abePolicy;
+};
 
 using ConfigSection = boost::property_tree::ptree;
 
@@ -29,22 +44,14 @@ public:
 
   friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
 
-    struct policyDetails
-    {
-        std::string policyIdentifier;
-        std::list <std::string> streams;
-        std::list<std::string> requesters;
-        std::string abePolicy;
-    };
+  PolicyDetail
+  getPolicyInfo();
 
-    policyDetails
-    getPolicyInfo();
+  bool
+  inputPolicy(const std::basic_string<char>& policyFilePath);
 
-    bool
-    inputPolicy(const std::basic_string<char>& policyFilePath);
-
-    bool
-    inputStreams(const std::basic_string<char>& streamsFilePath);
+  bool
+  inputStreams(const std::basic_string<char>& streamsFilePath);
 
 private:
   bool
@@ -81,6 +88,7 @@ private:
   static std::string 
   processAttributes(const std::list<std::string>& attrList);
 
+
   // full path of the config/policy file
   std::string availableStreamsPath;
 
@@ -93,4 +101,7 @@ private:
 
 };
 
-}
+} // namespace parser
+} // namespace mguard
+
+#endif // MGUARD_PARSER_HPP

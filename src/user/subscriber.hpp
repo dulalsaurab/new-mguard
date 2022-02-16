@@ -2,6 +2,7 @@
 #define MGUARD_SUBSCRIBER_HPP
 
 #include <PSync/consumer.hpp>
+#include <nac-abe/attribute-authority.hpp>
 
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
@@ -23,7 +24,6 @@ typedef std::function<void(const std::vector<SyncDataInfo>& updates)> SyncUpdate
 
 namespace subscriber {
 namespace tlv {
-
 }
 
 class Error : public std::runtime_error
@@ -32,11 +32,11 @@ public:
   using std::runtime_error::runtime_error;
 };
 
-
 class Subscriber
 {
 public:
-  Subscriber(const ndn::Name& syncPrefix, 
+  Subscriber(const ndn::Name& consumerPrefix,
+             const ndn::Name& syncPrefix, 
              ndn::time::milliseconds syncInterestLifetime,
              std::vector<std::string>& subscriptionList,
              const SyncUpdateCallback& syncUpdateCallback);
@@ -46,6 +46,15 @@ public:
 
   void
   stop();
+
+  void
+  expressInterest(const ndn::Name& name);
+
+  void
+  onData(const ndn::Interest& interest, const ndn::Data& data);
+
+  void
+  onTimeout(const ndn::Interest& interest);
 
   void
   subscribe(ndn::Name streamName);
@@ -61,16 +70,21 @@ public:
 
   void
   sendInterest();
+  
+  void
+  wireDecode(const ndn::Block& wire);
 
 private:
   ndn::Face m_face;
 
+  ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
   std::vector<std::string>& m_subscriptionList;
   // available streams are the ones received from psync
   // and eligible streams are determined from the policy
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams;
   std::unordered_set<ndn::Name> m_eligibleStreams;
+  ndn::nacabe::algo::PrivateKey decryptionKey;
 
   psync::Consumer m_consumer;
   SyncUpdateCallback m_syncUpdateCallback;

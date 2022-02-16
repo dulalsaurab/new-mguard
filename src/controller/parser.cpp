@@ -1,11 +1,13 @@
 #include "parser.hpp"
-#include "boost/property_tree/info_parser.hpp"
+
+#include <boost/property_tree/info_parser.hpp>
 
 #include <iostream>
 #include <utility>
 
 namespace pt = boost::property_tree;
 namespace mguard {
+namespace parser {
 
 /* 
   todo: functionality for wildcard within stream names
@@ -21,13 +23,12 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
   if (!inputStreams()) {
       std::cerr << "inputStreams failed" << std::endl;
   }
-
 }
 
-PolicyParser::policyDetails
+PolicyDetail
 PolicyParser::getPolicyInfo() {
-    policyDetails a = {policyID, calculatedStreams,requesterNames, abePolicy};
-    return a;
+    const PolicyDetail policyDetail = {policyID, calculatedStreams,requesterNames, abePolicy};
+    return policyDetail;
 }
 
 bool PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
@@ -487,9 +488,9 @@ PolicyParser::split(const std::string &basicString, const std::string &delimeter
 std::list<std::string> PolicyParser::splitRequesters(const std::string& basicString) 
 {
     std::list<std::string> output;
-    std::list<std::string> n = mguard::PolicyParser::split(basicString, ",");
+    std::list<std::string> n = PolicyParser::split(basicString, ",");
     for (const auto& item : n) {
-        for (const auto& thing : mguard::PolicyParser::split(item, " ")) {
+        for (const auto& thing : PolicyParser::split(item, " ")) {
             if (!thing.empty()) {
                 output.push_back(thing);
             }
@@ -549,4 +550,5 @@ std::ostream &operator<<(std::ostream &os, const attributeFilter &filter) {
 
     return os;
 }
-}
+} // namespace parser
+} // namespace mguard

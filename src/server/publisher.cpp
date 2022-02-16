@@ -99,6 +99,7 @@ Publisher::publishManifest(util::Stream& stream)
    try {
       if ((m_repoInserter.writeDataToRepo(*manifestData)))
         NDN_LOG_ERROR("Successfully inserted manifest into the repo");
+        m_temp.clear(); // clear temp variable
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Failed to insert mainfest into the repo");
@@ -134,32 +135,34 @@ Publisher::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
   }
 
   totalLength += encoder.prependVarNumber(totalLength);
-  totalLength += encoder.prependVarNumber(tlv::mGuardContent);
+  totalLength += encoder.prependVarNumber(mguard::tlv::mGuardPublisher);
+  
+  // totalLength += encoder.prependVarNumber(totalLength);
+  // totalLength += encoder.prependVarNumber(mguard::tlv::mGuardContent);
 
   return totalLength;
 }
 
-void
-Publisher::setInterestFilter(const ndn::Name& name, const bool loopback)
-{
-  NDN_LOG_INFO("Setting interest filter on: " << name);
-  m_face.setInterestFilter(ndn::InterestFilter(name).allowLoopback(false),
-                           std::bind(&Publisher::processInterest, this, _1, _2),
-                           std::bind(&Publisher::onRegistrationSuccess, this, _1),
-                           std::bind(&Publisher::onRegistrationFailed, this, _1));
-}
+// void
+// Publisher::setInterestFilter(const ndn::Name& name, const bool loopback)
+// {
+//   NDN_LOG_INFO("Setting interest filter on: " << name);
+//   m_face.setInterestFilter(ndn::InterestFilter(name).allowLoopback(false),
+//                            std::bind(&Publisher::processInterest, this, _1, _2),
+//                            std::bind(&Publisher::onRegistrationSuccess, this, _1),
+//                            std::bind(&Publisher::onRegistrationFailed, this, _1));
+// }
 
+// void
+// Publisher::onRegistrationSuccess(const ndn::Name& name)
+// {
+//   NDN_LOG_INFO("Successfully registered prefix: " << name);
+// }
 
-void
-Publisher::onRegistrationSuccess(const ndn::Name& name)
-{
-  NDN_LOG_INFO("Successfully registered prefix: " << name);
-}
-
-void
-Publisher::onRegistrationFailed(const ndn::Name& name)
-{
-  NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
-}
+// void
+// Publisher::onRegistrationFailed(const ndn::Name& name)
+// {
+//   NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
+// }
 
 } //mguard

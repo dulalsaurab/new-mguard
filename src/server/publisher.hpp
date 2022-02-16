@@ -33,11 +33,10 @@ const int MAX_UPDATE_WAIT_TIME = 100;
 
 namespace tlv {
 
-enum
-{
-  mGuardContent = 128,
-  DataRow = 129
-};
+// enum
+// {
+//   mGuardPublisher = 128
+// };
 } // namespace tlv
 
 
@@ -66,14 +65,14 @@ public:
   const ndn::Block&
   wireEncode() const;
 
-  void
-  setInterestFilter(const ndn::Name& name, const bool loopback = false);
+  // void
+  // setInterestFilter(const ndn::Name& name, const bool loopback = false);
 
-  void
-  onRegistrationSuccess(const ndn::Name& name);
+  // void
+  // onRegistrationSuccess(const ndn::Name& name);
 
-  void
-  onRegistrationFailed(const ndn::Name& name);
+  // void
+  // onRegistrationFailed(const ndn::Name& name);
   
 private:
   ndn::Face& m_face;

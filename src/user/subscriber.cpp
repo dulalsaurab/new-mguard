@@ -1,4 +1,7 @@
 #include "subscriber.hpp"
+#include "common.hpp"
+
+#include <nac-abe/attribute-authority.hpp>
 
 #include <iostream>
 
@@ -7,11 +10,13 @@ NDN_LOG_INIT(mguard.subscriber);
 namespace mguard {
 namespace subscriber {
 
-Subscriber::Subscriber(const ndn::Name& syncPrefix, 
+Subscriber::Subscriber(const ndn::Name& consumerPrefix,
+                       const ndn::Name& syncPrefix,
                        ndn::time::milliseconds syncInterestLifetime,
                        std::vector<std::string>& subscriptionList,
                        const SyncUpdateCallback& syncUpdateCallback)
-: m_syncPrefix(syncPrefix)
+: m_consumerPrefix(consumerPrefix)
+, m_syncPrefix(syncPrefix)
 , m_subscriptionList(subscriptionList)
 , m_consumer(m_syncPrefix, m_face,
              std::bind(&Subscriber::receivedHelloData, this, _1),
@@ -21,9 +26,21 @@ Subscriber::Subscriber(const ndn::Name& syncPrefix,
 {
   NDN_LOG_DEBUG("Subscriber initialized");
   
+  // get policy details from controller
+  try {
+    ndn::Name interestName= "/mguard/controller";
+    interestName.append(m_consumerPrefix);
+    NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
+    expressInterest(interestName);
+  }
+  catch (const std::exception& e)
+  {
+    NDN_LOG_ERROR("error: " << e.what()); 
+  }
+
   // This starts the consumer side by sending a hello interest to the producer
   // When the producer responds with hello data, receivedHelloData is called
-  m_consumer.sendHelloInterest();
+  // m_consumer.sendHelloInterest();
 
   // m_eligibleStreams.insert("/org.md2k/mguard/dd40c/gps/phone/manifest");
   /* TODO: 
@@ -51,6 +68,36 @@ Subscriber::stop()
 {
   NDN_LOG_DEBUG("Shutting down face: ");
   m_face.shutdown();
+}
+
+void
+Subscriber::expressInterest(const ndn::Name& name)
+{
+  NDN_LOG_INFO("Sending interest: "  << name);
+  ndn::Interest interest(name);
+  interest.setCanBePrefix(false);
+  // interest.setMustBeFresh(true); //set true if want data explicit from producer.
+  interest.setInterestLifetime(160_ms);
+
+  m_face.expressInterest(interest,
+                         bind(&Subscriber::onData, this, _1, _2),
+                         bind(&Subscriber::onTimeout, this, _1),
+                         bind(&Subscriber::onTimeout, this, _1));
+}
+
+void
+Subscriber::onData(const ndn::Interest& interest, const ndn::Data& data)
+{
+  NDN_LOG_INFO("Data received for: " << interest.getName());
+
+  // std::cout << data.getContent() << std::endl;
+  wireDecode(data.getContent());
+
+}
+void
+Subscriber::onTimeout(const ndn::Interest& interest)
+{
+  NDN_LOG_INFO("Interest: " << interest.getName() << " timed out ");
 }
 
 void
@@ -93,5 +140,27 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
     }
   }
 }
+
+void
+Subscriber::wireDecode(const ndn::Block& wire)
+{
+  m_eligibleStreams.clear();
+  wire.parse();
+  auto val = wire.elements_begin();
+  if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardController)
+  {
+    val->parse();
+    for (auto it = val->elements_begin(); it != val->elements_end(); ++it) {
+      if (it->type() == ndn::tlv::DescriptionKey)
+      {
+        std::cout << ndn::encoding::readString(*it) << std::endl;
+      }
+      else {
+        m_eligibleStreams.emplace(*it); 
+      }
+    }
+  }
+}
+
 } // subscriber
 } // mguard

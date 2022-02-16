@@ -1,5 +1,5 @@
 #include <user/subscriber.hpp>
-#include <server/common.hpp>
+#include <common.hpp>
 
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
@@ -13,7 +13,8 @@ class mGuardConsumer
 public:
 
   mGuardConsumer(std::vector<std::string>& subscriptionList)
-  : m_subscriber("/org/md2k", 1600_ms, subscriptionList, std::bind(&mGuardConsumer::processCallback, this, _1))
+  : m_subscriber("/org/md2k/A", "/org/md2k", 1600_ms, subscriptionList, 
+                 std::bind(&mGuardConsumer::processCallback, this, _1))
   {
   }
 
@@ -29,7 +30,6 @@ public:
     m_subscriber.run();
   }
 
-
 private:
   ndn::Face m_face;
   mguard::subscriber::Subscriber m_subscriber;
@@ -38,7 +38,7 @@ private:
 int 
 main ()
 {
-  std::vector<std::string> subscriptionList {"/org.md2k/mguard/dd40c/gps/phone"};
+  std::vector<std::string> subscriptionList {"/org/md2k/mguard/dd40c/gps/phone"};
   mGuardConsumer consumer (subscriptionList);
   consumer.handler();
 }

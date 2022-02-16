@@ -1,14 +1,18 @@
 #include <controller/controller.hpp>
-#include <controller/parser.hpp>
+// #include <controller/parser.hpp>
 #include <iostream>
 
 int main()
 {
   // init controller
-  Controller abe("/mguard/aa");
+  std::string availableStreamsFilePath = "policies/available_streams";
+  std::string policyFilePath = "default.policy";
+  std::string aaPrefix = "/mguard/aa";
+  ndn::Name controllerPrefix = "/mguard/controller";
+  mguard::controller::Controller mGuardController(controllerPrefix, aaPrefix, availableStreamsFilePath);
   
   // todo: make default.policy the default one unless given other arguments
-  std::string policyFilePath("../default.policy"), availableStreamsFilePath ("../policies/available_streams");
+  // std::string policyFilePath("../default.policy"), availableStreamsFilePath ("../policies/available_streams");
 
     // // only allowing -f policyFilePath to change policy file name
     // // very crude way of doing this, but it works for now
@@ -23,12 +27,11 @@ int main()
 
     // this createsa a parser with the path to the config file and the available_streams file
     // the resulting ABE policy is automatically generated
-    mguard::PolicyParser pp(policyFilePath, availableStreamsFilePath);
+    // mguard::PolicyParser pp(policyFilePath, availableStreamsFilePath);
 
-    std::cout << pp << std::endl;
+    // std::cout << pp << std::endl;
 
-    abe.run();
-
+    mGuardController.run();
     return 0;
 
 }
