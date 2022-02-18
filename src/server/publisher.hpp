@@ -31,15 +31,6 @@ const int MANIFEST_BATCH_SIZE = 100;
 // if next update is not received withing 100 ms, the manifest will be publised, this can override batch size
 const int MAX_UPDATE_WAIT_TIME = 100;
 
-namespace tlv {
-
-// enum
-// {
-//   mGuardPublisher = 128
-// };
-} // namespace tlv
-
-
 class Publisher
 {
 
@@ -64,15 +55,6 @@ public:
 
   const ndn::Block&
   wireEncode() const;
-
-  // void
-  // setInterestFilter(const ndn::Name& name, const bool loopback = false);
-
-  // void
-  // onRegistrationSuccess(const ndn::Name& name);
-
-  // void
-  // onRegistrationFailed(const ndn::Name& name);
   
 private:
   ndn::Face& m_face;

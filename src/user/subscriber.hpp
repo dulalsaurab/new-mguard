@@ -3,11 +3,14 @@
 
 #include <PSync/consumer.hpp>
 #include <nac-abe/attribute-authority.hpp>
+#include <nac-abe/consumer.hpp>
 
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
 
 #include <string>
+#include <chrono>
+#include <thread>
 
 using namespace ndn::time_literals;
 
@@ -48,7 +51,7 @@ public:
   stop();
 
   void
-  expressInterest(const ndn::Name& name);
+  expressInterest(const ndn::Name& name, bool canBePrefix = false, bool mustBeFresh = false);
 
   void
   onData(const ndn::Interest& interest, const ndn::Data& data);
@@ -74,8 +77,16 @@ public:
   void
   wireDecode(const ndn::Block& wire);
 
+  // abe callbacks
+  void
+  abeOnData(const ndn::Buffer& buffer);
+  
+  void 
+  abeOnError(const std::string& errorMessage);
+
 private:
   ndn::Face m_face;
+  ndn::security::KeyChain m_keyChain;
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
@@ -85,8 +96,9 @@ private:
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams;
   std::unordered_set<ndn::Name> m_eligibleStreams;
   ndn::nacabe::algo::PrivateKey decryptionKey;
+  ndn::nacabe::Consumer m_abe_consumer;
 
-  psync::Consumer m_consumer;
+  psync::Consumer m_psync_consumer;
   SyncUpdateCallback m_syncUpdateCallback;
 };
 

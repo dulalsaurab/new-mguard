@@ -23,7 +23,7 @@
 ;md2k streams converted into ndn data streams
 available-streams
 {
-  /org/md2k/mguard/dd40c/phone/gps_coordinates
+  /org/md2k/mguard/dd40c/phone/gps
   /org/md2k/mguard/dd40c/phone/accelerometer
   /org/md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
   /org/md2k/mguard/dd40c/phone/gyroscope

@@ -18,7 +18,9 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
 : m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
 , m_subscriptionList(subscriptionList)
-, m_consumer(m_syncPrefix, m_face,
+, m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity("/org/md2k/A").getDefaultKey().getDefaultCertificate(),
+                 m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate())
+, m_psync_consumer(m_syncPrefix, m_face,
              std::bind(&Subscriber::receivedHelloData, this, _1),
              std::bind(&Subscriber::receivedSyncUpdates, this, _1),
              2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
@@ -26,6 +28,9 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
 {
   NDN_LOG_DEBUG("Subscriber initialized");
   
+  // sleep for abe initilization 
+  std::this_thread::sleep_for (std::chrono::seconds(1));
+
   // get policy details from controller
   try {
     ndn::Name interestName= "/mguard/controller";
@@ -40,13 +45,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
 
   // This starts the consumer side by sending a hello interest to the producer
   // When the producer responds with hello data, receivedHelloData is called
-  // m_consumer.sendHelloInterest();
-
-  // m_eligibleStreams.insert("/org.md2k/mguard/dd40c/gps/phone/manifest");
-  /* TODO: 
-    1. fetch consumer's decryption key, and the eligible streams from controller
-    2. store the key and the streams
-  */
+  m_psync_consumer.sendHelloInterest();
 }
 
 void
@@ -71,12 +70,12 @@ Subscriber::stop()
 }
 
 void
-Subscriber::expressInterest(const ndn::Name& name)
+Subscriber::expressInterest(const ndn::Name& name, bool canBePrefix, bool mustBeFresh)
 {
   NDN_LOG_INFO("Sending interest: "  << name);
   ndn::Interest interest(name);
   interest.setCanBePrefix(false);
-  // interest.setMustBeFresh(true); //set true if want data explicit from producer.
+  interest.setMustBeFresh(false); //set true if want data explicit from producer.
   interest.setInterestLifetime(160_ms);
 
   m_face.expressInterest(interest,
@@ -111,8 +110,8 @@ Subscriber::subscribe(ndn::Name streamName)
     return;
   }
   NDN_LOG_INFO("Subscribing to: " << streamName);
-  m_consumer.addSubscription(streamName, it->second);
-  m_consumer.sendSyncInterest();
+  m_psync_consumer.addSubscription(streamName, it->second);
+  m_psync_consumer.sendSyncInterest();
 }
 
 void
@@ -136,7 +135,11 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
 {
   for (const auto& update : updates) {
     for (uint64_t i = update.lowSeq; i <= update.highSeq; i++) {
+      // for manifest update, we need to express interest and fetch the manifest content
       NDN_LOG_INFO("Update: " << update.prefix << "/" << i);
+      auto manifestInterestName = update.prefix;
+      manifestInterestName.appendNumber(i);
+      expressInterest(manifestInterestName, true);
     }
   }
 }
@@ -144,23 +147,60 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
 void
 Subscriber::wireDecode(const ndn::Block& wire)
 {
-  m_eligibleStreams.clear();
   wire.parse();
   auto val = wire.elements_begin();
   if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardController)
   {
+    NDN_LOG_DEBUG ("Received data from controller");
+    m_eligibleStreams.clear();
     val->parse();
     for (auto it = val->elements_begin(); it != val->elements_end(); ++it) {
       if (it->type() == ndn::tlv::DescriptionKey)
       {
-        std::cout << ndn::encoding::readString(*it) << std::endl;
+        ndn::encoding::readString(*it);
       }
       else {
         m_eligibleStreams.emplace(*it); 
       }
     }
   }
+  if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardPublisher)
+  {
+    std::vector<ndn::Name> tempNameBuffer; 
+    NDN_LOG_DEBUG ("Received data from publisher");
+    val->parse();
+    for (auto it = val->elements_begin(); it != val->elements_end(); ++it) {
+      if (it->type() == ndn::tlv::Name) {
+        tempNameBuffer.emplace_back(*it);
+      }
+      else {
+        NDN_THROW(ndn::tlv::Error("Expected Name element, but TLV has type " +
+                                   ndn::to_string(it->type())));
+      }
+    }
+    // we got all the data names for this manifest, now lets fetch the actual data
+    for (const auto& dataName : tempNameBuffer)
+    {
+      // expressInterest(dataName.getPrefix(-1)); // only for testing
+      m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
+                             bind(&Subscriber::abeOnError, this, _1));
+
+      NDN_LOG_DEBUG("data names: " << dataName.getPrefix(-1));  
+    }
 }
+}
+
+void 
+Subscriber::abeOnData(const ndn::Buffer& buffer)
+{
+  NDN_LOG_DEBUG ("Actual application data content: " << buffer.data());
+}
+void 
+Subscriber::abeOnError(const std::string& errorMessage)
+{
+  NDN_LOG_DEBUG ("ABE failled to fetch and encrypt data");
+}
+
 
 } // subscriber
 } // mguard

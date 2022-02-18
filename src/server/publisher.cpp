@@ -47,8 +47,18 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     try {
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         unsigned char* byteptr = reinterpret_cast<unsigned char *>(&data);
-        std::tie(ckData, enc_data) = m_abe_producer.produce(dataName, stream.getAttributes(), byteptr, sizeof(byteptr));
-        // m_keyChain.sign(*enc_data, ndn::signingWithSha256());
+        auto dataSufix = dataName.getSubName(2);
+        NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
+       
+        // ----- just for debugging
+        NDN_LOG_TRACE("--------- Attributes used to encrypt data: ");
+        for (const auto& a : stream.getAttributes())
+        {
+          NDN_LOG_DEBUG("attr: "<< a);
+        }
+        // -------- 
+
+        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), byteptr, sizeof(byteptr));
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Encryption failled");
@@ -61,7 +71,7 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     // store the data into the repo, the insertion uses tcp bulk insertion protocol
     try {
       if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
-        NDN_LOG_ERROR("data and cKdata insertion completed"); 
+        NDN_LOG_DEBUG("data and cKdata insertion completed"); 
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("data and cKdata insertion failed");
@@ -89,7 +99,7 @@ Publisher::publishManifest(util::Stream& stream)
   dataName.appendNumber(prevSeqNum + 1);
   auto manifestData = std::make_shared<ndn::Data>(dataName);
   
-  auto m_temp = stream.getManifestList();
+  m_temp = stream.getManifestList();
 
   manifestData->setContent(wireEncode());
   NDN_LOG_DEBUG ("seqNumber: " << prevSeqNum + 1);
@@ -98,7 +108,7 @@ Publisher::publishManifest(util::Stream& stream)
   
    try {
       if ((m_repoInserter.writeDataToRepo(*manifestData)))
-        NDN_LOG_ERROR("Successfully inserted manifest into the repo");
+        NDN_LOG_DEBUG("Successfully inserted manifest into the repo");
         m_temp.clear(); // clear temp variable
     }
     catch(const std::exception& e) {
@@ -131,38 +141,14 @@ Publisher::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
   size_t totalLength = 0;
   
   for (auto it = m_temp.rbegin(); it != m_temp.rend(); ++it) {
+    NDN_LOG_DEBUG ("Encoding data name: " << *it);
     totalLength += it->wireEncode(encoder);
   }
 
   totalLength += encoder.prependVarNumber(totalLength);
   totalLength += encoder.prependVarNumber(mguard::tlv::mGuardPublisher);
   
-  // totalLength += encoder.prependVarNumber(totalLength);
-  // totalLength += encoder.prependVarNumber(mguard::tlv::mGuardContent);
-
   return totalLength;
 }
-
-// void
-// Publisher::setInterestFilter(const ndn::Name& name, const bool loopback)
-// {
-//   NDN_LOG_INFO("Setting interest filter on: " << name);
-//   m_face.setInterestFilter(ndn::InterestFilter(name).allowLoopback(false),
-//                            std::bind(&Publisher::processInterest, this, _1, _2),
-//                            std::bind(&Publisher::onRegistrationSuccess, this, _1),
-//                            std::bind(&Publisher::onRegistrationFailed, this, _1));
-// }
-
-// void
-// Publisher::onRegistrationSuccess(const ndn::Name& name)
-// {
-//   NDN_LOG_INFO("Successfully registered prefix: " << name);
-// }
-
-// void
-// Publisher::onRegistrationFailed(const ndn::Name& name)
-// {
-//   NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
-// }
 
 } //mguard

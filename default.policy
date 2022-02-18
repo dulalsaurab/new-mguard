@@ -10,7 +10,7 @@ attribute-filters
     }
     deny
     {
-        /org/md2k/mguard/dd40c/phone/gps_coordinates
+        /org/md2k/mguard/dd40c/phone/accelerometer
     }
 }
 

@@ -35,8 +35,13 @@ Controller::processPolicy(std::string policyPath)
 
   for (const std::string& requester : policyDetail.requesters) {
     NDN_LOG_DEBUG("Getting key and storing policy details for user: " << requester);
-    m_attrAuthority.addNewPolicy(requester, policyDetail.abePolicy);
+
+    auto requesterCert = m_keyChain.getPib().getIdentity("/org/md2k/A").getDefaultKey().getDefaultCertificate();
+    NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);
+    m_attrAuthority.addNewPolicy(requesterCert, policyDetail.abePolicy);
+
     auto key = m_attrAuthority.getPrivateKey(requester);
+    
     policyDetails policyD = {policyDetail.policyIdentifier, tempStreams, policyDetail.abePolicy, key};
     m_policyMap.insert(std::pair <ndn::Name, policyDetails> (requester, policyD));
   }
@@ -137,9 +142,7 @@ Controller::wireEncode(ndn::EncodingImpl<TAG> &encoder)
   auto keyBlock = makeBinaryBlock(ndn::tlv::DescriptionKey, key.data(), key.size());
 
   totalLength += encoder.prependBlock(keyBlock);
-  // totalLength += encoder.prependVarNumber(totalLength);
-  // totalLength += encoder.prependVarNumber(mguard::tlv::mGuardControllerKey);
-  
+
   auto& accessibleStreams = m_temp_policyDetail.streams;
   for (auto it = accessibleStreams.rbegin(); it != accessibleStreams.rend(); ++it) {
     NDN_LOG_DEBUG (" Encoding stream name: " << *it);

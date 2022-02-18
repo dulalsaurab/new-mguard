@@ -23,7 +23,7 @@ public:
   mGuardProducer(mguard::util::Stream stream)
   : m_scheduler(m_face.getIoService())
   , m_stream(stream)
-  , m_dataAdaptor(m_face, "/mguard/producer", "/mguard/aa") 
+  , m_dataAdaptor(m_face, "/org/md2k", "/mguard/aa") 
   {
   }
   
@@ -41,7 +41,6 @@ private:
   ndn::Face m_face;
   ndn::Scheduler m_scheduler;
 
-  //  std::vector<mguard::util::Stream> m_streams;
   mguard::util::Stream m_stream;
   mguard::DataAdapter m_dataAdaptor;
 };
@@ -50,13 +49,11 @@ private:
 int main ()
 {
   streamInfo A;
-  A.streamName = "/org/md2k/mguard/dd40c/gps/phone";
-  A.attributes = {"/org/md2k", "/org/md2k/mguard/dd40c/gps/phone"};
-  A.dataPath = mguard::DATA_DIR + "/" + "org-md2k-mguard-dd40c-gps-phone.csv";
+  A.streamName = "/org/md2k/mguard/dd40c/phone/gps";
+  A.attributes = {"/org/md2k/mguard/dd40c/phone/gps"};
+  A.dataPath = mguard::DATA_DIR + "/" + "org-md2k-mguard-dd40c-phone-gps.csv";
 
   mguard::util::Stream stream(A.streamName, A.attributes, A.dataPath);
   mGuardProducer producerApp(stream);
   producerApp.handler();
-
-
 }
