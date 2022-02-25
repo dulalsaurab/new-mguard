@@ -35,6 +35,9 @@ Note: Above identities are just an example, not the strict requirement. Our exam
 ### 3. Testing
 (run the follwing programs sequencally)
 
+Enable logs (mguard and nac-abe log): 
+ - `export NDN_LOG=mguard.*=TRACE:nacabe.*=TRACE`
+
 1. Start nfd `nfd-start` 
 (if running the nfd for the first time, make sure to copy 
  `cp /usr/local/etc/ndn/nfd.conf.sample /usr/local/etc/ndn/nfd.conf`, 
