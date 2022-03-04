@@ -28,7 +28,9 @@ Please follow the corresponding links for the installaion details.
 4. Attribute Authority, identity: /mguard/aa
 
 Run the following command to create a cert for each of the above identity
-`ndnsec key-gen <identity name>`. This will create and store the cert in the default location i.e. ~/.ndn
+`ndnsec key-gen -t r <identity name>`. This will create and store the cert in the default location i.e. ~/.ndn
+
+NOTE: `-t r` flag is used to create RSA keys (required by NAC-ABE), by default ECDSA are created by `ndnsec key-gen`
 
 Note: Above identities are just an example, not the strict requirement. Our examples use these identities so they are needed to run the examples properly.
 
