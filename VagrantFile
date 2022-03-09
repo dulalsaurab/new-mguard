@@ -15,7 +15,7 @@ Vagrant.configure("2") do |config|
                             pkg-config python3-minimal libboost-all-dev \
                             libssl-dev libsqlite3-dev libpcap-dev \
                             libsodium-dev libz-dev \
-                            liblog4cxx-dev
+                            liblog4cxx-dev libpcap-dev
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
     sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-10 100
@@ -68,6 +68,12 @@ Vagrant.configure("2") do |config|
     ./waf
     sudo ./waf install
     cd ..
+
+    git clone https://github.com/named-data/ndn-tools/
+    cd ndn-tools
+    ./waf configure
+    ./waf
+    sudo ./waf install
 
 
   SHELL
