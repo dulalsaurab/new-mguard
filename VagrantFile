@@ -56,6 +56,41 @@ Vagrant.configure("2") do |config|
 
     git clone https://github.com/UCLA-IRL/NAC-ABE.git
     cd NAC-ABE
+    echo "
+    diff --git a/src/consumer.cpp b/src/consumer.cpp
+    index dfdf9b4..3fc4f62 100644
+    --- a/src/consumer.cpp
+    +++ b/src/consumer.cpp
+    @@ -75,12 +75,13 @@ Consumer::consume(const Name& dataName,
+                       const ErrorCallback& errorCallback)
+     {
+       Interest interest(dataName);
+    -  interest.setMustBeFresh(true);
+    +  // interest.setMustBeFresh(true);
+       interest.setCanBePrefix(true);
+
+       NDN_LOG_INFO(m_cert.getIdentity() << \" Ask for data \" << interest.getName() );
+       m_face.expressInterest(interest,
+                              [=] (const Interest&, const Data& data) {
+    +                          NDN_LOG_INFO(\"Got the data packet back\");
+                                decryptContent(data, consumptionCb, errorCallback);
+                              }, nullptr, nullptr);
+     }
+    @@ -105,10 +106,11 @@ Consumer::decryptContent(const Data& data,
+       NDN_LOG_INFO(\"CK Name is \" << ckName);
+
+       Interest ckInterest(ckName);
+    -  ckInterest.setMustBeFresh(true);
+    +  // ckInterest.setMustBeFresh(true);
+       ckInterest.setCanBePrefix(true);
+       m_face.expressInterest(ckInterest,
+                              [=] (const Interest&, const Data& data) {
+    +                           NDN_LOG_INFO(\"Got the cKData packet back\");
+                                onCkeyData(data, cipherText, successCallBack, errorCallback);
+                              }, nullptr, nullptr);
+     }
+    " > patch.diff
+    git apply patch.diff
     mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
