@@ -5,10 +5,10 @@
 # Creating Identifies/Certificates
 
 # publisher
-ndn-sec key-gen -t r /org/md2k
+ndnsec key-gen -t r /org/md2k
 # controller
-ndn-sec key-gen -t r /mguard/controller
+ndnsec key-gen -t r /mguard/controller
 # Consumer
-ndn-sec key-gen -t r /org/md2k/A
+ndnsec key-gen -t r /org/md2k/A
 # Attribute Authority
-ndn-sec key-gen -t r /mguard/aa
+ndnsec key-gen -t r /mguard/aa
