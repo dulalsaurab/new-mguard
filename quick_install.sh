@@ -1,6 +1,7 @@
 # installing mGuard
 ./waf configure --with-examples
 ./waf build && sudo ./waf install
+sudo ldconfig
 
 # Creating Identifies/Certificates
 
