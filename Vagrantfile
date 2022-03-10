@@ -110,10 +110,10 @@ Vagrant.configure("2") do |config|
     ./waf
     sudo ./waf install
 
-    /usr/bin/pip3 install ndn-python-repo
+#     /usr/bin/pip3 install ndn-python-repo
 #     optional latest development version of ndn-python-repo
-#     git clone https://github.com/JonnyKong/ndn-python-repo.git
-#     cd ndn-python-repo && /usr/bin/pip3 install -e .
+    git clone https://github.com/JonnyKong/ndn-python-repo.git
+    cd ndn-python-repo && /usr/bin/pip3 install -e .
 
   SHELL
 end
