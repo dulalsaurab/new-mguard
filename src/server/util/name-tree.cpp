@@ -11,11 +11,22 @@ Publisher::doUpdate(ndn::Name& manifestName)
 
   uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
   NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
-}
-
 
 namespace mguard{
+NameTree::NameTree(
+            uint8_t block_size,
+            ndn_table_id_t left_child,
+            ndn_table_id_t right_bro,
+            ndn_table_id_t pit_id,
+            ndn_table_id_t cs_id,
+            ndn_table_id_t fib_i)
+: m_left_child(left_child)
+, m_right_bro(right_bro)
+, m_pit_id(pit_id)
+, m_cs_id(cs_id)
+, m_fib_i(fib_i){
 
+}
 void
 NameTree::nametree_refresh(ndn_nametree_t& nametree, int& num)
 {
