@@ -65,7 +65,15 @@ class NameTree()
   ndn_table_id_t
   ndn_nametree_getid(ndn_nametree_t *self, nametree_entry_t* entry);
 
-}
+  private:
+    uint8_t m_block_size;
+    ndn_table_id_t m_left_child;
+    ndn_table_id_t m_right_bro;
+    ndn_table_id_t m_pit_id;
+    ndn_table_id_t m_cs_id;
+    ndn_table_id_t m_fib_i;
+
+};
 
 } // util
 } // mguard
