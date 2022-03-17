@@ -1,18 +1,11 @@
-#include "name-tree.hpp"
+#include <server/util/name-tree.hpp>
+
 #include "common.hpp"
 #include <string>
 
 
-void
-Publisher::doUpdate(ndn::Name& manifestName)
-{
-  // m_partialProducer.addUserNode(manifestName); // won't get added if already present.
-  m_partialProducer.publishName(manifestName);
-
-  uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
-  NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
-
 namespace mguard{
+  
 NameTree::NameTree(
             uint8_t block_size,
             ndn_table_id_t left_child,
@@ -27,6 +20,7 @@ NameTree::NameTree(
 , m_fib_i(fib_i){
 
 }
+
 void
 NameTree::nametree_refresh(ndn_nametree_t& nametree, int& num)
 {
