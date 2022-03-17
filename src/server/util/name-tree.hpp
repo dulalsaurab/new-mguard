@@ -1,6 +1,5 @@
 #include <ndn-cxx/name.hpp>
 #include <string>
-#include "../common.hpp"
 
 #define NDN_NAME_COMPONENT_BLOCK_SIZE 38
 typedef uint16_t ndn_table_id_t;
@@ -25,10 +24,8 @@ typedef struct ndn_nametree{
 }ndn_nametree_t;
 
 
-class NameTree()
+class NameTree
 {
-  public:
-
   public:
   NameTree(uint8_t val[NDN_NAME_COMPONENT_BLOCK_SIZE],
             ndn_table_id_t left_child,
