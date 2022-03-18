@@ -15,8 +15,8 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const
 , m_ABE_authorityCert(m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate())
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
 {
-  NDN_LOG_DEBUG("default identity" <<  m_keyChain.getPib().getDefaultIdentity());
   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
+  NDN_LOG_DEBUG ("---------------------------------------------");
   NDN_LOG_DEBUG ("Producer cert: " << m_producerCert);
   NDN_LOG_DEBUG ("---------------------------------------------");
   NDN_LOG_DEBUG ("ABE authority cert: " << m_ABE_authorityCert);
@@ -41,7 +41,6 @@ DataAdapter::stop()
 {
   NDN_LOG_DEBUG("Shutting down face: ");
   m_face.shutdown();
-  // m_face.getIoService().stop();
 }
 
 ndn::Name

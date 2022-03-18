@@ -13,6 +13,11 @@
 namespace mguard {
 namespace controller {
 
+/*
+  todo: refactor to mGuardController
+  Contoller class does two taks a) runs the parser to process mGuard policy
+  b) and runs attribute authority which serves public params and keys for producer and consumer
+*/
 class Controller
 {
 public:
@@ -26,13 +31,17 @@ public:
   }
 
   void
-  run()
-  {
-    m_face.processEvents();
-  }
+  run();
 
+  /**
+   * @brief read and parse the mGuard policy
+   *
+   * This function will read/parse the mGuard policy to generate NAC-ABE policy,
+   * policy id, and accessible streams
+   * @param policyPath path to mGuard policy
+  */
   void
-  processPolicy(std::string policyPath);
+  processPolicy(const std::string& policyPath);
 
   void
   setInterestFilter(const ndn::Name& name, const bool loopback = false);
@@ -61,12 +70,14 @@ public:
 
 private:
   
+  /**
+   * @brief store policy detail
+  */
   struct policyDetails
   {
     std::string policyId;
     std::list <ndn::Name> streams;
     std::string abePolicy;
-    ndn::nacabe::algo::PrivateKey decryptionKey;
   };
 
   // ndn::Name --> requesterID or name or prefix, probably this will be cert 

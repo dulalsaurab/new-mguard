@@ -14,22 +14,20 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
                        const ndn::Name& syncPrefix,
                        ndn::time::milliseconds syncInterestLifetime,
                        std::vector<std::string>& subscriptionList,
-                       const SyncUpdateCallback& syncUpdateCallback)
+                       const UpdateCallback& callback)
 : m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
 , m_subscriptionList(subscriptionList)
-, m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity("/org/md2k/A").getDefaultKey().getDefaultCertificate(),
-                 m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate())
+, m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity(m_consumerPrefix).getDefaultKey().getDefaultCertificate(),
+                 m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate()) // todo: aa prefix should be in configuration file?
 , m_psync_consumer(m_syncPrefix, m_face,
              std::bind(&Subscriber::receivedHelloData, this, _1),
              std::bind(&Subscriber::receivedSyncUpdates, this, _1),
              2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
-, m_syncUpdateCallback(syncUpdateCallback)
+, m_ApplicationDataCallback(callback)
 {
   NDN_LOG_DEBUG("Subscriber initialized");
-  
-  // sleep for abe initilization 
-  std::this_thread::sleep_for (std::chrono::seconds(1));
+  m_abe_consumer.obtainDecryptionKey();
 
   // get policy details from controller
   try {
@@ -42,10 +40,26 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
   {
     NDN_LOG_ERROR("error: " << e.what()); 
   }
-
+  std::this_thread::sleep_for (std::chrono::seconds(3));
   // This starts the consumer side by sending a hello interest to the producer
   // When the producer responds with hello data, receivedHelloData is called
   m_psync_consumer.sendHelloInterest();
+
+  std::this_thread::sleep_for (std::chrono::seconds(1));
+}
+
+bool
+Subscriber::checkConvergence()
+{
+  int counter = 0;
+  while (counter < 3) // wait for 6 seconds max, else return false
+  {
+    if(m_abe_consumer.readyForDecryption())
+      return true;
+    ++counter;
+    std::this_thread::sleep_for (std::chrono::seconds(2));
+  }
+  return false;
 }
 
 void
@@ -155,12 +169,12 @@ Subscriber::wireDecode(const ndn::Block& wire)
     m_eligibleStreams.clear();
     val->parse();
     for (auto it = val->elements_begin(); it != val->elements_end(); ++it) {
-      if (it->type() == ndn::tlv::DescriptionKey)
-      {
-        ndn::encoding::readString(*it);
+      if (it->type() == ndn::tlv::Name) {
+        m_eligibleStreams.emplace(*it);
       }
       else {
-        m_eligibleStreams.emplace(*it); 
+        NDN_THROW(ndn::tlv::Error("Expected Name element, but TLV has type " +
+                                   ndn::to_string(it->type())));
       }
     }
   }
@@ -181,19 +195,22 @@ Subscriber::wireDecode(const ndn::Block& wire)
     // we got all the data names for this manifest, now lets fetch the actual data
     for (const auto& dataName : tempNameBuffer)
     {
-      // expressInterest(dataName.getPrefix(-1)); // only for testing
+      if(!checkConvergence())
+        NDN_THROW(Error("Public params or private key is absent, can't decrypt the data"));
+
       m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
                              bind(&Subscriber::abeOnError, this, _1));
-
       NDN_LOG_DEBUG("data names: " << dataName.getPrefix(-1));  
     }
-}
+  }
 }
 
 void 
 Subscriber::abeOnData(const ndn::Buffer& buffer)
 {
-  NDN_LOG_DEBUG ("Actual application data content: " << buffer.data());
+  auto applicationData = std::string(buffer.begin(), buffer.end());
+  NDN_LOG_DEBUG ("Received Data " << applicationData);
+  m_ApplicationDataCallback({applicationData});
 }
 void 
 Subscriber::abeOnError(const std::string& errorMessage)

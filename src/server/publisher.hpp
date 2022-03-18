@@ -20,17 +20,6 @@
 
 namespace mguard {
 
-/*
-if use_manifest is set to false, manifest will not be used, application data will be publised directly.
-*/
-const bool USE_MANIFEST = true;
-
-// manifest will be published after receiving 100 data units
-const int MANIFEST_BATCH_SIZE = 100;
-
-// if next update is not received withing 100 ms, the manifest will be publised, this can override batch size
-const int MAX_UPDATE_WAIT_TIME = 100;
-
 class Publisher
 {
 
@@ -44,7 +33,7 @@ public:
   doUpdate(ndn::Name& manifestName);
 
   void
-  publish(ndn::Name dataName, std::string data, util::Stream& stream);
+  publish(ndn::Name& dataName, std::string data, util::Stream& stream);
 
   void
   publishManifest(util::Stream& stream);
@@ -64,7 +53,6 @@ private:
   psync::PartialProducer m_partialProducer;
   util::RepoInserter m_repoInserter;
 
-  // FileProcessor m_fileProcessor;
   std::vector<ndn::Name> m_temp;
   ndn::Name m_attrAuthorityPrefix;
   ndn::Name m_producerPrefix;

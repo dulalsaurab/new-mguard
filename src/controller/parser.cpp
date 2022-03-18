@@ -31,7 +31,8 @@ PolicyParser::getPolicyInfo() {
     return policyDetail;
 }
 
-bool PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
+bool 
+PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
     // just so that you can't get old data after redoing global variables
     availableStreamsPath = streamsFilePath;
@@ -79,7 +80,8 @@ PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   return true;
 }
 
-bool PolicyParser::parseAvailableStreams(std::istream &input) 
+bool 
+PolicyParser::parseAvailableStreams(std::istream &input) 
 {
   ConfigSection section;
 
@@ -163,7 +165,8 @@ bool PolicyParser::parseAvailableStreams(std::istream &input)
     return true;
 }
 
-bool PolicyParser::parsePolicy(std::istream& input) {
+bool 
+PolicyParser::parsePolicy(std::istream& input) {
     // loading input file into sections
     ConfigSection section;
     try {
@@ -228,7 +231,8 @@ bool PolicyParser::parsePolicy(std::istream& input) {
     return true;
 }
 
-bool PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed) 
+bool 
+PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed) 
 {
   // go through all filters in the allow/deny section
   std::string value;
@@ -264,7 +268,8 @@ bool PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed)
   return true;
 }
 
-bool PolicyParser::generateABEPolicy() {
+bool 
+PolicyParser::generateABEPolicy() {
     std::list<std::string> policy;
 
     // stream name processing
@@ -485,7 +490,8 @@ PolicyParser::split(const std::string &basicString, const std::string &delimeter
     return splittedString;
 }
 
-std::list<std::string> PolicyParser::splitRequesters(const std::string& basicString) 
+std::list<std::string> 
+PolicyParser::splitRequesters(const std::string& basicString) 
 {
     std::list<std::string> output;
     std::list<std::string> n = PolicyParser::split(basicString, ",");

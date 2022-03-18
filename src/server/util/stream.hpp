@@ -19,7 +19,7 @@ public:
    for time expiration, we need to use signal ??
   */
   bool
-  updateManifestList(ndn::Name dataNameWithDigest);
+  updateManifestList(const ndn::Name& dataNameWithDigest);
 
   std::vector<ndn::Name>&
   getManifestList()

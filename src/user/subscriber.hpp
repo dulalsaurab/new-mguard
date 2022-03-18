@@ -16,14 +16,13 @@ using namespace ndn::time_literals;
 
 namespace mguard {
 
-struct SyncDataInfo
+struct ApplicationData
 {
-  ndn::Name prefix;
-  uint64_t highSeq;
-  uint64_t lowSeq;
+  ndn::Name dataName;
+  std::string dataRows;
 };
 
-typedef std::function<void(const std::vector<SyncDataInfo>& updates)> SyncUpdateCallback;
+typedef std::function<void(const std::vector<std::string>& updates)> UpdateCallback;
 
 namespace subscriber {
 namespace tlv {
@@ -42,13 +41,16 @@ public:
              const ndn::Name& syncPrefix, 
              ndn::time::milliseconds syncInterestLifetime,
              std::vector<std::string>& subscriptionList,
-             const SyncUpdateCallback& syncUpdateCallback);
+             const UpdateCallback& callback);
 
   void
   run();
 
   void
   stop();
+
+  bool
+  checkConvergence();
 
   void
   expressInterest(const ndn::Name& name, bool canBePrefix = false, bool mustBeFresh = false);
@@ -91,6 +93,7 @@ private:
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
   std::vector<std::string>& m_subscriptionList;
+
   // available streams are the ones received from psync
   // and eligible streams are determined from the policy
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams;
@@ -99,7 +102,7 @@ private:
   ndn::nacabe::Consumer m_abe_consumer;
 
   psync::Consumer m_psync_consumer;
-  SyncUpdateCallback m_syncUpdateCallback;
+  UpdateCallback m_ApplicationDataCallback;
 };
 
 } //namespace subscriber

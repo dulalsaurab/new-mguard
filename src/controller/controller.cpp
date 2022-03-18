@@ -12,15 +12,29 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
 : m_controllerPrefix(controllerPrefix)
 , m_aaPrefix(aaPrefix)
 , m_policyParser(availableStreamsFilePath)
-, m_aaCert(m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate())
+, m_aaCert(m_keyChain.getPib().getIdentity(m_aaPrefix.toUri()).getDefaultKey().getDefaultCertificate())
 , m_attrAuthority(m_aaCert, m_face, m_keyChain) 
 {
+  // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
   processPolicy("default.policy");
   setInterestFilter(m_controllerPrefix);
 }
 
 void
-Controller::processPolicy(std::string policyPath)
+Controller::run()
+{
+  try {
+    m_face.processEvents();
+  }
+  catch (const std::exception& ex)
+  {
+    NDN_LOG_ERROR("Face error: " << ex.what());
+    NDN_THROW(Error(ex.what()));
+  }
+}
+
+void
+Controller::processPolicy(const std::string& policyPath)
 {
   m_policyParser.inputPolicy(policyPath);
   auto policyDetail = m_policyParser.getPolicyInfo();
@@ -36,14 +50,19 @@ Controller::processPolicy(std::string policyPath)
   for (const std::string& requester : policyDetail.requesters) {
     NDN_LOG_DEBUG("Getting key and storing policy details for user: " << requester);
 
-    auto requesterCert = m_keyChain.getPib().getIdentity("/org/md2k/A").getDefaultKey().getDefaultCertificate();
-    NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);
-    m_attrAuthority.addNewPolicy(requesterCert, policyDetail.abePolicy);
-
-    auto key = m_attrAuthority.getPrivateKey(requester);
-    
-    policyDetails policyD = {policyDetail.policyIdentifier, tempStreams, policyDetail.abePolicy, key};
-    m_policyMap.insert(std::pair <ndn::Name, policyDetails> (requester, policyD));
+    try
+    {
+      auto requesterCert = m_keyChain.getPib().getIdentity(requester).getDefaultKey().getDefaultCertificate();
+      NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);
+      m_attrAuthority.addNewPolicy(requesterCert, policyDetail.abePolicy);
+      policyDetails policyD = {policyDetail.policyIdentifier, tempStreams, policyDetail.abePolicy};
+      m_policyMap.insert(std::pair <ndn::Name, policyDetails> (requester, policyD));
+    }
+    catch (std::exception& ex)
+    {
+      NDN_LOG_ERROR(ex.what());
+      NDN_LOG_DEBUG("Error getting the cert, requester cert might be missing");
+    }
   }
 }
 
@@ -71,7 +90,6 @@ Controller::processInterest(const ndn::Name& name, const ndn::Interest& interest
 void
 Controller::sendData(const ndn::Name& name)
 {
-  // auto interestName = name;
   auto subscriberName = name.getSubName(2);
 
   ndn::Data replyData(name);
@@ -82,7 +100,6 @@ Controller::sendData(const ndn::Name& name)
     NDN_LOG_INFO("Key for subscriber: " << subscriberName << " not found " << "sending NACK");
     sendApplicationNack(name);
   }
-  
   m_temp_policyDetail = it->second;
   replyData.setContent(wireEncode());
   m_keyChain.sign(replyData);
@@ -137,12 +154,6 @@ size_t
 Controller::wireEncode(ndn::EncodingImpl<TAG> &encoder)
 {
   size_t totalLength = 0;
-  
-  const auto& key = m_temp_policyDetail.decryptionKey.toBuffer();
-  auto keyBlock = makeBinaryBlock(ndn::tlv::DescriptionKey, key.data(), key.size());
-
-  totalLength += encoder.prependBlock(keyBlock);
-
   auto& accessibleStreams = m_temp_policyDetail.streams;
   for (auto it = accessibleStreams.rbegin(); it != accessibleStreams.rend(); ++it) {
     NDN_LOG_DEBUG (" Encoding stream name: " << *it);

@@ -29,15 +29,13 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 void
 Publisher::doUpdate(ndn::Name& manifestName)
 {
-  // m_partialProducer.addUserNode(manifestName); // won't get added if already present.
   m_partialProducer.publishName(manifestName);
-
   uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
   NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
 }
 
 void
-Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
+Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
 {
     // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
     // Manifest name: <stream name>/manifest/<seq-num>
@@ -46,24 +44,15 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
     std::shared_ptr<ndn::Data> enc_data, ckData;
     try {
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
-        unsigned char* byteptr = reinterpret_cast<unsigned char *>(&data);
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-       
-        // ----- just for debugging
-        NDN_LOG_TRACE("--------- Attributes used to encrypt data: ");
-        for (const auto& a : stream.getAttributes())
-        {
-          NDN_LOG_DEBUG("attr: "<< a);
-        }
-        // -------- 
-
-        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), byteptr, sizeof(byteptr));
+        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
+                                                            reinterpret_cast<const uint8_t *>(data.c_str()), data.size());
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Encryption failled");
       std::cerr << e.what() << '\n';
-        // return false;
+      // return false;
     }
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());

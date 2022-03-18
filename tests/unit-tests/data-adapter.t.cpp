@@ -2,7 +2,7 @@
 
 #include <server/data-adapter.hpp>
 #include <server/util/stream.hpp>
-#include <server/common.hpp>
+#include <common.hpp>
 
 #include <ndn-cxx/util/dummy-client-face.hpp>
 

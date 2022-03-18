@@ -19,9 +19,10 @@ public:
   }
 
   void
-  processCallback(const std::vector<mguard::SyncDataInfo>& updates)
+  processCallback(const std::vector<std::string>& updates)
   {
-    std::cout << "just a reply" << std::endl;
+    for (auto &a : updates)
+      std::cout << "received data: " << a << std::endl;
   }
 
   void

@@ -57,8 +57,8 @@ private:
   bool
   generateABEPolicy();
 
-    bool
-    inputStreams();
+  bool
+  inputStreams();
 
   static std::list<std::string>
   splitRequesters(const std::string& basicString);

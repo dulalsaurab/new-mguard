@@ -4,7 +4,16 @@
 namespace mguard {
 namespace util {
 
-int MANIFEST_BATCH_SIZE = 4;
+/*
+if use_manifest is set to false, manifest will not be used, application data will be publised directly.
+*/
+const bool USE_MANIFEST = true;
+
+// manifest will be published after receiving 100 data units
+const int MANIFEST_BATCH_SIZE = 4;
+
+// if next update is not received withing 100 ms, the manifest will be publised, this can override batch size
+const int MAX_UPDATE_WAIT_TIME = 100; //todo: not implemented yet
 
 Stream::Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, const std::string& path)
 : m_name(name)
@@ -20,7 +29,7 @@ Stream::Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, co
 }
 
 bool
-Stream::updateManifestList(ndn::Name dataNameWithDigest)
+Stream::updateManifestList(const ndn::Name& dataNameWithDigest)
 {
   m_manifestList.push_back(dataNameWithDigest);
   if (m_manifestCounter == MANIFEST_BATCH_SIZE - 1)
