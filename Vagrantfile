@@ -1,20 +1,12 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 Vagrant.configure("2") do |config|
-<<<<<<< HEAD
-  config.vm.define "mguard-dev-t" 
-=======
   config.vm.define "mguard-dev-t"
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
   config.vm.box = "bento/ubuntu-20.04"
   config.vm.hostname = "mguard-dev"
   config.vm.provider "virtualbox" do |vb|
     vb.name = "mguard"
-<<<<<<< HEAD
-    vb.cpus = "8"
-=======
     vb.cpus = "6"
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
     vb.memory = "16384"
   end
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
@@ -23,11 +15,7 @@ Vagrant.configure("2") do |config|
                             pkg-config python3-minimal libboost-all-dev \
                             libssl-dev libsqlite3-dev libpcap-dev \
                             libsodium-dev libz-dev \
-<<<<<<< HEAD
-                            liblog4cxx-dev
-=======
                             liblog4cxx-dev libpcap-dev python-is-python3
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
     sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
     sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
     sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-10 100
@@ -41,11 +29,6 @@ Vagrant.configure("2") do |config|
     sudo ./waf install
     sudo ldconfig
     cd ..
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
     git clone https://github.com/named-data/NFD
     cd NFD
     git submodule update --init
@@ -54,11 +37,6 @@ Vagrant.configure("2") do |config|
     sudo ./waf install
     sudo cp /usr/local/etc/ndn/nfd.conf.sample /usr/local/etc/ndn/nfd.conf
     cd ..
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
     sudo apt-get -y install libgtest-dev cmake python3-pip
     git clone https://github.com/zeutro/openabe.git
     cd openabe
@@ -73,11 +51,6 @@ Vagrant.configure("2") do |config|
     make test
     sudo -E make install
     cd ..
-<<<<<<< HEAD
-   
-    git clone https://github.com/UCLA-IRL/NAC-ABE.git
-    cd NAC-ABE
-=======
 
     git clone https://github.com/UCLA-IRL/NAC-ABE.git
     cd NAC-ABE
@@ -116,28 +89,17 @@ Vagrant.configure("2") do |config|
      }
     " > patch.diff
     git apply patch.diff
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
     mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
     sudo make install
     cd ../../
-<<<<<<< HEAD
-    
-=======
-
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
     git clone https://github.com/named-data/PSync.git
     cd PSync
     ./waf configure
     ./waf
     sudo ./waf install
     cd ..
-<<<<<<< HEAD
-    
-  SHELL
-end
-=======
 
     git clone https://github.com/named-data/ndn-tools/
     cd ndn-tools
@@ -152,4 +114,3 @@ end
 
   SHELL
 end
->>>>>>> e3be44cd181c8c00b8bbbf2cf17b108106f4a755
