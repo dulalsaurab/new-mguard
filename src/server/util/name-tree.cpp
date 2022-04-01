@@ -1,208 +1,204 @@
-#include <server/util/name-tree.hpp>
-
+#include "name-tree.hpp"
 #include "common.hpp"
+
+#include <ndn-cxx/util/logger.hpp>
+
+#include <optional>
 #include <string>
 
+NDN_LOG_INIT(mguard.nametree);
 
 namespace mguard{
-  
-NameTree::NameTree(
-            uint8_t block_size,
-            ndn_table_id_t left_child,
-            ndn_table_id_t right_bro,
-            ndn_table_id_t pit_id,
-            ndn_table_id_t cs_id,
-            ndn_table_id_t fib_i)
-: m_left_child(left_child)
-, m_right_bro(right_bro)
-, m_pit_id(pit_id)
-, m_cs_id(cs_id)
-, m_fib_i(fib_i){
+namespace util {
+namespace nametree {
 
+NameTree::NameTree()
+{
+  m_root = new TreeNode();
+  m_root->m_nodeId = "/";
+  m_root->m_fullName = ndn::Name("/");
 }
 
 void
-NameTree::nametree_refresh(ndn_nametree_t& nametree, int& num)
+NameTree::insertName(ndn::Name name)
 {
-  (*nametree)[num].left_child = NDN_INVALID_ID;
-  (*nametree)[num].pit_id = NDN_INVALID_ID;
-  (*nametree)[num].cs_id = NDN_INVALID_ID;
-  (*nametree)[num].fib_id = NDN_INVALID_ID;
-
-  (*nametree)[num].right_bro = (*nametree)[0].right_bro;
-  (*nametree)[0].right_bro = num;
-}
-
-int
-nametree_clean(ndn_nametree_t& nametree, int num)
-{
-  int ret = 0;
-  if (num == NDN_INVALID_ID) {
-    return NDN_INVALID_ID;
+  // check if the name already exist in the tree
+  NDN_LOG_INFO("Trying to insert name: " << name);
+  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
+  auto prefixNotIn = info.second;
+  auto parent = info.first;
+  if (prefixNotIn.toUri() == "/") {
+    NDN_LOG_INFO("pointer id:" << parent->m_nodeId << " name: " << name << " already present in the tree");
   }
   else {
-    (*nametree)[num].left_child = nametree_clean(nametree, (*nametree)[num].left_child);
-    (*nametree)[num].right_bro = nametree_clean(nametree, (*nametree)[num].right_bro);
-    if ((*nametree)[num].fib_id == NDN_INVALID_ID &&
-        (*nametree)[num].pit_id == NDN_INVALID_ID &&
-        (*nametree)[num].cs_id == NDN_INVALID_ID &&
-        (*nametree)[num].left_child == NDN_INVALID_ID) {
-      ret = (*nametree)[num].right_bro;
-      nametree_refresh(nametree, num);
-      return ret;
-    }
-    else {
-      return num;
+    auto fullName = ndn::Name(parent->m_nodeId);
+    auto startFrom = parent;
+    for (auto it_name = prefixNotIn.begin(); it_name != prefixNotIn.end(); ++it_name)
+    {
+      NDN_LOG_INFO("Inserting name component: " << it_name->toUri());
+      // auto m_nodeId = it_name->value();
+      std::string nodeId(it_name->toUri());
+      fullName = fullName.append(nodeId);
+      auto child = createNode(nodeId, fullName);
+      startFrom->m_children.push_back(child);
+      startFrom = child;
     }
   }
 }
 
-void
-nametree_cleanup(ndn_nametree_t& nametree)
+TreeNode*
+NameTree::createNode(std::string nodeId, ndn::Name fullName)
 {
-  (*nametree)[0].left_child = nametree_clean(nametree, (*nametree)[0].left_child);
-}
-
-void
-ndn_nametree_init(void* memory, ndn_table_id_t capacity)
-{
-  ndn_nametree_t *nametree = (ndn_nametree_t*)memory;
-  //all free entries are linked as right_bro of (*nametree)[0], the root of the tree.
-  for (int i = 0; i < capacity; ++i) {
-    (*nametree)[i].left_child = (*nametree)[i].pit_id = (*nametree)[i].cs_id = (*nametree)[i].fib_id = NDN_INVALID_ID;
-    (*nametree)[i].right_bro = i + 1;
+  TreeNode *parent_node = new TreeNode;
+  if (parent_node) {
+      parent_node->m_nodeId = nodeId;
+      parent_node->m_fullName = fullName;
   }
-  (*nametree)[capacity - 1].right_bro = NDN_INVALID_ID;
+  return parent_node;
 }
 
-int
-nametree_create_node(ndn_nametree_t& nametree, uint8_t name[], size_t len)
+ndn::optional<TreeNode*>
+NameTree::search(TreeNode* startFrom, ndn::Name name)
 {
-  int output = (*nametree)[0].right_bro;
-  if (output == NDN_INVALID_ID) return NDN_INVALID_ID;
-  (*nametree)[0].right_bro = (*nametree)[output].right_bro;
-  (*nametree)[output].left_child  = (*nametree)[output].right_bro = NDN_INVALID_ID;
-  (*nametree)[output].pit_id = (*nametree)[output].cs_id = (*nametree)[output].fib_id = NDN_INVALID_ID;
-  memcpy((*nametree)[output].val, name, len);
-  return output;
+  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(startFrom, name);
+  return (info.second == "/") ? info.first : nullptr; // return the pointer that has the name
 }
 
-nametree_entry_t*
-ndn_nametree_find(ndn_nametree_t& nametree, uint8_t name[], size_t len)
+std::pair<TreeNode*, ndn::Name>
+NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
 {
-  int now_node, father = 0 , tmp;
-  size_t component_len, eqiv_component_len, offset = 0;
-  // TODO: Put it into decoder
-  if (len < 2) return NULL;
-  if (name[1] < 253) offset = 2; else offset = 4;
-  while (offset < len) {
-    component_len = name[offset + 1] + 2;
-    eqiv_component_len = minof2(component_len, NDN_NAME_COMPONENT_BUFFER_SIZE);
-    now_node = (*nametree)[father].left_child;
-    tmp = -2;
-    while (now_node != NDN_INVALID_ID) {
-      tmp = memcmp(name+offset, (*nametree)[now_node].val , eqiv_component_len);
-      if (tmp <= 0) break;
-      now_node = (*nametree)[now_node].right_bro;
-    }
-    if (tmp != 0) {
-      return NULL;
-    }
-    offset += component_len;
-    father = now_node;
-  }
-  return &(*nametree)[father];
-}
+  NDN_LOG_INFO("Searching name prefix: " << namePrefix.toUri());
+  if (namePrefix.toUri() == "/") 
+    return std::make_pair(startFrom, namePrefix);
 
-static nametree_entry_t*
-nametree_find_or_insert_try(ndn_nametree_t& nametree, uint8_t name[], size_t len)
-{
-  int now_node, last_node, father = 0 , tmp , new_node_number;
-  size_t component_len, eqiv_component_len, offset = 0;
-  // TODO: Put it into decoder
-  if (len < 2) return NULL;
-  if (name[1] < 253) offset = 2; else offset = 4;
-  while (offset < len) {
-    component_len = name[offset + 1] + 2;
-    eqiv_component_len = minof2(component_len, NDN_NAME_COMPONENT_BUFFER_SIZE);
-    now_node = (*nametree)[father].left_child;
-    last_node = NDN_INVALID_ID;
-    tmp = -2;
-    while (now_node != NDN_INVALID_ID) {
-      tmp = memcmp(name+offset, (*nametree)[now_node].val , eqiv_component_len);
-      if (tmp <= 0) break;
-      last_node = now_node;
-      now_node = (*nametree)[now_node].right_bro;
+  for (auto it_name = namePrefix.begin(); it_name != namePrefix.end(); ++it_name) {
+    NDN_LOG_INFO("Searching name component: " << it_name->toUri() << " : " << (*startFrom).m_nodeId);
+    
+    if ((*startFrom).m_children.size() == 0) {// this is leaf  
+      return std::make_pair(startFrom, namePrefix);
     }
-    if (tmp != 0) {
-      new_node_number = nametree_create_node(nametree, name + offset , eqiv_component_len);
-      if (new_node_number == NDN_INVALID_ID) return NULL;
-      if(last_node == NDN_INVALID_ID){
-        (*nametree)[father].left_child = new_node_number;
-      }else{
-        (*nametree)[last_node].right_bro = new_node_number;
+
+    for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
+      if ((*it_nt)->m_nodeId == it_name->toUri()) {
+        namePrefix = namePrefix.getSubName(1);
+        return getLongestMatchedName((*it_nt), namePrefix);
       }
-      (*nametree)[new_node_number].right_bro = now_node;
-      now_node = new_node_number;
     }
-    offset += component_len;
-    father = now_node;
+    return std::make_pair(startFrom, namePrefix);
   }
-  return &(*nametree)[father];
 }
 
-nametree_entry_t*
-ndn_nametree_find_or_insert(ndn_nametree_t& nametree, uint8_t name[], size_t len)
+ndn::Name
+NameTree::longestPrefixMatch(ndn::Name name)
 {
-  nametree_entry_t* p = nametree_find_or_insert_try(nametree, name , len);
-  if (p == NULL) {
-    nametree_cleanup(nametree);
-    p = nametree_find_or_insert_try(nametree, name , len);
-  }
-  return p;
+  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
+  auto lmp = info.first->m_fullName; // lmp longes matched prefix
+  NDN_LOG_INFO("Longest matched prefix: " << lmp);
+  return lmp;
 }
 
-nametree_entry_t*
-ndn_nametree_prefix_match(
-                          ndn_nametree_t& nametree,
-                          uint8_t name[],
-                          size_t len,
-                          enum NDN_NAMETREE_ENTRY_TYPE type)
+void
+NameTree::getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs)
 {
-  int now_node, last_node = NDN_INVALID_ID , father = 0 , tmp;
-  size_t component_len, eqiv_component_len, offset = 0;
-  if (len < 2) return NULL;
-  if (name[1] < 253) offset = 2; else offset = 4;
-  while (offset < len) {
-    component_len = name[offset + 1] + 2;
-    eqiv_component_len = minof2(component_len, NDN_NAME_COMPONENT_BUFFER_SIZE);
-    now_node = (*nametree)[father].left_child;
-    tmp = -2;
-    while (now_node != NDN_INVALID_ID) {
-      tmp = memcmp(name+offset,(*nametree)[now_node].val , eqiv_component_len);
-      if (tmp <= 0) break;
-      now_node = (*nametree)[now_node].right_bro;
-    }
-    if (tmp == 0) {
-      if ((*nametree)[now_node].fib_id != NDN_INVALID_ID && type == NDN_NAMETREE_FIB_TYPE) last_node = now_node;
-      if ((*nametree)[now_node].pit_id != NDN_INVALID_ID && type == NDN_NAMETREE_PIT_TYPE) last_node = now_node;
-      if ((*nametree)[now_node].cs_id != NDN_INVALID_ID && type == NDN_NAMETREE_CS_TYPE) last_node = now_node;
-    } else break;
-    offset += component_len;
-    father = now_node;
+  if ((*startFrom).m_children.size() == 0)
+    return;
+  
+  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
+    leafs.push_back((*it_nt)->m_fullName);
+    getLeafs((*it_nt), leafs);
   }
-  if (last_node == NDN_INVALID_ID) return NULL; else return &(*nametree)[last_node];
 }
 
-nametree_entry_t*
-ndn_nametree_at(ndn_nametree_t& self, ndn_table_id_t id){
-  return &(*self)[id];
+std::vector<ndn::Name>
+NameTree::getAllLeafs(ndn::Name prefix)
+{
+  std::vector<ndn::Name> leafs;
+  auto node_ptr = search(m_root, prefix);
+  if (node_ptr == nullptr) {
+    NDN_LOG_INFO("prefix not in the tree");
+    return leafs;
+  }
+  getLeafs((*node_ptr), leafs);
+  return leafs;
 }
 
-ndn_table_id_t
-ndn_nametree_getid(ndn_nametree_t& self, nametree_entry_t* entry){
-  return entry - &(*self)[0];
+void
+NameTree::getChildrens(TreeNode* startFrom, std::vector<ndn::Name>& leafs)
+{
+  if ((*startFrom).m_children.size() == 0)
+    return;
+
+  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
+    if((*it_nt)->m_children.size() == 0) // if no childrent then this is the leaf
+      leafs.push_back((*it_nt)->m_fullName);
+    getChildrens((*it_nt), leafs);
+  }
 }
 
-
+std::vector<ndn::Name>
+NameTree::getAllChildrens(ndn::Name name)
+{
+  std::vector<ndn::Name> childrens;
+  auto node_ptr = search(m_root, name);
+  if (node_ptr == nullptr) {
+    NDN_LOG_INFO("prefix not in the tree");
+    return childrens;
+  }
+  getChildrens((*node_ptr), childrens);
+  return childrens;
 }
+
+TreeNode*
+NameTree::getParent(ndn::Name name)
+{
+  // parent of name (full name) "/aa/bb/cc" will be of full name "/aa/bb"
+  auto parentPrefix = name.getPrefix(1);
+  auto parent_ptr = search(m_root, parentPrefix);
+  NDN_LOG_INFO("parent of prefix: " << name << " = " << (*parent_ptr)->m_nodeId);
+  return *parent_ptr;
+}
+
+void
+NameTree::_delete(TreeNode* startFrom)
+{
+  if ((*startFrom).m_children.size() == 0) {
+    delete startFrom;
+    return;
+  }
+    /* first delete all the subtrees */
+  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
+    _delete(*it_nt);
+  } 
+  /* finally delete the parent node */
+  delete startFrom;
+}
+
+void
+NameTree::deleteNode(ndn::Name prefix) {
+  auto node_ptr = search(m_root, prefix);
+  NDN_LOG_INFO("Deleating from start: " << (*node_ptr)->m_nodeId);
+  _delete(*node_ptr);
+
+  auto parent = getParent(prefix);
+  auto index = std::find((*parent).m_children.begin(), (*parent).m_children.end(), *node_ptr);
+
+  if (index != (*parent).m_children.end()) {
+    (*parent).m_children.erase(index);
+  }
+}
+
+void
+NameTree::_printTree(TreeNode* startFrom)
+{ 
+  NDN_LOG_INFO("node: " << (*startFrom).m_nodeId);
+  if ((*startFrom).m_children.size() == 0) {
+    return;
+  }
+  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
+    _printTree(*it_nt);
+  }
+}
+
+} // nametree
+} // util
+} // mguard

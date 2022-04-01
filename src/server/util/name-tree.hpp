@@ -1,76 +1,110 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Copyright (c) 2022-
+ *
+ * This implementation is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE.  See the GNU Lesser General Public License for more details.
+ *
+ * You should have received copies of the GNU General Public License and GNU Lesser
+ * General Public License along with ndn-cxx, e.g., in COPYING.md file.  If not, see
+ * <http://www.gnu.org/licenses/>.
+ *
+ * Author: Saurab Dulal <dulal.saurab@gmail.com>
+ */
+
+#ifndef MGUARD_UTIL_NAMETREE_HPP
+#define MGUARD_UTIL_NAMETREE_HPP
+
 #include <ndn-cxx/name.hpp>
 #include <string>
 
-#define NDN_NAME_COMPONENT_BLOCK_SIZE 38
-typedef uint16_t ndn_table_id_t;
-
-
 namespace mguard {
 namespace util {
+namespace nametree {
 
-
-typedef struct nametree_entry{
-  uint8_t val[NDN_NAME_COMPONENT_BLOCK_SIZE];
-  struct nametree_entry* sub; /// Subtree
-  struct nametree_entry* cop[2]; /// Child or parent
-  ndn_table_id_t pit_id;
-  ndn_table_id_t fib_id;
-} nametree_entry_t;
-
-
-typedef struct ndn_nametree{
-  nametree_entry_t *nil, *root;
-  nametree_entry_t pool[];
-}ndn_nametree_t;
-
-
-class NameTree
+struct TreeNode
 {
-  public:
-  NameTree(uint8_t val[NDN_NAME_COMPONENT_BLOCK_SIZE],
-            ndn_table_id_t left_child,
-            ndn_table_id_t right_bro,
-            ndn_table_id_t pit_id,
-            ndn_table_id_t cs_id,
-            ndn_table_id_t fib_i
-            );
-
-
-  typedef nametree_entry_t ndn_nametree_t[];
-
-  #define NDN_NAMETREE_RESERVE_SIZE(entry_count) (sizeof(nametree_entry_t) * (entry_count))
-
-  void
-  ndn_nametree_init(void* memory, ndn_table_id_t capacity);
-
-  nametree_entry_t*
-  ndn_nametree_find_or_insert(ndn_nametree_t* nametree, uint8_t name[], size_t len);
-
-  nametree_entry_t*
-  ndn_nametree_prefix_match(
-    ndn_nametree_t* nametree,
-    uint8_t name[],
-    size_t len,
-    enum NDN_NAMETREE_ENTRY_TYPE type);
-
-  nametree_entry_t*
-  ndn_nametree_find(ndn_nametree_t *nametree, uint8_t name[], size_t len);
-
-  nametree_entry_t*
-  ndn_nametree_at(ndn_nametree_t *self, ndn_table_id_t id);
-
-  ndn_table_id_t
-  ndn_nametree_getid(ndn_nametree_t *self, nametree_entry_t* entry);
-
-  private:
-    uint8_t m_block_size;
-    ndn_table_id_t m_left_child;
-    ndn_table_id_t m_right_bro;
-    ndn_table_id_t m_pit_id;
-    ndn_table_id_t m_cs_id;
-    ndn_table_id_t m_fib_i;
-
+  std::vector<TreeNode*> m_children;
+  std::string m_nodeId; // this is the last name component e.g. for name /aa/bb/cc this will be cc
+  ndn::Name m_fullName; // this is complete name from root /aa/bb/cc
 };
 
+/*
+  
+  m-arrary tree or general tree, used to store hierarchical ndn names
+  e.g. inserting names /aa/bb/cc, /aa/ff/kk, /aa/ff/mm/cc will result in the following tree structure
+
+                                        / -> root of the tree
+                                        |
+                                        aa  (e.g. m_fullName = /aa)
+                                  ++++++++++++++
+                                  |            |
+                                  bb           ff
+                                        +++++++++++++++
+                                        |             |
+                                        kk            mm
+                                                       |
+                                                       cc (e.g. m_fullname = /aa/ff/mm/cc)
+
+
+*/
+class NameTree
+{
+public:
+  NameTree();
+  
+  TreeNode*
+  getTreeRoot()
+  {
+    return m_root;
+  }
+
+  void
+  insertName(ndn::Name name);
+
+  ndn::optional<TreeNode*>
+  search(TreeNode* startFrom, ndn::Name name);
+
+  std::vector<ndn::Name>
+  getAllLeafs(ndn::Name prefix);
+  
+  TreeNode*
+  getParent(ndn::Name name);
+
+  std::vector<ndn::Name>
+  getAllChildrens(ndn::Name name);
+
+  ndn::Name
+  longestPrefixMatch(ndn::Name name);
+
+  void
+  deleteNode(ndn::Name prefix);
+
+  void
+  _printTree(TreeNode* startFrom);
+
+private:
+  TreeNode*
+  createNode(std::string nodeId, ndn::Name fullName);
+
+  void
+  getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs);
+
+  std::pair<TreeNode*, ndn::Name>
+  getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
+
+  void
+  getChildrens(TreeNode* startFrom, std::vector<ndn::Name>& leafs);
+
+  void
+  _delete(TreeNode* nodeptr);
+
+private:
+  TreeNode* m_root;
+};
+} // nametree
 } // util
 } // mguard
+
+#endif
