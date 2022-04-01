@@ -3,12 +3,7 @@
 #include <server/util/name-tree.hpp>
 #include <common.hpp>
 
-// #include <chrono>
-// #include <unistd.h>
-// #include <thread>
-
 using namespace ndn;
-// using DummyClientFace = ndn::util::DummyClientFace;
 
 namespace mguard {
 namespace util {
@@ -17,7 +12,6 @@ namespace tests {
 
 BOOST_AUTO_TEST_CASE(Constructor)
 {
-
     util::nametree::NameTree nametree;
     nametree.insertName("/aa/bb/cc");
     nametree.insertName("/aa/ff/mm/cc");
