@@ -4,6 +4,8 @@
 #include <iostream>
 #include <utility>
 
+NDN_LOG_INIT(mguard.parser);
+
 namespace pt = boost::property_tree;
 namespace mguard {
 namespace parser {
@@ -68,6 +70,7 @@ PolicyParser::parseAvailableStreams(std::istream &input)
   for (const auto &item : section.get_child("available-streams"))
   {
     // add stream to list of streams
+    NDN_LOG_TRACE("stream name: " << item.first);
     availableStreams.push_back(item.first);
     // note: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
     // adding all parents of given stream to list

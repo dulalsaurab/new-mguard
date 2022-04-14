@@ -4,6 +4,7 @@
 #include "common.hpp"
 
 #include <ndn-cxx/name.hpp>
+#include <ndn-cxx/util/logger.hpp>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/property_tree/ptree.hpp>

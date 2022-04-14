@@ -40,10 +40,11 @@ Controller::processPolicy(const std::string& policyPath)
   auto policyDetail = m_policyParser.getPolicyInfo();
 
   // TODO: modify parser to store streams as ndn Name not the strings
-  // in doing so we don't need the below conversion
+  // in doing so we don't need the following conversion
   std::list <ndn::Name> tempStreams;
   for (const std::string& name : policyDetail.streams)
   {
+    NDN_LOG_TRACE("Streams got from parser: " << name);
     tempStreams.push_back(name);
   }
 
@@ -65,6 +66,10 @@ Controller::processPolicy(const std::string& policyPath)
     }
   }
 }
+
+
+// /data/receive  ---- interest on this prefix from external application, data generator. 
+
 
 void
 Controller::setInterestFilter(const ndn::Name& name, const bool loopback)
@@ -155,6 +160,7 @@ Controller::wireEncode(ndn::EncodingImpl<TAG> &encoder)
 {
   size_t totalLength = 0;
   auto& accessibleStreams = m_temp_policyDetail.streams;
+
   for (auto it = accessibleStreams.rbegin(); it != accessibleStreams.rend(); ++it) {
     NDN_LOG_DEBUG (" Encoding stream name: " << *it);
     totalLength += it->wireEncode(encoder);

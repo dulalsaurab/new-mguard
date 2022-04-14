@@ -21,7 +21,8 @@ class mGuardProducer
 public:
 
   mGuardProducer(mguard::util::Stream stream)
-  : m_scheduler(m_face.getIoService())
+  : m_face()
+  , m_scheduler(m_face.getIoService())
   , m_stream(stream)
   , m_dataAdaptor(m_face, "/org/md2k", "/mguard/aa") 
   {
@@ -40,7 +41,7 @@ public:
 private:
   ndn::Face m_face;
   ndn::Scheduler m_scheduler;
-
+  // boost::asio::io_service io_service;
   mguard::util::Stream m_stream;
   mguard::DataAdapter m_dataAdaptor;
 };
@@ -48,6 +49,25 @@ private:
 
 int main ()
 {
+
+
+//   int main(int argc, char *argv[])
+// {
+  // try
+  //   {
+  // boost::asio::io_service io_service;
+  // mguard::Server server(io_service);
+  // io_service.run();
+  //   // }
+  // catch(std::exception& e)
+  //   {
+  //   std::cerr << e.what() << endl;
+  //   }
+  //  std::cout << "Hello world" << std::endl;
+  // return 0;
+// }
+
+
   streamInfo A;
   A.streamName = "/org/md2k/mguard/dd40c/phone/gps";
   A.attributes = {"/org/md2k/mguard/dd40c/phone/gps"};
