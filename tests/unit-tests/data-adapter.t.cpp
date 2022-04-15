@@ -27,7 +27,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
                      "STARTTIME           DATETIME    NOT NULL," \
                      "ENDTIME            DATETIME     NOT NULL," \
                      "SEMANTIC_NAME        CHAR(50)," \
-                     "USER        CHAR(100)," \
+                     "USER        text," \
                      "VERSION        CHAR(50));";
 
  DataBase db(dbname, table);
