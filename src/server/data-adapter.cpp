@@ -179,73 +179,225 @@ DataAdapter::publishDataUnit(util::Stream& stream)
   }
 }
 
-DataBase::DataBase(const std::string& databaseName, const std::string& table)
-: m_databaseName(databaseName)
+DataBase::DataBase(std::basic_string<char>  databaseName)
+        : m_databaseName(std::move(databaseName)), m_db()
 {
-  // open database if already exist else create a new one
-  if (!openDataBase()) {
-    NDN_LOG_DEBUG("Failed to open/create to the database");
-    exit(-1);
-  }
-  if (!runQuery(table)) {
-    NDN_LOG_INFO("Failed to create table");
-    exit(-1);
-  }
-  NDN_LOG_DEBUG("Database and table crated successfully");
-  closeDataBase();
+    // open database if already exist else create a new one
+    if (!openDataBase()) {
+        NDN_LOG_DEBUG("Failed to open/create to the database");
+        exit(-1);
+    }
+    // this resets the table even if it's already been created
+    if (!runQuery("drop table if exists lookup;create table lookup(id integer primary key autoincrement, start integer not null, end integer not null, semantic text not null, user text not null, version text);")) {
+        NDN_LOG_INFO("Failed to create table");
+        exit(-1);
+    }
+    NDN_LOG_DEBUG("Database and table crated successfully");
+    closeDataBase();
 }
 
 inline bool
 DataBase::openDataBase()
 {
-  auto errStatus =  sqlite3_open(m_databaseName.c_str(), &m_db);
-  if (errStatus) {
-    std::cerr << "Error open DB " << sqlite3_errmsg(m_db) << std::endl;
-    return false;
-  }
-  else
-    NDN_LOG_INFO("Opened Database Successfully!");
-  return true;
+    auto errStatus =  sqlite3_open(m_databaseName.c_str(), &m_db);
+    if (errStatus) {
+        std::cerr << "Error open DB " << sqlite3_errmsg(m_db) << std::endl;
+        return false;
+    }
+    else
+        NDN_LOG_INFO("Opened Database Successfully!");
+        return true;
 }
 
 inline
 void
 DataBase::closeDataBase()
 {
-  sqlite3_close(m_db);
+    sqlite3_close(m_db);
 }
 
 bool
 DataBase::runQuery(const std::string& query)
 {
-  char *zErrMsg = 0;
-  /* Execute SQL statement */
-  auto rc = sqlite3_exec(m_db, query.c_str(), nullptr, 0, &zErrMsg);
-  if( rc != SQLITE_OK ){
-      fprintf(stderr, "SQL error: %s\n", zErrMsg);
-      sqlite3_free(zErrMsg);
-      return false;
-   } else {
-      fprintf(stdout, "Query exectuted successfully\n");
-   }
-   return true;
+    char *zErrMsg = nullptr;
+    /* Execute SQL statement */
+    std::string bleh = "select";
+    if (query.find(bleh) != std::string::npos) {
+        // has select in it
+    }
+    std::basic_string<char> data;
+    auto rc = sqlite3_exec(m_db, query.c_str(), callback, &data, &zErrMsg);
+    if( rc != SQLITE_OK ){
+        fprintf(stderr, "SQL error: %s\n", zErrMsg);
+        sqlite3_free(zErrMsg);
+        return false;
+    } else {
+        fprintf(stdout, "Query exectuted successfully\n");
+    }
+    return true;
+}
+
+int
+DataBase::callback(void *NotUsed, int argc, char **argv, char **azColName)
+{
+    int i;
+    for(i = 0; i<argc; i++) {
+        printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+    }
+    printf("\n");
+    return 0;
+}
+
+std::vector<const unsigned char*>
+DataBase::getLocations(std::basic_string<char> &timestamp, std::basic_string<char> &userID) {
+    std::vector<const unsigned char*> out;
+    std::string tmpQuery = "select distinct semantic from lookup where start <= ";
+    tmpQuery += timestamp;
+    tmpQuery += " and end >= ";
+    tmpQuery += timestamp;
+    tmpQuery += ";";
+    sqlite3_stmt *stmt = nullptr;
+    const char **tail = nullptr;
+    openDataBase();
+    const unsigned char* tmp;
+    sqlite3_prepare_v2(m_db,tmpQuery.c_str(), -1, &stmt, tail);
+    while (sqlite3_step(stmt) != SQLITE_DONE){
+        tmp = sqlite3_column_text(stmt, 0);
+        // fixme: printing to screen gives the desired output, but adding to the vector does not
+        out.push_back(tmp);
+        std::cout << tmp << std::endl;
+    }
+    sqlite3_finalize(stmt);
+    closeDataBase();
+    return out;
+}
+
+std::vector<std::vector<std::basic_string<char>>>
+DataBase::processCSV(std::basic_string<char> &_s) {
+    std::vector<std::vector<std::basic_string<char>>> rows;
+    std::vector<std::basic_string<char>> row;
+    std::basic_string<char> value;
+    bool inQuote = false;
+    for (const char &c: _s) {
+        if (inQuote) {
+            if (c == '"') {
+                inQuote = false;
+            } else {
+                value.push_back(c);
+            }
+        }
+        else
+        {
+            // start of quote
+            if (c == '"') {
+                inQuote = true;
+            }
+                // end of item
+            else if (c == ',') {
+                row.push_back(value);
+                value.clear();
+            }
+                // is escape character
+            else if (c == '\n') {
+                row.push_back(value);
+                value.clear();
+
+                rows.push_back(row);
+                row.clear();
+            }
+                // part of item
+            else {
+                value.push_back(c);
+            }
+        }
+    }
+    if (!value.empty()){
+        row.push_back(value);
+        value.clear();
+    }
+    if (!row.empty()) {
+        rows.push_back(row);
+        row.clear();
+    }
+
+    return rows;
 }
 
 void
-DataBase::insertRows(const std::vector<std::string>& rows)
+DataBase::insertRows(std::vector<std::vector<std::basic_string<char>>>& rows)
 {
-  if (!openDataBase()) {
-    NDN_LOG_INFO("Couldn't open database");
-    return;
-  }
-  
-  for (const auto &row : rows) {
-    if (!runQuery(row))
-      NDN_LOG_DEBUG("Failed to insert row: " << row);
+    if (!openDataBase()) {
+        NDN_LOG_INFO("Couldn't open database");
+        return;
+    }
 
-    NDN_LOG_DEBUG("Inserted row: " << row);
-  }
-  closeDataBase();
+    std::string query;
+    for (const std::vector<std::basic_string<char>>& row : rows) {
+        query = "insert into lookup (start, end, semantic, user, version) values(";
+        std::vector<std::string> x = dateThing(row[3]);
+        // header line
+        if (x.empty()) {
+            continue;
+        }
+        for (const auto &item: x) {
+            query += item;
+            query += ",";
+        }
+        query += "\"" + row[4] + "\"";
+        query += ", ";
+        query += "\"" + row[5] + "\"";
+        query += ", ";
+        query += "\"" + row[6] + "\"";
+        query += ")";
+
+        if (runQuery(query)) {
+            NDN_LOG_DEBUG("Failed to insert row: " << row);
+        } else {
+            NDN_LOG_DEBUG("Inserted row: " << row);
+        }
+    }
+    closeDataBase();
+}
+
+
+// you can override this to add any formatting you want
+// CHANGING THE FORMATTING FOR THIS WILL RESULT IN INCORRECT QUERIES
+// currently, this produces YYYYMMDDHHMMSS
+std::vector<std::string>
+DataBase::dateThing(const std::basic_string<char>& unformattedDate) {
+    std::vector<std::string> out;
+    // full is the building of the full YYYYMMDDHHMMSS number
+    // individual is the YYYY or MM or DD, etc, where it needs to be 2 or 4 digits long for formatting
+    std::basic_string<char> full, individual;
+    for (const char &c: unformattedDate) {
+        if (c == '('){
+            full.clear();
+            individual.clear();
+        }
+        else if (c == ')'){
+            if (!individual.empty()) {
+                // this is where you can add formatting like - or : (in an overridden function)
+                full += individual;
+                individual.clear();
+            }
+            if (!full.empty()){
+                out.push_back(full);
+            }
+            full.clear();
+            individual.clear();
+        }
+        else if (c == ',' ) {
+            if (individual.size() < 2) {
+                full += "0";
+            }
+            full += individual;
+            individual.clear();
+        }
+        else if (c != ' ') {
+            individual.push_back(c);
+        }
+    }
+    return out;
 }
 
 
