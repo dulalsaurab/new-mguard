@@ -1,4 +1,5 @@
 #include "file-processor.hpp"
+#include <boost/algorithm/string.hpp>
 
 namespace mguard
 {
@@ -35,7 +36,9 @@ FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
   while ((pos = _s.find(delimiter)) != std::string::npos)
   {
     token = _s.substr(0, pos);
-    _vec.push_back(token);
+    if (!(boost::algorithm::contains(token, "timestamp"))) {
+      _vec.push_back(token);
+    }
     _s.erase(0, pos + delimiter.length());
   }
   return _vec;

@@ -54,17 +54,21 @@ ConnectionHandler::readContent(const boost::system::error_code& err, size_t byte
 void 
 ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
+  NDN_LOG_DEBUG("Total number of bytes recevied: " << bytes_transferred);
   auto expectedBytes = static_cast<size_t> (std::stoi(metaData[2]));
 
-  if (response_.size() <= 0 || (response_.size() != expectedBytes)) // we didn't get all the expected bytes
-    { 
+  if (response_.size() <= 0) { // didn't get anything
       NDN_LOG_DEBUG("Missing content");
       std::vector<std::string> emptyVector= {};
-      m_onReceiveDataFromClient(emptyVector, ""); // problem receiving content
+      m_onReceiveDataFromClient(emptyVector, ""); // problem receiving content, don't think we need to send callback here??
     }
   
+  if (response_.size() != expectedBytes) { // didn't get all the expected bytes  
+    NDN_LOG_DEBUG("All the expected data is not received");
+  }
+
   // todo: error wont occure once the above function is fixed
-  if(err)
+  if (err)
     NDN_LOG_DEBUG("Error: " << err);
   
   // convert the buffer into string and send it to server
@@ -106,7 +110,12 @@ Receiver::startAccept()
 void
 Receiver::processCallbackFromController(const std::vector<std::string> metaData, const std::string& response)
 {
-  m_onReceiveDataFromController(metaData[0], response);
+  // check if the metaData is empty, and there is no response
+  if (!(response.empty()))
+    m_onReceiveDataFromController(metaData[0], response);
+
+  // do nothing
+  NDN_LOG_DEBUG("Didn't receive any data from the receiver");
 }
 
 
@@ -174,21 +183,20 @@ DataAdapter::stop()
 ndn::Name
 DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 {
+  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << "and timestamp: " << timestamp);
   return streamName.append("DATA").append(timestamp);
 }
 
 void
 DataAdapter::publishDataUnit(util::Stream& stream, const std::string& streamContent)
 {
-  std::cout << streamContent << std::endl;
   NDN_LOG_INFO("Processing stream: " << stream.getName());
   auto dataSet = m_fileProcessor.getVectorByDelimiter(streamContent, "\n");
 
   for (auto data : dataSet)
   {
-    NDN_LOG_TRACE("Data unit" << data);
     // get timestamp from the data row
-    std::string delimiter = "\t";
+    std::string delimiter = ",";
     m_tempRow = data;
     auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
     auto dataName = makeDataName(stream.getName(), timestamp);
