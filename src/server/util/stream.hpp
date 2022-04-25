@@ -3,6 +3,8 @@
 
 #include <ndn-cxx/name.hpp>
 #include <string>
+#include <algorithm>
+#include <regex>
 
 namespace mguard {
 namespace util {
@@ -10,7 +12,7 @@ namespace util {
 class Stream
 {
 public:
-  Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, const std::string& path);
+  Stream(const std::string& md2kName, std::vector<std::string> attributeSet = {});
 
   /*
    This function will update the manifest list and send status whether it is reedy to be published or not
@@ -25,6 +27,15 @@ public:
   getManifestList()
   {
     return m_manifestList;
+  }
+
+  /*
+    once the manifest is published (inserted list to repo, need to reset it for fresh names)
+  */
+  void
+  resetManifestList()
+  {
+    m_manifestList.clear();
   }
 
   ndn::Name&
@@ -51,6 +62,7 @@ public:
     return m_manifestName;
   }
 
+  // stream attribute
 	void
 	setAttributes(std::vector<std::string>& attributeSet)
   {
@@ -65,24 +77,11 @@ public:
     return m_attributeSet;
   }
 
-  void
-  setStreamDataPath(std::string path)
-  {
-    m_streamDataPath = path;
-  }
-
-  std::string&
-  getStreamDataPath()
-  {
-    return m_streamDataPath;
-  }
-
 private:
   std::string m_md2kName;
   ndn::Name m_name;
   ndn::Name m_manifestName; // will contain the manifest name with latest sequence number
   std::vector<std::string> m_attributeSet;
-  std::string m_streamDataPath;
   std::vector<ndn::Name> m_manifestList;
   int m_manifestCounter;
 

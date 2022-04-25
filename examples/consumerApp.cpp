@@ -31,6 +31,9 @@ public:
   void
   processSubscriptionCallback(const std::unordered_set<ndn::Name>& streams)
   {
+    // check for convergence.
+    m_subscriber.checkConvergence();
+    
     // stop the process event
     m_subscriber.stop();
 

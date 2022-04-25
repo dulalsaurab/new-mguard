@@ -17,13 +17,15 @@
 
 //importing libraries
 #include <boost/asio.hpp>
-#include <boost/bind.hpp>
+// #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
 using namespace boost::asio;
 using ip::tcp;
 using std::cout;
 using std::endl;
+
+#define BOOST_BIND_NO_PLACEHOLDERS
 
 #if BOOST_VERSION >= 107000
 #define GET_IO_SERVICE(s) ((boost::asio::io_context&)(s).get_executor().context())
@@ -34,26 +36,22 @@ using std::endl;
 
 namespace mguard {
 
+using CallbackFromController = std::function<void(const std::vector<std::string> metaData, const std::string response)>;
+using CallbackFromReceiver = std::function<void(const std::string& streamName, const std::string& streamContent)>;
+
 class ConnectionHandler : public boost::enable_shared_from_this<ConnectionHandler>
 {
-private:
-  tcp::socket sock;
-  std::string message="Hello From Server!";
-  enum { max_length = 1024 };
-  char data[max_length];
-  boost::asio::streambuf response_;
-
 public:
   
   typedef boost::shared_ptr<ConnectionHandler> pointer;
 
-  ConnectionHandler(boost::asio::io_service& io_service);
+  ConnectionHandler(boost::asio::io_service& io_service, const CallbackFromController& callback);
   
   // creating the pointer
   static pointer 
-  create(boost::asio::io_service& io_service)
+  create(boost::asio::io_service& io_service, const CallbackFromController& callback)
   {
-    return pointer(new ConnectionHandler(io_service));
+    return pointer(new ConnectionHandler(io_service, callback));
   }
 
   //socket creation
@@ -63,31 +61,67 @@ public:
     return sock;
   }
   
+  inline int
+  getExpectedNumberOfChunks()
+  {
+    if(!(metaData.size() > 0))
+      return -1;
+    return std::stoi(metaData[1]);
+  }
+
   void 
   start();
 
-  void 
+  // void
+  // readHeader(const boost::system::error_code& err, size_t bytes_transferred);
+
+  void
+  readContent(const boost::system::error_code& err, size_t bytes_transferred);
+  
+  void
   readHandle(const boost::system::error_code& err, size_t bytes_transferred);
 
   void 
   writeHandle(const boost::system::error_code& err, size_t bytes_transferred);
 
+  void
+  resetData()
+  {
+    // data[max_length] = {};
+    memset(data, 0, sizeof(data));
+  }
+
+private:
+  tcp::socket sock;
+  std::string message="Hello From Server!";
+  
+  enum { max_length = 1024 };
+  char data[max_length];
+  
+  std::vector<std::string> metaData;
+  boost::asio::streambuf response_;
+  CallbackFromController m_onReceiveDataFromClient;
+
 };
 
-class Server 
+class Receiver 
 {
-private:
-   tcp::acceptor acceptor_;
-
 public:
   
-  void 
-  start_accept();
+  Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback);
 
-  Server(boost::asio::io_service& io_service);
+  void 
+  startAccept();
 
   void
-  handle_accept(ConnectionHandler::pointer connection, const boost::system::error_code& err);
+  processCallbackFromController(const std::vector<std::string> metaData, const std::string& response);
+
+  void
+  handleAccept(ConnectionHandler::pointer connection, const boost::system::error_code& err);
+
+private:
+   tcp::acceptor acceptor_;
+   CallbackFromReceiver m_onReceiveDataFromController;
 
 };
 
@@ -103,11 +137,14 @@ public:
   void
   stop();
 
+  void
+  processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent);
+
   ndn::Name
   makeDataName(ndn::Name streamName, std::string timestamp);
   
   void
-  publishDataUnit(util::Stream& stream);
+  publishDataUnit(util::Stream& stream, const std::string& streamContent);
 
 private:
   ndn::KeyChain m_keyChain;
@@ -119,7 +156,8 @@ private:
   ndn::security::Certificate m_ABE_authorityCert;
   mguard::Publisher m_publisher;
   boost::asio::io_service m_ioService;
-  mguard::Server m_server;
+  mguard::Receiver m_receiver;
+  std::map<std::string, mguard::util::Stream> m_streams;
 };
 
 class DataBase

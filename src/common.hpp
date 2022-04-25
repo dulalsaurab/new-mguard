@@ -21,6 +21,8 @@ enum
 
 }
 
+const std::string SEMANTIC_LOCATION = "org.md2k--mguard--00000000-e19c-3956-9db2-5459ccadd40c--data_analysis--gps_episodes_and_semantic_location";
+
 class Error : public std::runtime_error
 {
 public:

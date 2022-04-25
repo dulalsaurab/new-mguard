@@ -46,8 +46,8 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
-                                                            reinterpret_cast<const uint8_t *>(data.c_str()), data.size());
+        std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
+                                                            {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Encryption failled");
@@ -99,6 +99,7 @@ Publisher::publishManifest(util::Stream& stream)
       if ((m_repoInserter.writeDataToRepo(*manifestData)))
         NDN_LOG_DEBUG("Successfully inserted manifest into the repo");
         m_temp.clear(); // clear temp variable
+        stream.resetManifestList(); // clear manifest list
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Failed to insert mainfest into the repo");
