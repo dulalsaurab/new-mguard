@@ -159,6 +159,7 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
       NDN_LOG_INFO("Update: " << update.prefix << "/" << i);
       auto manifestInterestName = update.prefix;
       manifestInterestName.appendNumber(i);
+      NDN_LOG_DEBUG("Request content for manifest: " << manifestInterestName);
       expressInterest(manifestInterestName, true);
     }
   }
