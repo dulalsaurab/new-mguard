@@ -8,17 +8,6 @@ namespace util {
 
 NDN_LOG_INIT(mguard.Stream);
 
-/*
-if use_manifest is set to false, manifest will not be used, application data will be publised directly.
-*/
-const bool USE_MANIFEST = true;
-
-// manifest will be published after receiving 100 data units
-const int MANIFEST_BATCH_SIZE = 4;
-
-// if next update is not received withing 100 ms, the manifest will be publised, this can override batch size
-const int MAX_UPDATE_WAIT_TIME = 100; //todo: not implemented yet
-
 Stream::Stream(const std::string& md2kName, std::vector<std::string> attributeSet)
 : m_md2kName(md2kName)
 , m_attributeSet(attributeSet)

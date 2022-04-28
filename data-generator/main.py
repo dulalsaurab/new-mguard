@@ -1,30 +1,3 @@
-# from generator import get_cc
-# from client import *
-
-# data_limit = 2**13
-# port = 17001
-
-
-# def send_stream(name):
-#     to_send = cc.get_stream(streams[name]).toPandas().to_csv()
-#     limited = limit(to_send, data_limit)
-#     client = Client(port)
-#     client.send(limited)
-
-
-# if __name__ == '__main__':
-#     cc, streams = get_cc()
-#     """
-#     names:
-#     battery
-#     location
-#     semantic_location
-#     accel
-#     gyro
-#     """
-#     send_stream('battery')
-
-
 from generator import get_cc
 
 import socket
@@ -77,9 +50,9 @@ def main():
         print (_size, metadata)
         
         senderObj.send(metadata)
-        sleep(1)
+        sleep(1) # sleep one second after sending the header
         senderObj.send(data)
-        sleep(10)
+        sleep(10) # sleep 10 seconds after sending the first stream
 
     print("sending data completed")
     senderObj.close()

@@ -201,8 +201,8 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::string& streamCont
     auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
     auto dataName = makeDataName(stream.getName(), timestamp);
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
-    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
 
+    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     m_publisher.publish(dataName, data, stream);
   }
 }

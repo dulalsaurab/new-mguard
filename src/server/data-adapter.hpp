@@ -163,6 +163,7 @@ private:
 class DataBase
 {
 public:
+
   static int 
   callback (void *NotUsed, int argc, char **argv, char **azColName) {
     std::cout << "this is the callback" << std::endl;

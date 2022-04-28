@@ -154,11 +154,15 @@ void
 Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates)
 {
   for (const auto& update : updates) {
-    for (uint64_t i = update.lowSeq; i <= update.highSeq; i++) {
+
+    auto lSeq = getLowSeqOfPrefix(update.prefix);
+    auto sc = (lSeq == NOT_AVAILABLE) ? STARTING_SEQ_NUM : lSeq; // sc = sequence counter
+
+    for (sc; sc <= update.highSeq; sc++) {
       // for manifest update, we need to express interest and fetch the manifest content
-      NDN_LOG_INFO("Update: " << update.prefix << "/" << i);
+      NDN_LOG_INFO("Update: " << update.prefix << "/" << sc);
       auto manifestInterestName = update.prefix;
-      manifestInterestName.appendNumber(i);
+      manifestInterestName.appendNumber(sc);
       NDN_LOG_DEBUG("Request content for manifest: " << manifestInterestName);
       expressInterest(manifestInterestName, true);
     }
@@ -208,7 +212,7 @@ Subscriber::wireDecode(const ndn::Block& wire)
 
       m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
                              bind(&Subscriber::abeOnError, this, _1));
-      NDN_LOG_DEBUG("data names: " << dataName.getPrefix(-1));  
+      NDN_LOG_DEBUG("data names: " << dataName);  
     }
   }
 }

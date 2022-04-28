@@ -59,6 +59,23 @@ public:
     return m_subscriptionList;
   }
 
+  uint64_t
+  getLowSeqOfPrefix(const ndn::Name& prefix)
+  {
+    auto it = m_prefixToLowSeq.find(prefix);
+    return (it == m_prefixToLowSeq.end()) ? NOT_AVAILABLE : it->second;
+  }
+
+  void
+  setLowSeqOfPrefix(const ndn::Name& prefix, uint64_t seqNum)
+  {
+    auto it = m_prefixToLowSeq.find(prefix);
+    if (it == m_prefixToLowSeq.end()) // prefix doesn't exist in the map
+      m_prefixToLowSeq.emplace(prefix, seqNum);
+    else
+      it->second = seqNum;
+  }
+
   void
   setSubscriptionList(const std::vector<ndn::Name>& subList)
   {
@@ -108,6 +125,7 @@ private:
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
+  std::unordered_map<ndn::Name, uint64_t> m_prefixToLowSeq;
   std::vector<ndn::Name> m_subscriptionList;
 
   // available streams are the ones received from psync
