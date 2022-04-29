@@ -183,13 +183,12 @@ public:
 
   bool
   openDataBase();
-
   /* 
     main function that gets the unique semantic locations from the db given a timestamp and userID
     call this after the database is populated, or else it won't work timestamp is in the format YYYYMMDDHHMMSS
   */
-  std::vector<const unsigned char*>
-  getSemanticLocations( std::basic_string<char> &timestamp, std::basic_string<char> &userID);
+  std::vector<std::basic_string<char>>
+  getSemanticLocations(std::basic_string<char> &timestamp, std::basic_string<char> &userID);
 
   void
   insertRows(std::vector<std::vector<std::basic_string<char>>>& rows);
