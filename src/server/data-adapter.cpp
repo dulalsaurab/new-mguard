@@ -206,7 +206,7 @@ DataBase::openDataBase()
     }
     else
         NDN_LOG_INFO("Opened Database Successfully!");
-        return true;
+    return true;
 }
 
 inline
@@ -221,10 +221,6 @@ DataBase::runQuery(const std::string& query)
 {
     char *zErrMsg = nullptr;
     /* Execute SQL statement */
-    std::string bleh = "select";
-    if (query.find(bleh) != std::string::npos) {
-        // has select in it
-    }
     std::basic_string<char> data;
     auto rc = sqlite3_exec(m_db, query.c_str(), callback, &data, &zErrMsg);
     if( rc != SQLITE_OK ){
@@ -248,27 +244,41 @@ DataBase::callback(void *NotUsed, int argc, char **argv, char **azColName)
     return 0;
 }
 
-std::vector<const unsigned char*>
+std::vector<std::basic_string<char>>
 DataBase::getLocations(std::basic_string<char> &timestamp, std::basic_string<char> &userID) {
-    std::vector<const unsigned char*> out;
+    // output of function
+    std::vector<std::basic_string<char>> out;
+    // creating the query based on given timestamp and userID
     std::string tmpQuery = "select distinct semantic from lookup where start <= ";
     tmpQuery += timestamp;
     tmpQuery += " and end >= ";
     tmpQuery += timestamp;
     tmpQuery += ";";
-    sqlite3_stmt *stmt = nullptr;
-    const char **tail = nullptr;
+
+    // open database, run query on database, and store result in stmt
     openDataBase();
-    const unsigned char* tmp;
-    sqlite3_prepare_v2(m_db,tmpQuery.c_str(), -1, &stmt, tail);
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(m_db,tmpQuery.c_str(), -1, &stmt, nullptr);
+
+    // variables for storing values from each row
+    const char* tmp;    // raw from row
+    char *safe;         // will be safe spot in memory
     while (sqlite3_step(stmt) != SQLITE_DONE){
-        tmp = sqlite3_column_text(stmt, 0);
-        // fixme: printing to screen gives the desired output, but adding to the vector does not
-        out.push_back(tmp);
-        std::cout << tmp << std::endl;
+        // get the next value in column index 0 of the query's result
+        tmp = reinterpret_cast<const char *>(sqlite3_column_text(stmt, 0));
+        // set a new place in memory to the size needed for new value
+        safe = new char[strlen(tmp)];
+        // copy value from tmp to safe memory
+        strcpy(safe, tmp);
+
+        // add locatoin of safe value to output
+        out.emplace_back(safe);
     }
+
+    // close stmt and database
     sqlite3_finalize(stmt);
     closeDataBase();
+
     return out;
 }
 

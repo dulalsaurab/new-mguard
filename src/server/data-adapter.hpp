@@ -145,7 +145,7 @@ public:
     // main function that gets the unique semantic locations from the db given a timestamp and userID
     // call this after the database is populated, or else it won't work
     // timestamp is in the format YYYYMMDDHHMMSS
-    std::vector<const unsigned char*>
+    std::vector<std::basic_string<char>>
     getLocations( std::basic_string<char> &timestamp, std::basic_string<char> &userID);
 
     void
