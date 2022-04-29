@@ -1,31 +1,28 @@
 #include "stream.hpp"
 #include "common.hpp"
 
+#include <ndn-cxx/util/logger.hpp>
+
 namespace mguard {
 namespace util {
 
-/*
-if use_manifest is set to false, manifest will not be used, application data will be publised directly.
-*/
-const bool USE_MANIFEST = true;
+NDN_LOG_INIT(mguard.Stream);
 
-// manifest will be published after receiving 100 data units
-const int MANIFEST_BATCH_SIZE = 4;
-
-// if next update is not received withing 100 ms, the manifest will be publised, this can override batch size
-const int MAX_UPDATE_WAIT_TIME = 100; //todo: not implemented yet
-
-Stream::Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, const std::string& path)
-: m_name(name)
+Stream::Stream(const std::string& md2kName, std::vector<std::string> attributeSet)
+: m_md2kName(md2kName)
 , m_attributeSet(attributeSet)
-, m_streamDataPath(path)
 , m_manifestCounter (0)
 {
-  std::string m_md2kName = m_name.toUri();
-  std::replace(m_md2kName.begin(), m_md2kName.end(), '/', '-'); // converting name to mguard name
+  m_name = std::regex_replace(m_md2kName, std::regex("--"), "/"); // convert to ndn name
+
   m_manifestName = m_name;
   m_manifestName.append("manifest");
-  // m_streamDataPath =  DATA_DIR + "/" + m_md2kName + ".csv";
+
+  m_attributeSet.push_back(m_name.toUri());
+
+  NDN_LOG_DEBUG("stream name: " << m_md2kName);
+  NDN_LOG_DEBUG("NDN name: " << m_name);
+  NDN_LOG_DEBUG("Manifest name: " << m_manifestName);
 }
 
 bool

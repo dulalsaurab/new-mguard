@@ -1,2 +1,6 @@
 cmake-build*/
 build/
+
+data-generator/CerebralCortexRandomDataGenerator
+
+data-generator/__pycache__/*

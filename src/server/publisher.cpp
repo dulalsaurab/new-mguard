@@ -35,6 +35,33 @@ Publisher::doUpdate(ndn::Name& manifestName)
 }
 
 void
+Publisher::scheduledManifestForPublication(util::Stream& stream)
+{
+  auto name = stream.getName();
+  auto itr = m_scheduledIds.find(name);
+  NDN_LOG_DEBUG("Scheduling manifest: " << name << " for publication");
+  
+  if (itr != m_scheduledIds.end()) {
+    NDN_LOG_DEBUG("Manifest: " << name << " was already scheduled, updating the schedule");
+    itr->second.cancel();
+    auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
+                      publishManifest(stream);
+                      doUpdate(stream.getManifestName());
+                      NDN_LOG_DEBUG("Updated manifest: " << stream.getName() << " via scheduling");
+                    });
+    itr->second = scheduleId;
+  }
+  else {
+    auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
+                      publishManifest(stream);
+                      doUpdate(stream.getManifestName());
+                      NDN_LOG_DEBUG("Updated manifest: " << stream.getName() << " via scheduling");
+                    });
+    m_scheduledIds.emplace(name, scheduleId);
+  }
+}
+
+void
 Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
 {
     // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
@@ -46,8 +73,8 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
-                                                            reinterpret_cast<const uint8_t *>(data.c_str()), data.size());
+        std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
+                                                            {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Encryption failled");
@@ -68,14 +95,17 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
     }
 
     bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
-
+    
     // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
     // "t" time has passed after receiving the last application data.
     if(doPublishManifest) {
+      cancleIfManifestScheduledForPublication(stream.getName());
       // create manifest data packet, and insert it into the repo
       publishManifest(stream);
       doUpdate(stream.getManifestName());
     }
+    else
+      scheduledManifestForPublication(stream);
 }
 
 void
@@ -91,19 +121,22 @@ Publisher::publishManifest(util::Stream& stream)
   m_temp = stream.getManifestList();
 
   manifestData->setContent(wireEncode());
-  NDN_LOG_DEBUG ("seqNumber: " << prevSeqNum + 1);
+
+  NDN_LOG_DEBUG ("Manifest seqNumber: " << prevSeqNum + 1);
   
   m_keyChain.sign(*manifestData);
-  
-   try {
-      if ((m_repoInserter.writeDataToRepo(*manifestData)))
-        NDN_LOG_DEBUG("Successfully inserted manifest into the repo");
-        m_temp.clear(); // clear temp variable
-    }
-    catch(const std::exception& e) {
-      NDN_LOG_ERROR("Failed to insert mainfest into the repo");
-      std::cerr << e.what() << '\n';
-    }
+
+  try {
+    if ((m_repoInserter.writeDataToRepo(*manifestData)))
+      NDN_LOG_DEBUG("Successfully inserted manifest into the repo");
+      m_temp.clear(); // clear temp variable
+      stream.resetManifestList(); // clear manifest list
+      m_wire.reset(); // reset the wire for new content
+  }
+  catch(const std::exception& e) {
+    NDN_LOG_ERROR("Failed to insert mainfest into the repo");
+    std::cerr << e.what() << '\n';
+  }
 }
 
 const ndn::Block&

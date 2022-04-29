@@ -4,27 +4,26 @@
 #include <iostream>
 #include <string>
 
+// using namespace boost::placeholders;
 
 NDN_LOG_INIT(mguard.DataAdapter);
 
 namespace mguard {
 
-ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service)
+ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service,
+                                     const CallbackFromController& callback)
 : sock(io_service)
+, m_onReceiveDataFromClient(callback)
 {
 }
 
 void 
 ConnectionHandler::start()
 {
-  //  async_read(sock, response_,
-  //     boost::asio::transfer_at_least(10),
-  //     boost::bind(&ConnectionHandler::readHandle, this,
-  //     boost::asio::placeholders::error));
-        
+  // this will read the header
   sock.async_read_some(
       boost::asio::buffer(data, max_length),
-      boost::bind(&ConnectionHandler::readHandle,
+      boost::bind(&ConnectionHandler::readContent,
                   shared_from_this(),
                   boost::asio::placeholders::error,
                   boost::asio::placeholders::bytes_transferred));
@@ -37,46 +36,45 @@ ConnectionHandler::start()
                 boost::asio::placeholders::bytes_transferred));
 }
 
+void
+ConnectionHandler::readContent(const boost::system::error_code& err, size_t bytes_transferred)
+{
+  std::cout << "Header received from the socket " << data << std::endl;
+  boost::split(metaData, data, boost::is_any_of("|"));
+  std::cout << "expected number of chunks: " << getExpectedNumberOfChunks() << std::endl;
+  
+  // todo: need to replace this function, read exact number of bytes as expected 
+  async_read(sock, response_,
+             boost::bind(&ConnectionHandler::readHandle, 
+             shared_from_this(),
+             boost::asio::placeholders::error,
+             boost::asio::placeholders::bytes_transferred));
+}
+
 void 
 ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
+  NDN_LOG_DEBUG("Total number of bytes recevied: " << bytes_transferred);
+  auto expectedBytes = static_cast<size_t> (std::stoi(metaData[2]));
 
-  if (!err)
-    {
-      // Write all of the data that has been read so far.
-      // std::cout << response_;
-      // Continue reading remaining data until EOF.
-      std::cout << bytes_transferred << std::endl;
-      // std::cout << data << std::endl;
-      sock.async_read_some(
-      boost::asio::buffer(data, max_length),
-      boost::bind(&ConnectionHandler::readHandle,
-                  shared_from_this(),
-                  boost::asio::placeholders::error,
-                  boost::asio::placeholders::bytes_transferred));
-
-      // // boost::asio::async_read(sock, response_,
-      //     boost::asio::transfer_at_least(1),
-      //     boost::bind(&ConnectionHandler::readHandle, this,
-      //       boost::asio::placeholders::error,
-      //       boost::asio::placeholders::bytes_transferred));
+  if (response_.size() <= 0) { // didn't get anything
+      NDN_LOG_DEBUG("Missing content");
+      std::vector<std::string> emptyVector= {};
+      m_onReceiveDataFromClient(emptyVector, ""); // problem receiving content, don't think we need to send callback here??
     }
-    else if (err != boost::asio::error::eof)
-    {
-      std::cout << "Error: " << err << "\n";
-       sock.close();
-    }
+  
+  if (response_.size() != expectedBytes) { // didn't get all the expected bytes  
+    NDN_LOG_DEBUG("All the expected data is not received");
+  }
 
-    // std::cout << data << std::endl;
-
-
-  // std::cout << "did i come here???" << std::endl;
-  // if (!err) {
-  //       cout << data << endl;
-  // } else {
-  //       std::cerr << "error: " << err.message() << std::endl;
-  //       sock.close();
-  // }
+  // todo: error wont occure once the above function is fixed
+  if (err)
+    NDN_LOG_DEBUG("Error: " << err);
+  
+  // convert the buffer into string and send it to server
+  std::string resp ((std::istreambuf_iterator<char>(&response_)), std::istreambuf_iterator<char>());
+  m_onReceiveDataFromClient(metaData, resp);
+  sock.close();
 }
 
 void 
@@ -90,29 +88,44 @@ ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t byte
   }
 }
 
-Server::Server(boost::asio::io_service& io_service)
+Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback)
 : acceptor_(io_service, tcp::endpoint(tcp::v4(), 8808))
+, m_onReceiveDataFromController(callback)
 {
-  start_accept();
+  startAccept();
 }
 
 void 
-Server::start_accept()
+Receiver::startAccept()
 {
-  ConnectionHandler::pointer connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_));
+  ConnectionHandler::pointer connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_), 
+                                           std::bind(&Receiver::processCallbackFromController, this, _1, _2));
 
   acceptor_.async_accept(connection->socket(),
-                         boost::bind(&Server::handle_accept, this, connection,
+                         boost::bind(&Receiver::handleAccept, this, connection,
                          boost::asio::placeholders::error));
 }
 
+
+void
+Receiver::processCallbackFromController(const std::vector<std::string> metaData, const std::string& response)
+{
+  // check if the metaData is empty, and there is no response
+  if (!(response.empty()))
+    m_onReceiveDataFromController(metaData[0], response);
+
+  // do nothing
+  NDN_LOG_DEBUG("Didn't receive any data from the receiver");
+}
+
+
 void 
-Server::handle_accept(ConnectionHandler::pointer connection, const boost::system::error_code& err)
+Receiver::handleAccept(ConnectionHandler::pointer connection, const boost::system::error_code& err)
 {
   if (!err) {
     connection->start();
   }
-  start_accept();
+  startAccept();
 }
 
 DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const ndn::Name& aaPrefix)
@@ -121,7 +134,8 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const
 , m_producerCert(m_keyChain.getPib().getIdentity(producerPrefix).getDefaultKey().getDefaultCertificate())
 , m_ABE_authorityCert(m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate())
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
-, m_server(m_face.getIoService())
+, m_receiver(m_face.getIoService(), 
+           std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
 {
   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
   NDN_LOG_DEBUG ("---------------------------------------------");
@@ -129,6 +143,20 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const
   NDN_LOG_DEBUG ("---------------------------------------------");
   NDN_LOG_DEBUG ("ABE authority cert: " << m_ABE_authorityCert);
 }
+
+void
+DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
+{
+  NDN_LOG_DEBUG("Received data from the receiver"); 
+  if (streamName == SEMANTIC_LOCATION) { 
+    // insert the data into the lookup table
+  }
+
+  // TODO: ---> streamName, streamName ?
+  m_streams.emplace(streamName, streamName);
+  publishDataUnit(m_streams.find(streamName)->second, streamContent);
+}
+
 
 void
 DataAdapter::run()
@@ -155,26 +183,26 @@ DataAdapter::stop()
 ndn::Name
 DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 {
+  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << "and timestamp: " << timestamp);
   return streamName.append("DATA").append(timestamp);
 }
 
 void
-DataAdapter::publishDataUnit(util::Stream& stream)
+DataAdapter::publishDataUnit(util::Stream& stream, const std::string& streamContent)
 {
   NDN_LOG_INFO("Processing stream: " << stream.getName());
-  auto dataSet = m_fileProcessor.readStream(stream.getStreamDataPath());
+  auto dataSet = m_fileProcessor.getVectorByDelimiter(streamContent, "\n");
 
   for (auto data : dataSet)
   {
-    NDN_LOG_TRACE("Data unit" << data);
     // get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
     auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
     auto dataName = makeDataName(stream.getName(), timestamp);
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
-    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
 
+    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     m_publisher.publish(dataName, data, stream);
   }
 }
