@@ -216,7 +216,8 @@ DataBase::DataBase(std::basic_string<char>  databaseName)
      exit(-1);
   }
   // this resets the table even if it's already been created
-  if (!runQuery("drop table if exists lookup;create table lookup(id integer primary key autoincrement, start integer not null, end integer not null, semantic text not null, user text not null, version text);")) 
+  std::string table = "drop table if exists lookup;create table lookup(id integer primary key autoincrement, start integer not null, end integer not null, semantic text not null, user text not null, version text);";
+  if (!runQuery(table)) 
   {
     NDN_LOG_INFO("Failed to create table");
     exit(-1);
@@ -368,7 +369,7 @@ DataBase::insertRows(std::vector<std::vector<std::basic_string<char>>>& rows)
   std::string query;
   for (const std::vector<std::basic_string<char>>& row : rows) {
     query = "insert into lookup (start, end, semantic, user, version) values(";
-    std::vector<std::string> x = dateThing(row[3]);
+    std::vector<std::string> x = getStartEndDate(row[3]);
     // header line
     if (x.empty()) {
       continue;
@@ -385,9 +386,9 @@ DataBase::insertRows(std::vector<std::vector<std::basic_string<char>>>& rows)
     query += ")";
 
     if (runQuery(query)) {
-      NDN_LOG_DEBUG("Failed to insert row: " << row);
+      NDN_LOG_DEBUG("Failed to insert the row");
     } else {
-      NDN_LOG_DEBUG("Inserted row: " << row);
+      NDN_LOG_DEBUG("Inserted row");
     }
     }
     closeDataBase();

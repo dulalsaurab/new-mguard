@@ -177,7 +177,8 @@ public:
 
   inline
   void
-  DataBase::closeDataBase() {
+  closeDataBase() 
+  {
     sqlite3_close(m_db);
   }
 

@@ -52,7 +52,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     std::string timestamp = "20190901113459";
     std::string userID = "dd40c";
     // this gets the semantic location attributes
-    std::vector<std::basic_string<char>> locations = db.getLocations(timestamp, userID);
+    std::vector<std::basic_string<char>> locations = db.getSemanticLocations(timestamp, userID);
     // this prints them
     for (auto &location: locations) {
         std::cout << location << std::endl;
