@@ -164,57 +164,57 @@ class DataBase
 {
 public:
 
+  DataBase(std::basic_string<char>  databaseName);
+
   static int 
-  callback (void *NotUsed, int argc, char **argv, char **azColName) {
-    std::cout << "this is the callback" << std::endl;
+  callback(void *NotUsed, int argc, char **argv, char **azColName);
+
+  sqlite3*
+  getDatabase()
+  {
+    return m_db;
   }
-  
-  DataBase(const std::string& databaseName, const std::string& table);
 
-    DataBase(std::basic_string<char>  databaseName);
+  inline
+  void
+  DataBase::closeDataBase() {
+    sqlite3_close(m_db);
+  }
 
-    sqlite3*
-    getDatabase()
-    {
-        return m_db;
-    }
+  bool
+  openDataBase();
 
-    void
-    closeDataBase();
+  /* 
+    main function that gets the unique semantic locations from the db given a timestamp and userID
+    call this after the database is populated, or else it won't work timestamp is in the format YYYYMMDDHHMMSS
+  */
+  std::vector<const unsigned char*>
+  getSemanticLocations( std::basic_string<char> &timestamp, std::basic_string<char> &userID);
 
-    bool
-    openDataBase();
+  void
+  insertRows(std::vector<std::vector<std::basic_string<char>>>& rows);
 
-    // main function that gets the unique semantic locations from the db given a timestamp and userID
-    // call this after the database is populated, or else it won't work
-    // timestamp is in the format YYYYMMDDHHMMSS
-    std::vector<const unsigned char*>
-    getLocations( std::basic_string<char> &timestamp, std::basic_string<char> &userID);
+  void
+  deleteRows(std::string deleteQuery);
 
-    void
-    insertRows(std::vector<std::vector<std::basic_string<char>>>& rows);
+  bool
+  runQuery(const std::string& query);
 
-    void
-    deleteRows(std::string deleteQuery);
+  // takes csv string
+  // converts into 2d vector of rows with values
+  static std::vector<std::vector<std::basic_string<char>>>
+  processCSV(std::basic_string<char>& _s);
 
-    bool
-    runQuery(const std::string& query);
-
-    // takes csv string
-    // converts into 2d vector of rows with values
-    static std::vector<std::vector<std::basic_string<char>>>
-    processCSV(std::basic_string<char>& _s);
-
-    // this is how I got the two dates from a string that looked like this:
-    // Row(_1=datetime.datetime(2019, 9, 1, 11, 34, 59), _2=datetime.datetime(2019, 9, 1, 13, 34, 59))
-    // which returns [2019901113459, 20190901133459] given that example
-    static std::vector<std::string>
-    dateThing(const std::basic_string<char>& unformattedDate);
+  // this is how I got the two dates from a string that looked like this:
+  // Row(_1=datetime.datetime(2019, 9, 1, 11, 34, 59), _2=datetime.datetime(2019, 9, 1, 13, 34, 59))
+  // which returns [2019901113459, 20190901133459] given that example
+  static std::vector<std::string>
+  getStartEndDate(const std::basic_string<char>& unformattedDate);
 
 private:
-    sqlite3* m_db;
-    // std::shared_ptr<sqlite3*> m_db;
-    std::string m_databaseName;
+  sqlite3* m_db;
+  // std::shared_ptr<sqlite3*> m_db;
+  std::string m_databaseName;
 
 };
 
