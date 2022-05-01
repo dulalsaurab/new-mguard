@@ -37,26 +37,25 @@ def main():
         gyro
     '''
     cc_Obj, streams = get_cc()
-    # senderObj = getSender()
+    senderObj = getSender()
 
     for key in streams:
         stream_name = streams[key]
         data = cc_Obj.get_stream(stream_name).toPandas().to_csv()
-        print (data)
-        exit()        
-        # first send the metadata
-        # _size = sys.getsizeof(data)
-        # number_of_chunks = int(_size/BUFFER_SIZE) + 1; # rounding
-        # metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
-        # print (_size, metadata)
-        
-        # senderObj.send(metadata)
-        # sleep(1) # sleep one second after sending the header
-        # senderObj.send(data)
-        # sleep(10) # sleep 10 seconds after sending the first stream
 
-    # print("sending data completed")
-    # senderObj.close()
+        # first send the metadata
+        _size = sys.getsizeof(data)
+        number_of_chunks = int(_size/BUFFER_SIZE) + 1; # rounding
+        metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
+        print (_size, metadata)
+
+        senderObj.send(metadata)
+        sleep(1) # sleep one second after sending the header
+        senderObj.send(data)
+        sleep(10) # sleep 10 seconds after sending the first stream
+        
+    print("sending data completed")
+    senderObj.close()
 
 if __name__ == '__main__':
     main()

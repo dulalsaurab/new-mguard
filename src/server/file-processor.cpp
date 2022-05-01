@@ -36,13 +36,14 @@ FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
   while ((pos = _s.find(delimiter)) != std::string::npos)
   {
     token = _s.substr(0, pos);
-    if (!(boost::algorithm::contains(token, "timestamp"))) {
+    if (!(boost::algorithm::contains(token, "timestamp"))) { // skip the column that have timestamp in it
       _vec.push_back(token);
     }
     _s.erase(0, pos + delimiter.length());
   }
+  _vec.push_back(_s); // finally append the remaining string
   return _vec;
-  }
+}
 
 AttributeMappingFileProcessor::AttributeMappingFileProcessor(const std::string& filename)
 : m_filename (filename) 

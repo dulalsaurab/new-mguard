@@ -22,7 +22,7 @@ public:
 
   mGuardProducer()
   : m_scheduler(m_face.getIoService())
-  , m_dataAdaptor(m_face, "/org/md2k", "/mguard/aa") 
+  , m_dataAdaptor(m_face, "/org/md2k", "/mguard/aa", "lookupdb.db")
   {
   }
   
