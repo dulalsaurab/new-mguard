@@ -158,8 +158,8 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
   }
 
   // TODO: ---> streamName, streamName ?
-  // m_streams.emplace(streamName, streamName);
-  // publishDataUnit(m_streams.find(streamName)->second, content);
+  m_streams.emplace(streamName, streamName);
+  publishDataUnit(m_streams.find(streamName)->second, content);
 }
 
 void
@@ -195,7 +195,6 @@ void
 DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
 {
   NDN_LOG_INFO("Processing stream: " << stream.getName());
-  // auto dataSet = m_fileProcessor.getVectorByDelimiter(streamContent, "\n");
 
   for (auto data : dataSet)
   {
