@@ -158,7 +158,7 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
     auto lSeq = getLowSeqOfPrefix(update.prefix);
     auto sc = (lSeq == NOT_AVAILABLE) ? STARTING_SEQ_NUM : lSeq; // sc = sequence counter
 
-    for (sc; sc <= update.highSeq; sc++) {
+    for (; sc <= update.highSeq; sc++) {
       // for manifest update, we need to express interest and fetch the manifest content
       NDN_LOG_INFO("Update: " << update.prefix << "/" << sc);
       auto manifestInterestName = update.prefix;

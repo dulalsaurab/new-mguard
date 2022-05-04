@@ -79,10 +79,6 @@ private:
   bool 
   processAttributeFilter(ConfigSection &section, bool isAllowed);
 
-  // if no data window, all from stream is allowed
-  bool 
-  hasDeny{};
-
   static bool 
   isAlike(std::string& attribute, std::string& checking);
 

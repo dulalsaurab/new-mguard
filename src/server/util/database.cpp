@@ -5,8 +5,8 @@ NDN_LOG_INIT(mguard.util.database);
 namespace mguard {
 namespace db {
 
-DataBase::DataBase(std::basic_string<char> databaseName)
-: m_databaseName(std::move(databaseName)), m_db()
+DataBase::DataBase(const std::string& databaseName)
+: m_databaseName(databaseName), m_db()
 {
   // open database if already exist else create a new one
   if (!openDataBase()) {
@@ -72,11 +72,11 @@ DataBase::callback(void *NotUsed, int argc, char **argv, char **azColName)
   return 0;
 }
 
-std::vector<std::basic_string<char>>
-DataBase::getSemanticLocations(std::basic_string<char> &timestamp, std::basic_string<char> &userID) 
+std::vector<std::string>
+DataBase::getSemanticLocations(const std::string &timestamp, const std::string &userID) 
 {
   // output of function
-  std::vector<std::basic_string<char>> out;
+  std::vector<std::string> out;
   // creating the query based on given timestamp and userID
   std::string tmpQuery = "select distinct semantic from lookup where start <= ";
   tmpQuery += timestamp;
@@ -130,7 +130,7 @@ DataBase::getRowToInsert(std::string row)
       boost::trim(i);
       if (i.size() < 2)
         i = "0"+i;
-      temp += i; // concetenate to obtain [2019,9,1,23,34,59]
+      temp += i; // concetenate to obtain 20190901233459 from 2019,9,1,23,34,59
     }
 
     NDN_LOG_TRACE("timestamp: " << temp);
@@ -146,7 +146,7 @@ DataBase::getRowToInsert(std::string row)
 }
 
 void
-DataBase::insertRows(std::vector<std::string>& dataSet)
+DataBase::insertRows(const std::vector<std::string>& dataSet)
 {
   if (!openDataBase()) {
     NDN_LOG_INFO("Couldn't open database");
@@ -164,11 +164,11 @@ DataBase::insertRows(std::vector<std::string>& dataSet)
     try {
       auto pRow = getRowToInsert(*it); //processed row
       value += "(";
-      value += "\""+ pRow[0] +"\"" + ",";
-      value += "\""+ pRow[1] +"\"" + ",";
-      value += "\""+ pRow[2] +"\"" + ",";
-      value += "\""+ pRow[3] +"\"" + ",";
-      value += "\""+ pRow[4] +"\"";
+      value += "\""+ pRow[0] +"\"" + ","; // start time
+      value += "\""+ pRow[1] +"\"" + ","; // end time
+      value += "\""+ pRow[2] +"\"" + ","; // semantic location
+      value += "\""+ pRow[3] +"\"" + ","; // user
+      value += "\""+ pRow[4] +"\""; // version
       value += ")";
       if (!(std::next(it) == dataSet.end()))
         value += ",";

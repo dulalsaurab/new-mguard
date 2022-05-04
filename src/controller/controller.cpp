@@ -67,10 +67,7 @@ Controller::processPolicy(const std::string& policyPath)
   }
 }
 
-
 // /data/receive  ---- interest on this prefix from external application, data generator. 
-
-
 void
 Controller::setInterestFilter(const ndn::Name& name, const bool loopback)
 {
@@ -123,7 +120,6 @@ Controller::onRegistrationFailed(const ndn::Name& name)
 {
   NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
 }
-
 
 void
 Controller::sendApplicationNack(const ndn::Name& name)

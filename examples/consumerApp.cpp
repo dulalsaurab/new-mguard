@@ -90,7 +90,6 @@ private:
 int 
 main ()
 {
-  // std::vector<std::string> subscriptionList {"/org/md2k/mguard/dd40c/phone/gps"};
   mGuardConsumer consumer;
   consumer.handler();
 }

@@ -21,7 +21,7 @@ class DataBase
 {
 public:
 
-  DataBase(std::basic_string<char>  databaseName);
+  DataBase(const std::string& databaseName);
 
   static int 
   callback(void *NotUsed, int argc, char **argv, char **azColName);
@@ -45,15 +45,16 @@ public:
     main function that gets the unique semantic locations from the db given a timestamp and userID
     call this after the database is populated, or else it won't work timestamp is in the format YYYYMMDDHHMMSS
   */
-  std::vector<std::basic_string<char>>
-  getSemanticLocations(std::basic_string<char> &timestamp, std::basic_string<char> &userID);
+  std::vector<std::string>
+  getSemanticLocations(const std::string &timestamp, const std::string &userID);
 
   std::vector<std::string>
   getRowToInsert(std::string row);
 
   void
-  insertRows(std::vector<std::string>& dataSet);
+  insertRows(const std::vector<std::string>& dataSet);
 
+  // not implemented??
   void
   deleteRows(std::string deleteQuery);
 
@@ -61,7 +62,7 @@ public:
   runQuery(const std::string& query);
 
 private:
-  std::string m_databaseName;
+  const std::string& m_databaseName;
   sqlite3* m_db;
 };
 

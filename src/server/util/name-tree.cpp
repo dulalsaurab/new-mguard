@@ -84,10 +84,9 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
         return getLongestMatchedName((*it_nt), namePrefix);
       }
     }
-    
+ 
     return std::make_pair(startFrom, namePrefix);
   }
-
 }
 
 ndn::Name
