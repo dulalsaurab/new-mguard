@@ -39,7 +39,7 @@ public:
   publishManifest(util::Stream& stream);
 
   void
-  scheduledManifestForPublication(util::Stream& stream);
+  scheduledManifestForPublication(  util::Stream& stream);
 
   void
   cancleIfManifestScheduledForPublication(const ndn::Name& name)

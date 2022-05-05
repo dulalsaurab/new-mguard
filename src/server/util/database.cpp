@@ -158,11 +158,14 @@ DataBase::insertRows(const std::vector<std::string>& dataSet)
   // for (auto& row : dataSet)
   for (auto it = dataSet.begin(); it != dataSet.end(); ++it)
   {
-    if (it->size() < 5) // don't have all the required element, skip the insertion
-      continue;
+    NDN_LOG_TRACE("data point: " << *it);
     //TODO: check if row is empty; also populating the values cane be better
     try {
       auto pRow = getRowToInsert(*it); //processed row
+
+      if (pRow.size() < 5) // don't have all the required element, skip the insertion
+        continue;
+
       value += "(";
       value += "\""+ pRow[0] +"\"" + ","; // start time
       value += "\""+ pRow[1] +"\"" + ","; // end time
@@ -183,7 +186,7 @@ DataBase::insertRows(const std::vector<std::string>& dataSet)
   query += value;
 
   NDN_LOG_TRACE("Insert query: " <<  query);
-  
+
   if (runQuery(query))
     NDN_LOG_DEBUG("Inserted all the rows successfully");
   else

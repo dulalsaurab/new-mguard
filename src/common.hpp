@@ -36,8 +36,7 @@ const int MANIFEST_BATCH_SIZE = 10;
 const ndn::time::milliseconds MAX_UPDATE_WAIT_TIME(200); //todo: not implemented yet
 
 // manifest ---------
-
-const std::string SEMANTIC_LOCATION = "org.md2k--mguard--00000000-e19c-3956-9db2-5459ccadd40c--data_analysis--gps_episodes_and_semantic_location";
+const std::string SEMANTIC_LOCATION = "org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location";
 
 class Error : public std::runtime_error
 {

@@ -1,6 +1,10 @@
 #include "file-processor.hpp"
 #include <boost/algorithm/string.hpp>
 
+#include <ndn-cxx/util/logger.hpp>
+
+NDN_LOG_INIT(mguard.fileProcessor);
+
 namespace mguard
 {
 
@@ -41,7 +45,9 @@ FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
     }
     _s.erase(0, pos + delimiter.length());
   }
-  _vec.push_back(_s); // finally append the remaining string
+  NDN_LOG_TRACE("Remaining content of the stream: " << _s);
+  if (!(_s.empty()))
+    _vec.push_back(_s); // finally append the remaining string
   return _vec;
 }
 

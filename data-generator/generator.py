@@ -1,3 +1,4 @@
+from distutils.command.config import config
 from CerebralCortexRandomDataGenerator.ccrdg.battery_data import gen_battery_data
 from CerebralCortexRandomDataGenerator.ccrdg.accel_gyro_data import gen_accel_gyro_data
 from CerebralCortexRandomDataGenerator.ccrdg.location_data import gen_location_datastream, \
@@ -7,24 +8,34 @@ import argparse
 from cerebralcortex.kernel import Kernel
 
 
-def get_cc():
-    parser = argparse.ArgumentParser(description='CerebralCortex Random Data Generator.')
-    parser.add_argument("-uid", "--user_id",
-                        help="UUID of a user. Defaul UUID of a user is dd40c",
-                        default="dd40c")
-    parser.add_argument("-sn", "--study_name", help="Name of the study. Default is mguard.", default="mguard")
-    parser.add_argument("-duration", "--duration",
-                        help="Hours of data to be generated. Acceptable parameters are integers. Default is 1 hour",
-                        default=1)
+def get_cc(config_dic):
+    # parser = argparse.ArgumentParser(description='CerebralCortex Random Data Generator.')
+    # parser.add_argument("-uid", "--user_id",
+    #                     help="UUID of a user. Defaul UUID of a user is dd40c",
+    #                     default="dd40c")
+    # parser.add_argument("-sn", "--study_name", help="Name of the study. Default is mguard.", default="mguard")
+    # parser.add_argument("-duration", "--duration",
+    #                     help="Hours of data to be generated. Acceptable parameters are integers. Default is 1 hour",
+                        # default=1)
 
-    args = vars(parser.parse_args())
+    # args = vars(parser.parse_args())
 
-    study_name = str(args["study_name"]).strip()
-    user_id = str(args["user_id"]).strip()
-    hours = int(args["duration"])
+    # study_name = str(args["study_name"]).strip()
+    # user_id = 
+    # hours = int(args["duration"])
 
-    if not isinstance(hours, int):
-        raise ValueError("Only integer values are allowed.")
+    hours = config_dic['hours']
+    user_id = config_dic['user_id']
+    study_name = config_dic['study_name']
+    timestamp = config_dic['timestamp']
+    location_r = config_dic['location_r']
+    dp_range_sem_loc = config_dic['dp_range_sem_loc']
+    dp_range_loc = config_dic['dp_range_loc']
+    frequency = config_dic['frequency']
+    version = config_dic['version']
+
+    # if not isinstance(hours, int):
+    #     raise ValueError("Only integer values are allowed.")
 
     CC = Kernel(cc_configs="default", study_name=study_name, new_study=True)
 
@@ -36,11 +47,18 @@ def get_cc():
     gyro_stream_name = "org--md2k--phonesensor--{}--{}--phone--gyroscope".format(study_name, user_id)
 
     gen_battery_data(CC, study_name=study_name, user_id=user_id, stream_name=battery_stream_name, hours=hours)
-    gen_location_datastream(CC, study_name=study_name, user_id=user_id, stream_name=location_stream_name)
+
+    gen_location_datastream(CC, study_name=study_name, user_id=user_id, 
+                            stream_name=location_stream_name, location_r=location_r, 
+                            dp_range=dp_range_loc)
     gen_semantic_location_datastream(CC, study_name=study_name, user_id=user_id,
-                                     stream_name=semantic_location_stream_name)
-    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=accel_stream_name, hours=hours)
-    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
+                                     stream_name=semantic_location_stream_name,
+                                     dp_range=dp_range_sem_loc)
+    
+    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, 
+                        stream_name=accel_stream_name, hours=hours,
+                        frequency=frequency)
+    # gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
 
     return CC, {
         'semantic_location': semantic_location_stream_name,

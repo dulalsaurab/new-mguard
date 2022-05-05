@@ -151,12 +151,12 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
 {
   NDN_LOG_DEBUG("Received data from the receiver"); 
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n");
+
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
     NDN_LOG_DEBUG("Received semantic location data");
     m_dataBase.insertRows(content);
   }
-
   // TODO: ---> streamName, streamName ?
   m_streams.emplace(streamName, streamName);
   publishDataUnit(m_streams.find(streamName)->second, content);
@@ -206,6 +206,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
 
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
+    m_dataBase.getSemanticLocations(timestamp, "dd40c");
     m_publisher.publish(dataName, data, stream);
   }
 }
