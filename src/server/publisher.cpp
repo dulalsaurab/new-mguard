@@ -46,8 +46,8 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
-                                                            reinterpret_cast<const uint8_t *>(data.c_str()), data.size());
+        std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, stream.getAttributes(),
+                                                            {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Encryption failled");
@@ -56,11 +56,11 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
     }
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
-    
+
     // store the data into the repo, the insertion uses tcp bulk insertion protocol
     try {
       if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
-        NDN_LOG_DEBUG("data and cKdata insertion completed"); 
+        NDN_LOG_DEBUG("data and cKdata insertion completed");
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("data and cKdata insertion failed");
