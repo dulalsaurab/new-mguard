@@ -57,20 +57,8 @@ def main():
       accel
       gyro
   '''
-  config = {
-            'hours':1,
-            'user_id':'dd40c',
-            'study_name': 'mguard',
-            'timestamp': datetime(2019, 1, 9, 11, 34, 59),
-            'location_r': 5,
-            'dp_range_sem_loc': 12,
-            'dp_range_loc': 150,
-            'frequency': 32,
-            'version': 1
-            }
-
   if not os.path.isfile("dataSet.pkl"):
-    cc_Obj, streams = get_cc(config)
+    cc_Obj, streams = get_cc()
 
     # first send semantic_location stream
     stream_name = streams['semantic_location']
@@ -111,6 +99,7 @@ def main():
   end = 100
 
   while(True):
+   
     if not dataSet:
       break
 
