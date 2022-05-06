@@ -99,7 +99,7 @@ def main():
   end = 100
 
   while(True):
-   
+
     if not dataSet:
       break
 
@@ -115,7 +115,7 @@ def main():
 
     start = end
     end = end + 100
-    sleep (60) # testing: sleep for 1 minute and send another batch  
+    sleep (60) # testing: sleep for 1 minute and send another batch
 
 if __name__ == '__main__':
     main()

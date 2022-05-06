@@ -22,6 +22,7 @@ def get_cc():
 
     study_name = str(args["study_name"]).strip()
     hours = int(args["duration"])
+    user_id = args["user_id"]
 
     if not isinstance(hours, int):
         raise ValueError("Only integer values are allowed.")
@@ -37,14 +38,11 @@ def get_cc():
 
     gen_battery_data(CC, study_name=study_name, user_id=user_id, stream_name=battery_stream_name, hours=hours)
 
-    gen_location_datastream(CC, study_name=study_name, user_id=user_id, 
-                            stream_name=location_stream_name)
-    gen_semantic_location_datastream(CC, study_name=study_name, user_id=user_id,
-                                     stream_name=semantic_location_stream_name)
-    
-    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, 
-                        stream_name=accel_stream_name, hours=hours)
-    # gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
+    gen_location_datastream(CC, study_name=study_name, user_id=user_id, stream_name=location_stream_name)
+    gen_semantic_location_datastream(CC, study_name=study_name, user_id=user_id, stream_name=semantic_location_stream_name)
+
+    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=accel_stream_name, hours=hours)
+    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
 
     return CC, {
         'semantic_location': semantic_location_stream_name,
