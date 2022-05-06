@@ -38,6 +38,19 @@ public:
   void
   publishManifest(util::Stream& stream);
 
+  void
+  scheduledManifestForPublication(util::Stream& stream);
+
+  void
+  cancleIfManifestScheduledForPublication(const ndn::Name& name)
+  {
+    auto itr = m_scheduledIds.find(name);
+    if (itr != m_scheduledIds.end()) {
+      itr->second.cancel();
+      // m_scheduledIds.erase(itr); //
+    }
+  }
+  
   template<ndn::encoding::Tag TAG>
   size_t
   wireEncode(ndn::EncodingImpl<TAG>& block) const;
@@ -49,6 +62,7 @@ private:
   ndn::Face& m_face;
   ndn::security::KeyChain& m_keyChain;
   ndn::Scheduler m_scheduler;
+  std::map<ndn::Name, ndn::scheduler::ScopedEventId>m_scheduledIds;
   mutable ndn::Block m_wire;
   psync::PartialProducer m_partialProducer;
   util::RepoInserter m_repoInserter;

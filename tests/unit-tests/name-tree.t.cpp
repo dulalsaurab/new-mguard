@@ -10,6 +10,8 @@ namespace util {
 namespace nametree {
 namespace tests {
 
+BOOST_FIXTURE_TEST_SUITE(TestNameTree, mguard::tests::IdentityTimeFixture)
+
 BOOST_AUTO_TEST_CASE(Constructor)
 {
     util::nametree::NameTree nametree;
@@ -35,6 +37,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
 }
 
 BOOST_AUTO_TEST_SUITE_END() //TestDataAdapter
+}
 }
 }
 }

@@ -1,4 +1,9 @@
 #include "file-processor.hpp"
+#include <boost/algorithm/string.hpp>
+
+#include <ndn-cxx/util/logger.hpp>
+
+NDN_LOG_INIT(mguard.fileProcessor);
 
 namespace mguard
 {
@@ -35,11 +40,16 @@ FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
   while ((pos = _s.find(delimiter)) != std::string::npos)
   {
     token = _s.substr(0, pos);
-    _vec.push_back(token);
+    if (!(boost::algorithm::contains(token, "timestamp"))) { // skip the column that have timestamp in it
+      _vec.push_back(token);
+    }
     _s.erase(0, pos + delimiter.length());
   }
+  NDN_LOG_TRACE("Remaining content of the stream: " << _s);
+  if (!(_s.empty()))
+    _vec.push_back(_s); // finally append the remaining string
   return _vec;
-  }
+}
 
 AttributeMappingFileProcessor::AttributeMappingFileProcessor(const std::string& filename)
 : m_filename (filename) 

@@ -22,7 +22,10 @@ struct ApplicationData
   std::string dataRows;
 };
 
-typedef std::function<void(const std::vector<std::string>& updates)> UpdateCallback;
+typedef std::function<void(const std::vector<std::string>& updates)> DataCallback;
+
+typedef std::function<void(const std::unordered_set<ndn::Name>& streams)> SubscriptionCallback;
+
 
 namespace subscriber {
 namespace tlv {
@@ -40,14 +43,44 @@ public:
   Subscriber(const ndn::Name& consumerPrefix,
              const ndn::Name& syncPrefix, 
              ndn::time::milliseconds syncInterestLifetime,
-             std::vector<std::string>& subscriptionList,
-             const UpdateCallback& callback);
+            //  std::vector<std::string>& subscriptionList,
+             const DataCallback& dataCallback,
+             const SubscriptionCallback& subscriptionCallback);
 
   void
-  run();
+  run(bool runSync = false);
 
   void
   stop();
+
+  std::vector<ndn::Name>&
+  getSubscriptionList()
+  {
+    return m_subscriptionList;
+  }
+
+  uint64_t
+  getLowSeqOfPrefix(const ndn::Name& prefix)
+  {
+    auto it = m_prefixToLowSeq.find(prefix);
+    return (it == m_prefixToLowSeq.end()) ? NOT_AVAILABLE : it->second;
+  }
+
+  void
+  setLowSeqOfPrefix(const ndn::Name& prefix, uint64_t seqNum)
+  {
+    auto it = m_prefixToLowSeq.find(prefix);
+    if (it == m_prefixToLowSeq.end()) // prefix doesn't exist in the map
+      m_prefixToLowSeq.emplace(prefix, seqNum);
+    else
+      it->second = seqNum;
+  }
+
+  void
+  setSubscriptionList(const std::vector<ndn::Name>& subList)
+  {
+    m_subscriptionList = subList; 
+  }
 
   bool
   checkConvergence();
@@ -92,17 +125,19 @@ private:
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
-  std::vector<std::string>& m_subscriptionList;
+  std::unordered_map<ndn::Name, uint64_t> m_prefixToLowSeq;
+  std::vector<ndn::Name> m_subscriptionList;
 
   // available streams are the ones received from psync
   // and eligible streams are determined from the policy
-  std::unordered_map<ndn::Name, uint64_t> m_availableStreams;
+  std::unordered_map<ndn::Name, uint64_t> m_availableStreams; // name, sequence number
   std::unordered_set<ndn::Name> m_eligibleStreams;
   ndn::nacabe::algo::PrivateKey decryptionKey;
   ndn::nacabe::Consumer m_abe_consumer;
 
   psync::Consumer m_psync_consumer;
-  UpdateCallback m_ApplicationDataCallback;
+  DataCallback m_ApplicationDataCallback;
+  SubscriptionCallback m_subCallback;
 };
 
 } //namespace subscriber
