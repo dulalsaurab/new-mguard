@@ -210,7 +210,6 @@ int
 main (int argc, char* argv[])
 {
 
-
   // std::vector<std::string> subscriptionList {"/org/md2k/mguard/dd40c/phone/gps"};
   // mGuardConsumer consumer (subscriptionList);
   // consumer.handler();
@@ -220,8 +219,6 @@ main (int argc, char* argv[])
   Form form;
   return application->run(form);
 
-
-  mGuardConsumer consumer;
-  consumer.handler();
-
+  // mGuardConsumer consumer;
+  // consumer.handler();
 }
