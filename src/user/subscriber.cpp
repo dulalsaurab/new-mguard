@@ -13,18 +13,20 @@ namespace subscriber {
 Subscriber::Subscriber(const ndn::Name& consumerPrefix,
                        const ndn::Name& syncPrefix,
                        ndn::time::milliseconds syncInterestLifetime,
-                       std::vector<std::string>& subscriptionList,
-                       const UpdateCallback& callback)
+                      //  std::vector<std::string>& subscriptionList,
+                       const DataCallback& callback,
+                       const SubscriptionCallback& subCallback)
 : m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
-, m_subscriptionList(subscriptionList)
+// , m_subscriptionList(subscriptionList)
 , m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity(m_consumerPrefix).getDefaultKey().getDefaultCertificate(),
                  m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate()) // todo: aa prefix should be in configuration file?
 , m_psync_consumer(m_syncPrefix, m_face,
-             std::bind(&Subscriber::receivedHelloData, this, _1),
-             std::bind(&Subscriber::receivedSyncUpdates, this, _1),
-             2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
+                   std::bind(&Subscriber::receivedHelloData, this, _1),
+                   std::bind(&Subscriber::receivedSyncUpdates, this, _1),
+                   2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
 , m_ApplicationDataCallback(callback)
+, m_subCallback(subCallback)
 {
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
@@ -43,9 +45,8 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
   std::this_thread::sleep_for (std::chrono::seconds(3));
   // This starts the consumer side by sending a hello interest to the producer
   // When the producer responds with hello data, receivedHelloData is called
-  m_psync_consumer.sendHelloInterest();
-
-  std::this_thread::sleep_for (std::chrono::seconds(1));
+  // m_psync_consumer.sendHelloInterest();
+  // std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 
 bool
@@ -63,10 +64,17 @@ Subscriber::checkConvergence()
 }
 
 void
-Subscriber::run()
+Subscriber::run(bool runSync)
 {
   try {
     NDN_LOG_INFO("Starting Face");
+    
+    if (runSync) {
+      m_psync_consumer.sendHelloInterest();
+      // sleep some time for sync to kick in
+      NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
+      std::this_thread::sleep_for (std::chrono::seconds(5));
+    }
     m_face.processEvents();
   }
   catch (const std::exception& ex)
@@ -102,8 +110,6 @@ void
 Subscriber::onData(const ndn::Interest& interest, const ndn::Data& data)
 {
   NDN_LOG_INFO("Data received for: " << interest.getName());
-
-  // std::cout << data.getContent() << std::endl;
   wireDecode(data.getContent());
 
 }
@@ -148,11 +154,16 @@ void
 Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates)
 {
   for (const auto& update : updates) {
-    for (uint64_t i = update.lowSeq; i <= update.highSeq; i++) {
+
+    auto lSeq = getLowSeqOfPrefix(update.prefix);
+    auto sc = (lSeq == NOT_AVAILABLE) ? STARTING_SEQ_NUM : lSeq; // sc = sequence counter
+
+    for (; sc <= update.highSeq; sc++) {
       // for manifest update, we need to express interest and fetch the manifest content
-      NDN_LOG_INFO("Update: " << update.prefix << "/" << i);
+      NDN_LOG_INFO("Update: " << update.prefix << "/" << sc);
       auto manifestInterestName = update.prefix;
-      manifestInterestName.appendNumber(i);
+      manifestInterestName.appendNumber(sc);
+      NDN_LOG_DEBUG("Request content for manifest: " << manifestInterestName);
       expressInterest(manifestInterestName, true);
     }
   }
@@ -177,6 +188,7 @@ Subscriber::wireDecode(const ndn::Block& wire)
                                    ndn::to_string(it->type())));
       }
     }
+    m_subCallback({m_eligibleStreams});
   }
   if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardPublisher)
   {
@@ -200,7 +212,7 @@ Subscriber::wireDecode(const ndn::Block& wire)
 
       m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
                              bind(&Subscriber::abeOnError, this, _1));
-      NDN_LOG_DEBUG("data names: " << dataName.getPrefix(-1));  
+      NDN_LOG_DEBUG("data names: " << dataName);  
     }
   }
 }
