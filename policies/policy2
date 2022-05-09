@@ -1,11 +1,12 @@
 ; B shall only access battery stream
 
 policy-id           2
-requester-names     B       ;or data-requester-user-id or data-requester-group-id
+requester-names     /org/md2k/B       ;or data-requester-user-id or data-requester-group-id
 attribute-filters
 {
     allow
     {
+        /org/md2k/
         /org/md2k/mperf/dd40c/phone/battery
     }
 }

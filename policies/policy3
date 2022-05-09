@@ -1,7 +1,7 @@
 ; brief: C shall be able to access all the streams except gps-coordinates streams
 
 policy-id           3
-requester-names     C
+requester-names     /org/md2k/C
 attribute-filters
 {
     allow
