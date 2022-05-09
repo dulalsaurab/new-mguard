@@ -6,7 +6,6 @@ attribute-filters
 {
     allow
     {
-        /org/md2k/
         /org/md2k/mperf/dd40c/phone/battery
     }
 }
