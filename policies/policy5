@@ -1,7 +1,7 @@
 ; brief: A, B shall be able to access data from the accelerometer stream
 
 policy-id           5
-requester-names     /org/md2k/A,/org/md2k/B
+requester-names     /org/md2k/E,/org/md2k/F
 attribute-filters
 {
     allow
