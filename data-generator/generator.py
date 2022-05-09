@@ -33,8 +33,8 @@ def get_cc():
     battery_stream_name = "org--md2k--{}--{}--phone--battery".format(study_name, user_id)
     location_stream_name = "org--md2k--{}--{}--phone--gps".format(study_name, user_id)
     semantic_location_stream_name = "org--md2k--{}--{}--data_analysis--gps_episodes_and_semantic_location".format(study_name, user_id)
-    accel_stream_name = "org--md2k--phonesensor--{}--{}--phone--accelerometer".format(study_name, user_id)
-    gyro_stream_name = "org--md2k--phonesensor--{}--{}--phone--gyroscope".format(study_name, user_id)
+    accel_stream_name = "org--md2k--{}--{}--phone--accelerometer".format(study_name, user_id)
+    gyro_stream_name = "org--md2k--{}--{}--phone--gyroscope".format(study_name, user_id)
 
     gen_battery_data(CC, study_name=study_name, user_id=user_id, stream_name=battery_stream_name, hours=hours)
 

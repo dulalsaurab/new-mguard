@@ -39,7 +39,7 @@ def sendStream(stream_name, data, senderObj):
   metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
   print(_size, metadata)
   senderObj.send(metadata)
-  sleep(1) # sleep one second after sending the header
+  sleep(5) # sleep one second after sending the header
   print (data)
   senderObj.send(data)
   sleep(20) # sleep 10 seconds after sending the first stream
