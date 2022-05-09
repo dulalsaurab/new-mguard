@@ -153,15 +153,18 @@ PolicyParser::parsePolicy(std::istream& input) {
     // REQUIRED attribute-filters section
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
-
     pt::ptree filterTree = section.get_child("attribute-filters");
     processAttributeFilter(filterTree.get_child("allow"), true);
-    processAttributeFilter(filterTree.get_child("deny"), false);
+    try {
+        processAttributeFilter(filterTree.get_child("deny"), false);
+    }
+    catch (std::exception &e) {
+    }
 
     return true;
 }
 
-bool 
+void
 PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed) 
 {
   // go through all filters in the allow/deny section
@@ -192,7 +195,6 @@ PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed)
   if (isAllowed && allowedStreams.empty()){
       throw std::runtime_error("\"allow\" section needs at least one stream name");
   }
-  return true;
 }
 
 bool 
@@ -245,7 +247,7 @@ PolicyParser::generateABEPolicy() {
     // todo: see how to do this with ndn logs
     // warning for denied stream covering all of an allowed stream
     for (const std::string& warning : allowDenyWarning) {
-        std::cerr << warning << std::endl;
+        NDN_LOG_WARN(warning);
     }
 
     // error for if no streams are allowed

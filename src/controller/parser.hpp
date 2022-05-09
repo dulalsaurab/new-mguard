@@ -76,7 +76,7 @@ private:
   bool 
   parsePolicy(std::istream &input);
 
-  bool 
+  void
   processAttributeFilter(ConfigSection &section, bool isAllowed);
 
   static bool 

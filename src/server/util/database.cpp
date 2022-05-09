@@ -73,7 +73,7 @@ DataBase::callback(void *NotUsed, int argc, char **argv, char **azColName)
 }
 
 std::vector<std::string>
-DataBase::getSemanticLocations(const std::string& timestamp, const std::string& userID) 
+DataBase::getSemanticLocations(const std::string& timestamp, const std::string& userID)
 {
   NDN_LOG_DEBUG("getting semantic location for timestamp: " << timestamp << " and user id: " << userID);
   // output of function
