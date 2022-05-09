@@ -245,7 +245,7 @@ PolicyParser::generateABEPolicy() {
     // todo: see how to do this with ndn logs
     // warning for denied stream covering all of an allowed stream
     for (const std::string& warning : allowDenyWarning) {
-        std::cerr << warning << std::endl;
+        NDN_LOG_WARN(warning);
     }
 
     // error for if no streams are allowed
