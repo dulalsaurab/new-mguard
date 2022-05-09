@@ -64,10 +64,10 @@ def main():
     stream_name = streams['semantic_location']
     print ("getting data for semantic loaction stream: ", stream_name)
 
-    data = cc_Obj.get_stream(stream_name).toPandas().to_csv()
+    semLocData = cc_Obj.get_stream(stream_name).toPandas().to_csv()
     # sendStream(stream_name, data, senderObj = getSender())
     with open("semLoc.pkl", "wb") as of1:
-      pickle.dump(data, of1)
+      pickle.dump(semLocData, of1)
 
     del streams['semantic_location'] # remove from dict after sending
     print ("Remaining streams to send: ", streams.keys())
@@ -99,7 +99,7 @@ def main():
   end = 100
 
   while(True):
-   
+
     if not dataSet:
       break
 

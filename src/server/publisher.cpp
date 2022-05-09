@@ -73,7 +73,7 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-        
+
         // debugging
         for (auto& a: stream.getAttributes())
           NDN_LOG_DEBUG("attribute: " << a);
@@ -88,7 +88,7 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
     }
     //  encrypted data is created, store it in the buffer and publish it
     NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
-    
+
     // store the data into the repo, the insertion uses tcp bulk insertion protocol
     try {
       if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
@@ -100,7 +100,7 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
     }
 
     bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
-    
+
     // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
     // "t" time has passed after receiving the last application data.
     if(doPublishManifest) {
