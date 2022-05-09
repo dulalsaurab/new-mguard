@@ -42,7 +42,7 @@ def get_cc():
     gen_semantic_location_datastream(CC, study_name=study_name, user_id=user_id, stream_name=semantic_location_stream_name)
     
     gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=accel_stream_name, hours=hours)
-    # gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
+    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
 
     return CC, {
         'semantic_location': semantic_location_stream_name,

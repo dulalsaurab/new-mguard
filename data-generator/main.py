@@ -99,7 +99,7 @@ def main():
   end = 100
 
   while(True):
-   
+
     if not dataSet:
       break
 
