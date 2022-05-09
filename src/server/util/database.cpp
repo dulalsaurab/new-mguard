@@ -73,8 +73,9 @@ DataBase::callback(void *NotUsed, int argc, char **argv, char **azColName)
 }
 
 std::vector<std::string>
-DataBase::getSemanticLocations(const std::string &timestamp, const std::string &userID) 
+DataBase::getSemanticLocations(const std::string& timestamp, const std::string& userID) 
 {
+  NDN_LOG_DEBUG("getting semantic location for timestamp: " << timestamp << " and user id: " << userID);
   // output of function
   std::vector<std::string> out;
   // creating the query based on given timestamp and userID
@@ -107,6 +108,9 @@ DataBase::getSemanticLocations(const std::string &timestamp, const std::string &
   // close stmt and database
   sqlite3_finalize(stmt);
   closeDataBase();
+
+  for (auto& a: out)
+    NDN_LOG_TRACE("sem loc attr: " << a);
 
   return out;
 }

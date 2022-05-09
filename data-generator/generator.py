@@ -1,4 +1,5 @@
 from distutils.command.config import config
+from tkinter import HORIZONTAL
 from CerebralCortexRandomDataGenerator.ccrdg.battery_data import gen_battery_data
 from CerebralCortexRandomDataGenerator.ccrdg.accel_gyro_data import gen_accel_gyro_data
 from CerebralCortexRandomDataGenerator.ccrdg.location_data import gen_location_datastream, \
@@ -22,6 +23,7 @@ def get_cc():
 
     study_name = str(args["study_name"]).strip()
     hours = int(args["duration"])
+    user_id = args["user_id"]
 
     if not isinstance(hours, int):
         raise ValueError("Only integer values are allowed.")
@@ -30,20 +32,16 @@ def get_cc():
 
     battery_stream_name = "org--md2k--{}--{}--phone--battery".format(study_name, user_id)
     location_stream_name = "org--md2k--{}--{}--phone--gps".format(study_name, user_id)
-    semantic_location_stream_name = "org--md2k--{}--{}--data_analysis--gps_episodes_and_semantic_location".format(
-        study_name, user_id)
+    semantic_location_stream_name = "org--md2k--{}--{}--data_analysis--gps_episodes_and_semantic_location".format(study_name, user_id)
     accel_stream_name = "org--md2k--phonesensor--{}--{}--phone--accelerometer".format(study_name, user_id)
     gyro_stream_name = "org--md2k--phonesensor--{}--{}--phone--gyroscope".format(study_name, user_id)
 
     gen_battery_data(CC, study_name=study_name, user_id=user_id, stream_name=battery_stream_name, hours=hours)
 
-    gen_location_datastream(CC, study_name=study_name, user_id=user_id, 
-                            stream_name=location_stream_name)
-    gen_semantic_location_datastream(CC, study_name=study_name, user_id=user_id,
-                                     stream_name=semantic_location_stream_name)
+    gen_location_datastream(CC, study_name=study_name, user_id=user_id, stream_name=location_stream_name)
+    gen_semantic_location_datastream(CC, study_name=study_name, user_id=user_id, stream_name=semantic_location_stream_name)
     
-    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, 
-                        stream_name=accel_stream_name, hours=hours)
+    gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=accel_stream_name, hours=hours)
     # gen_accel_gyro_data(CC, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, hours=hours)
 
     return CC, {

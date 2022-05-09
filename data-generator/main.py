@@ -42,7 +42,7 @@ def sendStream(stream_name, data, senderObj):
   sleep(1) # sleep one second after sending the header
   print (data)
   senderObj.send(data)
-  sleep(10) # sleep 10 seconds after sending the first stream
+  sleep(20) # sleep 10 seconds after sending the first stream
   print("sending data completed")
   senderObj.close()
 
@@ -114,7 +114,7 @@ def main():
       sendStream(stream_name, data.to_csv(), senderObj)
 
     start = end
-    end = end + 100
+    end = 2*end + 1
     sleep (60) # testing: sleep for 1 minute and send another batch  
 
 if __name__ == '__main__':

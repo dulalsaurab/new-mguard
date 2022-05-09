@@ -22,14 +22,12 @@
 
 ;md2k streams converted into ndn data streams
 available-streams
-{
-  /org/md2k/mguard/dd40c/phone/gps
+{ 
   /org/md2k/mguard/dd40c/phone/accelerometer
-  /org/md2k/mguard/dd40c/phone/accelerometer
-  /org/md2k/mguard/dd40c/phone/battery
-  /org/md2k/mguard/dd40c/phone/gyroscope
   /org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
-  /org/md2k/mguard/dd40c/data_analysis/physical_acitivity
+  /org/md2k/mguard/dd40c/phone/gyroscope
+  /org/md2k/mguard/dd40c/phone/battery
+  /org/md2k/mguard/dd40c/phone/gps
 }
 
 attributes

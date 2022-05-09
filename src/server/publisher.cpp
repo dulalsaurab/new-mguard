@@ -73,6 +73,10 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
+        
+        // debugging
+        for (auto& a: stream.getAttributes())
+          NDN_LOG_DEBUG("attribute: " << a);
 
         std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
                                                             {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});

@@ -66,7 +66,16 @@ public:
 	void
 	setAttributes(std::vector<std::string>& attributeSet)
   {
-      m_attributeSet = attributeSet;
+    m_attributeSet = attributeSet;
+  }
+
+  // stream attribute
+	void
+	updateAttributes(std::vector<std::string>& attributeSet)
+  {
+    std::vector<std::string> _comb = m_attributeSet;
+    _comb.insert(_comb.end(), attributeSet.begin(), attributeSet.end());
+    m_attributeSet = _comb;
   }
 
   // TODO: data points from a same stream can be encrypted with different set 

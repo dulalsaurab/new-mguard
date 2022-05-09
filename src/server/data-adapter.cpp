@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <ctime>
 
 // using namespace boost::placeholders;
 
@@ -187,26 +189,51 @@ DataAdapter::stop()
 ndn::Name
 DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 {
-  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << "and timestamp: " << timestamp);
+  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << " and timestamp: " << timestamp);
   return streamName.append("DATA").append(timestamp);
 }
 
 void
 DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
 {
-  NDN_LOG_INFO("Processing stream: " << stream.getName());
+  auto streamName = stream.getName();
+  NDN_LOG_INFO("Processing stream: " << streamName);
 
   for (auto data : dataSet)
   {
+    char timestamp [80];
+    struct tm tm;
     // get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
-    auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
-    auto dataName = makeDataName(stream.getName(), timestamp);
-    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
+    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
+    auto uniqueId = _tvec[0];
+    auto timestamp_unprocessed = _tvec[1];
+    NDN_LOG_DEBUG("uniqueId: " << uniqueId << " timestamp: " << timestamp_unprocessed);
+    // auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
+    auto dataName = makeDataName(streamName, uniqueId);
+    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with uniqueId" << uniqueId);
 
+    // 
+    if (streamName == "/org/md2k/mguard/dd40c/phone/gps"){
+      try { 
+        if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
+          std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
+          NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
+        }
+
+        auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+        if (semAttr.size() > 0){
+          NDN_LOG_DEBUG("Updating attribute list");
+          stream.updateAttributes(semAttr);
+        }
+      }
+      catch (const std::exception& ex) {
+        NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+      }
+    }
+    
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    m_dataBase.getSemanticLocations(timestamp, "dd40c");
     m_publisher.publish(dataName, data, stream);
   }
 }
