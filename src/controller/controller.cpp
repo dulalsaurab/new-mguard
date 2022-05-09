@@ -16,7 +16,22 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
 , m_attrAuthority(m_aaCert, m_face, m_keyChain) 
 {
   // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
-  processPolicy("default.policy");
+  std::vector<std::string> policyList = {
+    // "/home/map901/mguard/mguard/policies/policy5",
+                                           "/home/map901/mguard/mguard/policies/policy1",
+                                           "/home/map901/mguard/mguard/policies/policy2"
+                                          //  "/home/map901/mguard/mguard/policies/policy3",
+                                          //  "/home/map901/mguard/mguard/policies/policy4"
+                                          };
+
+  for(auto& policy : policyList)
+  {
+    NDN_LOG_INFO("policy path: " << policy);
+    processPolicy(policy);
+  }
+  for(auto& it : m_policyMap)
+    NDN_LOG_DEBUG("username: " << it.first << " ABE policy: " << it.second.abePolicy);
+  
   setInterestFilter(m_controllerPrefix);
 }
 
@@ -38,6 +53,7 @@ Controller::processPolicy(const std::string& policyPath)
 {
   m_policyParser.inputPolicy(policyPath);
   auto policyDetail = m_policyParser.getPolicyInfo();
+  NDN_LOG_DEBUG("from policy info: " << policyDetail.abePolicy);
 
   // TODO: modify parser to store streams as ndn Name not the strings
   // in doing so we don't need the following conversion

@@ -26,6 +26,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 
 PolicyDetail
 PolicyParser::getPolicyInfo() {
+    NDN_LOG_DEBUG("policyID: " << policyID << "abePolicy: " << abePolicy);
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
@@ -33,6 +34,7 @@ bool
 PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
     // just so that you can't get old data after redoing global variables
+    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
     availableStreamsPath = streamsFilePath;
     return inputStreams();
 }

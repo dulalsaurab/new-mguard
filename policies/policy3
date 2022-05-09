@@ -1,7 +1,7 @@
 ; brief: C shall be able to access all the streams except gps-coordinates streams
 
 policy-id           3
-requester-names     C
+requester-names     /org/md2k/C
 attribute-filters
 {
     allow
@@ -10,7 +10,7 @@ attribute-filters
     }
     deny
     {
-        /org/md2k/mperf/dd40c/phone/gps-coordinate
+        /org/md2k/mguard/dd40c/phone/gps
     }
 }
 
