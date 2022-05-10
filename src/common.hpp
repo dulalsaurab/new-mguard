@@ -37,6 +37,7 @@ const ndn::time::milliseconds MAX_UPDATE_WAIT_TIME(200); //todo: not implemented
 
 // manifest ---------
 const std::string SEMANTIC_LOCATION = "ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location";
+const std::string NDN_LOCATION_STREAM = "/ndn/org/md2k/mguard/dd40c/phone/gps";
 
 class Error : public std::runtime_error
 {

@@ -16,14 +16,8 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
 , m_attrAuthority(m_aaCert, m_face, m_keyChain) 
 {
   // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
-  std::vector<std::string> policyList = {
-	  "policies/policy1",
-	  "policies/policy2",
-      "policies/policy3",
-      "policies/policy4",
-      "policies/policy5",
-  };
-  NDN_LOG_WARN(get_current_dir_name());
+  std::vector<std::string> policyList = {"policies/policy1", "policies/policy2", "policies/policy3",
+                                         "policies/policy4", "policies/policy5"};
 
   for(auto& policy : policyList)
   {
@@ -31,7 +25,7 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
     processPolicy(policy);
   }
   for(auto& it : m_policyMap)
-    NDN_LOG_DEBUG("username: " << it.first << " ABE policy: " << it.second.abePolicy);
+    NDN_LOG_TRACE("data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
   
   setInterestFilter(m_controllerPrefix);
 }
@@ -109,7 +103,7 @@ Controller::processInterest(const ndn::Name& name, const ndn::Interest& interest
 void
 Controller::sendData(const ndn::Name& name)
 {
-  auto subscriberName = name.getSubName(2);
+  auto subscriberName = name.getSubName(4);
 
   ndn::Data replyData(name);
   // replyData.setFreshnessPeriod(5_s);
@@ -118,6 +112,7 @@ Controller::sendData(const ndn::Name& name)
   if (it == m_policyMap.end()) {
     NDN_LOG_INFO("Key for subscriber: " << subscriberName << " not found " << "sending NACK");
     sendApplicationNack(name);
+    return;
   }
   m_temp_policyDetail = it->second;
   replyData.setContent(wireEncode());

@@ -42,6 +42,8 @@ class Subscriber
 public:
   Subscriber(const ndn::Name& consumerPrefix,
              const ndn::Name& syncPrefix, 
+             const ndn::Name& controllerPrefix,
+             const ndn::Name& aaPrefix,
              ndn::time::milliseconds syncInterestLifetime,
             //  std::vector<std::string>& subscriptionList,
              const DataCallback& dataCallback,
@@ -125,6 +127,7 @@ private:
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
+  ndn::Name m_controllerPrefix;
   std::unordered_map<ndn::Name, uint64_t> m_prefixToLowSeq;
   std::vector<ndn::Name> m_subscriptionList;
 

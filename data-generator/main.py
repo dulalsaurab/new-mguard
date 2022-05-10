@@ -14,8 +14,6 @@ import pickle
 import os
 
 BUFFER_SIZE = 1024
-user_id = 'dd40c'
-study_name =  'mguard'
 
 class Sender:
   def __init__(self, port):
@@ -84,7 +82,7 @@ def main():
       data = cc_obj.get_stream(stream_name).toPandas()
       print ("Sample data from the stream: \n", data[0:10])
       sendStream(stream_name, data.to_csv(), senderObj)
-
+      exit()
     total_number_of_batch += 1
     sleep (60) # testing: sleep for 1 minute and send another batch  
 
