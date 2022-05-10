@@ -1,13 +1,13 @@
 ; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
 policy-id           4
-requester-names     /org/md2k/D
+requester-names     /ndn/org/md2k/D
 attribute-filters
 {
     allow
     {
-        /org/md2k/
-        /org/md2k/attribute/location/work     
+        /ndn/org/md2k/
+        /ndn/org/md2k/attribute/location/work
     }
 }
 

@@ -1,12 +1,12 @@
 ; brief: C, D shall be able to access accelerometer data
 
 policy-id           6
-requester-ids       /org/md2k/G,/org/md2k/H
+requester-ids       /ndn/org/md2k/G,/ndn/org/md2k/H
 attribute-filters
 {
     allow
     {
-        /org/md2k/mperf/*/*/accelerometer
+        /ndn/org/md2k/mperf/*/*/accelerometer
     }
 }
 
