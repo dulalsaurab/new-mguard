@@ -8,11 +8,11 @@ sudo ldconfig
 # publisher
 ndnsec key-gen -t r /ndn/org/md2k
 # controller
-ndnsec key-gen -t r /ndn/edu/mguard/controller
+ndnsec key-gen -t r /mguard/controller
 # Consumer
 ndnsec key-gen -t r /ndn/org/md2k/A
 # Attribute Authority
-ndnsec key-gen -t r /ndn/edu/mguard/aa
+ndnsec key-gen -t r /mguard/aa
 
 # md2k data generator
 cd data-generator || exit
