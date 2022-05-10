@@ -8,12 +8,6 @@ attribute-filters
     {
         /org/md2k/
     }
-    
-    deny
-    {
-
-    }
-
 }
 
 ; AFTER PARSING

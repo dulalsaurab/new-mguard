@@ -9,7 +9,6 @@ attribute-filters
         /org/md2k/
         /org/md2k/attribute/location/work     
     }
-
 }
 
 ; AFTER PARSING

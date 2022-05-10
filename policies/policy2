@@ -8,7 +8,6 @@ attribute-filters
     {
         /org/md2k/mguard/dd40c/phone/battery
     }
- 
 }
 
 ; AFTER PARSING

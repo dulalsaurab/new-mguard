@@ -1,16 +1,12 @@
 ; brief: A, B shall be able to access data from the accelerometer stream
 
 policy-id           5
-requester-names     /org/md2k/E,/org/md2k/F
+requester-names     /org/md2k/A,/org/md2k/B
 attribute-filters
 {
     allow
     {
         /org/md2k/mguard/dd40c/phone/accelerometer
-    }
-    deny
-    {
-
     }
 }
 
