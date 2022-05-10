@@ -17,12 +17,10 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
 {
   // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
   std::vector<std::string> policyList = {
-    // "/home/map901/mguard/mguard/policies/policy5",
-                                           "/home/map901/mguard/mguard/policies/policy1",
-                                           "/home/map901/mguard/mguard/policies/policy2"
-                                          //  "/home/map901/mguard/mguard/policies/policy3",
-                                          //  "/home/map901/mguard/mguard/policies/policy4"
-                                          };
+	  "policies/policy1",
+	  "policies/policy2",
+  };
+  NDN_LOG_WARN(get_current_dir_name());
 
   for(auto& policy : policyList)
   {
