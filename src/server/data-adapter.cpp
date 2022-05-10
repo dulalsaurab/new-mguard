@@ -215,7 +215,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with uniqueId" << uniqueId);
 
     // 
-    if (streamName == "/org/md2k/mguard/dd40c/phone/gps"){
+    if (streamName == "/ndn/org/md2k/mguard/dd40c/phone/gps"){
       try { 
         if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
           std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);

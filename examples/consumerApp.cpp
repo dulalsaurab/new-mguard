@@ -15,7 +15,7 @@ class mGuardConsumer
 public:
 
   mGuardConsumer()
-  : m_subscriber("/org/md2k/A", "/org/md2k", 1600_ms,
+  : m_subscriber("/ndn/org/md2k/A", "/ndn/org/md2k", 1600_ms,
                  std::bind(&mGuardConsumer::processDataCallback, this, _1),
                  std::bind(&mGuardConsumer::processSubscriptionCallback, this, _1))
   {
