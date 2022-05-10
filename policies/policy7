@@ -1,7 +1,7 @@
 ; brief: C, D shall be able to access accelerometer data under org.md2k        ;this is the same as policy6, but a different implementation
 
 policy-id           6
-requester-ids       /ndn/org/md2k/C,/ndn/org/md2k/D
+requester-ids       /ndn/org/md2k/I,/ndn/org/md2k/J
 attribute-filters
 {
     allow
