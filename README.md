@@ -22,9 +22,9 @@ Please follow the corresponding links for the installaion details.
 - ./waf build && sudo ./waf install
 ```
 ### 2.3 Creating example identities/certificates
-1. mGuard Publisher, identity: /org/md2k
+1. mGuard Publisher, identity: /ndn/org/md2k
 2. mGuard Controller, identity: /mguard/controller
-3. Consumer, identity: /org/md2k/A
+3. Consumer, identity: /ndn/org/md2k/A
 4. Attribute Authority, identity: /mguard/aa
 
 Run the following command to create a cert for each of the above identity
