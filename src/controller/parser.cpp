@@ -150,6 +150,13 @@ PolicyParser::parsePolicy(std::istream& input) {
         }
     }
 
+    // reset per-policy variables
+    calculatedStreams.clear();
+    allowedStreams.clear();
+    allowedAttributes.clear();
+    deniedStreams.clear();
+    deniedAttributes.clear();
+
     // REQUIRED attribute-filters section
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
