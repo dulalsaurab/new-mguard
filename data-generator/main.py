@@ -1,3 +1,4 @@
+from curses import meta
 from datetime import datetime
 from ipaddress import summarize_address_range
 
@@ -34,18 +35,23 @@ def getSender():
   return sender
 
 def sendStream(stream_name, data, senderObj):
+  print ("Sending data for stream name {}".format(stream_name))
+
   _size = sys.getsizeof(data)
   number_of_chunks = int(_size/BUFFER_SIZE) + 1
   metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
-  print(_size, metadata)
+  print ("Metadata of the stream {}".format(metadata))
+
   senderObj.send(metadata)
-  sleep(1) # sleep one second after sending the header
-  print (data)
+  sleep(5) # sleep a few seconds after sending the metadata
+
   senderObj.send(data)
-  sleep(20) # sleep 10 seconds after sending the first stream
+  # sleep 20 seconds after sending the first stream, this is because the data-adapter needs to process
+  # the previous packet i.e metadata
+  sleep(20) 
+
   print("sending data completed")
   senderObj.close()
-
 
 def main():
 
@@ -57,64 +63,29 @@ def main():
       accel
       gyro
   '''
-  if not os.path.isfile("dataSet.pkl"):
-    cc_Obj, streams = get_cc()
+  total_number_of_batch = 1
 
-    # first send semantic_location stream
-    stream_name = streams['semantic_location']
-    print ("getting data for semantic loaction stream: ", stream_name)
+  '''
+    @param total_number_of_batch int number of times we will generate the data and send it
+    The code below will fetch data for datatime starting from 2022-05-01 till 2022-05-20
+    for each of these dates, data for time range 10:00:00 - 10:00:10 i.e. 10 minutes equivalent of data
+    will be generated and send to data adapter. As said, the process will continue for 20 iterations.
+  '''
+  while(total_number_of_batch <= 20):
 
-    data = cc_Obj.get_stream(stream_name).toPandas().to_csv()
-    # sendStream(stream_name, data, senderObj = getSender())
-    with open("semLoc.pkl", "wb") as of1:
-      pickle.dump(data, of1)
+    start_time = '2022-05-0{} 10:00:00'.format(total_number_of_batch)
+    end_time = '2022-05-0{} 10:01:00'.format(total_number_of_batch)
+    print ("Fetching data for starttime {} and endtime {}".format(start_time, end_time))
 
-    del streams['semantic_location'] # remove from dict after sending
-    print ("Remaining streams to send: ", streams.keys())
-
-    dataSet = {}
+    cc_obj, streams = get_cc(start_time, end_time)
     for stream in streams:
       stream_name = streams[stream]
-      print ("getting data for stream name: ", stream_name)
-      dataSet[stream_name] = cc_Obj.get_stream(stream_name).toPandas()
-
-    with open("dataSet.pkl", "wb") as of2:
-      pickle.dump(dataSet, of2)
-
-  else:
-    with open ("semLoc.pkl", "rb") as inpf1:
-      semLocData = pickle.load(inpf1)
-
-    with open ("dataSet.pkl", "rb") as inpf2:
-      dataSet = pickle.load(inpf2)
-
-  # 1. send semantic location data
-  stream_name = 'org--md2k--{}--{}--data_analysis--gps_episodes_and_semantic_location'.format(study_name, user_id)
-  senderObj = getSender()
-  sendStream(stream_name, semLocData, senderObj)
-
-  # we will get all the data at once, and publish x number of rows in a batch except semantic loacation data
-  # for example, if an stream contains 1000 rows, 10 batch will be sent each containing 100 rows
-  start = 0
-  end = 100
-
-  while(True):
-
-    if not dataSet:
-      break
-
-    for stream_name in dataSet:
-      print ("sending data for stream: ", stream_name)
       senderObj = getSender()
-      data = dataSet[stream_name][start:end]
-      if data.size == 0:
-        del dataSet[stream_name]
-        continue
-      print (data)
+      data = cc_obj.get_stream(stream_name).toPandas()
+      print ("Sample data from the stream: \n", data[0:10])
       sendStream(stream_name, data.to_csv(), senderObj)
 
-    start = end
-    end = 2*end + 1
+    total_number_of_batch += 1
     sleep (60) # testing: sleep for 1 minute and send another batch  
 
 if __name__ == '__main__':
