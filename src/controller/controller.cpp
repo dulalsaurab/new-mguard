@@ -19,6 +19,9 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
   std::vector<std::string> policyList = {
 	  "policies/policy1",
 	  "policies/policy2",
+      "policies/policy3",
+      "policies/policy4",
+      "policies/policy5",
   };
   NDN_LOG_WARN(get_current_dir_name());
 
