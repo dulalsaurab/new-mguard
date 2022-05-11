@@ -26,7 +26,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 
 PolicyDetail
 PolicyParser::getPolicyInfo() {
-    NDN_LOG_DEBUG("policyID: " << policyID << "abePolicy: " << abePolicy);
+    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 

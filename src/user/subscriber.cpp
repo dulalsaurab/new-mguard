@@ -12,15 +12,17 @@ namespace subscriber {
 
 Subscriber::Subscriber(const ndn::Name& consumerPrefix,
                        const ndn::Name& syncPrefix,
+                       const ndn::Name& controllerPrefix,
+                       const ndn::Name& aaPrefix,
                        ndn::time::milliseconds syncInterestLifetime,
                       //  std::vector<std::string>& subscriptionList,
                        const DataCallback& callback,
                        const SubscriptionCallback& subCallback)
 : m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
-// , m_subscriptionList(subscriptionList)
+, m_controllerPrefix(controllerPrefix)
 , m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity(m_consumerPrefix).getDefaultKey().getDefaultCertificate(),
-                 m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate()) // todo: aa prefix should be in configuration file?
+                 m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate()) // todo: aa prefix should be in configuration file?
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
                    std::bind(&Subscriber::receivedSyncUpdates, this, _1),
@@ -33,7 +35,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
 
   // get policy details from controller
   try {
-    ndn::Name interestName= "/mguard/controller";
+    ndn::Name interestName = m_controllerPrefix; 
     interestName.append(m_consumerPrefix);
     NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
     expressInterest(interestName);
@@ -126,7 +128,7 @@ Subscriber::subscribe(ndn::Name streamName)
   streamName.append("manifest");
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
-    NDN_LOG_INFO("Stream" << streamName << "not available for subscription");
+    NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
     return;
   }
   NDN_LOG_INFO("Subscribing to: " << streamName);

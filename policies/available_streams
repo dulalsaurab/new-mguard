@@ -55,4 +55,6 @@ requesters
   user /ndn/org/md2k/B
   user /ndn/org/md2k/C
   user /ndn/org/md2k/D
+  user /ndn/org/md2k/E
+  user /ndn/org/md2k/F
 }
