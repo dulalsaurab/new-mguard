@@ -9,6 +9,15 @@
 namespace mguard {
 namespace util {
 
+static inline
+ndn::Name
+getNdnNameFromSemanticLocationName(std::string md2kname)
+{
+  ndn::Name semLocAttr("/ndn/org/md2k/attribute/location");
+  semLocAttr.append(md2kname);
+  return semLocAttr;
+}
+
 class Stream
 {
 public:

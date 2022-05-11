@@ -23,6 +23,8 @@ enum
 
 }
 
+// get ndn name for semantic location name
+
 // manifest ---------
 /*
 if use_manifest is set to false, manifest will not be used, application data will be publised directly.

@@ -214,7 +214,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     auto dataName = makeDataName(streamName, uniqueId);
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with uniqueId" << uniqueId);
 
-    // 
+    std::vector<std::string> semLocAttrList;
     if (streamName == NDN_LOCATION_STREAM){
       try { 
         if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
@@ -223,9 +223,12 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
         }
 
         auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
-        if (semAttr.size() > 0){
-          NDN_LOG_DEBUG("Updating attribute list");
-          stream.updateAttributes(semAttr);
+
+        for (auto& attr: semAttr)
+        {
+          auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
+          NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
+          semLocAttrList.push_back(_semLocAttr.toUri());
         }
       }
       catch (const std::exception& ex) {
@@ -234,7 +237,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     }
     
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    m_publisher.publish(dataName, data, stream);
+    m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
 }
 

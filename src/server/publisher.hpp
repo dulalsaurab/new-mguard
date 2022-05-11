@@ -33,7 +33,7 @@ public:
   doUpdate(ndn::Name& manifestName);
 
   void
-  publish(ndn::Name& dataName, std::string data, util::Stream& stream);
+  publish(ndn::Name& dataName, std::string data, util::Stream& stream, std::vector<std::string> semLocAttrList);
 
   void
   publishManifest(util::Stream& stream);

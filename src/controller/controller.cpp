@@ -149,7 +149,7 @@ const ndn::Block&
 Controller::wireEncode()
 {
   if (m_wire.hasWire()) {
-    return m_wire;
+    m_wire.reset();
   }
 
   ndn::EncodingEstimator estimator;
