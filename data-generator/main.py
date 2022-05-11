@@ -1,5 +1,4 @@
 from curses import meta
-from datetime import datetime
 from ipaddress import summarize_address_range
 
 from numpy import number
@@ -10,8 +9,8 @@ import pandas as pd
 from pathlib  import Path
 from time import sleep
 import sys
-import pickle
-import os
+import shutil
+
 
 BUFFER_SIZE = 1024
 
@@ -41,7 +40,7 @@ def sendStream(stream_name, data, senderObj):
   print ("Metadata of the stream {}".format(metadata))
 
   senderObj.send(metadata)
-  sleep(5) # sleep a few seconds after sending the metadata
+  sleep(10) # sleep a few seconds after sending the metadata
 
   senderObj.send(data)
   # sleep 20 seconds after sending the first stream, this is because the data-adapter needs to process
@@ -52,6 +51,8 @@ def sendStream(stream_name, data, senderObj):
   senderObj.close()
 
 def main():
+  #removing the old stream data if exists
+  shutil.rmtree('/home/map901/cc_data/')
 
   '''
       names:
@@ -69,10 +70,10 @@ def main():
     for each of these dates, data for time range 10:00:00 - 10:00:10 i.e. 10 minutes equivalent of data
     will be generated and send to data adapter. As said, the process will continue for 20 iterations.
   '''
-  while(total_number_of_batch <= 20):
+  while(total_number_of_batch <= 2):
 
     start_time = '2022-05-0{} 10:00:00'.format(total_number_of_batch)
-    end_time = '2022-05-0{} 10:01:00'.format(total_number_of_batch)
+    end_time = '2022-05-0{} 10:00:10'.format(total_number_of_batch)
     print ("Fetching data for starttime {} and endtime {}".format(start_time, end_time))
 
     cc_obj, streams = get_cc(start_time, end_time)
@@ -80,11 +81,12 @@ def main():
       stream_name = streams[stream]
       senderObj = getSender()
       data = cc_obj.get_stream(stream_name).toPandas()
+
       print ("Sample data from the stream: \n", data[0:10])
       sendStream(stream_name, data.to_csv(), senderObj)
-      exit()
+    # exit()
     total_number_of_batch += 1
-    sleep (60) # testing: sleep for 1 minute and send another batch  
+    sleep (60) # testing: sleep for 1 minute and send another batch
 
 if __name__ == '__main__':
     main()
