@@ -73,7 +73,7 @@ def main():
   while(total_number_of_batch <= 2):
 
     start_time = '2022-05-0{} 10:00:00'.format(total_number_of_batch)
-    end_time = '2022-05-0{} 10:00:10'.format(total_number_of_batch)
+    end_time = '2022-05-0{} 10:00:02'.format(total_number_of_batch)
     print ("Fetching data for starttime {} and endtime {}".format(start_time, end_time))
 
     cc_obj, streams = get_cc(start_time, end_time)
@@ -84,7 +84,7 @@ def main():
 
       print ("Sample data from the stream: \n", data[0:10])
       sendStream(stream_name, data.to_csv(), senderObj)
-    # exit()
+
     total_number_of_batch += 1
     sleep (60) # testing: sleep for 1 minute and send another batch
 

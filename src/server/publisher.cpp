@@ -62,7 +62,7 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
 }
 
 void
-Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
+Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream, std::vector<std::string> semLocAttrList)
 {
     // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
     // Manifest name: <stream name>/manifest/<seq-num>
@@ -74,11 +74,16 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream)
         auto dataSufix = dataName.getSubName(2);
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
 
+        auto attrList = stream.getAttributes();
+
         // debugging
-        for (auto& a: stream.getAttributes())
+        for (auto& a: attrList)
           NDN_LOG_DEBUG("attribute: " << a);
 
-        std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, stream.getAttributes(), 
+        if (semLocAttrList.size() > 0)
+          attrList.insert(attrList.end(), semLocAttrList.begin(), semLocAttrList.end());
+
+        std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
                                                             {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
     }
     catch(const std::exception& e) {
@@ -148,7 +153,7 @@ const ndn::Block&
 Publisher::wireEncode() const
 {
   if (m_wire.hasWire()) {
-    return m_wire;
+    m_wire.reset();
   }
 
   ndn::EncodingEstimator estimator;
