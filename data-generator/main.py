@@ -51,8 +51,6 @@ def sendStream(stream_name, data, senderObj):
   senderObj.close()
 
 def main():
-  #removing the old stream data if exists
-  shutil.rmtree('/home/map901/cc_data/')
 
   '''
       names:
@@ -70,7 +68,10 @@ def main():
     for each of these dates, data for time range 10:00:00 - 10:00:10 i.e. 10 minutes equivalent of data
     will be generated and send to data adapter. As said, the process will continue for 20 iterations.
   '''
-  while(total_number_of_batch <= 2):
+  while(total_number_of_batch <= 1):
+
+    #removing the old stream data if exists
+    shutil.rmtree('/home/map901/cc_data/')
 
     start_time = '2022-05-0{} 10:00:00'.format(total_number_of_batch)
     end_time = '2022-05-0{} 10:00:02'.format(total_number_of_batch)
@@ -81,6 +82,10 @@ def main():
       stream_name = streams[stream]
       senderObj = getSender()
       data = cc_obj.get_stream(stream_name).toPandas()
+      
+      # uncomment for debugging
+      # data1 = data
+      # data1.to_csv(Path(str(total_number_of_batch)+stream_name), index=False)
 
       print ("Sample data from the stream: \n", data[0:10])
       sendStream(stream_name, data.to_csv(), senderObj)

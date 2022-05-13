@@ -15,7 +15,7 @@ class mGuardConsumer
 public:
 
   mGuardConsumer()
-  : m_subscriber("/ndn/org/md2k/E", "/ndn/org/md2k", "/ndn/org/mguard/controller", "/ndn/org/mguard/aa", 1600_ms,
+  : m_subscriber("/ndn/org/md2k/E", "/ndn/org/md2k", "/ndn/org/md2k/mguard/controller", "/ndn/org/md2k/mguard/aa", 1600_ms,
                  std::bind(&mGuardConsumer::processDataCallback, this, _1),
                  std::bind(&mGuardConsumer::processSubscriptionCallback, this, _1))
   {

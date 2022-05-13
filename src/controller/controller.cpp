@@ -27,7 +27,10 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
   for(auto& it : m_policyMap)
     NDN_LOG_TRACE("data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
   
+  // set interest filter on cert (aa cert, controller cert, and controller prefix)
+
   setInterestFilter(m_controllerPrefix);
+
 }
 
 void
@@ -95,7 +98,7 @@ Controller::processInterest(const ndn::Name& name, const ndn::Interest& interest
   NDN_LOG_INFO("Interest received: " << interest.getName() << " name: " << name);
   // TODO: consumer will sent a signed interest, name will be extracted from identity 
   // extract subscriber name from the interest
-  auto subscriberName = interest.getName().getSubName(2);
+  auto subscriberName = interest.getName().getSubName(5);
   NDN_LOG_INFO("Consumer name: " << subscriberName);
   sendData(interest.getName());
 }
@@ -103,7 +106,7 @@ Controller::processInterest(const ndn::Name& name, const ndn::Interest& interest
 void
 Controller::sendData(const ndn::Name& name)
 {
-  auto subscriberName = name.getSubName(4);
+  auto subscriberName = name.getSubName(5);
 
   ndn::Data replyData(name);
   // replyData.setFreshnessPeriod(5_s);

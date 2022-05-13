@@ -71,7 +71,7 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream, 
     std::shared_ptr<ndn::Data> enc_data, ckData;
     try {
         NDN_LOG_DEBUG("Encrypting data: " << dataName);
-        auto dataSufix = dataName.getSubName(2);
+        auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
         NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
 
         auto attrList = stream.getAttributes();
