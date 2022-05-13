@@ -23,9 +23,9 @@ Please follow the corresponding links for the installaion details.
 ```
 ### 2.3 Creating example identities/certificates
 1. mGuard Publisher, identity: /ndn/org/md2k
-2. mGuard Controller, identity: /mguard/controller
+2. mGuard Controller, identity: /ndn/org/mguard/controller
 3. Consumer, identity: /ndn/org/md2k/A
-4. Attribute Authority, identity: /mguard/aa
+4. Attribute Authority, identity: /ndn/org/mguard/aa
 
 Run the following command to create a cert for each of the above identity
 `ndnsec key-gen -t r <identity name>`. This will create and store the cert in the default location i.e. ~/.ndn
