@@ -45,7 +45,7 @@ def sendStream(stream_name, data, senderObj):
   senderObj.send(data)
   # sleep 20 seconds after sending the first stream, this is because the data-adapter needs to process
   # the previous packet i.e metadata
-  sleep(20) 
+  sleep(20)
 
   print("sending data completed")
   senderObj.close()
@@ -82,7 +82,7 @@ def main():
       stream_name = streams[stream]
       senderObj = getSender()
       data = cc_obj.get_stream(stream_name).toPandas()
-      
+
       # uncomment for debugging
       # data1 = data
       # data1.to_csv(Path(str(total_number_of_batch)+stream_name), index=False)
