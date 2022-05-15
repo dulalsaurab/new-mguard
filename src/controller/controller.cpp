@@ -8,12 +8,14 @@ namespace controller {
 NDN_LOG_INIT(mguard.Controller);
 
 Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPrefix, 
+                       const std::string& aaCertPath,
+                       const std::map<ndn::Name, std::string>& requestersCertPath,
                        const std::string& availableStreamsFilePath)
 : m_controllerPrefix(controllerPrefix)
 , m_aaPrefix(aaPrefix)
+, m_requestersCertPath(requestersCertPath)
 , m_policyParser(availableStreamsFilePath)
-, m_aaCert(m_keyChain.getPib().getIdentity(m_aaPrefix.toUri()).getDefaultKey().getDefaultCertificate())
-, m_attrAuthority(m_aaCert, m_face, m_keyChain) 
+, m_attrAuthority(*loadCert(aaCertPath), m_face, m_keyChain) 
 {
   // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
   std::vector<std::string> policyList = {"policies/policy1", "policies/policy2", "policies/policy3",
@@ -28,7 +30,6 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
     NDN_LOG_TRACE("data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
   
   // set interest filter on cert (aa cert, controller cert, and controller prefix)
-
   setInterestFilter(m_controllerPrefix);
 
 }
@@ -67,9 +68,13 @@ Controller::processPolicy(const std::string& policyPath)
 
     try
     {
-      auto requesterCert = m_keyChain.getPib().getIdentity(requester).getDefaultKey().getDefaultCertificate();
+      auto path = getRequesterCertPath(requester);
+      if (path.empty())
+        continue;
+
+      // auto requesterCert = m_keyChain.getPib().getIdentity(requester).getDefaultKey().getDefaultCertificate();
       NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);
-      m_attrAuthority.addNewPolicy(requesterCert, policyDetail.abePolicy);
+      m_attrAuthority.addNewPolicy(*loadCert(path), policyDetail.abePolicy);
       policyDetails policyD = {policyDetail.policyIdentifier, tempStreams, policyDetail.abePolicy};
       m_policyMap.insert(std::pair <ndn::Name, policyDetails> (requester, policyD));
     }
@@ -98,7 +103,7 @@ Controller::processInterest(const ndn::Name& name, const ndn::Interest& interest
   NDN_LOG_INFO("Interest received: " << interest.getName() << " name: " << name);
   // TODO: consumer will sent a signed interest, name will be extracted from identity 
   // extract subscriber name from the interest
-  auto subscriberName = interest.getName().getSubName(5);
+  auto subscriberName = interest.getName().getSubName(5); // need to fix tis
   NDN_LOG_INFO("Consumer name: " << subscriberName);
   sendData(interest.getName());
 }

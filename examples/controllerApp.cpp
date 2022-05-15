@@ -8,7 +8,14 @@ int main()
   // std::string policyFilePath = "../policiespolicy1";
   std::string aaPrefix = "/ndn/org/md2k/mguard/aa";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
-  mguard::controller::Controller mGuardController(controllerPrefix, aaPrefix, availableStreamsFilePath);
+  std::string aaCertPath = "certs/aa.cert";
+
+  std::map<ndn::Name, std::string> requesterCertMap;
+  requesterCertMap.emplace("/ndn/org/md2k/A", "certs/A.cert");
+
+  mguard::controller::Controller mGuardController(controllerPrefix, aaPrefix, 
+                                                  aaCertPath, requesterCertMap,
+                                                  availableStreamsFilePath);
   
   mGuardController.run();
   return 0;
