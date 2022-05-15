@@ -35,7 +35,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
     ndn::Name interestName = m_controllerPrefix; 
     interestName.append(m_consumerPrefix);
     NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
-    expressInterest(interestName);
+    expressInterest(interestName, true);
   }
   catch (const std::exception& e)
   {
@@ -96,7 +96,7 @@ Subscriber::expressInterest(const ndn::Name& name, bool canBePrefix, bool mustBe
   NDN_LOG_INFO("Sending interest: "  << name);
   ndn::Interest interest(name);
   interest.setCanBePrefix(false);
-  interest.setMustBeFresh(false); //set true if want data explicit from producer.
+  interest.setMustBeFresh(mustBeFresh); //set true if want data explicit from producer.
   interest.setInterestLifetime(160_ms);
 
   m_face.expressInterest(interest,
