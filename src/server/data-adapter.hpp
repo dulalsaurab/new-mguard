@@ -17,7 +17,6 @@
 #include <stdio.h>
 
 #include <boost/asio.hpp>
-// #include <boost/bind.hpp>
 #include <boost/enable_shared_from_this.hpp>
 
 using namespace boost::asio;
@@ -129,8 +128,13 @@ class DataAdapter
 {
 
 public:
+  // DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
+  //             const ndn::Name& aaPrefix, const std::string& lookupDatabase);
+  
   DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
-              const ndn::Name& aaPrefix, const std::string& lookupDatabase);
+                         const std::string& producerCertPath,
+                         const ndn::Name& aaPrefix, const std::string& aaCertPath,
+                         const std::string& lookupDatabase);
   
   void
   run();

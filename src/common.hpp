@@ -1,14 +1,27 @@
 #ifndef MGUARD_COMMON_HPP
 #define MGUARD_COMMON_HPP
 
+#include <ndn-cxx/util/io.hpp>
+#include <ndn-cxx/face.hpp>
+
 #include <iostream>
 #include <vector>
 #include <utility>
 #include <list>
 
-#include <ndn-cxx/face.hpp>
-
 namespace mguard {
+
+
+inline
+std::shared_ptr<ndn::security::Certificate>
+loadCert(const std::string& certLoc)
+{
+  std::ifstream input_file(certLoc);
+  std::string certStr((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
+  std::istringstream ss(certStr);
+  auto cert = ndn::io::load<ndn::security::Certificate>(ss);
+  return cert;
+}
 
 namespace tlv
 {

@@ -40,14 +40,11 @@ public:
 class Subscriber
 {
 public:
-  Subscriber(const ndn::Name& consumerPrefix,
-             const ndn::Name& syncPrefix, 
-             const ndn::Name& controllerPrefix,
-             const ndn::Name& aaPrefix,
-             ndn::time::milliseconds syncInterestLifetime,
-            //  std::vector<std::string>& subscriptionList,
-             const DataCallback& dataCallback,
-             const SubscriptionCallback& subscriptionCallback);
+  Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPrefix,
+             const ndn::Name& controllerPrefix, const std::string& consumerCertPath,
+             const std::string& aaCertPath, ndn::time::milliseconds syncInterestLifetime,
+             const DataCallback& callback, const SubscriptionCallback& subCallback);
+
 
   void
   run(bool runSync = false);

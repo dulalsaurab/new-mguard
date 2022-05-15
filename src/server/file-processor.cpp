@@ -1,7 +1,8 @@
 #include "file-processor.hpp"
-#include <boost/algorithm/string.hpp>
-
 #include <ndn-cxx/util/logger.hpp>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem/path.hpp>
 
 NDN_LOG_INIT(mguard.fileProcessor);
 
@@ -11,7 +12,6 @@ namespace mguard
 std::vector<std::string>
 FileProcessor::readStream(std::string streamPath)
 {
-  
   std::vector<std::string> data;
   std::string line;
   std::ifstream inputFile;
@@ -52,11 +52,11 @@ FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
 }
 
 AttributeMappingFileProcessor::AttributeMappingFileProcessor(const std::string& filename)
-: m_filename (filename) 
+: m_filename (filename)
 {
 }
 
-bool 
+bool
 AttributeMappingFileProcessor::processAttributeMappingFile()
 {
 	bool ret = true;
@@ -90,7 +90,7 @@ AttributeMappingFileProcessor::processAttributeMappingFile()
   return ret;
 }
 
-bool 
+bool
 AttributeMappingFileProcessor::processStreamsSection(const MappingSection& section)
 {
   for (auto& it: section)
@@ -108,7 +108,7 @@ AttributeMappingFileProcessor::processStreamsSection(const MappingSection& secti
   return true;
 }
 
-bool 
+bool
 AttributeMappingFileProcessor::processMappingSection(const MappingSection& section)
 {
   bool ret;

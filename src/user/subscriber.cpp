@@ -10,19 +10,16 @@ NDN_LOG_INIT(mguard.subscriber);
 namespace mguard {
 namespace subscriber {
 
-Subscriber::Subscriber(const ndn::Name& consumerPrefix,
-                       const ndn::Name& syncPrefix,
-                       const ndn::Name& controllerPrefix,
-                       const ndn::Name& aaPrefix,
-                       ndn::time::milliseconds syncInterestLifetime,
-                      //  std::vector<std::string>& subscriptionList,
-                       const DataCallback& callback,
-                       const SubscriptionCallback& subCallback)
+Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPrefix,
+                       const ndn::Name& controllerPrefix, const std::string& consumerCertPath,
+                       const std::string& aaCertPath, ndn::time::milliseconds syncInterestLifetime,
+                       const DataCallback& callback, const SubscriptionCallback& subCallback)
 : m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
 , m_controllerPrefix(controllerPrefix)
-, m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity(m_consumerPrefix).getDefaultKey().getDefaultCertificate(),
-                 m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate()) // todo: aa prefix should be in configuration file?
+
+, m_abe_consumer(m_face, m_keyChain, *loadCert(consumerCertPath), *loadCert(aaCertPath))
+
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
                    std::bind(&Subscriber::receivedSyncUpdates, this, _1),

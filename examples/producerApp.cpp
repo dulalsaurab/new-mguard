@@ -20,9 +20,11 @@ class mGuardProducer
 {
 public:
 
-  mGuardProducer()
+  mGuardProducer(ndn::Name& producerPrefix, const std::string& producerCertPath,
+                 ndn::Name& aaPrefix, const std::string& aaCertPath,
+                 const std::string& dbname)
   : m_scheduler(m_face.getIoService())
-  , m_dataAdaptor(m_face, "/ndn/org/md2k", "/ndn/org/md2k/mguard/aa", "lookup.db")
+  , m_dataAdaptor(m_face, producerPrefix, producerCertPath, aaPrefix, aaCertPath, dbname)
   {
   }
   
@@ -41,6 +43,12 @@ private:
 
 int main ()
 {
-  mGuardProducer producerApp;
+  ndn::Name producerPrefix = "/ndn/org/md2k";
+  ndn::Name aaPrefix = "/ndn/org/md2k/mguard/aa";
+  std::string dbname = "lookup.db";
+  std::string aaCertPath = "certs/aa.cert";
+  std::string producerCertPath = "certs/producer.cert";
+
+  mGuardProducer producerApp (producerPrefix, producerCertPath, aaPrefix, aaCertPath, dbname);
   producerApp.handler();
 }

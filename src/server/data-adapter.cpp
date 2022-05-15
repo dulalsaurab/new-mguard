@@ -131,11 +131,13 @@ Receiver::handleAccept(ConnectionHandler::pointer connection, const boost::syste
 }
 
 DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
-                         const ndn::Name& aaPrefix, const std::string& lookupDatabase)
+                         const std::string& producerCertPath,
+                         const ndn::Name& aaPrefix, const std::string& aaCertPath,
+                         const std::string& lookupDatabase)
 : m_face(face)
 , m_producerPrefix(producerPrefix)
-, m_producerCert(m_keyChain.getPib().getIdentity(producerPrefix).getDefaultKey().getDefaultCertificate())
-, m_ABE_authorityCert(m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate())
+, m_producerCert(*loadCert(producerCertPath))
+, m_ABE_authorityCert(*loadCert(aaCertPath))
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
 , m_receiver(m_face.getIoService(), 
             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))

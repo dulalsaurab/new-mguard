@@ -14,8 +14,10 @@ class mGuardConsumer
 {
 public:
 
-  mGuardConsumer()
-  : m_subscriber("/ndn/org/md2k/E", "/ndn/org/md2k", "/ndn/org/md2k/mguard/controller", "/ndn/org/md2k/mguard/aa", 1600_ms,
+ mGuardConsumer(ndn::Name& consumerPrefix, ndn::Name& syncPrefix, ndn::Name& controllerPrefix,
+                std::string& consumerCertPath, std::string& aaCertPath)
+ : m_subscriber(consumerPrefix, syncPrefix, controllerPrefix,
+                 consumerCertPath, aaCertPath, 1600_ms,
                  std::bind(&mGuardConsumer::processDataCallback, this, _1),
                  std::bind(&mGuardConsumer::processSubscriptionCallback, this, _1))
   {
@@ -33,7 +35,7 @@ public:
   {
     // check for convergence.
     m_subscriber.checkConvergence();
-    
+
     // stop the process event
     m_subscriber.stop();
 
@@ -87,9 +89,14 @@ private:
   mguard::subscriber::Subscriber m_subscriber;
 };
 
-int 
+int
 main ()
 {
-  mGuardConsumer consumer;
+  ndn::Name consumerPrefix = "/ndn/org/md2k/A";
+  ndn::Name syncPrefix = "/ndn/org/md2k";
+  ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
+  std::string consumerCertPath = "certs/A.cert";
+  std::string aaCertPath = "certs/aa.cert";
+  mGuardConsumer consumer (consumerPrefix, syncPrefix, controllerPrefix, consumerCertPath, aaCertPath);
   consumer.handler();
 }
