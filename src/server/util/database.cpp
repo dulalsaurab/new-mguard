@@ -136,6 +136,13 @@ DataBase::getRowToInsert(std::string row)
         i = "0"+i;
       temp += i; // concetenate to obtain 20190901233459 from 2019,9,1,23,34,59
     }
+    // TODO handle this in a better way
+    // python doesnt display the seconds from datetime object if the second value is 0
+    // thus need to append the seconds value if its missing in the timestamp 
+    // https://stackoverflow.com/questions/49508862/how-to-add-missing-seconds-to-a-datetime-object
+    if(strs.size() < 6 ){
+      temp += "00";
+    }
 
     NDN_LOG_TRACE("timestamp: " << temp);
     result.push_back(temp);
