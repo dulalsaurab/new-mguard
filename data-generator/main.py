@@ -56,11 +56,12 @@ def main():
     for each of these dates, data for time range 10:00:00 - 10:00:10 i.e. 10 minutes equivalent of data
     will be generated and send to data adapter. As said, the process will continue for 20 iterations.
 
-    :var: total_number_of_batch int number of times we will generate the data and send it
+    :var: total_number_of_batches int number of times we will generate the data and send it
     """
-    total_number_of_batch = 1
+    total_number_of_batches = 2
+
     current_batch = 1
-    while current_batch <= total_number_of_batch:
+    while current_batch <= total_number_of_batches:
         # removing the old stream data if exists
         try:
             shutil.rmtree(os.environ['HOME'] + '/cc_data/')
@@ -79,7 +80,7 @@ def main():
 
             # uncomment for debugging
             # data1 = data
-            # data1.to_csv(stream_name, index=False)
+            # data1.to_csv(str(current_batch) + '_' + stream_name, index=False)
 
             print("Sample data from the stream: \n", data[:10])
             send_stream(stream_name, data.to_csv(), sender_obj)
