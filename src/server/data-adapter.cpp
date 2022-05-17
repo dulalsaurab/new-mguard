@@ -172,7 +172,6 @@ DataAdapter::run()
   try {
     m_face.processEvents(); // block mode
     // face1.getIoService().run(); //go in block mode sync --- (interest/waits for data)
-
   }
   catch (const std::exception& ex)
   {

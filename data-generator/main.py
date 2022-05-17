@@ -77,11 +77,9 @@ def main():
             stream_name = streams[stream]
             sender_obj = get_sender()
             data = cc_obj.get_stream(stream_name).toPandas()
-
             # uncomment for debugging
             # data1 = data
             # data1.to_csv(str(current_batch) + '_' + stream_name, index=False)
-
             print("Sample data from the stream: \n", data[:10])
             send_stream(stream_name, data.to_csv(), sender_obj)
 

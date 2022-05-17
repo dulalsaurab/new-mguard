@@ -66,10 +66,20 @@ public:
 
     //random stream number
     std::vector<int> input;
-    srand(time(NULL)); // Seed the time
-    int random = 1 + (rand() % streams.size());
-    input.push_back(random);
-  
+
+    int stream_count = streams.size();
+    if (stream_count >2){
+      for ( int i = 1; i <= stream_count -2; ++i) {
+        srand(time(NULL)); // Seed the time
+        int random = 1 + (rand() % stream_count);
+        input.push_back(random);
+      }
+    }else{
+      srand(time(NULL)); // Seed the time
+      int random = 1 + (rand() % streams.size());
+      input.push_back(random);
+    }
+    
 
     std::cout << "\n" << std::endl;
     std::cout << "Subscribed to the stream/s" << std::endl;
