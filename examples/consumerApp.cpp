@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <iostream>
+#include <time.h>
 
 using namespace ndn::time_literals;
 
@@ -53,15 +54,23 @@ public:
     }
 
     // these codes are only for testing purposes
-    std::vector<int> input; //
-    std::cout << "enter selection, enter any char to stop" << std::endl;
-    while(!std::cin.fail())
-    {
-        int value;
-        std::cin >> value;
-        if(!std::cin.fail())
-          input.push_back(value);
-    }
+    // std::vector<int> input;
+    // std::cout << "enter selection, enter any char to stop" << std::endl;
+    // while(!std::cin.fail())
+    // {
+    //     int value;
+    //     std::cin >> value;
+    //     if(!std::cin.fail())
+    //       input.push_back(value);
+    // }
+
+    //random stream number
+    std::vector<int> input;
+    srand(time(NULL)); // Seed the time
+    int random = 1 + (rand() % streams.size());
+    input.push_back(random);
+  
+
     std::cout << "\n" << std::endl;
     std::cout << "Subscribed to the stream/s" << std::endl;
     for (auto k : input)
