@@ -209,25 +209,24 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     std::string delimiter = ",";
     m_tempRow = data;
     auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
-    auto uniqueId = _tvec[0];
+    // auto uniqueId = _tvec[0];
     auto timestamp_unprocessed = _tvec[1];
-    NDN_LOG_DEBUG("uniqueId: " << uniqueId << " timestamp: " << timestamp_unprocessed);
-    // auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
-    auto dataName = makeDataName(streamName, uniqueId);
-    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with uniqueId" << uniqueId);
+
+    NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
+
+    if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
+      std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
+      NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
+    }
+
+    auto dataName = makeDataName(streamName, timestamp);
+    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
 
     std::vector<std::string> semLocAttrList;
     if (streamName == NDN_LOCATION_STREAM){
       try { 
-        if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
-          std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
-          NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
-        }
-
         auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
-
-        for (auto& attr: semAttr)
-        {
+        for (auto& attr: semAttr) {
           auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
           NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
           semLocAttrList.push_back(_semLocAttr.toUri());
@@ -237,7 +236,6 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
         NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
       }
     }
-    
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
