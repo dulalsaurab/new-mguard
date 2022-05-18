@@ -9,23 +9,25 @@ from minindn.apps.nlsr import Nlsr
 
 
 def run_server(node):
-    info("Running server")
+    info("Running server \n")
     # repo
+    # logs are saved in  tmp/minindn/a 
+    node.cmd('cd ~/mguard/mguard/ && pwd > initial.log 2>&1 &')
     node.cmd('ndn-python-repo -c ndn-python-repo.conf > repo.log 2>&1 &')
-
     # controller
     node.cmd('mguard-controllerApp > controller.log 2>&1 &')
     # producer
     node.cmd('mguard-producerApp')
     # send data to producer
     node.cmd('cd data-generator && python main.py && cd ..')
-    info("server run complete")
+    info("server run complete \n")
 
 
 def run_consumer(node):
-    info("running consumer")
-    node.cmd('mguard-consumerApp')
-    info("consumer run complete")
+    info("running consumer\n")
+    # logs are saved in tmp/minindn/b 
+    node.cmd('mguard-consumerApp > consumer.log 2>&1 &')
+    info("consumer run complete \n")
 
 
 
@@ -34,20 +36,21 @@ if __name__ == '__main__':
     ndn = Minindn()
     args = ndn.args
 
-    # testFile = "/home/mini-ndn/europa_bkp/mini-ndn/ndndump.txt"
-    # testFile = '/home/map901/mguard/mguard/logs/log.dat'
-    # testFile = "/home/mini-ndn/europa_bkp/mini-ndn/sdulal_new/multicast-supression-ndn/files/output.dat"
-  
     ndn.start()
     info("Starting NFD")
     sleep(2)
     nfds = AppManager(ndn, ndn.net.hosts, Nfd, logLevel='DEBUG')
-
     nlsrs = AppManager(ndn, ndn.net.hosts, Nlsr)
 
     sleep(50)
-    server = ndn.net['a']  # , ndn.net["sta3"]]
+    server = ndn.net['a']
     consumer = ndn.net['b']
+
+    # advertise producer prefix
+    producerPrefix = "/ndn/org/md2k"
+    server.cmd('nlsrc advertise {} > advertise.log 2>&1 &'.format(producerPrefix))
+    sleep(5)
+
 
     run_server(server)
     # wait for all data to be sent (maybe 140 seconds) before running consumer
