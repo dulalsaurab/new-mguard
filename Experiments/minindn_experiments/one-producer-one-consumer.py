@@ -12,12 +12,14 @@ def run_server(node):
     info("Running server \n")
     # repo
     # logs are saved in  tmp/minindn/a 
-    node.cmd('cd ~/mguard/mguard/ && pwd > initial.log 2>&1 &')
+    node.cmd('cd ~/mguard/mguard/')
+    node.cmd('pwd > initial.log 2>&1 &')
+
     node.cmd('ndn-python-repo -c ndn-python-repo.conf > repo.log 2>&1 &')
     # controller
     node.cmd('mguard-controllerApp > controller.log 2>&1 &')
     # producer
-    node.cmd('mguard-producerApp')
+    node.cmd('mguard-producerApp > producer.log 2>&1 &')
     # send data to producer
     node.cmd('cd data-generator && python main.py && cd ..')
     info("server run complete \n")
