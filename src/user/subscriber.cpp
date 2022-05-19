@@ -60,7 +60,7 @@ Subscriber::checkConvergence()
     if(m_abe_consumer.readyForDecryption())
       return true;
     ++counter;
-    std::this_thread::sleep_for (std::chrono::seconds(2));
+    std::this_thread::sleep_for (std::chrono::seconds(3));
   }
   return false;
 }
@@ -119,6 +119,9 @@ void
 Subscriber::onTimeout(const ndn::Interest& interest)
 {
   NDN_LOG_INFO("Interest: " << interest.getName() << " timed out ");
+  // one time re-transmission
+  expressInterest(interest.getName());
+
 }
 
 void
