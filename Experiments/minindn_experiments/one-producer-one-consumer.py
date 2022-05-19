@@ -15,11 +15,11 @@ def run_server(node):
     # node.cmd('cd ~/mguard/mguard/')
     # node.cmd('pwd > initial.log 2>&1 &')
 
-    print(node.cmd('ndn-python-repo -c ~/home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &'))
+    # print(node.cmd('ndn-python-repo -c ~/home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &'))
     # controller
     node.cmd('mguard-controllerApp > controller.log 2>&1 &')
     # producer
-    node.cmd('mguard-producerApp > producer.log 2>&1 &')
+    # node.cmd('mguard-producerApp > producer.log 2>&1 &')
     # send data to producer
     node.cmd('cd data-generator && python main.py && cd ..')
     info("server run complete \n")
@@ -52,12 +52,13 @@ if __name__ == '__main__':
     # producerPrefix = "/ndn/org/md2k"
     # server.cmd('nlsrc advertise {} > advertise.log 2>&1 &'.format(producerPrefix))
     # sleep(5)
-
+    for node in ndn.net.hosts:
+      node.cmd("export NDN_LOG=mguard.*=DEBUG:nacabe.*=DEBUG")
 
     run_server(server)
     exit()
     # wait for all data to be sent (maybe 140 seconds) before running consumer
-    sleep(140)
+    sleep(10)
     run_consumer(consumer)
 
     ndn.stop()
