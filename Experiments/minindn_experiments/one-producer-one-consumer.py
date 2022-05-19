@@ -21,7 +21,8 @@ def run_server(node):
     # producer
     # node.cmd('mguard-producerApp > producer.log 2>&1 &')
     # send data to producer
-    node.cmd('cd data-generator && python main.py && cd ..')
+
+    node.cmd('python /home/vagrant/mguard/data-generator/main.py > datagen.log 2>&1 &')
     info("server run complete \n")
 
 
@@ -56,9 +57,8 @@ if __name__ == '__main__':
       node.cmd("export NDN_LOG=mguard.*=DEBUG:nacabe.*=DEBUG")
 
     run_server(server)
-    exit()
     # wait for all data to be sent (maybe 140 seconds) before running consumer
-    sleep(10)
+    sleep(50)
     run_consumer(consumer)
 
     ndn.stop()

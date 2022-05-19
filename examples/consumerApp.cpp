@@ -95,8 +95,8 @@ main ()
   ndn::Name consumerPrefix = "/ndn/org/md2k/A";
   ndn::Name syncPrefix = "/ndn/org/md2k";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
-  std::string consumerCertPath = "certs/A.cert";
-  std::string aaCertPath = "certs/aa.cert";
+  std::string consumerCertPath = "/home/vagrant/certs/A.cert";
+  std::string aaCertPath = "/home/vagrant/certs/aa.cert";
   mGuardConsumer consumer (consumerPrefix, syncPrefix, controllerPrefix, consumerCertPath, aaCertPath);
   consumer.handler();
 }
