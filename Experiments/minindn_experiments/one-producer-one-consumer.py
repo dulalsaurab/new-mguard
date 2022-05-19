@@ -12,10 +12,10 @@ def run_server(node):
     info("Running server \n")
     # repo
     # logs are saved in  tmp/minindn/a 
-    node.cmd('cd ~/mguard/mguard/')
-    node.cmd('pwd > initial.log 2>&1 &')
+    # node.cmd('cd ~/mguard/mguard/')
+    # node.cmd('pwd > initial.log 2>&1 &')
 
-    node.cmd('ndn-python-repo -c ndn-python-repo.conf > repo.log 2>&1 &')
+    node.cmd('ndn-python-repo -c ~/home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &')
     # controller
     node.cmd('mguard-controllerApp > controller.log 2>&1 &')
     # producer

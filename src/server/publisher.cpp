@@ -66,7 +66,7 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream, 
 {
     // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
     // Manifest name: <stream name>/manifest/<seq-num>
-    NDN_LOG_DEBUG("Publishing data: " << data);
+    NDN_LOG_DEBUG("Publishing data: " << data << " and size: " << data.size());
 
     std::shared_ptr<ndn::Data> enc_data, ckData;
     try {
@@ -85,6 +85,7 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream, 
 
         std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
                                                             {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
+
     }
     catch(const std::exception& e) {
       NDN_LOG_ERROR("Encryption failled");
@@ -92,7 +93,8 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream, 
       // return false;
     }
     //  encrypted data is created, store it in the buffer and publish it
-    NDN_LOG_INFO("data: " << enc_data->getFullName() << " ckData: " << ckData->getFullName());
+    NDN_LOG_INFO("full name of the data: " << enc_data->getFullName() << " and size: " << enc_data->getContent().size());
+    NDN_LOG_INFO("full name of the ckData: " << ckData->getFullName() << " and size: " << ckData->getContent().size());
 
     // store the data into the repo, the insertion uses tcp bulk insertion protocol
     try {
@@ -132,7 +134,7 @@ Publisher::publishManifest(util::Stream& stream)
 
   manifestData->setContent(wireEncode());
 
-  NDN_LOG_DEBUG ("Manifest seqNumber: " << prevSeqNum + 1);
+  NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size() << " and seqNumber: " << prevSeqNum + 1);
   
   m_keyChain.sign(*manifestData);
 

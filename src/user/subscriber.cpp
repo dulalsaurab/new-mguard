@@ -23,7 +23,8 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
                    std::bind(&Subscriber::receivedSyncUpdates, this, _1),
-                   2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
+                   2, 0.001, 10_s, 4_s) // 2 = expected number of prefix to subscriber to, need to handle this differently later
+
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
@@ -126,6 +127,7 @@ Subscriber::subscribe(ndn::Name streamName)
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
     NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
+    m_psync_consumer.sendHelloInterest();
     return;
   }
   NDN_LOG_INFO("Subscribing to: " << streamName);
@@ -141,10 +143,9 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
   }
-  
+
   // subscribe to streams present in the subscription list 
-  for (auto stream : m_subscriptionList)
-  {
+  for (auto stream : m_subscriptionList) {
     subscribe(stream);
   }
 }
