@@ -15,7 +15,7 @@ def run_server(node):
     # node.cmd('cd ~/mguard/mguard/')
     # node.cmd('pwd > initial.log 2>&1 &')
 
-    node.cmd('ndn-python-repo -c ~/home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &')
+    print(node.cmd('ndn-python-repo -c ~/home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &'))
     # controller
     node.cmd('mguard-controllerApp > controller.log 2>&1 &')
     # producer
@@ -44,17 +44,18 @@ if __name__ == '__main__':
     nfds = AppManager(ndn, ndn.net.hosts, Nfd, logLevel='DEBUG')
     nlsrs = AppManager(ndn, ndn.net.hosts, Nlsr)
 
-    sleep(50)
+    # sleep(50)
     server = ndn.net['a']
     consumer = ndn.net['b']
 
-    # advertise producer prefix
-    producerPrefix = "/ndn/org/md2k"
-    server.cmd('nlsrc advertise {} > advertise.log 2>&1 &'.format(producerPrefix))
-    sleep(5)
+    # # advertise producer prefix
+    # producerPrefix = "/ndn/org/md2k"
+    # server.cmd('nlsrc advertise {} > advertise.log 2>&1 &'.format(producerPrefix))
+    # sleep(5)
 
 
     run_server(server)
+    exit()
     # wait for all data to be sent (maybe 140 seconds) before running consumer
     sleep(140)
     run_consumer(consumer)

@@ -58,7 +58,7 @@ def main():
 
     :var: total_number_of_batches int number of times we will generate the data and send it
     """
-    total_number_of_batches = 2
+    total_number_of_batches = 5
 
     current_batch = 1
     while current_batch <= total_number_of_batches:
@@ -69,7 +69,7 @@ def main():
             print('No existing data to be deleted')
 
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
-        end_time = '2022-05-0{} 10:00:02'.format(current_batch)
+        end_time = '2022-05-0{} 10:01:00'.format(current_batch)
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
         cc_obj, streams = get_cc(start_time, end_time)
@@ -86,7 +86,7 @@ def main():
             send_stream(stream_name, data.to_csv(), sender_obj)
 
         current_batch += 1
-        sleep(60)  # testing: sleep for 1 minute and send another batch
+        sleep(60*5)  # testing: sleep for 1 minute and send another batch
 
 
 if __name__ == '__main__':

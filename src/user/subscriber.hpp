@@ -121,6 +121,7 @@ public:
 private:
   ndn::Face m_face;
   ndn::security::KeyChain m_keyChain;
+  ndn::Scheduler m_scheduler;
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;

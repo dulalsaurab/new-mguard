@@ -15,7 +15,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 
 // 40 = expected number of entries also will be used as IBF size
 // syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
-, m_partialProducer(40, m_face, "/ndn/org/md2k", "/ndn/org/md2k/uprefix")
+, m_partialProducer(40, m_face, "/ndn/org/md2k", "/ndn/org/md2k/ignore")
 
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
