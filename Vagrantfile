@@ -83,7 +83,7 @@ Vagrant.configure("2") do |config|
 	cd ndn-python-repo && /usr/bin/pip3 install -e .
 	cd ..
 
-	git clone git@gitlab.com:netlab-memphis/sdulal/mguard.git
+	git clone https://gitlab.com/netlab-memphis/sdulal/mguard.git
 	cd mguard
 	# installing mGuard
 	./waf configure --with-examples
