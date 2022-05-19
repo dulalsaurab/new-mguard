@@ -25,7 +25,8 @@ public:
   Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPrefix, 
              const std::string& aaCertPath,
              const std::map<ndn::Name, std::string>& requesterCertMap,
-             const std::string& availableStreamsFilePath);
+             const std::string& availableStreamsFilePath,
+             const std::vector<std::string>& policyList);
 
   ndn::nacabe::KpAttributeAuthority&
   getAttrAuthority()
