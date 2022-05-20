@@ -1,0 +1,6 @@
+Traceback (most recent call last):
+  File "main.py", line 1, in <module>
+    from generator import get_cc
+  File "/home/vagrant/mguard/data-generator/generator.py", line 1, in <module>
+    from CerebralCortexRandomDataGenerator.ccrdg.battery_data import gen_battery_data
+ModuleNotFoundError: No module named 'CerebralCortexRandomDataGenerator'

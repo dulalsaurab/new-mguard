@@ -1,12 +1,11 @@
+from cerebralcortex.kernel import Kernel
+
 from CerebralCortexRandomDataGenerator.ccrdg.battery_data import gen_battery_data
 from CerebralCortexRandomDataGenerator.ccrdg.accel_gyro_data import gen_accel_gyro_data
 from CerebralCortexRandomDataGenerator.ccrdg.location_data import gen_location_data
 
 import argparse
-from cerebralcortex.kernel import Kernel
-
 import datetime
-
 
 def get_cc(start_time='2022-05-08 21:08:10', end_time='2022-05-08 21:08:10'):
     curr_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')

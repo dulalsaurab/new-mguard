@@ -1,5 +1,5 @@
 from time import sleep
-
+from cerebralcortex.kernel import Kernel
 from mininet.log import setLogLevel, info
 from minindn.minindn import Minindn
 from minindn.util import MiniNDNCLI
@@ -14,15 +14,18 @@ def run_server(node):
     # logs are saved in  tmp/minindn/a 
     # node.cmd('cd ~/mguard/mguard/')
     # node.cmd('pwd > initial.log 2>&1 &')
+    node.cmd("export NDN_LOG=mguard.*=DEBUG:nacabe.*=DEBUG")
 
-    # print(node.cmd('ndn-python-repo -c ~/home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &'))
+    
+    print(node.cmd('ndn-python-repo -c /home/vagrant/mguard/ndn-python-repo.conf > repo.log 2>&1 &'))
     # controller
     node.cmd('mguard-controllerApp > controller.log 2>&1 &')
+    node.cmd('pip show cerebralcortex-kernel > cerebral.log  2>&1 &' )
     # producer
     # node.cmd('mguard-producerApp > producer.log 2>&1 &')
     # send data to producer
 
-    node.cmd('python /home/vagrant/mguard/data-generator/main.py > datagen.log 2>&1 &')
+    node.cmd(' python /home/vagrant/mguard/data-generator/main.py > datagen.log 2>&1 &')
     info("server run complete \n")
 
 
