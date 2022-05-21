@@ -13,7 +13,7 @@ int main()
   std::map<ndn::Name, std::string> requesterCertMap;
   requesterCertMap.emplace("/ndn/org/md2k/A", "certs/A.cert");
   requesterCertMap.emplace("/ndn/org/md2k/B", "certs/B.cert");
-  requesterCertMap.emplace("/ndn/org/md2k/C", "certs/C.cert");
+  requesterCertMap.emplace("/ndn/org/md2k/E", "certs/E.cert");
   requesterCertMap.emplace("/ndn/org/md2k/D", "certs/D.cert");
 
   mguard::controller::Controller mGuardController(controllerPrefix, aaPrefix,
