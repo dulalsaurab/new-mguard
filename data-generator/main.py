@@ -44,8 +44,6 @@ def send_stream(stream_name, data, sender_obj):
     # sleep 20 seconds after sending the first stream
     # this is because the data-adapter needs to process the previous packet i.e. metadata
     sleep(20)
-
-    print("sending data completed")
     sender_obj.close()
 
 
@@ -69,7 +67,7 @@ def main():
             print('No existing data to be deleted')
 
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
-        end_time = '2022-05-0{} 10:01:00'.format(current_batch)
+        end_time = '2022-05-0{} 10:10:00'.format(current_batch)
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
         cc_obj, streams = get_cc(start_time, end_time)
@@ -84,10 +82,12 @@ def main():
 
             print("Sample data from the stream: \n", data[:10])
             send_stream(stream_name, data.to_csv(), sender_obj)
+        print("sending data for batch: {}, completed".format(current_batch))
 
         current_batch += 1
-        sleep(60*5)  # testing: sleep for 1 minute and send another batch
+        sleep(60)  # testing: sleep for X minute and send another batch
 
+    print ("sending data for all the batch completed")
 
 if __name__ == '__main__':
     main()

@@ -45,7 +45,7 @@ if use_manifest is set to false, manifest will not be used, application data wil
 const bool USE_MANIFEST = true;
 
 // manifest will be published after receiving 10 data units
-const int MANIFEST_BATCH_SIZE = 10;
+const int MANIFEST_BATCH_SIZE = 50;
 
 // if next update is not received withing 200 ms, the manifest will be publised, this can override batch size
 const ndn::time::milliseconds MAX_UPDATE_WAIT_TIME(200); //todo: not implemented yet

@@ -120,6 +120,7 @@ Subscriber::onTimeout(const ndn::Interest& interest)
 {
   NDN_LOG_INFO("Interest: " << interest.getName() << " timed out ");
   // one time re-transmission
+  NDN_LOG_INFO("Re-transmitting interest: " << interest.getName());
   expressInterest(interest.getName());
 
 }

@@ -55,7 +55,6 @@ if __name__ == '__main__':
 
 
     run_server(server)
-    exit()
     # wait for all data to be sent (maybe 140 seconds) before running consumer
     sleep(140)
     run_consumer(consumer)
