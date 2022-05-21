@@ -118,11 +118,22 @@ Subscriber::onData(const ndn::Interest& interest, const ndn::Data& data)
 void
 Subscriber::onTimeout(const ndn::Interest& interest)
 {
-  NDN_LOG_INFO("Interest: " << interest.getName() << " timed out ");
+  // we will retransmit 3 times if an interest times out
+  auto interestName = interest.getName();
+  NDN_LOG_INFO("Interest: " << interestName << " timed out ");
   // one time re-transmission
-  NDN_LOG_INFO("Re-transmitting interest: " << interest.getName());
-  expressInterest(interest.getName());
-
+  auto it = m_retransmissionCount.find(interest.getName());
+  
+  if (it == m_retransmissionCount.end()) {
+    NDN_LOG_INFO("Re-transmitting interest: " << interest.getName() << " retransmission count: " << 1);
+    m_retransmissionCount.emplace(interestName, 1); // will
+    return;
+  }
+  if (it->second <= 3) {
+    expressInterest(interestName);
+    NDN_LOG_INFO("Re-transmitting interest: " << interest.getName() << " retransmission count: " << it->second);
+    ++it->second;
+  }
 }
 
 void

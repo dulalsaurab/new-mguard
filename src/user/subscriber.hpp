@@ -133,6 +133,7 @@ private:
   // and eligible streams are determined from the policy
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams; // name, sequence number
   std::unordered_set<ndn::Name> m_eligibleStreams;
+  std::map<ndn::Name, int> m_retransmissionCount;
   ndn::nacabe::algo::PrivateKey decryptionKey;
   ndn::nacabe::Consumer m_abe_consumer;
 
