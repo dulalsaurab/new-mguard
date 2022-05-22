@@ -146,7 +146,6 @@ main(int argc, char* argv[])
     usage(visibleOptDesc);
   }
 
-
   ndn::Name consumerPrefix(applicationPrefix);
   ndn::Name syncPrefix = "/ndn/org/md2k";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
