@@ -8,7 +8,21 @@
 #include <sstream>
 #include <iostream>
 
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
+#include <boost/program_options/parsers.hpp>
+
 using namespace ndn::time_literals;
+
+NDN_LOG_INIT(mguard.examples.consumerApp);
+
+static void
+usage(const boost::program_options::options_description& options)
+{
+  std::cout << "Usage: ndnsd-consumer [options] e.g. printer \n"
+            << options;
+   exit(2);
+}
 
 class mGuardConsumer
 {
@@ -90,13 +104,54 @@ private:
 };
 
 int
-main ()
+main(int argc, char* argv[])
 {
-  ndn::Name consumerPrefix = "/ndn/org/md2k/A";
+
+  std::string applicationPrefix;
+  std::string certPath;
+
+  namespace po = boost::program_options;
+  po::options_description visibleOptDesc("Options");
+
+  visibleOptDesc.add_options()
+    ("help,h",      "print this message and exit")
+    ("applicationPrefix,p", po::value<std::string>(&applicationPrefix)->required(), "application prefix, this name needs to match the one controller has")
+    ("certificatePath,c", po::value<std::string>(&certPath), " location of consumer certificate")
+  ;
+  
+  try
+  {
+    po::variables_map optVm;
+    po::store(po::parse_command_line(argc, argv, visibleOptDesc), optVm);
+    po::notify(optVm);
+
+    if (optVm.count("applicationPrefix")) {
+      if (applicationPrefix.empty())
+      {
+        std::cerr << "ERROR: applicationPrefix cannot be empty" << std::endl;
+        usage(visibleOptDesc);
+      }
+    }
+    if (optVm.count("certificatePath")) {
+      if (certPath.empty())
+      {
+        std::cerr << "ERROR: certificatePath cannot be empty" << std::endl;
+        usage(visibleOptDesc);
+      }
+    }
+
+  }
+  catch (const po::error& e) {
+    std::cerr << "ERROR: " << e.what() << std::endl;
+    usage(visibleOptDesc);
+  }
+
+
+  ndn::Name consumerPrefix(applicationPrefix);
   ndn::Name syncPrefix = "/ndn/org/md2k";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
-  std::string consumerCertPath = "certs/A.cert";
+  // std::string consumerCertPath = "certs/A.cert";
   std::string aaCertPath = "certs/aa.cert";
-  mGuardConsumer consumer (consumerPrefix, syncPrefix, controllerPrefix, consumerCertPath, aaCertPath);
+  mGuardConsumer consumer (consumerPrefix, syncPrefix, controllerPrefix, certPath, aaCertPath);
   consumer.handler();
 }
