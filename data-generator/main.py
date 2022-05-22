@@ -56,7 +56,7 @@ def main():
 
     :var: total_number_of_batches int number of times we will generate the data and send it
     """
-    total_number_of_batches = 5
+    total_number_of_batches = 1
 
     current_batch = 1
     while current_batch <= total_number_of_batches:

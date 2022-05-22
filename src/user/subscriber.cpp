@@ -32,9 +32,10 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
+  std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
-
+  std::this_thread::sleep_for (std::chrono::seconds(3));
   // get policy details from controller
   try {
     ndn::Name interestName = m_controllerPrefix;
@@ -42,15 +43,13 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
     NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
     expressInterest(interestName, true);
   }
-  catch (const std::exception& e)
-  {
+  catch (const std::exception& e) {
     NDN_LOG_ERROR("error: " << e.what());
   }
-  std::this_thread::sleep_for (std::chrono::seconds(3));
   // This starts the consumer side by sending a hello interest to the producer
   // When the producer responds with hello data, receivedHelloData is called
   // m_psync_consumer.sendHelloInterest();
-  // std::this_thread::sleep_for (std::chrono::seconds(1));
+  
 }
 
 bool
@@ -61,6 +60,7 @@ Subscriber::checkConvergence()
   {
     if(m_abe_consumer.readyForDecryption())
       return true;
+    m_abe_consumer.obtainDecryptionKey();
     ++counter;
     std::this_thread::sleep_for (std::chrono::seconds(3));
   }

@@ -67,26 +67,33 @@ public:
     }
 
     // these codes are only for testing purposes
-    std::vector<int> input; //
-    std::cout << "enter selection, enter any char to stop" << std::endl;
-    while(!std::cin.fail())
-    {
-        int value;
-        std::cin >> value;
-        if(!std::cin.fail())
-          input.push_back(value);
-    }
-    std::cout << "\n" << std::endl;
-    std::cout << "Subscribed to the stream/s" << std::endl;
-    for (auto k : input)
-    {
-      auto ind = k-1;
-      std::cout << k << ": " << availableStreams[ind] << std::endl;
-      if (availableStreams[ind] != "/") // todo: fix this
-        subscriptionList.push_back(availableStreams[ind]);
-    }
-    m_subscriber.setSubscriptionList(subscriptionList);
+    subscriptionList.push_back(availableStreams[1]); // automatically subscriber to battery stream
+    std::cout << "Subscribed to the stream/s" << availableStreams[1] << std::endl;
 
+    // uncomment if: taking input from user ----------------------------------------------
+    
+    // std::vector<int> input; //
+    // std::cout << "enter selection, enter any char to stop" << std::endl;
+    // while(!std::cin.fail())
+    // {
+    //     int value;
+    //     std::cin >> value;
+    //     if(!std::cin.fail())
+    //       input.push_back(value);
+    // }
+    // std::cout << "\n" << std::endl;
+    // std::cout << "Subscribed to the stream/s" << std::endl;
+    // for (auto k : input)
+    // {
+    //   auto ind = k-1;
+    //   std::cout << k << ": " << availableStreams[ind] << std::endl;
+    //   if (availableStreams[ind] != "/") // todo: fix this
+    //     subscriptionList.push_back(availableStreams[ind]);
+    // }
+   
+    // taking input from user end ----------------------------------------------
+
+    m_subscriber.setSubscriptionList(subscriptionList);
     // run the processevent again, this time with sync as well
     m_subscriber.run(true);
 
