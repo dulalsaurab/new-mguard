@@ -67,8 +67,28 @@ public:
     }
 
     // these codes are only for testing purposes
-    subscriptionList.push_back(availableStreams[1]); // automatically subscriber to battery stream
-    std::cout << "Subscribed to the stream/s" << availableStreams[1] << std::endl;
+    // automatically subscriber to the respective streams
+
+    // A. battery only 
+    // subscriptionList.push_back(availableStreams[0]); // battery 
+
+    // all stream
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[1]); // semloc
+    // subscriptionList.push_back(availableStreams[3]); // gps
+
+    // not gps
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[2]); // sem_loc
+
+    // accelerometer
+    // subscriptionList.push_back(availableStreams[0]); // battery 
+
+    // only work
+    subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
+
+    for (auto& s: subscriptionList)
+      std::cout << "Subscribed to the stream/s" << s << std::endl;
 
     // uncomment if: taking input from user ----------------------------------------------
     
