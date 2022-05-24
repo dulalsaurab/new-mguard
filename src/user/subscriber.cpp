@@ -175,6 +175,10 @@ void
 Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates)
 {
   for (const auto& update : updates) {
+    
+    // ignore if ignore in prefix name
+    if (update.prefix.toUri().find("ignore") != std::string::npos)
+      continue;
 
     auto lSeq = getLowSeqOfPrefix(update.prefix);
     auto sc = (lSeq == NOT_AVAILABLE) ? STARTING_SEQ_NUM : lSeq; // sc = sequence counter
@@ -187,6 +191,9 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
       NDN_LOG_DEBUG("Request content for manifest: " << manifestInterestName);
       expressInterest(manifestInterestName, true);
     }
+    // update lowSequnece number, set it to current high
+    setLowSeqOfPrefix(update.prefix, update.highSeq+1);
+
   }
 }
 

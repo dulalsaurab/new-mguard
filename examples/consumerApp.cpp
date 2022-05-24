@@ -73,9 +73,9 @@ public:
     // subscriptionList.push_back(availableStreams[0]); // battery 
 
     // all stream
-    // subscriptionList.push_back(availableStreams[0]); // battery
-    // subscriptionList.push_back(availableStreams[1]); // semloc
-    // subscriptionList.push_back(availableStreams[3]); // gps
+    subscriptionList.push_back(availableStreams[0]); // battery
+    subscriptionList.push_back(availableStreams[1]); // semloc
+    subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
@@ -85,7 +85,7 @@ public:
     // subscriptionList.push_back(availableStreams[0]); // battery 
 
     // only work
-    subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
+    // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
     for (auto& s: subscriptionList)
       std::cout << "Subscribed to the stream/s" << s << std::endl;

@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     c = ["b", "c", "d", "e"] # these are the consumer, look at testbed.conf topology
     producer = ndn.net["a"]
-    consumers = [ndn.net[x] for x in c] 
+    consumers =  [ndn.net[x] for x in c]
     # consumers = [y for y in ndn.net.hosts if y.name not in [producer.name]]
     
     run_server(producer, args)
