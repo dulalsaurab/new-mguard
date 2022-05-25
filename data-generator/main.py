@@ -71,8 +71,19 @@ def main():
         except FileNotFoundError:
             print('No existing data to be deleted')
 
+
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
-        end_time = '2022-05-0{} 10:08:00'.format(current_batch)
+        # 100 
+        end_time = '2022-05-0{} 10:01:40'.format(current_batch)
+        # 200 
+        # end_time = '2022-05-0{} 10:02:80'.format(current_batch)
+        # 300 
+        # end_time = '2022-05-0{} 10:05:00'.format(current_batch)
+        # 400 
+        # end_time = '2022-05-0{} 10:06:40'.format(current_batch)
+        # 500 
+        # end_time = '2022-05-0{} 10:08:20'.format(current_batch)
+
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
         cc_obj, streams = get_cc(start_time, end_time)
