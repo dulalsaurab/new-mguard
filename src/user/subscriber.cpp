@@ -102,7 +102,7 @@ Subscriber::expressInterest(const ndn::Name& name, bool canBePrefix, bool mustBe
   ndn::Interest interest(name);
   interest.setCanBePrefix(false);
   interest.setMustBeFresh(mustBeFresh); //set true if want data explicit from producer.
-  //  interest.setInterestLifetime(160_ms);
+  interest.setInterestLifetime(200_ms);
 
   m_face.expressInterest(interest,
                          bind(&Subscriber::onData, this, _1, _2),
@@ -135,7 +135,7 @@ Subscriber::onTimeout(const ndn::Interest& interest)
   if (it->second <= 3) {
     expressInterest(interestName);
     NDN_LOG_INFO("Re-transmitting interest: " << interest.getName() << " retransmission count: " << it->second);
-    ++it->second;
+    it->second = it->second + 1;
   }
 }
 

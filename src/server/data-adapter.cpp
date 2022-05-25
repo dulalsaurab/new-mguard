@@ -237,6 +237,8 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
       }
     }
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
+    // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
+    std::this_thread::sleep_for (std::chrono::milliseconds(10)); 
     m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
 }
