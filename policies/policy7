@@ -7,7 +7,7 @@ attribute-filters
     allow
     {
         /ndn/org/md2k/
-        /ndn/org/md2k/attribute/sensor/accelerometer ;attribute associated with any/all accelerometer data
+        /ndn/org/md2k/ATTRIBUTE/sensor/accelerometer ;attribute associated with any/all accelerometer data
     }
 }
 

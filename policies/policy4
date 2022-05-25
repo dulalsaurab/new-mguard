@@ -7,7 +7,7 @@ attribute-filters
     allow
     {
         /ndn/org/md2k/
-        /ndn/org/md2k/attribute/location/work
+        /ndn/org/md2k/ATTRIBUTE/location/work
     }
 }
 

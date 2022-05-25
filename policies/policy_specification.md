@@ -9,16 +9,16 @@ attribute-filters
 {
     allow
     {
-        /attribute/1
-        /attribute/2
-        /attribute/3
+        /ATTRIBUTE/1
+        /ATTRIBUTE/2
+        /ATTRIBUTE/3
         ...
     }
     deny
     {
-        /attribute/4
-        /attribute/5
-        /attribute/6
+        /ATTRIBUTE/4
+        /ATTRIBUTE/5
+        /ATTRIBUTE/6
         ...
     }
 }

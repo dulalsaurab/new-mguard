@@ -361,7 +361,7 @@ PolicyParser::isAlike(std::string &attribute, std::string &checking)
             givenType = item;
             break;
         }
-        if (item == "attribute") {
+        if (item == "ATTRIBUTE") {
             foundAttribute = true;
         }
     }
@@ -372,7 +372,7 @@ PolicyParser::isAlike(std::string &attribute, std::string &checking)
             checkingType = checkingItem;
             break;
         }
-        if (checkingItem == "attribute") {
+        if (checkingItem == "ATTRIBUTE") {
             foundAttribute = true;
         }
     }
