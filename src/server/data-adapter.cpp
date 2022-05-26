@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <ctime>
+#include <typeinfo>
 
 // using namespace boost::placeholders;
 
@@ -154,7 +155,7 @@ void
 DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
 {
   NDN_LOG_DEBUG("Received data from the receiver"); 
-  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n");
+  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 25);
 
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
@@ -198,49 +199,104 @@ DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 void
 DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
 {
+
   auto streamName = stream.getName();
   NDN_LOG_INFO("Processing stream: " << streamName);
+  // // if (streamName == NDN_BATTERY_STREAM){
+    
+  //   for ( int i= 0; i < dataSet.size(); i+= 5){
+  //     NDN_LOG_DEBUG("#############################################");
+  //     std::string data = "";
+  //     int j = 0;
+  //     for ( j; j < 4; j++){
+  //     data += dataSet[i+j];
+  //     data += "&";
+  //     }
+  //     data += dataSet[i+j];
 
-  for (auto data : dataSet)
-  {
-    char timestamp [80];
-    struct tm tm;
-    // get timestamp from the data row
-    std::string delimiter = ",";
-    m_tempRow = data;
-    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
-    // auto uniqueId = _tvec[0];
-    auto timestamp_unprocessed = _tvec[1];
+  //     NDN_LOG_DEBUG("data !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  //     NDN_LOG_DEBUG(data);
+  //     NDN_LOG_DEBUG("@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
 
-    NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
+  //     char timestamp [80];
+  //     struct tm tm;
+  //     // get timestamp from the data row
+  //     std::string delimiter = ",";
+  //     m_tempRow = data;
+  //     auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
+  //     // auto uniqueId = _tvec[0];
+  //     auto timestamp_unprocessed = _tvec[1];
 
-    if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
-      std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
-      NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
-    }
+  //     NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
 
-    auto dataName = makeDataName(streamName, timestamp);
-    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
+  //     if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
+  //       std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
+  //       NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
+  //     }
 
-    std::vector<std::string> semLocAttrList;
-    if (streamName == NDN_LOCATION_STREAM){
-      try { 
-        auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
-        for (auto& attr: semAttr) {
-          auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
-          NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
-          semLocAttrList.push_back(_semLocAttr.toUri());
+  //     auto dataName = makeDataName(streamName, timestamp);
+  //     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
+
+  //     std::vector<std::string> semLocAttrList;
+  //     // if (streamName == NDN_LOCATION_STREAM){
+  //     //   try { 
+  //     //     auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+  //     //     for (auto& attr: semAttr) {
+  //     //       auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
+  //     //       NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
+  //     //       semLocAttrList.push_back(_semLocAttr.toUri());
+  //     //     }
+  //     //   }
+  //     //   catch (const std::exception& ex) {
+  //     //     NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+  //     //   }
+  //     // }
+
+  //     std::this_thread::sleep_for (std::chrono::milliseconds(10)); 
+  //     m_publisher.publish(dataName, data, stream, semLocAttrList);
+  //   }
+  // }
+  // else{
+    for (auto data : dataSet)
+    {
+      char timestamp [80];
+      struct tm tm;
+      // get timestamp from the data row
+      std::string delimiter = ",";
+      m_tempRow = data;
+      auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
+      // auto uniqueId = _tvec[0];
+      auto timestamp_unprocessed = _tvec[1];
+
+      NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
+
+      if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
+        std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
+        NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
+      }
+
+      auto dataName = makeDataName(streamName, timestamp);
+      NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
+
+      std::vector<std::string> semLocAttrList;
+      if (streamName == NDN_LOCATION_STREAM){
+        try { 
+          auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+          for (auto& attr: semAttr) {
+            auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
+            NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
+            semLocAttrList.push_back(_semLocAttr.toUri());
+          }
+        }
+        catch (const std::exception& ex) {
+          NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
         }
       }
-      catch (const std::exception& ex) {
-        NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
-      }
+      //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
+      // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
+      std::this_thread::sleep_for (std::chrono::milliseconds(10)); 
+      m_publisher.publish(dataName, data, stream, semLocAttrList);
     }
-    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
-    // std::this_thread::sleep_for (std::chrono::milliseconds(10)); 
-    m_publisher.publish(dataName, data, stream, semLocAttrList);
-  }
 }
 
 } //mguard
