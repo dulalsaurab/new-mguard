@@ -39,18 +39,17 @@ def send_stream(stream_name, data, sender_obj):
     sender_obj.send(metadata)
     # sleep a few seconds after sending the metadata
     #change for 16 min to 20 sec
-    print("Sleeping for 60")
+    print("Sleeping for 10 second after sending meta data")
     sleep(10)
 
     sender_obj.send(data)
     # sleep X seconds after sending the first stream. 
     # this is because the data-adapter needs to process the previous packet i.e. metadata
     #change for 16 min to 100 sec 
-    print("Sleeping for 300 ")
+    print("Sleeping for 20 sec after sending first stream")
 
-    sleep(30)
+    sleep(20)
     sender_obj.close()
-
 
 def main():
     """Wrapper code for data generation and transport to producer via socket
@@ -71,8 +70,21 @@ def main():
         except FileNotFoundError:
             print('No existing data to be deleted')
 
+
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
-        end_time = '2022-05-0{} 10:08:00'.format(current_batch)
+        #100
+        # end_time = '2022-05-0{} 10:01:40'.format(current_batch)
+        # 100 
+        # end_time = '2022-05-0{} 10:01:40'.format(current_batch)
+        # 200 
+        # end_time = '2022-05-0{} 10:03:20'.format(current_batch)
+        # 300 
+        # end_time = '2022-05-0{} 10:05:00'.format(current_batch)
+        # 400 
+        # end_time = '2022-05-0{} 10:06:40'.format(current_batch)
+        # 500 
+        end_time = '2022-05-0{} 10:08:20'.format(current_batch)
+
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
         cc_obj, streams = get_cc(start_time, end_time)
@@ -87,11 +99,11 @@ def main():
 
             print("Sample data from the stream: \n", data[:10])
             send_stream(stream_name, data.to_csv(), sender_obj)
+        
         print("sending data for batch: {}, completed".format(current_batch))
-
         current_batch += 1
-        print("Sleeping for 60")
-        sleep(60)  # testing: sleep for X minute and send another batch
+        print("Sleeping after sending batch data for 30 seconds")
+        sleep(30)  # testing: sleep for X minute and send another batch
 
     print ("sending data for all the batch completed")
 
