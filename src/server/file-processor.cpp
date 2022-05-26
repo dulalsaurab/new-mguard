@@ -32,16 +32,28 @@ FileProcessor::readStream(std::string streamPath)
 }
 
 std::vector<std::string>
-FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
+FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter, uint8_t nSize)
 {
   size_t pos = 0;
   std::string token;
   std::vector<std::string> _vec;
+  std::string temp = "";
+  uint8_t counter = 0;
   while ((pos = _s.find(delimiter)) != std::string::npos)
   {
+    ++counter;
     token = _s.substr(0, pos);
     if (!(boost::algorithm::contains(token, "timestamp"))) { // skip the column that have timestamp in it
-      _vec.push_back(token);
+        temp += token;
+        
+        if (nSize > 1) 
+          temp += "&";
+        
+        if (counter == nSize) {
+          _vec.push_back(temp);
+          counter = 0;
+          temp.clear();
+        }
     }
     _s.erase(0, pos + delimiter.length());
   }
