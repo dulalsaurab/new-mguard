@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-27T15:32:12.935Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="QfsuUd3Q1q1m0xmYS2Rx" version="17.4.4" type="gitlab" pages="5">
+<mxfile host="app.diagrams.net" modified="2022-05-27T15:35:23.315Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="VCNYWkhwEFWFZdVU5z4k" version="17.4.4" type="gitlab" pages="5">
   <diagram id="83rm9NZmXlsieEd2IdBL" name="System Desing">
-    <mxGraphModel dx="437" dy="1660" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="-3" dy="1405" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -444,17 +444,8 @@
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-211" value="&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;b&gt;&amp;nbsp;data requestor&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="6" vertex="1">
           <mxGeometry x="907" y="634.5" width="95" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="mDM9yF-G0TJj5MPvdXmn-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;labelBackgroundColor=#F5F5F5;" edge="1" parent="6" source="nq3pK3IxwGkN9X3UR4hc-212" target="nq3pK3IxwGkN9X3UR4hc-213">
-          <mxGeometry relative="1" as="geometry">
-            <Array as="points">
-              <mxPoint x="458" y="775" />
-              <mxPoint x="458" y="739" />
-              <mxPoint x="458" y="739" />
-            </Array>
-          </mxGeometry>
-        </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-209" value="&lt;b&gt;&amp;nbsp; mGuard Server Instance (I&lt;sub&gt;1&lt;/sub&gt;)&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="6" vertex="1">
-          <mxGeometry x="181" y="586" width="330" height="250" as="geometry" />
+          <mxGeometry x="181" y="586" width="329" height="250" as="geometry" />
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-212" value="&lt;b&gt;controller&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;/b&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
           <mxGeometry x="350" y="775" width="148" height="50" as="geometry" />
@@ -470,7 +461,7 @@
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-220" value="requests for keys" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=337;" parent="nq3pK3IxwGkN9X3UR4hc-219" vertex="1" connectable="0">
           <mxGeometry x="-0.2952" y="2" relative="1" as="geometry">
-            <mxPoint x="19" y="-14" as="offset" />
+            <mxPoint x="17" y="-14" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-221" value="decryption keys&lt;br&gt;manifest&lt;br&gt;application data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;" parent="6" vertex="1" connectable="0">
@@ -630,7 +621,7 @@
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-76" value="requests for manifest/data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=0;" parent="nq3pK3IxwGkN9X3UR4hc-75" vertex="1" connectable="0">
           <mxGeometry x="-0.1335" y="2" relative="1" as="geometry">
-            <mxPoint x="29" y="-18" as="offset" />
+            <mxPoint x="26" y="-17" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="lWCXqXWQUB7fuu-SfqQz-6" value="&lt;b&gt;mGuard Server&amp;nbsp; &amp;nbsp;Instance (I&lt;span style=&quot;font-size: 10px&quot;&gt;&lt;sub&gt;2&lt;/sub&gt;&lt;/span&gt;)&amp;nbsp;&lt;/b&gt;&lt;b&gt;&lt;br&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;align=center;" parent="6" vertex="1">
@@ -708,6 +699,15 @@
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="854" y="656.5" as="sourcePoint" />
             <mxPoint x="744" y="655" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="mDM9yF-G0TJj5MPvdXmn-13" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;labelBackgroundColor=#F5F5F5;" edge="1" parent="6" source="nq3pK3IxwGkN9X3UR4hc-212" target="nq3pK3IxwGkN9X3UR4hc-213">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="458" y="775" />
+              <mxPoint x="458" y="739" />
+              <mxPoint x="458" y="739" />
+            </Array>
           </mxGeometry>
         </mxCell>
         <mxCell id="BB3xl8vFB7zMQ9hWVORr-10" value="" style="endArrow=classicThin;html=1;entryX=0.355;entryY=0.883;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.477;exitY=0.89;exitDx=0;exitDy=0;startArrow=none;startFill=0;endFill=1;exitPerimeter=0;" parent="1" edge="1" target="nq3pK3IxwGkN9X3UR4hc-226">
