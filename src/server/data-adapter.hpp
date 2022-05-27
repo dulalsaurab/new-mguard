@@ -128,9 +128,6 @@ class DataAdapter
 {
 
 public:
-  // DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
-  //             const ndn::Name& aaPrefix, const std::string& lookupDatabase);
-  
   DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
                          const std::string& producerCertPath,
                          const ndn::Name& aaPrefix, const std::string& aaCertPath,

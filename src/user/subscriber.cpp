@@ -26,8 +26,8 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
                    std::bind(&Subscriber::receivedSyncUpdates, this, _1),
-                   2, 0.001, 10_s, 4_s) // 2 = expected number of prefix to subscriber to, need to handle this differently later
-                  // 10_s hello interset lifetime, 4_s sync interest life time
+                   3, 0.001, 1_s, 1600_ms) // 3 = expected number of prefix to subscriber to, need to handle this differently later
+                  // 10_s hello interset lifetime, 1600_ms sync interest life time
                   // for us, the subscription happens at the begnning so we dont need to send hello interest that often 
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
@@ -147,8 +147,8 @@ Subscriber::subscribe(ndn::Name streamName)
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
     NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
-    // schedule a hello interest in next 5 seconds
-    m_scheduler.schedule(5_s, [=] { m_psync_consumer.sendHelloInterest();});
+    // schedule a hello interest in next 200 seconds
+    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
     return;
   }
   NDN_LOG_INFO("Subscribing to: " << streamName);

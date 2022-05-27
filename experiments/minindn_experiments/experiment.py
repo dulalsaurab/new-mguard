@@ -29,9 +29,6 @@ def importSafebag(node, args, isProducer):
             cmd = "ndnsec import safebag/{} -P lab221".format(sb)
             node.cmd(cmd)
     else:
-        # sb_core_list.append(node.name.upper()+".sb")
-        # for sb in sb_core_list:
-        #     print ("importing sb", sb)
         cmd = "ndnsec import safebag/{} -P lab221".format(node.name.upper()+".sb")
         node.cmd(cmd)
 
@@ -50,14 +47,14 @@ def run_repo_n_generator(node):
 def run_server(node, args):
     info("Running server \n")
     node_dir = args.workDir+"/"+node.name
-    
+
     node.cmd("mkdir -p policies")
     policy_dir = node_dir+"/policies"
     subprocess.run(["cp", policyPath, policy_dir])
     subprocess.run(["cp", availableStreamPath, policy_dir])
 
     importSafebag(node, args, True)
-    
+
     # advertise producer prefix
     node.cmd('nlsrc advertise {}'.format(producerPrefix))
     sleep(20) # enough sleep time for prefix propagation
@@ -71,7 +68,7 @@ def run_server(node, args):
     sleep(1)
 
     info("controller and producer started on the server\n")
-    
+
 
 def run_consumer(consumers):
     info("running consumer\n")
@@ -81,10 +78,11 @@ def run_consumer(consumers):
         node.cmd(cmd)
         sleep(2)
         importSafebag(node, args, False)
-    
+
     info("consumer run complete \n")
 
 if __name__ == '__main__':
+
     setLogLevel('info')
     subprocess.run(["mn", "-c"])
     subprocess.run(["rm", "-rf", "/tmp/minindn/*"])
@@ -111,8 +109,7 @@ if __name__ == '__main__':
     c = ["b", "c", "d", "e"] # these are the consumer, look at testbed.conf topology
     producer = ndn.net["a"]
     consumers =  [ndn.net[x] for x in c]
-    # consumers = [y for y in ndn.net.hosts if y.name not in [producer.name]]
-    
+
     run_server(producer, args)
     sleep(5)
     run_consumer(consumers)

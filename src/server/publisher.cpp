@@ -22,15 +22,27 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 , m_authorityCert(attrAuthorityCertificate)
 , m_abe_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
+  // --------------- in duscussion, only for testing----------
+  // Discussion: we will add all the possible stream to the psync at the begnning
+  // this is for the current testing and experiment only, the design needs to be better
+  // reason: consumer kicks in, finds that the stream is still not available (sequential processing)
+  // of the stream during the experiment, and thus keeps sending hello interest (causes a lot of overhead)
+  // second, if we send hello interest less frequently, the overall data retrival delay increases.
+  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
+  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/manifest");
+  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/manifest");
+  // -------------------------
+
   // sleep to init kp-abe producer
   std::this_thread::sleep_for (std::chrono::seconds(1));
 }
 
 void
-Publisher::doUpdate(ndn::Name& manifestName)
+Publisher::doUpdate(ndn::Name manifestName)
 {
   m_partialProducer.publishName(manifestName);
   uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
+  std::cout << "sequence number: " << seqNo << std::endl;
   NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
 }
 

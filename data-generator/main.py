@@ -72,7 +72,7 @@ def main():
             print('No existing data to be deleted')
 
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
-        end_time = '2022-05-0{} 10:02:00'.format(current_batch)
+        end_time = '2022-05-0{} 10:08:00'.format(current_batch)
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
         cc_obj, streams = get_cc(start_time, end_time)

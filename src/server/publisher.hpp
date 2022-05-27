@@ -30,7 +30,7 @@ public:
               const ndn::security::Certificate& attrAuthorityCertificate);
 
   void
-  doUpdate(ndn::Name& manifestName);
+  doUpdate(ndn::Name manifestName);
 
   void
   publish(ndn::Name& dataName, std::string data, util::Stream& stream, std::vector<std::string> semLocAttrList);
