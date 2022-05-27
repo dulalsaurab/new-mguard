@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2022-05-26T17:03:27.267Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="qYtJCbs7CRYnvsGeH64e" version="17.4.4" type="gitlab" pages="5">
+<mxfile host="app.diagrams.net" modified="2022-05-27T03:00:50.033Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.64 Safari/537.36" etag="DQM3wVWDvNMLv_IUpn6a" version="17.4.4" type="gitlab" pages="5">
   <diagram id="83rm9NZmXlsieEd2IdBL" name="System Desing">
-    <mxGraphModel dx="-51" dy="1388" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="49" dy="1604" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -459,7 +459,7 @@
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-212" value="&lt;b&gt;controller&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;/b&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;br&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;" style="rounded=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
           <mxGeometry x="350" y="775" width="148" height="50" as="geometry" />
         </mxCell>
-        <mxCell id="nq3pK3IxwGkN9X3UR4hc-213" value="&lt;font color=&quot;#000000&quot;&gt;publisher&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="6" vertex="1">
+        <mxCell id="nq3pK3IxwGkN9X3UR4hc-213" value="&lt;font color=&quot;#000000&quot;&gt;publisher&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
           <mxGeometry x="417" y="692.34" width="81" height="28.31" as="geometry" />
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-219" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;startArrow=classicThin;startFill=1;endFill=0;" parent="6" edge="1">
@@ -470,7 +470,7 @@
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-220" value="requests for keys" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=337;" parent="nq3pK3IxwGkN9X3UR4hc-219" vertex="1" connectable="0">
           <mxGeometry x="-0.2952" y="2" relative="1" as="geometry">
-            <mxPoint x="19" y="-15" as="offset" />
+            <mxPoint x="19" y="-14" as="offset" />
           </mxGeometry>
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-221" value="metadata, data,&lt;br&gt;decryption keys" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" parent="6" vertex="1" connectable="0">
@@ -556,13 +556,13 @@
             <mxPoint x="7" y="-41" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="nq3pK3IxwGkN9X3UR4hc-266" value="&lt;font style=&quot;font-size: 10px&quot;&gt;&lt;b&gt;DSU&lt;/b&gt;&lt;/font&gt;" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=7.222329275948596;fillColor=#fff2cc;strokeColor=#d6b656;" parent="6" vertex="1">
+        <mxCell id="nq3pK3IxwGkN9X3UR4hc-266" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=7.222329275948596;" parent="6" vertex="1">
           <mxGeometry x="439.75" y="603" width="35.5" height="35.5" as="geometry" />
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-268" value="&lt;font color=&quot;#000000&quot;&gt;data&lt;br&gt;adaptor&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
           <mxGeometry x="201" y="617.75" width="58" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="nq3pK3IxwGkN9X3UR4hc-272" value="&lt;font color=&quot;#000000&quot;&gt;subscriber&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" parent="6" vertex="1">
+        <mxCell id="nq3pK3IxwGkN9X3UR4hc-272" value="&lt;font color=&quot;#000000&quot;&gt;subscriber&lt;/font&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="6" vertex="1">
           <mxGeometry x="869" y="646.5" width="67" height="28.31" as="geometry" />
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-273" value="metadata/data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=0;" parent="6" vertex="1" connectable="0">
@@ -571,18 +571,18 @@
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-274" value="decryption keys" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=337;" parent="6" vertex="1" connectable="0">
           <mxGeometry x="580.0023210006439" y="769.685816506749" as="geometry" />
         </mxCell>
-        <mxCell id="nq3pK3IxwGkN9X3UR4hc-277" value="metadata names" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=-20;" parent="6" vertex="1" connectable="0">
-          <mxGeometry x="554.0023210006436" y="673.495816506749" as="geometry" />
+        <mxCell id="nq3pK3IxwGkN9X3UR4hc-277" value="metadata names" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=337;" parent="6" vertex="1" connectable="0">
+          <mxGeometry x="559.0023210006436" y="697" as="geometry" />
         </mxCell>
-        <mxCell id="nq3pK3IxwGkN9X3UR4hc-278" value="subscriptions" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=-20;" parent="6" vertex="1" connectable="0">
-          <mxGeometry x="562.7523210006436" y="698.5058165067489" as="geometry">
+        <mxCell id="nq3pK3IxwGkN9X3UR4hc-278" value="subscriptions" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];rotation=338;" parent="6" vertex="1" connectable="0">
+          <mxGeometry x="550.7523210006436" y="680.5058165067489" as="geometry">
             <mxPoint x="-0.8533248115948107" y="-3.5031181490090626" as="offset" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="FwhKlU1KMmOKfW833r3H-1" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=6.730140686035156;fillColor=#fff2cc;strokeColor=#d6b656;" parent="6" vertex="1">
+        <mxCell id="FwhKlU1KMmOKfW833r3H-1" value="" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=6.730140686035156;" parent="6" vertex="1">
           <mxGeometry x="204" y="722.25" width="39" height="40.75" as="geometry" />
         </mxCell>
-        <mxCell id="FwhKlU1KMmOKfW833r3H-11" value="MD2K &lt;br&gt;data repository" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#F5F5F5;" parent="6" vertex="1" connectable="0">
+        <mxCell id="FwhKlU1KMmOKfW833r3H-11" value="MD2K&lt;br&gt;data repository" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=#F5F5F5;" parent="6" vertex="1" connectable="0">
           <mxGeometry x="224.5" y="778.25" as="geometry" />
         </mxCell>
         <mxCell id="nq3pK3IxwGkN9X3UR4hc-214" value="" style="endArrow=none;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;startArrow=blockThin;startFill=1;endFill=0;" parent="6" edge="1">
@@ -699,6 +699,11 @@
         <mxCell id="mDM9yF-G0TJj5MPvdXmn-21" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.55;exitY=0.95;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.408;entryY=-0.06;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;labelBackgroundColor=#F5F5F5;fontFamily=Helvetica;startArrow=none;startFill=0;endArrow=none;endFill=0;" edge="1" parent="6" source="nq3pK3IxwGkN9X3UR4hc-226" target="lWCXqXWQUB7fuu-SfqQz-6">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
+        <mxCell id="uZWS1oYj_ocwJfd8Flgt-7" value="NDN&lt;br style=&quot;font-size: 8px;&quot;&gt;repo" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];labelBackgroundColor=none;fontSize=8;fontStyle=1" vertex="1" connectable="0" parent="6">
+          <mxGeometry x="456.5021303641913" y="625.4966486365984" as="geometry">
+            <mxPoint y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
         <mxCell id="BB3xl8vFB7zMQ9hWVORr-10" value="" style="endArrow=classicThin;html=1;entryX=0.355;entryY=0.883;entryDx=0;entryDy=0;entryPerimeter=0;exitX=0.477;exitY=0.89;exitDx=0;exitDy=0;startArrow=none;startFill=0;endFill=1;exitPerimeter=0;" parent="1" edge="1" target="nq3pK3IxwGkN9X3UR4hc-226">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="1410.3899999999999" y="-219.99999999999977" as="sourcePoint" />
@@ -722,7 +727,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="eTRJGMjDXAzgVLN9pBji" name="Namespace ">
-    <mxGraphModel dx="3564" dy="2872" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="2899" dy="2872" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="SNbNGwnYkwnukRPvHSdm-0" />
         <mxCell id="SNbNGwnYkwnukRPvHSdm-1" parent="SNbNGwnYkwnukRPvHSdm-0" />
@@ -1180,7 +1185,7 @@
     </mxGraphModel>
   </diagram>
   <diagram id="YvC1deTfzbuf4Fe6gzBS" name="misc">
-    <mxGraphModel dx="2248" dy="1604" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="1749" dy="1604" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="_Td6dHmBFaCZKdPDPQj8-0" />
         <mxCell id="_Td6dHmBFaCZKdPDPQj8-1" parent="_Td6dHmBFaCZKdPDPQj8-0" />
@@ -1513,10 +1518,25 @@
     </mxGraphModel>
   </diagram>
   <diagram id="Q_DBLktQdEyIgNbfJ2i4" name="controller">
-    <mxGraphModel dx="1398" dy="504" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+    <mxGraphModel dx="899" dy="504" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="_svToWs6pqKj5YJswziO-2" value="" style="rounded=0;whiteSpace=wrap;html=1;glass=0;dashed=1;labelBackgroundColor=none;sketch=0;fontFamily=Helvetica;fontSize=10;strokeWidth=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="50" width="820" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="_svToWs6pqKj5YJswziO-4" value="&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;policy-id&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;3&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;requester-names&amp;nbsp; &amp;nbsp; &amp;nbsp;/edu/memphis/adam&amp;nbsp; &amp;nbsp; &amp;nbsp;&amp;nbsp;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;attribute-filters&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;{&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; allow&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; {&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /org/md2k/mperf/dd40c/&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /org/md2k/attribute/location/home&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /org/md2k/attribute/location/work&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; }&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; deny&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; {&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; /org/md2k/mperf/dd40c/phone/gps-coordinate&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;&amp;nbsp; &amp;nbsp; }&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#000000&quot;&gt;}&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;glass=0;dashed=1;labelBackgroundColor=none;sketch=0;fontFamily=Helvetica;fontSize=10;fontColor=#1F89DB;strokeColor=#000000;strokeWidth=1;fillColor=default;align=left;" vertex="1" parent="1">
+          <mxGeometry x="250" y="50" width="270" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="_svToWs6pqKj5YJswziO-3" value="&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;policy-id&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;int&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;requester-names&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;requesters&#39; NDN names&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;attribute-filters&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;{&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; allow&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; {&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 1&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 2&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; ...&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; }&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; deny&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; {&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 1&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 2&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; ...&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;&amp;nbsp; &amp;nbsp; }&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font color=&quot;#ba0000&quot; face=&quot;monospace&quot;&gt;&lt;span style=&quot;font-size: 0px&quot;&gt;}&lt;/span&gt;&lt;/font&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;glass=0;dashed=1;labelBackgroundColor=none;sketch=0;fontFamily=Helvetica;fontSize=10;fontColor=#1F89DB;strokeColor=default;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="9" y="50" width="241" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="_svToWs6pqKj5YJswziO-8" value="&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&lt;br&gt;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;policy-id&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; int&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;requester-names&amp;nbsp; &amp;nbsp; requesters&#39; NDN names&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;attribute-filters&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 13px&quot;&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;{&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; allow&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; {&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 1&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 2&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; ...&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; }&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; deny&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; {&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 1&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; attribute 2&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; ...&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;&amp;nbsp; &amp;nbsp; }&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;font style=&quot;font-size: 13px&quot; face=&quot;Times New Roman&quot; color=&quot;#330000&quot;&gt;}&lt;/font&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;glass=0;dashed=1;labelBackgroundColor=none;sketch=0;fontFamily=Helvetica;fontSize=10;fontColor=#1F89DB;" vertex="1" parent="1">
+          <mxGeometry x="10" y="50" width="240" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="_svToWs6pqKj5YJswziO-10" value="" style="rounded=0;whiteSpace=wrap;html=1;glass=0;dashed=1;labelBackgroundColor=none;sketch=0;fontFamily=Helvetica;fontSize=10;fontColor=#1F89DB;strokeColor=default;strokeWidth=1;fillColor=default;" vertex="1" parent="1">
+          <mxGeometry x="520" y="50" width="330" height="300" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
