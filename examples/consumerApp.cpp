@@ -70,12 +70,12 @@ public:
     // automatically subscriber to the respective streams
 
     // A. battery only 
-    // subscriptionList.push_back(availableStreams[0]); // battery 
+    subscriptionList.push_back(availableStreams[0]); // battery 
 
     // all stream
-    subscriptionList.push_back(availableStreams[0]); // battery
-    subscriptionList.push_back(availableStreams[1]); // semloc
-    subscriptionList.push_back(availableStreams[3]); // gps
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[1]); // semloc
+    // subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
