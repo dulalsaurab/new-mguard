@@ -102,8 +102,8 @@ def main():
         
         print("sending data for batch: {}, completed".format(current_batch))
         current_batch += 1
-        print("Sleeping after sending batch data for 30 seconds")
-        sleep(30)  # testing: sleep for X minute and send another batch
+        print("Sleeping after sending batch data for 60 seconds")
+        sleep(60)  # testing: sleep for X minute and send another batch
 
     print ("sending data for all the batch completed")
 

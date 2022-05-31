@@ -19,8 +19,7 @@ NDN_LOG_INIT(mguard.examples.consumerApp);
 static void
 usage(const boost::program_options::options_description& options)
 {
-  std::cout << "Usage: ndnsd-consumer [options] e.g. printer \n"
-            << options;
+  NDN_LOG_INFO("Usage: ndnsd-consumer [options] e.g. printer \n" << options);
    exit(2);
 }
 
@@ -41,7 +40,7 @@ public:
   processDataCallback(const std::vector<std::string>& updates)
   {
     for (auto &a : updates)
-      std::cout << "received data: " << a << std::endl;
+      NDN_LOG_INFO("received data: " << a);
   }
 
   void
@@ -53,16 +52,16 @@ public:
     // stop the process event
     m_subscriber.stop();
 
-    std::cout << "\n\nStreams available for subscription" << std::endl;
+    NDN_LOG_INFO("\n\nStreams available for subscription");
     std::vector<ndn::Name> availableStreams, subscriptionList;
     int counter=0;
     if (streams.size() <= 0)
     {
-      std::cout << "No eligible stream found for your policy" << std::endl;
+      NDN_LOG_INFO("No eligible stream found for your policy");
     }
     for (auto &a : streams)
     {
-      std::cout << ++counter << ": " << a << std::endl;
+      NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);
     }
 
@@ -88,7 +87,7 @@ public:
     // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
     for (auto& s: subscriptionList)
-      std::cout << "Subscribed to the stream/s" << s << std::endl;
+      NDN_LOG_INFO("Subscribed to the stream/s" << s);
 
     // uncomment if: taking input from user ----------------------------------------------
     

@@ -155,7 +155,7 @@ void
 DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
 {
   NDN_LOG_DEBUG("Received data from the receiver"); 
-  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 25);
+  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 70);
 
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
@@ -209,7 +209,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     // get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
-    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
+    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter, 10);
     // auto uniqueId = _tvec[0];
     auto timestamp_unprocessed = _tvec[1];
 
