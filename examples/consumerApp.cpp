@@ -86,9 +86,10 @@ public:
     // only work
     // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
-    for (auto& s: subscriptionList)
-      NDN_LOG_INFO("Subscribed to the stream/s" << s);
-
+    for (auto& s: subscriptionList) {
+      m_subscriber.subscribe(s);
+      std::cout << "Subscribed to the stream/s" << s << std::endl;
+    }
     // uncomment if: taking input from user ----------------------------------------------
     
     // std::vector<int> input; //
@@ -112,9 +113,10 @@ public:
    
     // taking input from user end ----------------------------------------------
 
-    m_subscriber.setSubscriptionList(subscriptionList);
+    // m_subscriber.setSubscriptionList(subscriptionList);
     // run the processevent again, this time with sync as well
-    m_subscriber.run(true);
+    // m_subscriber.run(true);
+    m_subscriber.run();
 
   }
 

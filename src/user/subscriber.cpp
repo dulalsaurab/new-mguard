@@ -144,15 +144,15 @@ Subscriber::subscribe(ndn::Name streamName)
 {
   // convert the streamName into manifest, because that's what is published by the sync
   streamName.append("manifest");
-  auto it = m_availableStreams.find(streamName);
-  if (it == m_availableStreams.end()) {
-    NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
-    // schedule a hello interest in next 200 seconds
-    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
-    return;
-  }
+  // auto it = m_availableStreams.find(streamName);
+  // if (it == m_availableStreams.end()) {
+  //   NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
+  //   // schedule a hello interest in next 200 seconds
+  //   m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
+  //   return;
+  // }
   NDN_LOG_INFO("Subscribing to: " << streamName);
-  m_psync_consumer.addSubscription(streamName, it->second);
+  m_psync_consumer.addSubscription(streamName, STARTING_SEQ_NUM);
   m_psync_consumer.sendSyncInterest();
 }
 
