@@ -30,7 +30,7 @@ public:
  mGuardConsumer(ndn::Name& consumerPrefix, ndn::Name& syncPrefix, ndn::Name& controllerPrefix,
                 std::string& consumerCertPath, std::string& aaCertPath)
  : m_subscriber(consumerPrefix, syncPrefix, controllerPrefix,
-                 consumerCertPath, aaCertPath, 1600_ms,
+                 consumerCertPath, aaCertPath, 1000_ms,
                  std::bind(&mGuardConsumer::processDataCallback, this, _1),
                  std::bind(&mGuardConsumer::processSubscriptionCallback, this, _1))
   {
@@ -69,12 +69,12 @@ public:
     // automatically subscriber to the respective streams
 
     // A. battery only 
-    subscriptionList.push_back(availableStreams[0]); // battery 
+    //subscriptionList.push_back(availableStreams[0]); // battery 
 
     // all stream
-    // subscriptionList.push_back(availableStreams[0]); // battery
-    // subscriptionList.push_back(availableStreams[1]); // semloc
-    // subscriptionList.push_back(availableStreams[3]); // gps
+    subscriptionList.push_back(availableStreams[0]); // battery
+    subscriptionList.push_back(availableStreams[1]); // semloc
+    subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
@@ -87,8 +87,8 @@ public:
     // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
     for (auto& s: subscriptionList) {
-      m_subscriber.subscribe(s);
-      std::cout << "Subscribed to the stream/s" << s << std::endl;
+      // m_subscriber.subscribe(s);
+      NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
     }
     // uncomment if: taking input from user ----------------------------------------------
     
@@ -113,10 +113,10 @@ public:
    
     // taking input from user end ----------------------------------------------
 
-    // m_subscriber.setSubscriptionList(subscriptionList);
+    m_subscriber.setSubscriptionList(subscriptionList);
     // run the processevent again, this time with sync as well
-    // m_subscriber.run(true);
-    m_subscriber.run();
+    m_subscriber.run(true);
+    // m_subscriber.run();
 
   }
 

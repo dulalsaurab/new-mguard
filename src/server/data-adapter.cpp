@@ -42,9 +42,9 @@ ConnectionHandler::start()
 void
 ConnectionHandler::readContent(const boost::system::error_code& err, size_t bytes_transferred)
 {
-  std::cout << "Header received from the socket " << data << std::endl;
+  NDN_LOG_INFO("Header received from the socket " << data);
   boost::split(metaData, data, boost::is_any_of("|"));
-  std::cout << "expected number of chunks: " << getExpectedNumberOfChunks() << std::endl;
+  NDN_LOG_INFO("expected number of chunks: " << getExpectedNumberOfChunks());
   
   // todo: need to replace this function, read exact number of bytes as expected 
   async_read(sock, response_,
@@ -84,9 +84,9 @@ void
 ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
   if (!err) {
-      cout << "Server sent Hello message!"<< endl;
+      NDN_LOG_INFO("Server sent Hello message!");
   } else {
-      std::cerr << "error: " << err.message() << endl;
+      NDN_LOG_ERROR("error: " << err.message());
       sock.close();
   }
 }
@@ -154,9 +154,10 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
 void
 DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
 {
-  NDN_LOG_DEBUG("Received data from the receiver"); 
-  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 70);
-
+  NDN_LOG_DEBUG("Received data from the receiver");
+  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
+  NDN_LOG_DEBUG("Received data from the receiver 1111");
+  
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
     NDN_LOG_DEBUG("Received semantic location data");
@@ -199,9 +200,9 @@ DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 void
 DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
 {
-
   auto streamName = stream.getName();
   NDN_LOG_INFO("Processing stream: " << streamName);
+  bool isLast = false;
   for (auto data : dataSet)
   {
     char timestamp [80];
@@ -209,8 +210,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     // get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
-    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter, 10);
-    // auto uniqueId = _tvec[0];
+    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
     auto timestamp_unprocessed = _tvec[1];
 
     NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
@@ -239,7 +239,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     }
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
-    std::this_thread::sleep_for (std::chrono::milliseconds(10)); 
+    // std::this_thread::sleep_for (std::chrono::milliseconds(20));
     m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
 }

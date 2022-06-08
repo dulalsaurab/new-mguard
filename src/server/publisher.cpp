@@ -1,6 +1,8 @@
 #include "publisher.hpp"
 #include "common.hpp"
 
+#include <boost/bind.hpp>
+
 NDN_LOG_INIT(mguard.Publisher);
 
 namespace mguard {
@@ -15,7 +17,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 
 // 40 = expected number of entries also will be used as IBF size
 // syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
-, m_partialProducer(40, m_face, "/ndn/org/md2k", "/ndn/org/md2k/ignore")
+, m_partialProducer(40, m_face, "/ndn/org/md2k", "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest")
 
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
@@ -28,7 +30,8 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
   // reason: consumer kicks in, finds that the stream is still not available (sequential processing)
   // of the stream during the experiment, and thus keeps sending hello interest (causes a lot of overhead)
   // second, if we send hello interest less frequently, the overall data retrival delay increases.
-  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
+  
+  // m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
   m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/manifest");
   m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/manifest");
   // -------------------------
@@ -73,63 +76,81 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
   }
 }
 
+// void 
+// Publisher::repoWriteHandler(const boost::system::error_code& err, size_t bytes_transferred)
+// {
+//   if (!err) {
+//       NDN_LOG_DEBUG("Data of size: " << bytes_transferred << " inserted to the repo");
+//       NDN_LOG_DEBUG("data and cKdata insertion completed"); 
+      
+//   } else {
+//       NDN_LOG_ERROR("data insertion failed" << "\n");
+//       // socket_.close();
+//   }
+// }
+
 void
-Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream, std::vector<std::string> semLocAttrList)
-{
-    // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
-    // Manifest name: <stream name>/manifest/<seq-num>
-    NDN_LOG_DEBUG("Publishing data: " << data << " and size: " << data.size());
+Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
+                   std::vector<std::string> semLocAttrList)
+{ 
+  // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
+  // Manifest name: <stream name>/manifest/<seq-num>
+  NDN_LOG_DEBUG("Publishing data: " << data << " and size: " << data.size());
 
-    std::shared_ptr<ndn::Data> enc_data, ckData;
+  std::shared_ptr<ndn::Data> enc_data, ckData;
+  try {
+      NDN_LOG_DEBUG("Encrypting data: " << dataName);
+      auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
+      NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
+
+      auto attrList = stream.getAttributes();
+
+      // debugging
+      for (auto& a: attrList)
+        NDN_LOG_DEBUG("attribute: " << a);
+
+      if (semLocAttrList.size() > 0)
+        attrList.insert(attrList.end(), semLocAttrList.begin(), semLocAttrList.end());
+
+      std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
+                                                          {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
+
+  }
+  catch(const std::exception& e) {
+    NDN_LOG_ERROR("Encryption failled");
+    std::cerr << e.what() << '\n';
+    // return false;
+  }
+  //  encrypted data is created, store it in the buffer and publish it
+  NDN_LOG_INFO("full name of the data: " << enc_data->getFullName() << " and size: " << enc_data->getContent().size());
+  NDN_LOG_INFO("full name of the ckData: " << ckData->getFullName() << " and size: " << ckData->getContent().size());
+
+  // store the data into a buffer to insert it later into the repo, the insertion uses tcp bulk insertion protocol
+  m_dataBuffer.push_back(*enc_data);
+  m_ckBuffer.push_back(*ckData);
+
+  bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
+
+  // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
+  // "t" time has passed after receiving the last application data.
+  if(doPublishManifest) {
+    cancleIfManifestScheduledForPublication(stream.getName());
+    // create manifest data packet, and insert it into the repo
     try {
-        NDN_LOG_DEBUG("Encrypting data: " << dataName);
-        auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
-        NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-
-        auto attrList = stream.getAttributes();
-
-        // debugging
-        for (auto& a: attrList)
-          NDN_LOG_DEBUG("attribute: " << a);
-
-        if (semLocAttrList.size() > 0)
-          attrList.insert(attrList.end(), semLocAttrList.begin(), semLocAttrList.end());
-
-        std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
-                                                            {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
-
-    }
-    catch(const std::exception& e) {
-      NDN_LOG_ERROR("Encryption failled");
-      std::cerr << e.what() << '\n';
-      // return false;
-    }
-    //  encrypted data is created, store it in the buffer and publish it
-    NDN_LOG_INFO("full name of the data: " << enc_data->getFullName() << " and size: " << enc_data->getContent().size());
-    NDN_LOG_INFO("full name of the ckData: " << ckData->getFullName() << " and size: " << ckData->getContent().size());
-
-    // store the data into the repo, the insertion uses tcp bulk insertion protocol
-    try {
-      if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
+      if ((m_repoInserter.writeDataToRepo(m_dataBuffer)) && (m_repoInserter.writeDataToRepo(m_ckBuffer)))
+        clearBuffer();
         NDN_LOG_DEBUG("data and cKdata insertion completed"); 
-    }
-    catch(const std::exception& e) {
-      NDN_LOG_ERROR("data and cKdata insertion failed");
-      std::cerr << e.what() << '\n';
+      }
+      catch(const std::exception& e) {
+        NDN_LOG_ERROR("data and cKdata insertion failed");
+        std::cerr << e.what() << '\n';
     }
 
-    bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
-
-    // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
-    // "t" time has passed after receiving the last application data.
-    if(doPublishManifest) {
-      cancleIfManifestScheduledForPublication(stream.getName());
-      // create manifest data packet, and insert it into the repo
-      publishManifest(stream);
-      doUpdate(stream.getManifestName());
-    }
-    else
-      scheduledManifestForPublication(stream);
+    publishManifest(stream);
+    doUpdate(stream.getManifestName());
+  }
+  else
+    scheduledManifestForPublication(stream);
 }
 
 void
@@ -151,11 +172,14 @@ Publisher::publishManifest(util::Stream& stream)
   m_keyChain.sign(*manifestData);
 
   try {
-    if ((m_repoInserter.writeDataToRepo(*manifestData)))
+      std::vector<ndn::Data> manifest;
+      manifest.push_back(*manifestData);
+      if (m_repoInserter.writeDataToRepo(manifest)) {
       NDN_LOG_DEBUG("Successfully inserted manifest into the repo");
       m_temp.clear(); // clear temp variable
       stream.resetManifestList(); // clear manifest list
       m_wire.reset(); // reset the wire for new content
+      }
   }
   catch(const std::exception& e) {
     NDN_LOG_ERROR("Failed to insert mainfest into the repo");

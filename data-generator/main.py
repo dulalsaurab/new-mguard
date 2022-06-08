@@ -48,7 +48,7 @@ def send_stream(stream_name, data, sender_obj):
     #change for 16 min to 100 sec 
     print("Sleeping for 20 sec after sending first stream")
 
-    sleep(20)
+    sleep(30)
     sender_obj.close()
 
 def main():
@@ -60,7 +60,7 @@ def main():
 
     :var: total_number_of_batches int number of times we will generate the data and send it
     """
-    total_number_of_batches = 5
+    total_number_of_batches = 3
 
     current_batch = 1
     while current_batch <= total_number_of_batches:
@@ -70,20 +70,23 @@ def main():
         except FileNotFoundError:
             print('No existing data to be deleted')
 
-
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
+        #50
+        end_time = '2022-05-0{} 10:0:51'.format(current_batch)
         #100
-        # end_time = '2022-05-0{} 10:01:40'.format(current_batch)
-        # 100 
-        # end_time = '2022-05-0{} 10:01:40'.format(current_batch)
+        # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
+        # 150
+        # end_time = '2022-05-0{} 10:02:31'.format(current_batch)
         # 200 
-        # end_time = '2022-05-0{} 10:03:20'.format(current_batch)
+        # end_time = '2022-05-0{} 10:03:21'.format(current_batch)
+        # 250 
+        # end_time = '2022-05-0{} 10:04:11'.format(current_batch)
         # 300 
-        # end_time = '2022-05-0{} 10:05:00'.format(current_batch)
+        # end_time = '2022-05-0{} 10:05:01'.format(current_batch)
         # 400 
-        # end_time = '2022-05-0{} 10:06:40'.format(current_batch)
+        # end_time = '2022-05-0{} 10:06:41'.format(current_batch)
         # 500 
-        end_time = '2022-05-0{} 10:08:20'.format(current_batch)
+        #end_time = '2022-05-0{} 10:08:21'.format(current_batch)
 
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 

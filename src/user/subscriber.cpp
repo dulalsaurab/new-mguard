@@ -75,9 +75,10 @@ Subscriber::run(bool runSync)
 
     if (runSync) {
       m_psync_consumer.sendHelloInterest();
+      m_psync_consumer.sendSyncInterest();
       // sleep some time for sync to kick in
-      NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
-      std::this_thread::sleep_for (std::chrono::seconds(5));
+      // NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
+      // std::this_thread::sleep_for (std::chrono::seconds(5));
     }
     m_face.processEvents();
   }
@@ -144,16 +145,15 @@ Subscriber::subscribe(ndn::Name streamName)
 {
   // convert the streamName into manifest, because that's what is published by the sync
   streamName.append("manifest");
-  // auto it = m_availableStreams.find(streamName);
-  // if (it == m_availableStreams.end()) {
-  //   NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
-  //   // schedule a hello interest in next 200 seconds
-  //   m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
-  //   return;
-  // }
+  auto it = m_availableStreams.find(streamName);
+  if (it == m_availableStreams.end()) {
+    NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
+    // schedule a hello interest in next 200 seconds
+    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
+    return;
+  }
   NDN_LOG_INFO("Subscribing to: " << streamName);
-  m_psync_consumer.addSubscription(streamName, STARTING_SEQ_NUM);
-  m_psync_consumer.sendSyncInterest();
+  m_psync_consumer.addSubscription(streamName, it->second);
 }
 
 void
@@ -169,6 +169,7 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   for (auto stream : m_subscriptionList) {
     subscribe(stream);
   }
+  // m_psync_consumer.sendSyncInterest();
 }
 
 void

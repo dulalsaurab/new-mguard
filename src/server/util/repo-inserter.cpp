@@ -18,54 +18,47 @@
  * See AUTHORS.md for complete list of ndncert authors and contributors.
  */
 
-#include <ndn-cxx/face.hpp>
-#include <ndn-cxx/util/logger.hpp>
-
-#include <boost/asio.hpp>
-#include <boost/asio/ip/tcp.hpp>
-#include <iostream>
 #include <chrono>
-#include <deque>
+#include <thread>
 
-/**
- * A repo inserter using TCP bulk insertion protocol
- */
+#include "repo-inserter.hpp"
+
+NDN_LOG_INIT(mguard.util.repoClient);
 
 namespace mguard {
 namespace util {
 
-class RepoInserter 
+RepoInserter::RepoInserter(std::string repoHost, std::string repoPort)
+: m_repoHost(repoHost),
+  m_repoPort(repoPort)
 {
-public:
+}
 
-  RepoInserter(std::string repoHost = "localhost", std::string repoPort = "7376")
-  : m_repoHost(repoHost),
-    m_repoPort(repoPort)
-  {}
-
-  bool
-  writeDataToRepo(const ndn::Data &data) {
-    boost::asio::ip::tcp::iostream requestStream;
-    #if BOOST_VERSION >= 106600
-        requestStream.expires_after(std::chrono::seconds(3));
-    #else
-        requestStream.expires_from_now(boost::posix_time::seconds(3));
-    #endif //BOOST_VERSION >= 106600
-    requestStream.connect(m_repoHost, m_repoPort);
-    if (!requestStream) {
-      std::cerr << "ERROR: Cannot publish the data to repo-ng"
-                << " (" << requestStream.error().message() << ")" << std::endl;
-      return false;
-    }
+bool
+RepoInserter::writeDataToRepo(const std::vector<ndn::Data>& dataSet) 
+{
+  boost::asio::ip::tcp::iostream requestStream;
+  #if BOOST_VERSION >= 106600
+      requestStream.expires_after(std::chrono::seconds(3));
+  #else
+      requestStream.expires_from_now(boost::posix_time::seconds(3));
+  #endif //BOOST_VERSION >= 106600
+  requestStream.connect(m_repoHost, m_repoPort);
+  if (!requestStream) {
+    NDN_LOG_ERROR("ERROR: Cannot publish the data to repo" << " (" << requestStream.error().message() << ")");
+    return false;
+  }
+  for (auto& data: dataSet) {
+    NDN_LOG_DEBUG("writing data " << data);
     requestStream.write(reinterpret_cast<const char *>(data.wireEncode().wire()),
                         data.wireEncode().size());
-    return true;
+    NDN_LOG_INFO("write complete----------");
   }
-private:
-  std::string m_repoHost;
-  std::string m_repoPort;
-  boost::asio::io_service m_ioService;
-};
+  
+  std::this_thread::sleep_for(std::chrono::milliseconds(2)); // sleep for 1 second
+
+  return true;
+}
 
 } // util
 } // mguard
