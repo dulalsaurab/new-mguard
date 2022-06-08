@@ -156,7 +156,6 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
 {
   NDN_LOG_DEBUG("Received data from the receiver");
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
-  NDN_LOG_DEBUG("Received data from the receiver 1111");
   
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table

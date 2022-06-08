@@ -40,7 +40,7 @@ def send_stream(stream_name, data, sender_obj):
     # sleep a few seconds after sending the metadata
     #change for 16 min to 20 sec
     print("Sleeping for 10 second after sending meta data")
-    sleep(10)
+    sleep(20)
 
     sender_obj.send(data)
     # sleep X seconds after sending the first stream. 
@@ -48,7 +48,7 @@ def send_stream(stream_name, data, sender_obj):
     #change for 16 min to 100 sec 
     print("Sleeping for 20 sec after sending first stream")
 
-    sleep(30)
+    sleep(40)
     sender_obj.close()
 
 def main():
@@ -60,7 +60,7 @@ def main():
 
     :var: total_number_of_batches int number of times we will generate the data and send it
     """
-    total_number_of_batches = 3
+    total_number_of_batches = 5
 
     current_batch = 1
     while current_batch <= total_number_of_batches:
@@ -72,7 +72,7 @@ def main():
 
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
         #50
-        end_time = '2022-05-0{} 10:0:51'.format(current_batch)
+        # end_time = '2022-05-0{} 10:0:51'.format(current_batch)
         #100
         # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
         # 150
@@ -86,7 +86,7 @@ def main():
         # 400 
         # end_time = '2022-05-0{} 10:06:41'.format(current_batch)
         # 500 
-        #end_time = '2022-05-0{} 10:08:21'.format(current_batch)
+        end_time = '2022-05-0{} 10:08:21'.format(current_batch)
 
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
