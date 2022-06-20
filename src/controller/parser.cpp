@@ -10,12 +10,7 @@ namespace pt = boost::property_tree;
 namespace mguard {
 namespace parser {
 
-/* 
-  todo: functionality for wildcard within stream names
-  todo: change calling of parser
-  1.) initialize by parsing available_streams first
-  2.) call parser with policy input and parser will output to file
-*/
+  // todo: functionality for wildcard within stream names
 
 PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 : availableStreamsPath (std::move(availableStreams))
@@ -251,7 +246,6 @@ PolicyParser::generateABEPolicy() {
         }
     }
 
-    // todo: see how to do this with ndn logs
     // warning for denied stream covering all of an allowed stream
     for (const std::string& warning : allowDenyWarning) {
 //        NDN_LOG_WARN(warning);
