@@ -51,8 +51,6 @@ class PolicyParser
 public:
   explicit PolicyParser(std::basic_string<char> availableStreams);
 
-  friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
-
   PolicyDetail
   getPolicyInfo();
 
