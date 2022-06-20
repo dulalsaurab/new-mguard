@@ -23,7 +23,7 @@
 #include <iostream>
 #include <utility>
 
-NDN_LOG_INIT(mguard.parser);
+//NDN_LOG_INIT(mguard.parser);
 
 namespace pt = boost::property_tree;
 namespace mguard {
@@ -45,7 +45,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 
 PolicyDetail
 PolicyParser::getPolicyInfo() {
-    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
+//    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
@@ -53,7 +53,7 @@ bool
 PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
     // just so that you can't get old data after redoing global variables
-    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
+//    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
     availableStreamsPath = streamsFilePath;
     return inputStreams();
 }
@@ -91,7 +91,7 @@ PolicyParser::parseAvailableStreams(std::istream &input)
   for (const auto &item : section.get_child("available-streams"))
   {
     // add stream to list of streams
-    NDN_LOG_TRACE("stream name: " << item.first);
+//    NDN_LOG_TRACE("stream name: " << item.first);
     availableStreams.push_back(item.first);
     // note: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
     // adding all parents of given stream to list
@@ -273,7 +273,7 @@ PolicyParser::generateABEPolicy() {
     // todo: see how to do this with ndn logs
     // warning for denied stream covering all of an allowed stream
     for (const std::string& warning : allowDenyWarning) {
-        NDN_LOG_WARN(warning);
+//        NDN_LOG_WARN(warning);
     }
 
     // error for if no streams are allowed
