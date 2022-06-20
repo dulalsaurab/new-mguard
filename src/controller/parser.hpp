@@ -1,7 +1,7 @@
 #ifndef MGUARD_PARSER_HPP
 #define MGUARD_PARSER_HPP
 
-#include "common.hpp"
+//#include "common.hpp"
 
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/util/logger.hpp>
