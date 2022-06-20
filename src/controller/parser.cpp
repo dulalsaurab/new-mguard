@@ -453,39 +453,5 @@ PolicyParser::splitRequesters(const std::string& basicString)
     }
     return output;
 }
-
-// printing for PolicyParser object
-std::ostream 
-&operator<<(std::ostream &os, const PolicyParser &parser) {
-    os <<
-    "PolicyParser Object "      <<  std::endl   <<
-    "\t"    <<  "policy info"   <<  std::endl   <<
-//        "\t\t"  <<  "configFilePath"    <<  "\t\t"  <<  parser.configFilePath   <<  std::endl   <<
-//        "\t\t"  <<  "hasFilters"        <<  "\t\t"  <<  parser.hasFilters       <<  std::endl   <<
-    "\t\t"  <<  "policyID"          <<  "\t\t"  <<  parser.policyID         <<  std::endl   <<
-    "\t\t"  <<  "requesterNames"      <<  "\t\t"  ;
-    for (const auto &item : parser.requesterNames) {
-        os  <<  item        <<  " " ;
-    }
-    os      <<  std::endl   <<
-    "\t"    <<  "available_streams info"    <<  std::endl   <<
-    "\t\t"  <<  "available-streams"         <<  std::endl   ;
-    for (const auto &stream : parser.availableStreamLevels) {
-        os  <<
-        "\t\t\t"    <<  stream  <<  std::endl;
-    }
-    os      <<
-    "\t\t"  <<  "available-users"           <<  std::endl;
-    for (const auto &user : parser.allowedRequesters) {
-        os  <<
-        "\t\t\t"    <<  user    <<  std::endl;
-    }
-
-    os      <<
-    "\t"    <<  "ABE info"      <<  std::endl       <<
-    "\t\t"  <<  "abe policy"    <<  "\t"            <<  parser.abePolicy    <<  std::endl   ;
-    return os;
-}
-
 } // namespace parser
 } // namespace mguard
