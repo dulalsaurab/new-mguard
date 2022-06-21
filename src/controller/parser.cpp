@@ -38,12 +38,6 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
   inputStreams(availableStreamsPath);
 }
 
-PolicyDetail
-PolicyParser::getPolicyInfo() {
-//    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
-    return {policyID, calculatedStreams,requesterNames, abePolicy};
-}
-
 void
 PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
@@ -65,6 +59,7 @@ PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   parsePolicy(policyFile);
   policyFile.close();
   generateABEPolicy();
+//    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
   return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 

@@ -52,9 +52,6 @@ public:
   explicit PolicyParser(std::basic_string<char> availableStreams);
 
   PolicyDetail
-  getPolicyInfo();
-
-  PolicyDetail
   inputPolicy(const std::basic_string<char>& policyFilePath);
 
   void
