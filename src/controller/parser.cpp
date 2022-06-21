@@ -25,27 +25,25 @@ PolicyParser::getPolicyInfo() {
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
-bool 
+void
 PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
     // just so that you can't get old data after redoing global variables
 //    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
     availableStreamsPath = streamsFilePath;
-    return inputStreams();
+    inputStreams();
 }
 
-bool
+void
 PolicyParser::inputStreams() {
     // input for available streams
     std::ifstream availableStreamsFile(availableStreamsPath.c_str());
     // parsing of available streams file
     parseAvailableStreams(availableStreamsFile);
     availableStreamsFile.close();
-
-    return true;
 }
 
-bool
+void
 PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   // input for config file
   std::ifstream policyFile (policyFilePath.c_str());
@@ -53,7 +51,6 @@ PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   parsePolicy(policyFile);
   policyFile.close();
   generateABEPolicy();
-  return true;
 }
 
 bool 
@@ -128,7 +125,7 @@ PolicyParser::parseAvailableStreams(std::istream &input)
   return true;
 }
 
-bool 
+void
 PolicyParser::parsePolicy(std::istream& input) {
     // loading input file into sections
     ConfigSection section;
@@ -162,8 +159,6 @@ PolicyParser::parsePolicy(std::istream& input) {
     }
     catch (std::exception &e) {
     }
-
-    return true;
 }
 
 void

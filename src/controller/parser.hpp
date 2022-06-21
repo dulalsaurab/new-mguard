@@ -35,17 +35,17 @@ public:
   PolicyDetail
   getPolicyInfo();
 
-  bool
+  void
   inputPolicy(const std::basic_string<char>& policyFilePath);
 
-  bool
+  void
   inputStreams(const std::basic_string<char>& streamsFilePath);
 
 private:
   bool
   generateABEPolicy();
 
-  bool
+  void
   inputStreams();
 
   static std::list<std::string>
@@ -60,7 +60,7 @@ private:
   bool 
   parseAvailableStreams(std::istream &input);
 
-  bool 
+  void
   parsePolicy(std::istream &input);
 
   void
