@@ -55,7 +55,7 @@ private:
   split(const std::string& basicString, const std::string& delimeter);
 
   bool 
-  parseAvailableStreams(std::istream &input);
+  parseAvailableStreams(const std::basic_string<char>& streamsFilePath);
 
   void
   parsePolicy(std::istream &input);

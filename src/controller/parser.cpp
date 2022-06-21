@@ -23,12 +23,11 @@ void
 PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
     // just so that you can't get old data after redoing global variables
-//    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
     availableStreamsPath = streamsFilePath;
     // input for available streams
     std::ifstream availableStreamsFile(availableStreamsPath.c_str());
     // parsing of available streams file
-    parseAvailableStreams(availableStreamsFile);
+    parseAvailableStreams(streamsFilePath);
     availableStreamsFile.close();
 }
 
@@ -45,8 +44,16 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
 }
 
 bool 
-PolicyParser::parseAvailableStreams(std::istream &input) 
+PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath)
 {
+//  NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
+  // input for available streams
+  availableStreams.clear();
+  availableStreamLevels.clear();
+  allowedRequesters.clear();
+  availableAttributes.clear();
+
+  std::ifstream input(streamsFilePath.c_str());
   ConfigSection section;
   pt::read_info(input, section);
   // processing given streams and storing all possible streams
@@ -113,6 +120,7 @@ PolicyParser::parseAvailableStreams(std::istream &input)
     availableAttributes.push_back(attribute.first);
   }
 
+  input.close();
   return true;
 }
 
