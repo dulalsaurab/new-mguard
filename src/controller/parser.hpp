@@ -51,7 +51,7 @@ class PolicyParser
 public:
   explicit PolicyParser(std::basic_string<char> availableStreams);
 
-  bool
+  void
   parseAvailableStreams(const std::basic_string<char>& streamsFilePath);
 
   PolicyDetail
