@@ -69,8 +69,7 @@ Controller::run()
 void
 Controller::processPolicy(const std::string& policyPath)
 {
-  m_policyParser.inputPolicy(policyPath);
-  auto policyDetail = m_policyParser.getPolicyInfo();
+  auto policyDetail = m_policyParser.inputPolicy(policyPath);
   NDN_LOG_DEBUG("from policy info: " << policyDetail.abePolicy);
 
   // TODO: modify parser to store streams as ndn Name not the strings
