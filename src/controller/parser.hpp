@@ -39,7 +39,7 @@ public:
   parsePolicy(const std::basic_string<char>& policyFilePath);
 
   static std::pair<std::string, std::string>
-  parseAttribute(std::string attribute);
+  parseAttribute(const std::string& attribute);
 
 private:
   bool
