@@ -32,20 +32,20 @@ available-streams
 
 attributes
 {
-    /ndn/org/md2k/attribute/location/home
-    /ndn/org/md2k/attribute/location/work
-    /ndn/org/md2k/attribute/location/commuting
-    /ndn/org/md2k/attribute/location/casino
-    /ndn/org/md2k/attribute/location/oakland
-    /ndn/org/md2k/attribute/location/SoCal
-    /ndn/org/md2k/attribute/location/gym
-    /ndn/org/md2k/attribute/location/shopping-mall
-    /ndn/org/md2k/attribute/activity/smoking
-    /ndn/org/md2k/attribute/activity/walking
-    /ndn/org/md2k/attribute/activity/running
-    /ndn/org/md2k/attribute/activity/eating
-    /ndn/org/md2k/attribute/activity/drinking
-    /ndn/org/md2k/attribute/activity/sleeping
+    /ndn/org/md2k/ATTRIBUTE/location/home
+    /ndn/org/md2k/ATTRIBUTE/location/work
+    /ndn/org/md2k/ATTRIBUTE/location/commuting
+    /ndn/org/md2k/ATTRIBUTE/location/casino
+    /ndn/org/md2k/ATTRIBUTE/location/oakland
+    /ndn/org/md2k/ATTRIBUTE/location/SoCal
+    /ndn/org/md2k/ATTRIBUTE/location/gym
+    /ndn/org/md2k/ATTRIBUTE/location/shopping-mall
+    /ndn/org/md2k/ATTRIBUTE/activity/smoking
+    /ndn/org/md2k/ATTRIBUTE/activity/walking
+    /ndn/org/md2k/ATTRIBUTE/activity/running
+    /ndn/org/md2k/ATTRIBUTE/activity/eating
+    /ndn/org/md2k/ATTRIBUTE/activity/drinking
+    /ndn/org/md2k/ATTRIBUTE/activity/sleeping
 }
 
 ; current users
