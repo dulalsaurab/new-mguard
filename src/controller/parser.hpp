@@ -54,7 +54,7 @@ public:
   PolicyDetail
   getPolicyInfo();
 
-  void
+  PolicyDetail
   inputPolicy(const std::basic_string<char>& policyFilePath);
 
   void

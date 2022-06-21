@@ -57,7 +57,7 @@ PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     availableStreamsFile.close();
 }
 
-void
+PolicyDetail
 PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   // input for config file
   std::ifstream policyFile (policyFilePath.c_str());
@@ -65,6 +65,7 @@ PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
   parsePolicy(policyFile);
   policyFile.close();
   generateABEPolicy();
+  return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
 bool 
