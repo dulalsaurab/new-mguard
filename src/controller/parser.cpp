@@ -16,7 +16,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 : availableStreamsPath (std::move(availableStreams))
 {
   // store data from input files
-  inputStreams();
+  inputStreams(availableStreamsPath);
 }
 
 PolicyDetail
@@ -31,11 +31,6 @@ PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // just so that you can't get old data after redoing global variables
 //    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
     availableStreamsPath = streamsFilePath;
-    inputStreams();
-}
-
-void
-PolicyParser::inputStreams() {
     // input for available streams
     std::ifstream availableStreamsFile(availableStreamsPath.c_str());
     // parsing of available streams file
