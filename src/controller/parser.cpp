@@ -312,7 +312,7 @@ PolicyParser::processAttributes(const std::list<std::string>& attrList) {
         // search through attributes for ones of the same type as the current one
         // OR attributes of similar types
         for (std::string attr : attrList) {
-            if (isAlike(searching, attr)) {
+            if (parseAttribute(searching).first == parseAttribute(attr).first) {
                 if (!building.empty()) {
                     building += " OR ";
                 }
@@ -333,46 +333,6 @@ PolicyParser::processAttributes(const std::list<std::string>& attrList) {
     }
 
     return output;
-}
-
-bool 
-PolicyParser::isAlike(std::string &attribute, std::string &checking) 
-{
-    // assumes /attribute/type/value format for attributes
-
-    // split the inputs into the different levels
-    std::list<std::string> given = split(attribute, "/");
-    std::list<std::string> testing = split(checking, "/");
-
-    // will store the attribute types in these variables
-    std::string givenType;
-    std::string checkingType;
-
-    // once you find "attribute", store the next value and stop
-    bool foundAttribute = false;
-    for (const std::string& item : given) {
-        if (foundAttribute) {
-            givenType = item;
-            break;
-        }
-        if (item == "ATTRIBUTE") {
-            foundAttribute = true;
-        }
-    }
-
-    foundAttribute = false;
-    for (const std::string& checkingItem : testing) {
-        if (foundAttribute) {
-            checkingType = checkingItem;
-            break;
-        }
-        if (checkingItem == "attribute") {
-            foundAttribute = true;
-        }
-    }
-
-    // if the values are the same, the types of attributes are also the same
-    return givenType == checkingType;
 }
 
 std::pair<std::string, std::string>
