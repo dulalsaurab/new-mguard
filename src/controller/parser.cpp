@@ -35,19 +35,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 : availableStreamsPath (std::move(availableStreams))
 {
   // store data from input files
-  inputStreams(availableStreamsPath);
-}
-
-void
-PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
-    // todo: should probably reset everything that would be stored in parser
-    // just so that you can't get old data after redoing global variables
-    availableStreamsPath = streamsFilePath;
-    // input for available streams
-    std::ifstream availableStreamsFile(availableStreamsPath.c_str());
-    // parsing of available streams file
-    parseAvailableStreams(streamsFilePath);
-    availableStreamsFile.close();
+  parseAvailableStreams(availableStreamsPath);
 }
 
 PolicyDetail
