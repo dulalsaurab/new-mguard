@@ -60,6 +60,9 @@ public:
   void
   inputStreams(const std::basic_string<char>& streamsFilePath);
 
+    static std::pair<std::string, std::string>
+    parseAttribute(std::string attribute);
+
 private:
   bool
   generateABEPolicy();
@@ -85,7 +88,7 @@ private:
   void
   processAttributeFilter(ConfigSection &section, bool isAllowed);
 
-  static bool 
+  static bool
   isAlike(std::string& attribute, std::string& checking);
 
   static std::string 

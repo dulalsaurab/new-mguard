@@ -389,6 +389,30 @@ PolicyParser::isAlike(std::string &attribute, std::string &checking)
     return givenType == checkingType;
 }
 
+std::pair<std::string, std::string>
+PolicyParser::parseAttribute(std::string attribute)
+{
+    std::pair<std::string, std::string> out;
+    bool foundAttribute = false;
+    std::string type, value;
+    for (const std::string& checkingItem : split(attribute, "/")) {
+        if (!type.empty()) {
+            value = checkingItem;
+            break;
+        }
+        if (foundAttribute) {
+            type = checkingItem;
+            continue;
+        }
+        if (checkingItem == "ATTRIBUTE") {
+            foundAttribute = true;
+        }
+    }
+    out.first = type;
+    out.second = value;
+    return out;
+}
+
 std::string 
 PolicyParser::doStringThing(const std::list<std::string> &list, const std::string& operation) 
 {
