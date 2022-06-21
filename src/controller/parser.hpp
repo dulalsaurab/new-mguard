@@ -80,9 +80,6 @@ private:
   void
   processAttributeFilter(ConfigSection &section, bool isAllowed);
 
-  static bool
-  isAlike(std::string& attribute, std::string& checking);
-
   static std::string 
   processAttributes(const std::list<std::string>& attrList);
 
