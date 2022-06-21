@@ -50,7 +50,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
   return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
-bool 
+void
 PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath)
 {
 //  NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
@@ -85,7 +85,7 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
       if (index == 0 ) {
         // checking to make sure it starts with a /
         if (!adding.empty()) {
-          return false;
+            throw std::runtime_error("Parsing available-streams failed: " + item.first + " does not start with /");
         }
         // don't add the first one
         continue;
@@ -128,7 +128,6 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
   }
 
   input.close();
-  return true;
 }
 
 void
