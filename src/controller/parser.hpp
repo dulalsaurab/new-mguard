@@ -52,7 +52,7 @@ public:
   explicit PolicyParser(std::basic_string<char> availableStreams);
 
   PolicyDetail
-  inputPolicy(const std::basic_string<char>& policyFilePath);
+  parsePolicy(const std::basic_string<char>& policyFilePath);
 
   void
   inputStreams(const std::basic_string<char>& streamsFilePath);
