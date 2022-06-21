@@ -32,14 +32,14 @@ class PolicyParser
 public:
   explicit PolicyParser(std::basic_string<char> availableStreams);
 
+  bool
+  parseAvailableStreams(const std::basic_string<char>& streamsFilePath);
+
   PolicyDetail
   parsePolicy(const std::basic_string<char>& policyFilePath);
 
-  void
-  inputStreams(const std::basic_string<char>& streamsFilePath);
-
-    static std::pair<std::string, std::string>
-    parseAttribute(std::string attribute);
+  static std::pair<std::string, std::string>
+  parseAttribute(std::string attribute);
 
 private:
   bool
@@ -54,8 +54,6 @@ private:
   static std::list<std::string> 
   split(const std::string& basicString, const std::string& delimeter);
 
-  bool 
-  parseAvailableStreams(const std::basic_string<char>& streamsFilePath);
 
   void
   parsePolicy(std::istream &input);
