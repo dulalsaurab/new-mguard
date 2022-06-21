@@ -52,7 +52,7 @@ PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
 }
 
 PolicyDetail
-PolicyParser::inputPolicy(const std::basic_string<char>& policyFilePath) {
+PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
   // input for config file
   std::ifstream policyFile (policyFilePath.c_str());
   // parsing of policy
