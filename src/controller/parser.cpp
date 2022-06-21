@@ -376,7 +376,7 @@ PolicyParser::isAlike(std::string &attribute, std::string &checking)
 }
 
 std::pair<std::string, std::string>
-PolicyParser::parseAttribute(std::string attribute)
+PolicyParser::parseAttribute(const std::string& attribute)
 {
     std::pair<std::string, std::string> out;
     bool foundAttribute = false;
