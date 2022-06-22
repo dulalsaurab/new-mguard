@@ -147,39 +147,6 @@ PolicyParser::parsePolicy(std::istream& input) {
     }
 }
 
-void
-PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed) 
-{
-  // go through all filters in the allow/deny section
-  std::string value;
-  for (const auto &parameter : section) {
-      value = parameter.first;
-
-      if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), value) != std::end(availableStreamLevels)) {
-          // is a stream name
-          if (isAllowed) {
-              allowedStreams.push_back(value);
-          } else {
-              deniedStreams.push_back(value);
-          }
-      } else if (std::find(availableAttributes.begin(), availableAttributes.end(), value) != std::end(availableAttributes)) {
-          // is an attribute
-          if (isAllowed) {
-              allowedAttributes.push_back(value);
-          } else {
-              deniedAttributes.push_back(value);
-          }
-      } else {
-          // isn't stream or attribute
-          throw std::runtime_error(value + " not an available stream or attribute");
-      }
-  }
-
-  if (isAllowed && allowedStreams.empty()){
-      throw std::runtime_error("\"allow\" section needs at least one stream name");
-  }
-}
-
 bool 
 PolicyParser::generateABEPolicy() {
     std::list<std::string> policy;
@@ -276,7 +243,40 @@ PolicyParser::generateABEPolicy() {
     return true;
 }
 
-std::string 
+void
+PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed)
+{
+    // go through all filters in the allow/deny section
+    std::string value;
+    for (const auto &parameter : section) {
+        value = parameter.first;
+
+        if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), value) != std::end(availableStreamLevels)) {
+            // is a stream name
+            if (isAllowed) {
+                allowedStreams.push_back(value);
+            } else {
+                deniedStreams.push_back(value);
+            }
+        } else if (std::find(availableAttributes.begin(), availableAttributes.end(), value) != std::end(availableAttributes)) {
+            // is an attribute
+            if (isAllowed) {
+                allowedAttributes.push_back(value);
+            } else {
+                deniedAttributes.push_back(value);
+            }
+        } else {
+            // isn't stream or attribute
+            throw std::runtime_error(value + " not an available stream or attribute");
+        }
+    }
+
+    if (isAllowed && allowedStreams.empty()){
+        throw std::runtime_error("\"allow\" section needs at least one stream name");
+    }
+}
+
+std::string
 PolicyParser::processAttributes(const std::list<std::string>& attrList) {
     std::string output, building;
     // go through each one
