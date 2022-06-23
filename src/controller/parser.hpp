@@ -38,12 +38,10 @@ public:
   PolicyDetail
   parsePolicy(const std::basic_string<char>& policyFilePath);
 
-  static std::pair<std::string, std::string>
-  parseAttribute(const std::string& attribute);
 
 private:
-  bool
-  generateABEPolicy();
+  static std::pair<std::string, std::string>
+  parseAttribute(const std::string& attribute);
 
   static std::list<std::string>
   splitRequesters(const std::string& basicString);
@@ -54,23 +52,13 @@ private:
   static std::list<std::string> 
   split(const std::string& basicString, const std::string& delimeter);
 
-
   void
-  parsePolicy(std::istream &input);
-
-  void
-  processAttributeFilter(ConfigSection &section, bool isAllowed);
+  processAttributeFilter(ConfigSection &section, std::list<std::string> &streams, std::list<std::string> &attributes);
 
   static std::string 
   processAttributes(const std::list<std::string>& attrList);
 
-  // full path of the config/policy file
-  std::string availableStreamsPath;
-
-  std::list<std::string> requesterNames; // this should be a list or array of some sort
-  std::string policyID, abePolicy;
-
-  std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
+  // information from the available-streams file
   std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
 
 };

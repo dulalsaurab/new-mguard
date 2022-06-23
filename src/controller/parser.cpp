@@ -13,22 +13,9 @@ namespace parser {
   // todo: functionality for wildcard within stream names
 
 PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
-: availableStreamsPath (std::move(availableStreams))
 {
   // store data from input files
-  parseAvailableStreams(availableStreamsPath);
-}
-
-PolicyDetail
-PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
-  // input for config file
-  std::ifstream policyFile (policyFilePath.c_str());
-  // parsing of policy
-  parsePolicy(policyFile);
-  policyFile.close();
-  generateABEPolicy();
-//    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
-  return {policyID, calculatedStreams,requesterNames, abePolicy};
+  parseAvailableStreams(availableStreams);
 }
 
 void
@@ -111,14 +98,19 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
   input.close();
 }
 
-void
-PolicyParser::parsePolicy(std::istream& input) {
-    // loading input file into sections
+PolicyDetail
+PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
+    // input for config file
+    std::ifstream input (policyFilePath.c_str());
+    // parsing of policy
+
+//    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
+   // loading input file into sections
     ConfigSection section;
     pt::read_info(input, section);
     // set all instance variables (all required in policy)
-    policyID = section.get<std::string>("policy-id");
-    requesterNames = splitRequesters(section.get<std::string>("requester-names"));
+    std::string policyID = section.get<std::string>("policy-id");
+    std::list<std::string> requesterNames = splitRequesters(section.get<std::string>("requester-names"));
 
     // check given requesters against allowed requesters
     for (const std::string &requester : requesterNames) {
@@ -128,27 +120,27 @@ PolicyParser::parsePolicy(std::istream& input) {
         }
     }
 
-    // reset per-policy variables
-    calculatedStreams.clear();
-    allowedStreams.clear();
-    allowedAttributes.clear();
-    deniedStreams.clear();
-    deniedAttributes.clear();
+    // initialize per-policy variables
+    std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
 
     // REQUIRED attribute-filters section
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
     pt::ptree filterTree = section.get_child("attribute-filters");
-    processAttributeFilter(filterTree.get_child("allow"), true);
+    processAttributeFilter(filterTree.get_child("allow"), allowedStreams, allowedAttributes);
     try {
-        processAttributeFilter(filterTree.get_child("deny"), false);
+        processAttributeFilter(filterTree.get_child("deny"), deniedStreams, deniedAttributes);
     }
-    catch (std::exception &e) {
+    catch (boost::wrapexcept<pt::ptree_bad_path> &exception){
     }
-}
 
-bool 
-PolicyParser::generateABEPolicy() {
+    input.close();
+
+    if (allowedStreams.empty()){
+        throw std::runtime_error("\"allow\" section needs at least one stream name");
+    }
+
+    // start of logic for creating abe policy
     std::list<std::string> policy;
 
     // stream name processing
@@ -230,7 +222,7 @@ PolicyParser::generateABEPolicy() {
 
     // putting it all all together
     // AND together all separate conditions made for the output policy
-    abePolicy = doStringThing(policy, "AND");
+    std::string abePolicy = doStringThing(policy, "AND");
 
     // output
     std::fstream file;
@@ -240,11 +232,11 @@ PolicyParser::generateABEPolicy() {
     }
     file.close();
 
-    return true;
+    return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
 void
-PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed)
+PolicyParser::processAttributeFilter(ConfigSection &section, std::list<std::string> &streams, std::list<std::string> &attributes)
 {
     // go through all filters in the allow/deny section
     std::string value;
@@ -253,26 +245,14 @@ PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed)
 
         if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), value) != std::end(availableStreamLevels)) {
             // is a stream name
-            if (isAllowed) {
-                allowedStreams.push_back(value);
-            } else {
-                deniedStreams.push_back(value);
-            }
+            streams.push_back(value);
         } else if (std::find(availableAttributes.begin(), availableAttributes.end(), value) != std::end(availableAttributes)) {
             // is an attribute
-            if (isAllowed) {
-                allowedAttributes.push_back(value);
-            } else {
-                deniedAttributes.push_back(value);
-            }
+            attributes.push_back(value);
         } else {
             // isn't stream or attribute
             throw std::runtime_error(value + " not an available stream or attribute");
         }
-    }
-
-    if (isAllowed && allowedStreams.empty()){
-        throw std::runtime_error("\"allow\" section needs at least one stream name");
     }
 }
 
