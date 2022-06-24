@@ -19,8 +19,7 @@ NDN_LOG_INIT(mguard.examples.consumerApp);
 static void
 usage(const boost::program_options::options_description& options)
 {
-  std::cout << "Usage: ndnsd-consumer [options] e.g. printer \n"
-            << options;
+  NDN_LOG_INFO("Usage: ndnsd-consumer [options] e.g. printer \n" << options);
    exit(2);
 }
 
@@ -31,7 +30,7 @@ public:
  mGuardConsumer(ndn::Name& consumerPrefix, ndn::Name& syncPrefix, ndn::Name& controllerPrefix,
                 std::string& consumerCertPath, std::string& aaCertPath)
  : m_subscriber(consumerPrefix, syncPrefix, controllerPrefix,
-                 consumerCertPath, aaCertPath, 1600_ms,
+                 consumerCertPath, aaCertPath, 1000_ms,
                  std::bind(&mGuardConsumer::processDataCallback, this, _1),
                  std::bind(&mGuardConsumer::processSubscriptionCallback, this, _1))
   {
@@ -41,7 +40,7 @@ public:
   processDataCallback(const std::vector<std::string>& updates)
   {
     for (auto &a : updates)
-      std::cout << "received data: " << a << std::endl;
+      NDN_LOG_INFO("received data: " << a);
   }
 
   void
@@ -53,16 +52,16 @@ public:
     // stop the process event
     m_subscriber.stop();
 
-    std::cout << "\n\nStreams available for subscription" << std::endl;
+    NDN_LOG_INFO("\n\nStreams available for subscription");
     std::vector<ndn::Name> availableStreams, subscriptionList;
     int counter=0;
     if (streams.size() <= 0)
     {
-      std::cout << "No eligible stream found for your policy" << std::endl;
+      NDN_LOG_INFO("No eligible stream found for your policy");
     }
     for (auto &a : streams)
     {
-      std::cout << ++counter << ": " << a << std::endl;
+      NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);
     }
 
@@ -70,12 +69,12 @@ public:
     // automatically subscriber to the respective streams
 
     // A. battery only 
-    // subscriptionList.push_back(availableStreams[0]); // battery 
+    subscriptionList.push_back(availableStreams[0]); // battery 
 
     // all stream
-    subscriptionList.push_back(availableStreams[0]); // battery
-    subscriptionList.push_back(availableStreams[1]); // semloc
-    subscriptionList.push_back(availableStreams[3]); // gps
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[1]); // semloc
+    // subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
@@ -87,9 +86,10 @@ public:
     // only work
     // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
-    for (auto& s: subscriptionList)
-      std::cout << "Subscribed to the stream/s" << s << std::endl;
-
+    for (auto& s: subscriptionList) {
+      // m_subscriber.subscribe(s);
+      NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
+    }
     // uncomment if: taking input from user ----------------------------------------------
     
     // std::vector<int> input; //
@@ -116,6 +116,7 @@ public:
     m_subscriber.setSubscriptionList(subscriptionList);
     // run the processevent again, this time with sync as well
     m_subscriber.run(true);
+    // m_subscriber.run();
 
   }
 

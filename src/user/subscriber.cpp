@@ -30,7 +30,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
                   // 10_s hello interset lifetime, 1600_ms sync interest life time
                   // for us, the subscription happens at the begnning so we dont need to send hello interest that often 
 , m_ApplicationDataCallback(callback)
-, m_subCallback(subCallback)
+, m_subCallback(subCallback)  
 {
   std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Subscriber initialized");
@@ -75,9 +75,10 @@ Subscriber::run(bool runSync)
 
     if (runSync) {
       m_psync_consumer.sendHelloInterest();
+      m_psync_consumer.sendSyncInterest();
       // sleep some time for sync to kick in
-      NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
-      std::this_thread::sleep_for (std::chrono::seconds(5));
+      // NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
+      // std::this_thread::sleep_for (std::chrono::seconds(5));
     }
     m_face.processEvents();
   }
@@ -153,7 +154,6 @@ Subscriber::subscribe(ndn::Name streamName)
   }
   NDN_LOG_INFO("Subscribing to: " << streamName);
   m_psync_consumer.addSubscription(streamName, it->second);
-  m_psync_consumer.sendSyncInterest();
 }
 
 void
@@ -169,6 +169,7 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   for (auto stream : m_subscriptionList) {
     subscribe(stream);
   }
+  // m_psync_consumer.sendSyncInterest();
 }
 
 void

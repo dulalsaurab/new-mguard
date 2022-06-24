@@ -69,7 +69,6 @@ def run_server(node, args):
 
     info("controller and producer started on the server\n")
 
-
 def run_consumer(consumers):
     info("running consumer\n")
     for node in consumers:
@@ -99,7 +98,8 @@ if __name__ == '__main__':
 
     # enable logs in all the nodes
     for host in ndn.net.hosts:
-        host.cmd("export NDN_LOG=mguard.*=TRACE:nacabe.*=TRACE")
+        # host.cmd("export NDN_LOG=psync.*=TRACE:mguard.*=TRACE:nacabe.*=TRACE:ndn.*=TRACE")
+        host.cmd("export NDN_LOG=psync.*=NONE:mguard.*=TRACE:nacabe.*=TRACE")
 
         # copy certs and safe bags in the node folder
         host_dir = args.workDir+"/"+host.name
@@ -108,7 +108,9 @@ if __name__ == '__main__':
 
     c = ["b", "c", "d", "e"] # these are the consumer, look at testbed.conf topology
     producer = ndn.net["a"]
+    # consumers = [ndn.net["b"]]
     consumers =  [ndn.net[x] for x in c]
+    # consumers = [producer]
 
     run_server(producer, args)
     sleep(5)
