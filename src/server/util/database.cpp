@@ -118,7 +118,7 @@ DataBase::getSemanticLocations(const std::string& timestamp, const std::string& 
 std::vector<std::string>
 DataBase::getRowToInsert(std::string row)
 {
-  NDN_LOG_TRACE("row to process: " << row);
+  // NDN_LOG_TRACE("row to process: " << row);
   std::smatch m;
   std::vector<std::string> result;
   std::regex e ("datetime.datetime\\((.*?)\\)");
@@ -144,7 +144,7 @@ DataBase::getRowToInsert(std::string row)
       temp += "00";
     }
 
-    NDN_LOG_TRACE("timestamp: " << temp);
+    // NDN_LOG_TRACE("timestamp: " << temp);
     result.push_back(temp);
     row = m.suffix();
   }
@@ -169,7 +169,7 @@ DataBase::insertRows(const std::vector<std::string>& dataSet)
   // for (auto& row : dataSet)
   for (auto it = dataSet.begin(); it != dataSet.end(); ++it)
   {
-    NDN_LOG_TRACE("data point: " << *it);
+    // NDN_LOG_TRACE("data point: " << *it);
     //TODO: check if row is empty; also populating the values cane be better
     try {
       auto pRow = getRowToInsert(*it); //processed row

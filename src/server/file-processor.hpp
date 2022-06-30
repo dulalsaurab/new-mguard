@@ -22,7 +22,7 @@ public:
   readStream(std::string streamPath);
 
   std::vector<std::string>
-  getVectorByDelimiter(std::string _s, std::string delimiter);
+  getVectorByDelimiter(std::string _s, std::string delimiter, int nSize = 1);
 };
 
 class AttributeMappingFileProcessor: FileProcessor

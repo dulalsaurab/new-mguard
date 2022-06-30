@@ -11,7 +11,6 @@
 
 namespace mguard {
 
-
 inline
 std::shared_ptr<ndn::security::Certificate>
 loadCert(const std::string& certLoc)
@@ -45,14 +44,16 @@ if use_manifest is set to false, manifest will not be used, application data wil
 const bool USE_MANIFEST = true;
 
 // manifest will be published after receiving 10 data units
-const int MANIFEST_BATCH_SIZE = 10;
+const int MANIFEST_BATCH_SIZE = 50;
 
 // if next update is not received withing 200 ms, the manifest will be publised, this can override batch size
-const ndn::time::milliseconds MAX_UPDATE_WAIT_TIME(200); //todo: not implemented yet
+const ndn::time::milliseconds MAX_UPDATE_WAIT_TIME(100); //todo: not implemented yet
 
 // manifest ---------
 const std::string SEMANTIC_LOCATION = "ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location";
 const std::string NDN_LOCATION_STREAM = "/ndn/org/md2k/mguard/dd40c/phone/gps";
+const std::string NDN_BATTERY_STREAM = "/ndn/org/md2k/mguard/dd40c/phone/battery";
+
 
 class Error : public std::runtime_error
 {
