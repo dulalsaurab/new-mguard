@@ -27,11 +27,12 @@ NameTree::insertName(ndn::Name name)
   std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
   auto prefixNotIn = info.second;
   auto parent = info.first;
+  NDN_LOG_DEBUG("prefix not in tree: " << prefixNotIn << " parent: " << parent->m_fullName);
   if (prefixNotIn.toUri() == "/") {
     NDN_LOG_INFO("pointer id:" << parent->m_nodeId << " name: " << name << " already present in the tree");
   }
   else {
-    auto fullName = ndn::Name(parent->m_nodeId);
+    auto fullName = ndn::Name(parent->m_fullName);
     auto startFrom = parent;
     for (auto it_name = prefixNotIn.begin(); it_name != prefixNotIn.end(); ++it_name)
     {
@@ -49,6 +50,7 @@ NameTree::insertName(ndn::Name name)
 TreeNode*
 NameTree::createNode(std::string nodeId, ndn::Name fullName)
 {
+  std::cout << "create node " << fullName << std::endl;
   TreeNode *parent_node = new TreeNode;
   if (parent_node) {
       parent_node->m_nodeId = nodeId;
@@ -99,19 +101,22 @@ NameTree::longestPrefixMatch(ndn::Name name)
 }
 
 void
-NameTree::getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs)
+NameTree::getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore)
 {
   if ((*startFrom).m_children.size() == 0)
     return;
-  
+
   for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-    leafs.push_back((*it_nt)->m_fullName);
-    getLeafs((*it_nt), leafs);
+    if((*it_nt)->m_children.size() == 0) // if no childrent then this is the leaf
+        leafs.push_back((*it_nt)->m_fullName);
+
+    if ((*it_nt)->m_fullName != ignore)
+      getLeafs((*it_nt), leafs, ignore);
   }
 }
 
 std::vector<ndn::Name>
-NameTree::getAllLeafs(ndn::Name prefix)
+NameTree::getAllLeafs(ndn::Name prefix, ndn::Name ignore)
 {
   std::vector<ndn::Name> leafs;
   auto node_ptr = search(m_root, prefix);
@@ -119,20 +124,19 @@ NameTree::getAllLeafs(ndn::Name prefix)
     NDN_LOG_INFO("prefix not in the tree");
     return leafs;
   }
-  getLeafs((*node_ptr), leafs);
+  getLeafs((*node_ptr), leafs, ignore);
   return leafs;
 }
 
 void
-NameTree::getChildrens(TreeNode* startFrom, std::vector<ndn::Name>& leafs)
+NameTree::getChildrens(TreeNode* startFrom, std::vector<ndn::Name>& childrens)
 {
   if ((*startFrom).m_children.size() == 0)
     return;
-
+  
   for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-    if((*it_nt)->m_children.size() == 0) // if no childrent then this is the leaf
-      leafs.push_back((*it_nt)->m_fullName);
-    getChildrens((*it_nt), leafs);
+    childrens.push_back((*it_nt)->m_fullName);
+    getChildrens((*it_nt), childrens);
   }
 }
 
