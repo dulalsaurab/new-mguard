@@ -22,6 +22,9 @@
 #include <thread>
 
 #include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/face.hpp>
+#include <ndn-cxx/security/key-chain.hpp>
+#include <ndn-cxx/security/signing-helpers.hpp>
 
 #include "async-repo-inserter.hpp"
 
@@ -31,23 +34,29 @@ namespace mguard {
 namespace util {
 namespace bp = boost::asio::ip;
 
-AsyncRepoInserter::AsyncRepoInserter(boost::asio::io_service& io, std::string repoHost, std::string repoPort)
+AsyncRepoInserter::AsyncRepoInserter(boost::asio::io_service& io)
   : m_io(io)
   , m_resolv(m_io)
   , m_socket(std::make_shared<bp::tcp::socket>(m_io))
 {
+}
+
+void
+AsyncRepoInserter::AsyncConnectToRepo(std::string repoHost, std::string repoPort, const AsyncConnectHandler& connectHandler)
+{
   bp::tcp::resolver::query query(repoHost, repoPort);
-  m_resolv.async_resolve(query, [this](auto& err, auto& it) {
+  m_resolv.async_resolve(query, [this, connectHandler](auto& err, auto& it) {
     NDN_LOG_TRACE("Resolvation status: " << err.message());
     if (!err) {
-      m_socket->async_connect(*it, [this] (auto& err) {
+      m_socket->async_connect(*it, [this, connectHandler] (auto& err) {
         NDN_LOG_DEBUG("Connnection status: " << err.message());
-        if (!err) {
-          m_isConnected = true;
-        }
-      });    
+        connectHandler(err);
+      });
     }
-  });
+    else {
+      NDN_THROW(std::runtime_error("Repo endpoint cannot be resolved: " << err.message()));
+    }
+  });  
 }
 
 void

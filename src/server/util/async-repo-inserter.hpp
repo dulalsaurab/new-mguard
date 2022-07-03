@@ -33,25 +33,22 @@ class AsyncRepoInserter : boost::noncopyable
 {
 public:
   using AsyncRepoError = boost::system::error_code;
+  using AsyncConnectHandler = std::function<void(const AsyncRepoError&)>;
   using AsyncWriteHandler = std::function<void(const ndn::Data&, const AsyncRepoError&)>;
 
   explicit
-  AsyncRepoInserter(boost::asio::io_service& io, std::string repoHost, std::string repoPort);
+  AsyncRepoInserter(boost::asio::io_service& io);
+
+  void
+  AsyncConnectToRepo(std::string repoHost, std::string repoPort, const AsyncConnectHandler& connectHandler);
 
   void
   AsyncWriteDataToRepo(const ndn::Data& data, const AsyncWriteHandler& writeHandler);
-
-  bool
-  isConnected() const
-  {
-    return m_isConnected;
-  }
 
 private:
   boost::asio::io_service& m_io;
   bp::tcp::resolver m_resolv;
   std::shared_ptr<bp::tcp::socket> m_socket;
-  bool m_isConnected = false;
 };
 
 } // util
