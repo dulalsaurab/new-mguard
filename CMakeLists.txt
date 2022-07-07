@@ -35,8 +35,8 @@ add_compile_definitions(MGUARD_CMAKE_BUILD)
 link_directories(${NDN_CXX_LIBRARY_DIRS})
 
 # target
-#add_executable(mguard sandbox/sandbox.cpp)
-add_library(mguard SHARED ${NAC_ABE_LIB_SOURCE_FILES})
+add_executable(mguard sandbox/sandbox.cpp)
+#add_library(mguard SHARED ${NAC_ABE_LIB_SOURCE_FILES})
 target_compile_options(mguard PUBLIC ${NDN_CXX_CFLAGS} ${NAC_ABE_CFLAGS} ${PSYNC_CFLAGS})
 target_link_libraries(mguard PUBLIC ${NDN_CXX_LIBRARIES} ${NAC_ABE_LIBRARIES} ${PSYNC_LIBRARIES})
 
