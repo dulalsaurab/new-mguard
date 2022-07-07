@@ -12,7 +12,7 @@ namespace parser {
 
   // todo: functionality for wildcard within stream names
 
-PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
+PolicyParser::PolicyParser(const std::basic_string<char>& availableStreams)
 {
   // store data from input files
   parseAvailableStreams(availableStreams);
@@ -262,7 +262,7 @@ PolicyParser::processAttributes(const std::list<std::string>& attrList) {
     // go through each one
     // if it's not in the "checked" list, go through the rest of
     std::list<std::string> alreadyCounted;
-    for (std::string searching : attrList) {
+    for (const std::string& searching : attrList) {
         // if the thing is already counted, skip it
         if (std::find(alreadyCounted.begin(), alreadyCounted.end(), searching) != std::end(alreadyCounted)){
             continue;
@@ -272,7 +272,7 @@ PolicyParser::processAttributes(const std::list<std::string>& attrList) {
 
         // search through attributes for ones of the same type as the current one
         // OR attributes of similar types
-        for (std::string attr : attrList) {
+        for (const std::string& attr : attrList) {
             if (parseAttribute(searching).first == parseAttribute(attr).first) {
                 if (!building.empty()) {
                     building += " OR ";
