@@ -49,7 +49,7 @@ using ConfigSection = boost::property_tree::ptree;
 class PolicyParser
 {
 public:
-  explicit PolicyParser(std::basic_string<char> availableStreams);
+  explicit PolicyParser(const std::basic_string<char>& availableStreams);
 
   void
   parseAvailableStreams(const std::basic_string<char>& streamsFilePath);
