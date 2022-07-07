@@ -1,7 +1,8 @@
 #include "iostream"
-#include "../src/server/util/name-tree.cpp"
+#include "../src/controller/parser.cpp"
 int main(){
-    std::cout << "hello world" << std::endl;
-    mguard::util::nametree::NameTree nameTree;
+    std::cout << "sandbox run:" << std::endl;
+    mguard::parser::PolicyParser p("../policies/available_streams");
+    auto a = p.parsePolicy("../policies/policy1");
     return 0;
 }
