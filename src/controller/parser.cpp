@@ -243,14 +243,6 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     // AND together all separate conditions made for the output policy
     std::string abePolicy = doStringThing(policy, "AND");
 
-    // output
-    std::fstream file;
-    file.open("parser_output", std::ios::app);
-    for (const auto &requester: requesterNames) {
-        file << requester << '\t' << abePolicy << std::endl;
-    }
-    file.close();
-
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
