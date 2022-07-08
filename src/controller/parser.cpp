@@ -4,7 +4,7 @@
 #include <iostream>
 #include <utility>
 
-//NDN_LOG_INIT(mguard.parser);
+NDN_LOG_INIT(mguard.parser);
 
 namespace pt = boost::property_tree;
 namespace mguard {
@@ -21,7 +21,7 @@ PolicyParser::PolicyParser(const std::basic_string<char>& availableStreams)
 void
 PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath)
 {
-//  NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
+  NDN_LOG_INFO("processing available stream path: " << streamsFilePath);
   // input for available streams
   availableStreams.clear();
   availableStreamLevels.clear();
@@ -37,7 +37,7 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
   for (const auto &item : section.get_child("available-streams"))
   {
     // add stream to list of streams
-//    NDN_LOG_TRACE("stream name: " << item.first);
+    NDN_LOG_TRACE("stream name: " << item.first);
     availableStreams.push_back(item.first);
     // note: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
     // adding all parents of given stream to list
@@ -104,7 +104,6 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     std::ifstream input (policyFilePath.c_str());
     // parsing of policy
 
-//    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
    // loading input file into sections
     ConfigSection section;
     pt::read_info(input, section);
@@ -188,7 +187,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
 
     // warning for denied stream covering all of an allowed stream
     for (const std::string& warning : allowDenyWarning) {
-//        NDN_LOG_WARN(warning);
+        NDN_LOG_WARN(warning);
     }
 
     // error for if no streams are allowed
@@ -223,6 +222,8 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     // putting it all all together
     // AND together all separate conditions made for the output policy
     std::string abePolicy = doStringThing(policy, "AND");
+
+    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
 
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
