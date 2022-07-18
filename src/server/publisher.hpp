@@ -3,7 +3,7 @@
 
 #include "file-processor.hpp"
 #include "util/stream.hpp"
-#include "util/repo-inserter.cpp"
+#include "util/repo-inserter.hpp"
 
 #include <PSync/partial-producer.hpp>
 #include <nac-abe/attribute-authority.hpp>
@@ -30,10 +30,21 @@ public:
               const ndn::security::Certificate& attrAuthorityCertificate);
 
   void
-  doUpdate(ndn::Name& manifestName);
+  doUpdate(ndn::Name manifestName);
+
+  // void 
+  // repoWriteHandler(const boost::system::error_code& err, size_t bytes_transferred);
 
   void
-  publish(ndn::Name& dataName, std::string data, util::Stream& stream);
+  clearBuffer() 
+  {
+    m_ckBuffer.clear();
+    m_dataBuffer.clear();
+  }
+
+  void
+  publish(ndn::Name& dataName, std::string data, util::Stream& stream,
+          std::vector<std::string> semLocAttrList);
 
   void
   publishManifest(util::Stream& stream);
@@ -73,6 +84,9 @@ private:
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_authorityCert;
   ndn::nacabe::CacheProducer m_abe_producer;
+
+  std::vector<ndn::Data> m_ckBuffer;
+  std::vector<ndn::Data> m_dataBuffer;
 };
 
 } // mguard

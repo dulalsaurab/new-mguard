@@ -9,16 +9,31 @@
 #include <sstream>
 #include <iostream>
 
+#include <boost/program_options/options_description.hpp>
+#include <boost/program_options/variables_map.hpp>
+#include <boost/program_options/parsers.hpp>
+
 using namespace ndn::time_literals;
 using namespace Glib;
 using namespace Gtk;
+
+NDN_LOG_INIT(mguard.examples.consumerApp);
+
+static void
+usage(const boost::program_options::options_description& options)
+{
+  NDN_LOG_INFO("Usage: ndnsd-consumer [options] e.g. printer \n" << options);
+   exit(2);
+}
 
 class mGuardConsumer
 {
 public:
 
-  mGuardConsumer()
-  : m_subscriber("/org/md2k/A", "/org/md2k", 1600_ms,
+ mGuardConsumer(ndn::Name& consumerPrefix, ndn::Name& syncPrefix, ndn::Name& controllerPrefix,
+                std::string& consumerCertPath, std::string& aaCertPath)
+ : m_subscriber(consumerPrefix, syncPrefix, controllerPrefix,
+                 consumerCertPath, aaCertPath, 1000_ms,
                  std::bind(&mGuardConsumer::processDataCallback, this, _1),
                  std::bind(&mGuardConsumer::processSubscriptionCallback, this, _1))
   {
@@ -28,7 +43,7 @@ public:
   processDataCallback(const std::vector<std::string>& updates)
   {
     for (auto &a : updates)
-      std::cout << "received data: " << a << std::endl;
+      NDN_LOG_INFO("received data: " << a);
   }
 
   void
@@ -36,46 +51,75 @@ public:
   {
     // check for convergence.
     m_subscriber.checkConvergence();
-    
+
     // stop the process event
     m_subscriber.stop();
 
-    std::cout << "\n\nStreams available for subscription" << std::endl;
+    NDN_LOG_INFO("\n\nStreams available for subscription");
     std::vector<ndn::Name> availableStreams, subscriptionList;
     int counter=0;
     if (streams.size() <= 0)
     {
-      std::cout << "No eligible stream found for your policy" << std::endl;
+      NDN_LOG_INFO("No eligible stream found for your policy");
     }
     for (auto &a : streams)
     {
-      std::cout << ++counter << ": " << a << std::endl;
+      NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);
     }
 
     // these codes are only for testing purposes
-    std::vector<int> input; //
-    std::cout << "enter selection, enter any char to stop" << std::endl;
-    while(!std::cin.fail())
-    {
-        int value;
-        std::cin >> value;
-        if(!std::cin.fail())
-          input.push_back(value);
-    }
-    std::cout << "\n" << std::endl;
-    std::cout << "Subscribed to the stream/s" << std::endl;
-    for (auto k : input)
-    {
-      auto ind = k-1;
-      std::cout << k << ": " << availableStreams[ind] << std::endl;
-      if (availableStreams[ind] != "/") // todo: fix this
-        subscriptionList.push_back(availableStreams[ind]);
-    }
-    m_subscriber.setSubscriptionList(subscriptionList);
+    // automatically subscriber to the respective streams
 
+    // A. battery only 
+    subscriptionList.push_back(availableStreams[0]); // battery 
+
+    // all stream
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[1]); // semloc
+    // subscriptionList.push_back(availableStreams[3]); // gps
+
+    // not gps
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[2]); // sem_loc
+
+    // accelerometer
+    // subscriptionList.push_back(availableStreams[0]); // battery 
+
+    // only work
+    // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
+
+    for (auto& s: subscriptionList) {
+      // m_subscriber.subscribe(s);
+      NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
+    }
+    // uncomment if: taking input from user ----------------------------------------------
+    
+    // std::vector<int> input; //
+    // std::cout << "enter selection, enter any char to stop" << std::endl;
+    // while(!std::cin.fail())
+    // {
+    //     int value;
+    //     std::cin >> value;
+    //     if(!std::cin.fail())
+    //       input.push_back(value);
+    // }
+    // std::cout << "\n" << std::endl;
+    // std::cout << "Subscribed to the stream/s" << std::endl;
+    // for (auto k : input)
+    // {
+    //   auto ind = k-1;
+    //   std::cout << k << ": " << availableStreams[ind] << std::endl;
+    //   if (availableStreams[ind] != "/") // todo: fix this
+    //     subscriptionList.push_back(availableStreams[ind]);
+    // }
+   
+    // taking input from user end ----------------------------------------------
+
+    m_subscriber.setSubscriptionList(subscriptionList);
     // run the processevent again, this time with sync as well
     m_subscriber.run(true);
+    // m_subscriber.run();
 
   }
 
@@ -90,135 +134,54 @@ private:
   mguard::subscriber::Subscriber m_subscriber;
 };
 
-
-
-
-class Form : public Window {
-public:
-  Form() {
-
-    add(scrolledWindow);
-    set_size_request(800, 600);
-    scrolledWindow.add(fixed);
-
-    
-    tabControl1.set_size_request(800, 600);
-    fixed.add(tabControl1);
-
-    tabControl1.insert_page(tabPage1, "tabPage1", 0);
-    tabControl1.insert_page(tabPage2, "Subscribed Streams", 1);
-
-    labelPage1.set_label("Accessible Stream");
-    tabControl1.set_tab_label(tabPage1, labelPage1);
-
-    tabPage1.add(fixedTabPage1);
-
-
-// content of accessible stream page
-
-    // create a grid to add content inside the scrollwindow
-    //set difference between rows and columns in the grid
-    grid.set_row_spacing(5);
-    grid.set_column_spacing(5);
-    grid.set_margin_top(10);
-    grid.set_margin_bottom(10);
-    grid.set_margin_left(10);
-    grid.set_margin_right(10);
-    
-
-    fixedTabPage1.add(grid);
-
-    // show streams with attributes
-    for(int i = 0; i < 8; i=i+2)
-    {
-        Gtk::Label *stream_name = Gtk::manage(new Gtk::Label());
-        stream_name->set_markup("<b> Streams: </b> org/md2k/health/home");
-        grid.attach(*stream_name, 1, i);
-        Gtk::Button *stream_btn = Gtk::manage(new Gtk::Button("Subscribe"));
-        grid.attach(*stream_btn, 2, i);
-        Gtk::Label *attribute_list = Gtk::manage(new Gtk::Label());
-        attribute_list->set_markup("<b> Attributes: </b> home, gym, health");
-        grid.attach(*attribute_list, 1, i+1);
-  }
-
-
- //second page
-
-    tabPage2.add(fixedTabPage2);
-    // create a grid to add content inside the scrollwindow
-    Gtk::Grid *sub_grid = Gtk::manage(new Gtk::Grid);
-    //set difference between rows and columns in the grid
-    sub_grid->set_row_spacing(5);
-    sub_grid->set_column_spacing(5);
-    sub_grid->set_margin_top(10);
-    sub_grid->set_margin_bottom(10);
-    sub_grid->set_margin_left(10);
-    sub_grid->set_margin_right(10);
-
-    fixedTabPage2.add(*sub_grid);
-
- 
-    // show streams with attributes
-    for(int i = 0; i < 50; i=i+5)
-    {
-        Gtk::Label *stream_name = Gtk::manage(new Gtk::Label());
-        stream_name->set_markup("<b> Streams: </b> org/md2k/health/home");
-        sub_grid->attach(*stream_name, 1, i);
-        Gtk::Label *attribute_list = Gtk::manage(new Gtk::Label());
-        attribute_list->set_markup(" timestamp: 2019-01-09 18:27:23");
-        sub_grid->attach(*attribute_list, 1, i+1);
-        Gtk::Label *details= Gtk::manage(new Gtk::Label());
-        details->set_markup(" level: 68.5599999999839");
-        sub_grid->attach(*details, 1, i+2);
-
-        Gtk::Label *details2= Gtk::manage(new Gtk::Label());
-        details2->set_markup(" voltage: 3700");
-        sub_grid->attach(*details2, 1, i+3);
-        Gtk::Label *details3= Gtk::manage(new Gtk::Label());
-        details3->set_markup(" temperature:70");
-        sub_grid->attach(*details3, 1, i+4);
-  }
-
-
-    set_title("MGuard");
-    show_all();
-  }
-  
-private:
-  Fixed fixed;
-  ScrolledWindow scrolledWindow;
-  Notebook tabControl1;
-  Label labelPage1;
-  Frame tabPage1;
-  Frame tabPage2;
-  RadioButtonGroup radioButtonGroup;
-  RadioButton radioTop;
-  RadioButton radioLeft;
-  RadioButton radioRight;
-  RadioButton radioBottom;
-  Fixed fixedTabPage1;
-  Fixed fixedTabPage2;
-  ScrolledWindow streamDetail;
-  Fixed streamDetailFixed;
-  Grid grid;
-
-};
-
-
-
-int 
-main (int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
 
-  // std::vector<std::string> subscriptionList {"/org/md2k/mguard/dd40c/phone/gps"};
-  // mGuardConsumer consumer (subscriptionList);
-  // consumer.handler();
- 
+  std::string applicationPrefix;
+  std::string certPath;
 
-  RefPtr<Application> application = Application::create(argc, argv);
-  Form form;
-  return application->run(form);
+  namespace po = boost::program_options;
+  po::options_description visibleOptDesc("Options");
 
-  // mGuardConsumer consumer;
-  // consumer.handler();
+  visibleOptDesc.add_options()
+    ("help,h",      "print this message and exit")
+    ("applicationPrefix,p", po::value<std::string>(&applicationPrefix)->required(), "application prefix, this name needs to match the one controller has")
+    ("certificatePath,c", po::value<std::string>(&certPath), " location of consumer certificate")
+  ;
+  
+  try
+  {
+    po::variables_map optVm;
+    po::store(po::parse_command_line(argc, argv, visibleOptDesc), optVm);
+    po::notify(optVm);
+
+    if (optVm.count("applicationPrefix")) {
+      if (applicationPrefix.empty())
+      {
+        std::cerr << "ERROR: applicationPrefix cannot be empty" << std::endl;
+        usage(visibleOptDesc);
+      }
+    }
+    if (optVm.count("certificatePath")) {
+      if (certPath.empty())
+      {
+        std::cerr << "ERROR: certificatePath cannot be empty" << std::endl;
+        usage(visibleOptDesc);
+      }
+    }
+
+  }
+  catch (const po::error& e) {
+    std::cerr << "ERROR: " << e.what() << std::endl;
+    usage(visibleOptDesc);
+  }
+
+  ndn::Name consumerPrefix(applicationPrefix);
+  ndn::Name syncPrefix = "/ndn/org/md2k";
+  ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
+  // std::string consumerCertPath = "certs/A.cert";
+  std::string aaCertPath = "certs/aa.cert";
+  mGuardConsumer consumer (consumerPrefix, syncPrefix, controllerPrefix, certPath, aaCertPath);
+  consumer.handler();
 }

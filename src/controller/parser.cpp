@@ -26,6 +26,7 @@ PolicyParser::PolicyParser(std::basic_string<char> availableStreams)
 
 PolicyDetail
 PolicyParser::getPolicyInfo() {
+    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
     return {policyID, calculatedStreams,requesterNames, abePolicy};
 }
 
@@ -33,6 +34,7 @@ bool
 PolicyParser::inputStreams(const std::basic_string<char>& streamsFilePath) {
     // todo: should probably reset everything that would be stored in parser
     // just so that you can't get old data after redoing global variables
+    NDN_LOG_INFO("processing available stream path: " << availableStreamsPath);
     availableStreamsPath = streamsFilePath;
     return inputStreams();
 }
@@ -148,18 +150,28 @@ PolicyParser::parsePolicy(std::istream& input) {
         }
     }
 
+    // reset per-policy variables
+    calculatedStreams.clear();
+    allowedStreams.clear();
+    allowedAttributes.clear();
+    deniedStreams.clear();
+    deniedAttributes.clear();
+
     // REQUIRED attribute-filters section
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
-
     pt::ptree filterTree = section.get_child("attribute-filters");
     processAttributeFilter(filterTree.get_child("allow"), true);
-    processAttributeFilter(filterTree.get_child("deny"), false);
+    try {
+        processAttributeFilter(filterTree.get_child("deny"), false);
+    }
+    catch (std::exception &e) {
+    }
 
     return true;
 }
 
-bool 
+void
 PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed) 
 {
   // go through all filters in the allow/deny section
@@ -190,7 +202,6 @@ PolicyParser::processAttributeFilter(pt::ptree &section, bool isAllowed)
   if (isAllowed && allowedStreams.empty()){
       throw std::runtime_error("\"allow\" section needs at least one stream name");
   }
-  return true;
 }
 
 bool 
@@ -243,7 +254,7 @@ PolicyParser::generateABEPolicy() {
     // todo: see how to do this with ndn logs
     // warning for denied stream covering all of an allowed stream
     for (const std::string& warning : allowDenyWarning) {
-        std::cerr << warning << std::endl;
+        NDN_LOG_WARN(warning);
     }
 
     // error for if no streams are allowed

@@ -22,39 +22,39 @@
 
 ;md2k streams converted into ndn data streams
 available-streams
-{
-  /org/md2k/mguard/dd40c/phone/gps
-  /org/md2k/mguard/dd40c/phone/accelerometer
-  /org/md2k/mguard/dd40c/phone/accelerometer
-  /org/md2k/mguard/dd40c/phone/battery
-  /org/md2k/mguard/dd40c/phone/gyroscope
-  /org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
-  /org/md2k/mguard/dd40c/data_analysis/physical_acitivity
+{ 
+  /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+  /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+  /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+  /ndn/org/md2k/mguard/dd40c/phone/battery
+  /ndn/org/md2k/mguard/dd40c/phone/gps
 }
 
 attributes
 {
-    /org/md2k/attribute/location/home
-    /org/md2k/attribute/location/work
-    /org/md2k/attribute/location/commuting
-    /org/md2k/attribute/location/casino
-    /org/md2k/attribute/location/oakland
-    /org/md2k/attribute/location/SoCal
-    /org/md2k/attribute/location/gym
-    /org/md2k/attribute/location/shopping-mall
-    /org/md2k/attribute/activity/smoking
-    /org/md2k/attribute/activity/walking
-    /org/md2k/attribute/activity/running
-    /org/md2k/attribute/activity/eating
-    /org/md2k/attribute/activity/drinking
-    /org/md2k/attribute/activity/sleeping
+    /ndn/org/md2k/attribute/location/home
+    /ndn/org/md2k/attribute/location/work
+    /ndn/org/md2k/attribute/location/commuting
+    /ndn/org/md2k/attribute/location/casino
+    /ndn/org/md2k/attribute/location/oakland
+    /ndn/org/md2k/attribute/location/SoCal
+    /ndn/org/md2k/attribute/location/gym
+    /ndn/org/md2k/attribute/location/shopping-mall
+    /ndn/org/md2k/attribute/activity/smoking
+    /ndn/org/md2k/attribute/activity/walking
+    /ndn/org/md2k/attribute/activity/running
+    /ndn/org/md2k/attribute/activity/eating
+    /ndn/org/md2k/attribute/activity/drinking
+    /ndn/org/md2k/attribute/activity/sleeping
 }
 
 ; current users
 requesters
 {
-  user /org/md2k/A
-  user /org/md2k/B
-  user /org/md2k/C
-  user /org/md2k/D
+  user /ndn/org/md2k/A
+  user /ndn/org/md2k/B
+  user /ndn/org/md2k/C
+  user /ndn/org/md2k/D
+  user /ndn/org/md2k/E
+  user /ndn/org/md2k/F
 }

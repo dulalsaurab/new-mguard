@@ -46,7 +46,7 @@ public:
     call this after the database is populated, or else it won't work timestamp is in the format YYYYMMDDHHMMSS
   */
   std::vector<std::string>
-  getSemanticLocations(const std::string &timestamp, const std::string &userID);
+  getSemanticLocations(const std::string& timestamp, const std::string& userID);
 
   std::vector<std::string>
   getRowToInsert(std::string row);

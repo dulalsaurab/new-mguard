@@ -1,121 +1,114 @@
-from datetime import datetime
-from ipaddress import summarize_address_range
-
-from numpy import number
 from generator import get_cc
 
 import socket
-import pandas as pd
-from pathlib  import Path
+import os
 from time import sleep
 import sys
-import pickle
-import os
+import shutil
 
 BUFFER_SIZE = 1024
-user_id = 'dd40c'
-study_name =  'mguard'
+
 
 class Sender:
-  def __init__(self, port):
-    self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    self.conn.connect(('localhost', port))
+    def __init__(self, port):
+        self.conn = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.conn.connect(('localhost', port))
 
-  def send(self, payload):
-    self.conn.send(payload.encode('utf-8'))
+    def send(self, payload):
+        self.conn.send(payload.encode('utf-8'))
 
-  def close(self):
-    self.conn.close()
+    def close(self):
+        self.conn.close()
 
-def getSender():
-  port = 8808
-  print('Sender initialize')
-  sender = Sender(port)
-  return sender
 
-def sendStream(stream_name, data, senderObj):
-  _size = sys.getsizeof(data)
-  number_of_chunks = int(_size/BUFFER_SIZE) + 1
-  metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
-  print(_size, metadata)
-  senderObj.send(metadata)
-  sleep(1) # sleep one second after sending the header
-  print (data)
-  senderObj.send(data)
-  sleep(10) # sleep 10 seconds after sending the first stream
-  print("sending data completed")
-  senderObj.close()
+def get_sender():
+    port = 8808
+    print('Sender initialize')
+    sender = Sender(port)
+    return sender
 
+
+def send_stream(stream_name, data, sender_obj):
+    print("Sending data for stream name {}".format(stream_name))
+
+    _size = sys.getsizeof(data)
+    number_of_chunks = int(_size / BUFFER_SIZE) + 1
+    metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
+    print("Metadata of the stream {}".format(metadata))
+
+    sender_obj.send(metadata)
+    # sleep a few seconds after sending the metadata
+    #change for 16 min to 20 sec
+    print("Sleeping for 10 second after sending meta data")
+    sleep(20)
+
+    sender_obj.send(data)
+    # sleep X seconds after sending the first stream. 
+    # this is because the data-adapter needs to process the previous packet i.e. metadata
+    #change for 16 min to 100 sec 
+    print("Sleeping for 20 sec after sending first stream")
+
+    sleep(40)
+    sender_obj.close()
 
 def main():
+    """Wrapper code for data generation and transport to producer via socket
 
-  '''
-      names:
-      semantic_location
-      battery
-      location
-      accel
-      gyro
-  '''
-  if not os.path.isfile("dataSet.pkl"):
-    cc_Obj, streams = get_cc()
+    The code below will fetch data for datatime starting from 2022-05-01 till 2022-05-20
+    for each of these dates, data for time range 10:00:00 - 10:00:10 i.e. 10 minutes equivalent of data
+    will be generated and send to data adapter. As said, the process will continue for 20 iterations.
 
-    # first send semantic_location stream
-    stream_name = streams['semantic_location']
-    print ("getting data for semantic loaction stream: ", stream_name)
+    :var: total_number_of_batches int number of times we will generate the data and send it
+    """
+    total_number_of_batches = 5
 
-    data = cc_Obj.get_stream(stream_name).toPandas().to_csv()
-    # sendStream(stream_name, data, senderObj = getSender())
-    with open("semLoc.pkl", "wb") as of1:
-      pickle.dump(data, of1)
+    current_batch = 1
+    while current_batch <= total_number_of_batches:
+        # removing the old stream data if exists
+        try:
+            shutil.rmtree(os.environ['HOME'] + '/cc_data/')
+        except FileNotFoundError:
+            print('No existing data to be deleted')
 
-    del streams['semantic_location'] # remove from dict after sending
-    print ("Remaining streams to send: ", streams.keys())
+        start_time = '2022-05-0{} 10:00:00'.format(current_batch)
+        #50
+        # end_time = '2022-05-0{} 10:0:51'.format(current_batch)
+        #100
+        # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
+        # 150
+        # end_time = '2022-05-0{} 10:02:31'.format(current_batch)
+        # 200 
+        # end_time = '2022-05-0{} 10:03:21'.format(current_batch)
+        # 250 
+        # end_time = '2022-05-0{} 10:04:11'.format(current_batch)
+        # 300 
+        # end_time = '2022-05-0{} 10:05:01'.format(current_batch)
+        # 400 
+        # end_time = '2022-05-0{} 10:06:41'.format(current_batch)
+        # 500 
+        end_time = '2022-05-0{} 10:08:21'.format(current_batch)
 
-    dataSet = {}
-    for stream in streams:
-      stream_name = streams[stream]
-      print ("getting data for stream name: ", stream_name)
-      dataSet[stream_name] = cc_Obj.get_stream(stream_name).toPandas()
+        print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 
-    with open("dataSet.pkl", "wb") as of2:
-      pickle.dump(dataSet, of2)
+        cc_obj, streams = get_cc(start_time, end_time)
+        for stream in streams:
+            stream_name = streams[stream]
+            sender_obj = get_sender()
+            data = cc_obj.get_stream(stream_name).toPandas()
 
-  else:
-    with open ("semLoc.pkl", "rb") as inpf1:
-      semLocData = pickle.load(inpf1)
+            # uncomment for debugging
+            # data1 = data
+            # data1.to_csv(str(current_batch) + '_' + stream_name, index=False)
 
-    with open ("dataSet.pkl", "rb") as inpf2:
-      dataSet = pickle.load(inpf2)
+            print("Sample data from the stream: \n", data[:10])
+            send_stream(stream_name, data.to_csv(), sender_obj)
+        
+        print("sending data for batch: {}, completed".format(current_batch))
+        current_batch += 1
+        print("Sleeping after sending batch data for 60 seconds")
+        sleep(60)  # testing: sleep for X minute and send another batch
 
-  # 1. send semantic location data
-  stream_name = 'org--md2k--{}--{}--data_analysis--gps_episodes_and_semantic_location'.format(study_name, user_id)
-  senderObj = getSender()
-  sendStream(stream_name, semLocData, senderObj)
-
-  # we will get all the data at once, and publish x number of rows in a batch except semantic loacation data
-  # for example, if an stream contains 1000 rows, 10 batch will be sent each containing 100 rows
-  start = 0
-  end = 100
-
-  while(True):
-
-    if not dataSet:
-      break
-
-    for stream_name in dataSet:
-      print ("sending data for stream: ", stream_name)
-      senderObj = getSender()
-      data = dataSet[stream_name][start:end]
-      if data.size == 0:
-        del dataSet[stream_name]
-        continue
-      print (data)
-      sendStream(stream_name, data.to_csv(), senderObj)
-
-    start = end
-    end = end + 100
-    sleep (60) # testing: sleep for 1 minute and send another batch
+    print ("sending data for all the batch completed")
 
 if __name__ == '__main__':
     main()

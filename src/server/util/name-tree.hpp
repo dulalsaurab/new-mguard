@@ -23,6 +23,8 @@ namespace mguard {
 namespace util {
 namespace nametree {
 
+// const ndn::Name ignoreDefaultPrefix("/mguard/ignore");
+
 struct TreeNode
 {
   std::vector<TreeNode*> m_children;
@@ -63,18 +65,36 @@ public:
   void
   insertName(ndn::Name name);
 
+  /** 
+   * @brief Search if a name exist in the tree, return node pointer if the name is found
+   *  @param startFrom node pointer, starting node of the search
+   *  @param name name prefix to search for
+  */
   ndn::optional<TreeNode*>
   search(TreeNode* startFrom, ndn::Name name);
 
+  /** 
+   * @brief get all the leaf (names) of a name prefix in the tree
+   *  @param name name to get leafs for
+   *  for the above example, if the prefix is aa, this function will return /aa/bb,
+   *  /aa/ff/kk, /aa/ff/kk/mm/cc
+  */
   std::vector<ndn::Name>
-  getAllLeafs(ndn::Name prefix);
+  getAllLeafs(ndn::Name prefix, ndn::Name ignore = "/mguard/ignore");
   
   TreeNode*
   getParent(ndn::Name name);
 
+  /** 
+   * @brief get all the childrens (names) of a name prefix in the tree
+   *  @param name name to get childrens for
+   *  for the above example, if the name prefix is aa, this function will return /aa/bb,
+   *  /aa/ff, /aa/ff/kk, /aa/ff/kk/mm, /aa/ff/kk/mm/cc
+  */
   std::vector<ndn::Name>
   getAllChildrens(ndn::Name name);
 
+  /* return logest match prefix of a name */
   ndn::Name
   longestPrefixMatch(ndn::Name name);
 
@@ -89,7 +109,7 @@ private:
   createNode(std::string nodeId, ndn::Name fullName);
 
   void
-  getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs);
+  getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore);
 
   std::pair<TreeNode*, ndn::Name>
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);

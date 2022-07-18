@@ -2,12 +2,12 @@
 streams
 {
   ;<stream-id> <stream-name> 
-  1, org.md2k/mguard/dd40c/phone/gps_coordinates
-  2, org.md2k/mguard/dd40c/phone/accelerometer
-  3, org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
-  4, org.md2k/mguard/dd40c/phone/gyroscope
-  5, org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
-  6, org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.physical_acitivity
+  1, /ndn/org/md2k/mguard/dd40c/phone/gps_coordinates
+  2, /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+  3, /ndn/org/md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+  4, /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+  5, /ndn/org/md2k/mperf/dd40c/data_analysis/gps_episodes_and_semantic_location
+  6, /ndn/org/md2k/mperf/dd40c/data_analysis/physical_acitivity
 }
 
 attribute-mapping

@@ -40,12 +40,11 @@ public:
 class Subscriber
 {
 public:
-  Subscriber(const ndn::Name& consumerPrefix,
-             const ndn::Name& syncPrefix, 
-             ndn::time::milliseconds syncInterestLifetime,
-            //  std::vector<std::string>& subscriptionList,
-             const DataCallback& dataCallback,
-             const SubscriptionCallback& subscriptionCallback);
+  Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPrefix,
+             const ndn::Name& controllerPrefix, const std::string& consumerCertPath,
+             const std::string& aaCertPath, ndn::time::milliseconds syncInterestLifetime,
+             const DataCallback& callback, const SubscriptionCallback& subCallback);
+
 
   void
   run(bool runSync = false);
@@ -122,9 +121,11 @@ public:
 private:
   ndn::Face m_face;
   ndn::security::KeyChain m_keyChain;
+  ndn::Scheduler m_scheduler;
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
+  ndn::Name m_controllerPrefix;
   std::unordered_map<ndn::Name, uint64_t> m_prefixToLowSeq;
   std::vector<ndn::Name> m_subscriptionList;
 
@@ -132,6 +133,7 @@ private:
   // and eligible streams are determined from the policy
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams; // name, sequence number
   std::unordered_set<ndn::Name> m_eligibleStreams;
+  std::map<ndn::Name, int> m_retransmissionCount;
   ndn::nacabe::algo::PrivateKey decryptionKey;
   ndn::nacabe::Consumer m_abe_consumer;
 

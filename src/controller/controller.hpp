@@ -2,6 +2,7 @@
 #define MGUARD_CONTROLLER_HPP
 
 #include "parser.hpp"
+#include "common.hpp"
 
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/cache-producer.hpp>
@@ -22,6 +23,8 @@ class Controller
 {
 public:
   Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPrefix, 
+             const std::string& aaCertPath,
+             const std::map<ndn::Name, std::string>& requesterCertMap,
              const std::string& availableStreamsFilePath);
 
   ndn::nacabe::KpAttributeAuthority&
@@ -32,6 +35,16 @@ public:
 
   void
   run();
+
+  const std::string
+  getRequesterCertPath(const ndn::Name& requester)
+  {
+    auto it = m_requestersCertPath.find(requester);
+    if (it != m_requestersCertPath.end())
+      return it->second;
+    
+    return {}; // return empty string, can be better
+  }
 
   /**
    * @brief read and parse the mGuard policy
@@ -90,9 +103,8 @@ private:
   
   const ndn::Name& m_controllerPrefix;
   const ndn::Name& m_aaPrefix;
-
+  const std::map<ndn::Name, std::string> m_requestersCertPath;
   parser::PolicyParser m_policyParser;
-  ndn::security::Certificate m_aaCert;
   ndn::nacabe::KpAttributeAuthority m_attrAuthority;
 
 };

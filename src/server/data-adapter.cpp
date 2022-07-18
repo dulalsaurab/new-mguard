@@ -3,6 +3,9 @@
 
 #include <iostream>
 #include <string>
+#include <sstream>
+#include <ctime>
+#include <typeinfo>
 
 // using namespace boost::placeholders;
 
@@ -39,9 +42,9 @@ ConnectionHandler::start()
 void
 ConnectionHandler::readContent(const boost::system::error_code& err, size_t bytes_transferred)
 {
-  std::cout << "Header received from the socket " << data << std::endl;
+  NDN_LOG_INFO("Header received from the socket " << data);
   boost::split(metaData, data, boost::is_any_of("|"));
-  std::cout << "expected number of chunks: " << getExpectedNumberOfChunks() << std::endl;
+  NDN_LOG_INFO("expected number of chunks: " << getExpectedNumberOfChunks());
   
   // todo: need to replace this function, read exact number of bytes as expected 
   async_read(sock, response_,
@@ -81,9 +84,9 @@ void
 ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
   if (!err) {
-      cout << "Server sent Hello message!"<< endl;
+      NDN_LOG_INFO("Server sent Hello message!");
   } else {
-      std::cerr << "error: " << err.message() << endl;
+      NDN_LOG_ERROR("error: " << err.message());
       sock.close();
   }
 }
@@ -129,11 +132,13 @@ Receiver::handleAccept(ConnectionHandler::pointer connection, const boost::syste
 }
 
 DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
-                         const ndn::Name& aaPrefix, const std::string& lookupDatabase)
+                         const std::string& producerCertPath,
+                         const ndn::Name& aaPrefix, const std::string& aaCertPath,
+                         const std::string& lookupDatabase)
 : m_face(face)
 , m_producerPrefix(producerPrefix)
-, m_producerCert(m_keyChain.getPib().getIdentity(producerPrefix).getDefaultKey().getDefaultCertificate())
-, m_ABE_authorityCert(m_keyChain.getPib().getIdentity(aaPrefix).getDefaultKey().getDefaultCertificate())
+, m_producerCert(*loadCert(producerCertPath))
+, m_ABE_authorityCert(*loadCert(aaCertPath))
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
 , m_receiver(m_face.getIoService(), 
             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
@@ -149,9 +154,9 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
 void
 DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
 {
-  NDN_LOG_DEBUG("Received data from the receiver"); 
-  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n");
-
+  NDN_LOG_DEBUG("Received data from the receiver");
+  auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
+  
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
     NDN_LOG_DEBUG("Received semantic location data");
@@ -187,27 +192,54 @@ DataAdapter::stop()
 ndn::Name
 DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 {
-  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << "and timestamp: " << timestamp);
+  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << " and timestamp: " << timestamp);
   return streamName.append("DATA").append(timestamp);
 }
 
 void
 DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
 {
-  NDN_LOG_INFO("Processing stream: " << stream.getName());
-
+  auto streamName = stream.getName();
+  NDN_LOG_INFO("Processing stream: " << streamName);
+  bool isLast = false;
   for (auto data : dataSet)
   {
+    char timestamp [80];
+    struct tm tm;
     // get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
-    auto timestamp = m_tempRow.substr(0, m_tempRow.find(delimiter));
-    auto dataName = makeDataName(stream.getName(), timestamp);
-    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " Timestamp: " << timestamp);
+    auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
+    auto timestamp_unprocessed = _tvec[1];
 
+    NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
+
+    if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
+      std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
+      NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
+    }
+
+    auto dataName = makeDataName(streamName, timestamp);
+    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
+
+    std::vector<std::string> semLocAttrList;
+    if (streamName == NDN_LOCATION_STREAM){
+      try { 
+        auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+        for (auto& attr: semAttr) {
+          auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
+          NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
+          semLocAttrList.push_back(_semLocAttr.toUri());
+        }
+      }
+      catch (const std::exception& ex) {
+        NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+      }
+    }
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    m_dataBase.getSemanticLocations(timestamp, "dd40c");
-    m_publisher.publish(dataName, data, stream);
+    // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
+    // std::this_thread::sleep_for (std::chrono::milliseconds(20));
+    m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
 }
 

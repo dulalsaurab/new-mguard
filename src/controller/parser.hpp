@@ -27,18 +27,7 @@ struct PolicyDetail
 
 using ConfigSection = boost::property_tree::ptree;
 
-class attributeFilter {
-
-public:
-  attributeFilter(bool isAllowed, std::string attribute);
-  friend std::ostream &operator<<(std::ostream &os, const attributeFilter &parameter);
-
-private:
-  bool isAllowed;
-  std::string attribute;
-};
-
-class PolicyParser 
+class PolicyParser
 {
 public:
   explicit PolicyParser(std::basic_string<char> availableStreams);
@@ -76,7 +65,7 @@ private:
   bool 
   parsePolicy(std::istream &input);
 
-  bool 
+  void
   processAttributeFilter(ConfigSection &section, bool isAllowed);
 
   static bool 
@@ -85,14 +74,12 @@ private:
   static std::string 
   processAttributes(const std::list<std::string>& attrList);
 
-
   // full path of the config/policy file
   std::string availableStreamsPath;
 
   std::list<std::string> requesterNames; // this should be a list or array of some sort
   std::string policyID, abePolicy;
 
-  std::list<attributeFilter> filters;
   std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
   std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
 

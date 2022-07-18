@@ -3,6 +3,8 @@
 
 #include <nac-abe/attribute-authority.hpp>
 
+#include <boost/algorithm/string.hpp>
+
 #include <iostream>
 
 NDN_LOG_INIT(mguard.subscriber);
@@ -10,43 +12,44 @@ NDN_LOG_INIT(mguard.subscriber);
 namespace mguard {
 namespace subscriber {
 
-Subscriber::Subscriber(const ndn::Name& consumerPrefix,
-                       const ndn::Name& syncPrefix,
-                       ndn::time::milliseconds syncInterestLifetime,
-                      //  std::vector<std::string>& subscriptionList,
-                       const DataCallback& callback,
-                       const SubscriptionCallback& subCallback)
-: m_consumerPrefix(consumerPrefix)
+Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPrefix,
+                       const ndn::Name& controllerPrefix, const std::string& consumerCertPath,
+                       const std::string& aaCertPath, ndn::time::milliseconds syncInterestLifetime,
+                       const DataCallback& callback, const SubscriptionCallback& subCallback)
+: m_scheduler(m_face.getIoService())
+, m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
-// , m_subscriptionList(subscriptionList)
-, m_abe_consumer(m_face, m_keyChain, m_keyChain.getPib().getIdentity(m_consumerPrefix).getDefaultKey().getDefaultCertificate(),
-                 m_keyChain.getPib().getIdentity("/mguard/aa").getDefaultKey().getDefaultCertificate()) // todo: aa prefix should be in configuration file?
+, m_controllerPrefix(controllerPrefix)
+
+, m_abe_consumer(m_face, m_keyChain, *loadCert(consumerCertPath), *loadCert(aaCertPath))
+
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
                    std::bind(&Subscriber::receivedSyncUpdates, this, _1),
-                   2, 0.001) // 2 = expected number of prefix to subscriber to, need to handle this differently later
+                   3, 0.001, 1_s, 1600_ms) // 3 = expected number of prefix to subscriber to, need to handle this differently later
+                  // 10_s hello interset lifetime, 1600_ms sync interest life time
+                  // for us, the subscription happens at the begnning so we dont need to send hello interest that often 
 , m_ApplicationDataCallback(callback)
-, m_subCallback(subCallback)
+, m_subCallback(subCallback)  
 {
+  std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
-
+  std::this_thread::sleep_for (std::chrono::seconds(3));
   // get policy details from controller
   try {
-    ndn::Name interestName= "/mguard/controller";
+    ndn::Name interestName = m_controllerPrefix;
     interestName.append(m_consumerPrefix);
     NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
-    expressInterest(interestName);
+    expressInterest(interestName, true);
   }
-  catch (const std::exception& e)
-  {
-    NDN_LOG_ERROR("error: " << e.what()); 
+  catch (const std::exception& e) {
+    NDN_LOG_ERROR("error: " << e.what());
   }
-  std::this_thread::sleep_for (std::chrono::seconds(3));
   // This starts the consumer side by sending a hello interest to the producer
   // When the producer responds with hello data, receivedHelloData is called
   // m_psync_consumer.sendHelloInterest();
-  // std::this_thread::sleep_for (std::chrono::seconds(1));
+  
 }
 
 bool
@@ -57,8 +60,9 @@ Subscriber::checkConvergence()
   {
     if(m_abe_consumer.readyForDecryption())
       return true;
+    m_abe_consumer.obtainDecryptionKey();
     ++counter;
-    std::this_thread::sleep_for (std::chrono::seconds(2));
+    std::this_thread::sleep_for (std::chrono::seconds(3));
   }
   return false;
 }
@@ -68,18 +72,19 @@ Subscriber::run(bool runSync)
 {
   try {
     NDN_LOG_INFO("Starting Face");
-    
+
     if (runSync) {
       m_psync_consumer.sendHelloInterest();
+      m_psync_consumer.sendSyncInterest();
       // sleep some time for sync to kick in
-      NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
-      std::this_thread::sleep_for (std::chrono::seconds(5));
+      // NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
+      // std::this_thread::sleep_for (std::chrono::seconds(5));
     }
     m_face.processEvents();
   }
   catch (const std::exception& ex)
   {
-    NDN_LOG_ERROR("Face error: " << ex.what()); 
+    NDN_LOG_ERROR("Face error: " << ex.what());
     NDN_THROW(Error(ex.what()));
   }
 }
@@ -97,8 +102,8 @@ Subscriber::expressInterest(const ndn::Name& name, bool canBePrefix, bool mustBe
   NDN_LOG_INFO("Sending interest: "  << name);
   ndn::Interest interest(name);
   interest.setCanBePrefix(false);
-  interest.setMustBeFresh(false); //set true if want data explicit from producer.
-  interest.setInterestLifetime(160_ms);
+  interest.setMustBeFresh(mustBeFresh); //set true if want data explicit from producer.
+  interest.setInterestLifetime(200_ms);
 
   m_face.expressInterest(interest,
                          bind(&Subscriber::onData, this, _1, _2),
@@ -116,7 +121,23 @@ Subscriber::onData(const ndn::Interest& interest, const ndn::Data& data)
 void
 Subscriber::onTimeout(const ndn::Interest& interest)
 {
-  NDN_LOG_INFO("Interest: " << interest.getName() << " timed out ");
+  // we will retransmit 3 times if an interest times out
+  auto interestName = interest.getName();
+  NDN_LOG_INFO("Interest: " << interestName << " timed out ");
+  // one time re-transmission
+  auto it = m_retransmissionCount.find(interest.getName());
+
+  if (it == m_retransmissionCount.end()) {
+    NDN_LOG_INFO("Re-transmitting interest: " << interest.getName() << " retransmission count: " << 1);
+    m_retransmissionCount.emplace(interestName, 1); // will
+    expressInterest(interestName);
+    return;
+  }
+  if (it->second <= 3) {
+    expressInterest(interestName);
+    NDN_LOG_INFO("Re-transmitting interest: " << interest.getName() << " retransmission count: " << it->second);
+    it->second = it->second + 1;
+  }
 }
 
 void
@@ -126,12 +147,13 @@ Subscriber::subscribe(ndn::Name streamName)
   streamName.append("manifest");
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
-    NDN_LOG_INFO("Stream" << streamName << "not available for subscription");
+    NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
+    // schedule a hello interest in next 200 seconds
+    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
     return;
   }
   NDN_LOG_INFO("Subscribing to: " << streamName);
   m_psync_consumer.addSubscription(streamName, it->second);
-  m_psync_consumer.sendSyncInterest();
 }
 
 void
@@ -142,18 +164,22 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
   }
-  
-  // subscribe to streams present in the subscription list 
-  for (auto stream : m_subscriptionList)
-  {
+
+  // subscribe to streams present in the subscription list
+  for (auto stream : m_subscriptionList) {
     subscribe(stream);
   }
+  // m_psync_consumer.sendSyncInterest();
 }
 
 void
 Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates)
 {
   for (const auto& update : updates) {
+    
+    // ignore if ignore in prefix name
+    if (update.prefix.toUri().find("ignore") != std::string::npos)
+      continue;
 
     auto lSeq = getLowSeqOfPrefix(update.prefix);
     auto sc = (lSeq == NOT_AVAILABLE) ? STARTING_SEQ_NUM : lSeq; // sc = sequence counter
@@ -166,6 +192,9 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
       NDN_LOG_DEBUG("Request content for manifest: " << manifestInterestName);
       expressInterest(manifestInterestName, true);
     }
+    // update lowSequnece number, set it to current high
+    setLowSeqOfPrefix(update.prefix, update.highSeq+1);
+
   }
 }
 
@@ -192,7 +221,7 @@ Subscriber::wireDecode(const ndn::Block& wire)
   }
   if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardPublisher)
   {
-    std::vector<ndn::Name> tempNameBuffer; 
+    std::vector<ndn::Name> tempNameBuffer;
     NDN_LOG_DEBUG ("Received data from publisher");
     val->parse();
     for (auto it = val->elements_begin(); it != val->elements_end(); ++it) {
@@ -212,24 +241,23 @@ Subscriber::wireDecode(const ndn::Block& wire)
 
       m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
                              bind(&Subscriber::abeOnError, this, _1));
-      NDN_LOG_DEBUG("data names: " << dataName);  
+      NDN_LOG_DEBUG("data names: " << dataName);
     }
   }
 }
 
-void 
+void
 Subscriber::abeOnData(const ndn::Buffer& buffer)
 {
   auto applicationData = std::string(buffer.begin(), buffer.end());
   NDN_LOG_DEBUG ("Received Data " << applicationData);
   m_ApplicationDataCallback({applicationData});
 }
-void 
+void
 Subscriber::abeOnError(const std::string& errorMessage)
 {
   NDN_LOG_DEBUG ("ABE failled to fetch and encrypt data");
 }
-
 
 } // subscriber
 } // mguard

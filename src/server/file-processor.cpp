@@ -1,7 +1,8 @@
 #include "file-processor.hpp"
-#include <boost/algorithm/string.hpp>
-
 #include <ndn-cxx/util/logger.hpp>
+
+#include <boost/algorithm/string.hpp>
+#include <boost/filesystem/path.hpp>
 
 NDN_LOG_INIT(mguard.fileProcessor);
 
@@ -11,7 +12,6 @@ namespace mguard
 std::vector<std::string>
 FileProcessor::readStream(std::string streamPath)
 {
-  
   std::vector<std::string> data;
   std::string line;
   std::ifstream inputFile;
@@ -32,31 +32,44 @@ FileProcessor::readStream(std::string streamPath)
 }
 
 std::vector<std::string>
-FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter)
+FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter, int nSize)
 {
   size_t pos = 0;
   std::string token;
   std::vector<std::string> _vec;
+  std::string temp = "";
+  int counter = 0;
   while ((pos = _s.find(delimiter)) != std::string::npos)
   {
     token = _s.substr(0, pos);
     if (!(boost::algorithm::contains(token, "timestamp"))) { // skip the column that have timestamp in it
-      _vec.push_back(token);
+      ++counter;
+      temp += token;
+      
+      if (nSize > 1)
+        temp += "&";
+
+      if (counter == nSize) {
+        _vec.push_back(temp);
+        counter = 0;
+        temp.clear();
+      }
     }
     _s.erase(0, pos + delimiter.length());
   }
   NDN_LOG_TRACE("Remaining content of the stream: " << _s);
   if (!(_s.empty()))
     _vec.push_back(_s); // finally append the remaining string
+  
   return _vec;
 }
 
 AttributeMappingFileProcessor::AttributeMappingFileProcessor(const std::string& filename)
-: m_filename (filename) 
+: m_filename (filename)
 {
 }
 
-bool 
+bool
 AttributeMappingFileProcessor::processAttributeMappingFile()
 {
 	bool ret = true;
@@ -90,7 +103,7 @@ AttributeMappingFileProcessor::processAttributeMappingFile()
   return ret;
 }
 
-bool 
+bool
 AttributeMappingFileProcessor::processStreamsSection(const MappingSection& section)
 {
   for (auto& it: section)
@@ -108,7 +121,7 @@ AttributeMappingFileProcessor::processStreamsSection(const MappingSection& secti
   return true;
 }
 
-bool 
+bool
 AttributeMappingFileProcessor::processMappingSection(const MappingSection& section)
 {
   bool ret;

@@ -1,12 +1,12 @@
 ; brief: A shall access all the streams under org.md2k
 
 policy-id           1
-requester-names     A           ;if needed, we can have ',' separated list e.g. A, B, C
+requester-names     /ndn/org/md2k/A,/ndn/org/md2k/B,/ndn/org/md2k/C,/ndn/org/md2k/D,/ndn/org/md2k/E        ;if needed, we can have ',' separated list e.g. A, B, C
 attribute-filters
 {
     allow
     {
-        /org/md2k/
+        /ndn/org/md2k/
     }
 }
 
