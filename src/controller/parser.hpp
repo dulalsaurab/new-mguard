@@ -44,6 +44,12 @@ struct PolicyDetail
     std::string abePolicy;
 };
 
+struct SectionDetail
+{
+    std::list<std::string> streams;
+    std::string abePolicy;
+};
+
 using ConfigSection = boost::property_tree::ptree;
 
 class PolicyParser
@@ -76,6 +82,9 @@ private:
 
   static std::string 
   processAttributes(const std::list<std::string>& attrList);
+
+  SectionDetail
+  parseSection(ConfigSection& section);
 
   // information from the available-streams file
   std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
