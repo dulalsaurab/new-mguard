@@ -101,10 +101,10 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
 PolicyDetail
 PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     // input for config file
-    std::ifstream input (policyFilePath.c_str());
+    std::ifstream input(policyFilePath.c_str());
     // parsing of policy
 
-   // loading input file into sections
+    // loading input file into sections
     ConfigSection section;
     pt::read_info(input, section);
     // set all instance variables (all required in policy)
@@ -112,28 +112,35 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     std::list<std::string> requesterNames = splitRequesters(section.get<std::string>("requester-names"));
 
     // check given requesters against allowed requesters
-    for (const std::string &requester : requesterNames) {
+    for (const std::string &requester: requesterNames) {
         if (std::find(allowedRequesters.begin(), allowedRequesters.end(), requester) == std::end(allowedRequesters)) {
             // requester is not in allowedRequesters
             throw std::runtime_error("requester " + requester + " not in given requesters");
         }
     }
 
+    auto tmp = parseSection(section);
+
+
+    input.close();
+    return {policyID, tmp.streams, requesterNames, tmp.abePolicy};
+}
+
+SectionDetail
+PolicyParser::parseSection(ConfigSection& section) {
     // initialize per-policy variables
     std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
 
     // REQUIRED attribute-filters section
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
-    pt::ptree filterTree = section.get_child("attribute-filters");
+    ConfigSection filterTree = section.get_child("attribute-filters");
     processAttributeFilter(filterTree.get_child("allow"), allowedStreams, allowedAttributes);
     try {
         processAttributeFilter(filterTree.get_child("deny"), deniedStreams, deniedAttributes);
     }
     catch (boost::wrapexcept<pt::ptree_bad_path> &exception){
     }
-
-    input.close();
 
     if (allowedStreams.empty()){
         throw std::runtime_error("\"allow\" section needs at least one stream name");
@@ -223,9 +230,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     // AND together all separate conditions made for the output policy
     std::string abePolicy = doStringThing(policy, "AND");
 
-    NDN_LOG_DEBUG("policyID: " << policyID << " abePolicy: " << abePolicy);
-
-    return {policyID, calculatedStreams,requesterNames, abePolicy};
+    return {calculatedStreams, abePolicy};
 }
 
 void
