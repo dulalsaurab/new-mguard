@@ -139,7 +139,6 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     }
 
     std::list<std::string> streams, policies;
-    std::cout << "passed filter:" << std::endl;
     for (std::pair<std::string, ConfigSection> primaryTree : fullTree) {
         if (primaryTree.first != "policy-id" && primaryTree.first != "requester-names") {
             SectionDetail parsedAccessControl = parseSection(primaryTree.second);
