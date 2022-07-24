@@ -1,28 +1,32 @@
-; brief: A shall access all the streams under org.md2k
+; brief: /ndn/org/md2k/A should have access to dd40c's phone's accelerometer stream when they are at the gym, as well as their phone's battery stream while they are commuting
 
 policy-id           1
-requester-names     /ndn/org/md2k/A,/ndn/org/md2k/B,/ndn/org/md2k/C,/ndn/org/md2k/D,/ndn/org/md2k/E        ;if needed, we can have ',' separated list e.g. A, B, C
+requester-names     /ndn/org/md2k/A
 attribute-filters
 {
     allow
     {
-        /ndn/org/md2k/
+        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+        /ndn/org/md2k/ATTRIBUTE/location/gym
+    }
+}
+attribute-filters
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/battery
+        /ndn/org/md2k/ATTRIBUTE/location/commuting
     }
 }
 
-; AFTER PARSING
+;parser output
 ;
-; Policy ID
-;   1
-; Data Consumers
-;   A
-; Accessible Streams
-;   org.md2k/mperf/dd40c/phone/location
-;   org.md2k/mperf/dd40c/phone/accelerometer
-;   org.md2k/mperf/dd40c/phone/gyroscope
-;   org.md2k/mperf/dd40c/phone/battery
-;   org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
-;   org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
-;
-; ABE policy
-;   org.md2k    ;all the data under this stream will be encrypted with stream-name prefix i.e. org.md2k
+;policy id:
+;        1
+;requesters:
+;        /ndn/org/md2k/A
+;streams:
+;        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+;        /ndn/org/md2k/mguard/dd40c/phone/battery
+;abe policy:
+;        ((/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND (/ndn/org/md2k/ATTRIBUTE/location/gym)) OR (/ndn/org/md2k/mguard/dd40c/phone/battery AND (/ndn/org/md2k/ATTRIBUTE/location/commuting)))
