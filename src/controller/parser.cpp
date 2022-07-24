@@ -85,7 +85,7 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
         buildingName += "/";
       }
 
-      // only add to list if it's not already there. this prevents duplicates
+      // skip adding to list if it's not already there. this prevents duplicates
       if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), buildingName) != availableStreamLevels.end()) {
         // buildingName in availableStreamLevels
         continue;
