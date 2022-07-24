@@ -39,7 +39,6 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
     // add stream to list of streams
     NDN_LOG_TRACE("stream name: " << item.first);
     availableStreams.push_back(item.first);
-    // note: possibly not needed since we will have all the internal nodes as attributes. Will probably be listed in the available-streams file
     // adding all parents of given stream to list
     levels = split(item.first, "/");
     std::string adding;
