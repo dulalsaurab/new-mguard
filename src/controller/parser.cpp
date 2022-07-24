@@ -178,7 +178,6 @@ PolicyParser::parseSection(ConfigSection& section) {
 
     // warning variables
     std::list<std::string> allowDenyWarning;
-    std::string warn;
     // add everything under all allowed stream names
     for (const std::string &available: availableStreams) {
         for (const std::string &allowed: allowedStreams) {
@@ -194,7 +193,7 @@ PolicyParser::parseSection(ConfigSection& section) {
                 for (const std::string &denied: deniedStreams) {
                     // add to warning if allowed stream is the stream or child of denied stream
                     if (allowed.rfind(denied, 0) == 0) {
-                        warn = "WARNING: " + allowed + " is the same stream or a child of the denied stream " + denied;
+                        std::string warn = "WARNING: " + allowed + " is the same stream or a child of the denied stream " + denied;
                         if (std::find(allowDenyWarning.begin(), allowDenyWarning.end(), warn) == std::end(allowDenyWarning)) {
                             allowDenyWarning.push_back(warn);
                         }
