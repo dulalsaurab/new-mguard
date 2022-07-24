@@ -1,10 +1,9 @@
 #include "iostream"
 #include "../src/controller/parser.cpp"
 
-int main(){
-    std::cout << "sandbox run:" << std::endl;
+void testParser() {
     mguard::parser::PolicyParser p("../policies/available_streams");
-    auto a = p.parsePolicy("../policies/policy1");
+    mguard::parser::PolicyDetail a = p.parsePolicy("../policies/policy1");
 
     // policy id
     std::cout << "policy id:" << std::endl;
@@ -25,6 +24,10 @@ int main(){
     // abe policy
     std::cout << "abe policy:" << std::endl;
     std::cout << "\t" << a.abePolicy << std::endl;
+}
+
+int main(){
+    std::cout << "sandbox run:" << std::endl;
 
     return 0;
 }
