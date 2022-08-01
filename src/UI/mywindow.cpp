@@ -90,7 +90,7 @@ void mywindow::on_changed(Glib::RefPtr<Gtk::TreeSelection> c)
   }
 }
 
-void mywindow::on_row(std::string b)
+void mywindow::on_row(ndn::Name b)
 {
 
   // if not in list add else remove from list
@@ -105,7 +105,6 @@ void mywindow::on_row(std::string b)
   mywindow::update_available_streams_view();
   std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2" << '\n';
 }
-
 
 // void mywindow::on_row( Glib::RefPtr<Gtk::Button> b) {
 //     display_btn = Glib::RefPtr<Gtk::Button>::cast_dynamic(Gtk::Builder->get_object(b));
@@ -148,6 +147,11 @@ void mywindow::show_ui()
         ui->get_object("list_store"));
     ss_detail = Glib::RefPtr<Gtk::TextView>::cast_dynamic(
         ui->get_object("ss_detail"));
+    as_grid = Glib::RefPtr<Gtk::Grid>::cast_dynamic(
+        ui->get_object("as_grid"));
+
+
+  mywindow::update_available_streams_view();
 
     acc_st = {"/ndn/org/md2k/mguard/dd40c/phone/accelerometer",
               "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location ",
@@ -214,9 +218,6 @@ void mywindow::show_ui()
     m_refTextBuffer1->set_text(whole_file);
     ss_detail->set_buffer(m_refTextBuffer1);
 
-    as_grid = Glib::RefPtr<Gtk::Grid>::cast_dynamic(
-        ui->get_object("as_grid"));
-
     std::cout << "end of UI function" << std::endl;
 
     add(*box);
@@ -230,6 +231,12 @@ void mywindow::show_ui()
 
 void mywindow::update_available_streams_view()
 {
+
+  for (auto &b : subscriptionList)
+  {
+    NDN_LOG_INFO(": " << b);
+  }
+
   std::vector<Gtk::Widget *> children = as_grid->get_children();
   for (long unsigned int a = 0; a < children.size(); a++)
   {
@@ -270,10 +277,12 @@ void mywindow::update_available_streams_view()
     as_grid->attach(*button, 2, counter, 1, 1);
     counter++;
 
-    // button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_row), a));
+    button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_row), a));
+    std::cout << "updated view " << std::endl;
   }
+  as_grid->show_all();
 
-  show_all_children();
+  // show_all_children();
 }
 
 void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name> &streams)
@@ -301,9 +310,6 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name> &
 
     NDN_LOG_INFO("No eligible stream found for your policy");
   }
-  // subscriptionList.push_back(availableStreams[0]); // battery
-  // subscriptionList.push_back(availableStreams[1]); // semloc
-  // subscriptionList.push_back(availableStreams[3]); // gps
 
   // print avaliable streams here
   for (auto &a : streams)

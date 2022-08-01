@@ -83,7 +83,7 @@ public:
   //                    Gtk::TreePath     ,
   //                    Gtk::TreeViewColumn ,
   //                    gpointer           );
-  void on_row(std::string);
+  void on_row(ndn::Name);
   void handler();
   void show_ui();
   void update_available_streams_view();
