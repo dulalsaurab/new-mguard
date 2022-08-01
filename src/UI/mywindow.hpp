@@ -19,6 +19,8 @@ public:
 
   std::vector<std::string> acc_st = {};
   std::vector<std::string> sub_st = {};
+  std::vector<ndn::Name> availableStreams;
+  std::vector<ndn::Name> subscriptionList;
 
   Glib::RefPtr<Gtk::Builder> ui;
   Gtk::Box *box;
@@ -67,7 +69,6 @@ public:
   Glib::RefPtr<Gtk::TreeSelection> m_refTreeSelection;
 
   void on_quit_click();
-  void change_btn_display();
   // void on_select_changed(Gtk::Widget);
   void on_changed(Glib::RefPtr<Gtk::TreeSelection>);
   void show_accessible_stream_from_file();
@@ -85,7 +86,7 @@ public:
   void on_row(std::string);
   void handler();
   void show_ui();
-  void update_available_streams_view(std::unordered_set<ndn::Name>);
+  void update_available_streams_view();
 
   void processDataCallback(const std::vector<std::string> &updates);
   void processSubscriptionCallback(const std::unordered_set<ndn::Name> &streams);
