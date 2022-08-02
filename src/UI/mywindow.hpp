@@ -25,6 +25,8 @@ public:
   Glib::RefPtr<Gtk::Builder> ui;
   Gtk::Box *box;
   Glib::RefPtr<Gtk::ScrolledWindow> window;
+  Glib::RefPtr<Gtk::ScrolledWindow> ss_scrl;
+
   Glib::RefPtr<Gtk::Fixed> fixed;
   Glib::RefPtr<Gtk::Stack> stack;
   Glib::RefPtr<Gtk::Fixed> as_tab;
@@ -54,7 +56,7 @@ public:
       add(m_info);
     }
 
-    Gtk::TreeModelColumn<std::string> m_id;
+    Gtk::TreeModelColumn<int> m_id;
     Gtk::TreeModelColumn<std::string> m_timestamp;
     Gtk::TreeModelColumn<std::string> m_source;
     Gtk::TreeModelColumn<std::string> m_info;
@@ -87,6 +89,7 @@ public:
   void handler();
   void show_ui();
   void update_available_streams_view();
+  void update_subscribed_streams_view();
 
   void processDataCallback(const std::vector<std::string> &updates);
   void processSubscriptionCallback(const std::unordered_set<ndn::Name> &streams);

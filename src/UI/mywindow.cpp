@@ -58,17 +58,6 @@ void mywindow::on_quit_click()
 // convert file content to string
 std::string mywindow::file_to_string(std::string filename)
 {
-  //     std::cout<<"set detail text function called" << std::endl;
-  //         std::cout<< filename << std::endl;
-
-  // //
-  //     std::ifstream input(filename);
-  //     std::stringstream sstr;
-
-  //     while(input >> sstr.rdbuf());
-
-  //     // std::cout << sstr.str() << std::endl;
-  //     std::string wholefile = sstr.str();
   return "true";
 }
 
@@ -80,7 +69,7 @@ void mywindow::on_changed(Glib::RefPtr<Gtk::TreeSelection> c)
   if (iter) // If anything is selected
   {
     Gtk::TreeModel::Row row = *iter;
-    std::string id = row.get_value(m_Columns.m_id);
+    int id = row.get_value(m_Columns.m_id);
 
     std::stringstream filename;
     filename << "content" << id << ".txt";
@@ -103,15 +92,10 @@ void mywindow::on_row(ndn::Name b)
     subscriptionList.erase(std::remove(subscriptionList.begin(), subscriptionList.end(), b), subscriptionList.end());
   }
   mywindow::update_available_streams_view();
-  std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2" << '\n';
+  mywindow::update_subscribed_streams_view();
+  // std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2" << '\n';
 }
 
-// void mywindow::on_row( Glib::RefPtr<Gtk::Button> b) {
-//     display_btn = Glib::RefPtr<Gtk::Button>::cast_dynamic(Gtk::Builder->get_object(b));
-//     // Gtk::Button* button = Glib::wrap(b);
-//     //   b->set_label("subscribe");
-//     std::cout <<display_btn.get_label() << '\n';
-// }
 
 void mywindow::processDataCallback(const std::vector<std::string> &updates)
 {
@@ -119,9 +103,9 @@ void mywindow::processDataCallback(const std::vector<std::string> &updates)
   for (auto &a : updates)
     std::cout << a << std::endl;
 }
+
 void mywindow::handler()
 {
-  // mywindow::show_ui();
   m_subscriber.run();
 }
 
@@ -150,8 +134,8 @@ void mywindow::show_ui()
     as_grid = Glib::RefPtr<Gtk::Grid>::cast_dynamic(
         ui->get_object("as_grid"));
 
-
-  mywindow::update_available_streams_view();
+    mywindow::update_available_streams_view();
+    mywindow::update_subscribed_streams_view();
 
     acc_st = {"/ndn/org/md2k/mguard/dd40c/phone/accelerometer",
               "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location ",
@@ -164,52 +148,6 @@ void mywindow::show_ui()
               "/ndn/org/md2k/mguard/dd40c/phone/gps"};
 
     policy->set_text("Your Policy : /ndn/org/md2k/mguard/dd40c/phone/accelerometer");
-
-    list_store = Gtk::ListStore::create(m_Columns);
-    ss_tv->set_model(list_store);
-    ss_tv->set_reorderable();
-    ss_tv->set_headers_clickable(true);
-    ss_tv->set_headers_visible(true);
-
-    // #Fill the list_store model
-    auto row = *(list_store->append());
-    row[m_Columns.m_id] = "1";
-    row[m_Columns.m_timestamp] = "02/11/1998";
-    row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/accelerometer";
-    row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
-
-    // #Fill the list_store model
-    row = *(list_store->append());
-    row[m_Columns.m_id] = "2";
-    row[m_Columns.m_timestamp] = "12/12/2021";
-    row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/gyroscope";
-    row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
-
-    // #Fill the list_store model
-    row = *(list_store->append());
-    row[m_Columns.m_id] = "3";
-    row[m_Columns.m_timestamp] = "03/02/2020";
-    row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/gps";
-    row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
-
-    // Add the TreeView's view columns:
-    ss_tv->append_column("id", m_Columns.m_id);
-    ss_tv->append_column("timestamp", m_Columns.m_timestamp);
-    ss_tv->append_column("source", m_Columns.m_source);
-    ss_tv->append_column("info", m_Columns.m_info);
-
-    m_refTreeSelection = ss_tv->get_selection();
-    // m_refTreeSelection->signal_changed().connect(sigc::mem_fun(*this, &mywindow::on_changed));
-    m_refTreeSelection->signal_changed().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_changed), m_refTreeSelection));
-
-    //   m_button1.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &HelloWorld::on_button_clicked), "button 1"));
-    //    Gtk::TreeModel::iterator iter = m_refTreeSelection->get_selected();
-    //     if(iter) //If anything is selected
-    //     {
-    //     Gtk::TreeModel::Row row = *iter;
-    //     std::cout<< iter;
-    //     //Do something with the row.
-    //     }
 
     // Text box to show the conteot of each stream
     Glib::RefPtr<Gtk::TextBuffer> m_refTextBuffer1 = Gtk::TextBuffer::create();
@@ -228,7 +166,40 @@ void mywindow::show_ui()
   show_all();
   std::cout << "Shows everything" << std::endl;
 }
+void mywindow::update_subscribed_streams_view()
+{
+  ss_tv->remove_all_columns();
 
+  list_store = Gtk::ListStore::create(m_Columns);
+  ss_tv->set_model(list_store);
+  ss_tv->set_reorderable();
+  ss_tv->set_headers_clickable(true);
+  ss_tv->set_headers_visible(true);
+
+  int counter = 1;
+  for (auto &a : subscriptionList)
+  {
+    auto row = *(list_store->append());
+    row[m_Columns.m_id] = counter;
+    row[m_Columns.m_timestamp] = "12/12/2021";
+    row[m_Columns.m_source] = a.toUri();
+    row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
+    counter++;
+    NDN_LOG_DEBUG("Subscribed to the stream/s" << a); // << std::endl;
+  }
+  m_subscriber.setSubscriptionList(subscriptionList);
+
+
+  // Add the TreeView's view columns:
+  ss_tv->append_column("id", m_Columns.m_id);
+  ss_tv->append_column("timestamp", m_Columns.m_timestamp);
+  ss_tv->append_column("source", m_Columns.m_source);
+  ss_tv->append_column("info", m_Columns.m_info);
+
+  m_refTreeSelection = ss_tv->get_selection();
+  m_refTreeSelection->signal_changed().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_changed), m_refTreeSelection));
+  show_all_children();
+}
 void mywindow::update_available_streams_view()
 {
 
@@ -238,16 +209,20 @@ void mywindow::update_available_streams_view()
   }
 
   std::vector<Gtk::Widget *> children = as_grid->get_children();
-  for (long unsigned int a = 0; a < children.size(); a++)
+  for (long unsigned int c = 0; c < children.size(); c++)
   {
     std::cout << "removed child " << std::endl;
-    as_grid->remove(*children[a]);
+    as_grid->remove(*children[c]);
   }
 
   int counter = 0;
+
   for (auto &a : availableStreams)
+  // for(int a; a<6 ;a++)
   {
     std::string fullName = a.toUri();
+    // std::string fullName = availableStreams[a].toUri();
+    // availableStreams[counter]
     Gtk::Label *stream_name = Gtk::manage(new Gtk::Label());
 
     stream_name->set_markup(fullName);
@@ -264,6 +239,7 @@ void mywindow::update_available_streams_view()
       button->get_style_context()->add_provider(
           css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
       button->set_label("subscribe");
+      std::cout << "updated sub view " << std::endl;
     }
     else
     {
@@ -272,14 +248,18 @@ void mywindow::update_available_streams_view()
       button->get_style_context()->add_provider(
           css_provider, GTK_STYLE_PROVIDER_PRIORITY_USER);
       button->set_label("unsubscribe");
+      std::cout << "updated un susub view " << std::endl;
     }
 
     as_grid->attach(*button, 2, counter, 1, 1);
     counter++;
-
     button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_row), a));
+    //
+
+    // button->signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_row), availableStreams[a]));
     std::cout << "updated view " << std::endl;
   }
+
   as_grid->show_all();
 
   // show_all_children();
@@ -287,9 +267,6 @@ void mywindow::update_available_streams_view()
 
 void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name> &streams)
 {
-
-  // std::vector<ndn::Name> availableStreams, subscriptionList;
-
   // check for convergence.
   m_subscriber.checkConvergence();
 
@@ -299,15 +276,9 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name> &
   NDN_LOG_INFO("\n\nStreams available for subscription");
 
   int counter = 0;
-  mywindow::show_ui();
 
   if (streams.size() <= 0)
   {
-    // show no stream text
-    Gtk::Label *no_stream = Gtk::manage(new Gtk::Label());
-    no_stream->set_markup("No eligible stream found for your policy");
-    as_grid->attach(*no_stream, 1, 0, 1, 1);
-
     NDN_LOG_INFO("No eligible stream found for your policy");
   }
 
@@ -322,7 +293,6 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name> &
   subscriptionList.push_back(availableStreams[1]); // semloc
   subscriptionList.push_back(availableStreams[3]); // gps
 
-  mywindow::update_available_streams_view();
 
   // these codes are only for testing purposes
   // automatically subscriber to the respective streams
@@ -341,41 +311,22 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name> &
 
   // only work
   // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
-
-  for (auto &s : subscriptionList)
+for (auto &s : subscriptionList)
   {
     // m_subscriber.subscribe(s);
     NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
   }
-  // uncomment if: taking input from user ----------------------------------------------
+  //
 
-  // std::vector<int> input; //
-  // std::cout << "enter selection, enter any char to stop" << std::endl;
-  // while(!std::cin.fail())
-  // {
-  //     int value;
-  //     std::cin >> value;
-  //     if(!std::cin.fail())
-  //       input.push_back(value);
-  // }
-  // std::cout << "\n" << std::endl;
-  // std::cout << "Subscribed to the stream/s" << std::endl;
-  // for (auto k : input)
-  // {
-  //   auto ind = k-1;
-  //   std::cout << k << ": " << availableStreams[ind] << std::endl;
-  //   if (availableStreams[ind] != "/") // todo: fix this
-  //     subscriptionList.push_back(availableStreams[ind]);
-  // }
 
-  // taking input from user end ----------------------------------------------
-
-  m_subscriber.setSubscriptionList(subscriptionList);
+   m_subscriber.setSubscriptionList(subscriptionList);
   // run the processevent again, this time with sync as well
 
   // rerunning the process event closes the UI
   // m_subscriber.run(true);
-  mywindow::show_ui();
+  // mywindow::show_ui();
 
+    mywindow::show_ui();
   // m_subscriber.run();
+
 }
