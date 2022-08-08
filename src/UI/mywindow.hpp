@@ -9,18 +9,33 @@ public:
   mywindow(ndn::Name &consumerPrefix, ndn::Name &syncPrefix, ndn::Name &controllerPrefix,
            std::string &consumerCertPath, std::string &aaCertPath); // constructor);
   virtual ~mywindow();
-  static const int view_subscriber_list = -8;
-  static const int view_accessble_stream = -9;
-  static const int yes_response = -6;
-  static const int no_response = -4;
-  static const int ok_response = -5;
+
+  void on_changed(Glib::RefPtr<Gtk::TreeSelection>);
+  void show_accessible_stream_from_file();
+  std::string file_to_string(std::string);
+  void on_row(ndn::Name);
+  void handler();
+  void show_ui();
+  void update_available_streams_view();
+  void update_subscribed_streams_view();
+
+  void processDataCallback(const std::vector<std::string> &updates);
+  void processSubscriptionCallback(const std::unordered_set<ndn::Name> &streams);
+
+  void callSubscriber(mywindow *caller);
+  void startThread();
+  void notify();
+  void on_notification_from_worker_thread();
+  bool update_view();
+
+private:
+
   ndn::Face m_face;
   mguard::subscriber::Subscriber m_subscriber;
 
-  std::vector<std::string> acc_st = {};
-  std::vector<std::string> sub_st = {};
   std::vector<ndn::Name> availableStreams;
   std::vector<ndn::Name> subscriptionList;
+  std::vector<std::string> content;
 
   Glib::RefPtr<Gtk::Builder> ui;
   Gtk::Box *box;
@@ -44,6 +59,9 @@ public:
   Glib::RefPtr<Gtk::Grid> as_grid;
 
   Glib::RefPtr<Gtk::ListStore> list_store;
+  Gtk::TreeModel::Path m_TreePath;
+  Gtk::Window *m_pWindow_Example;
+  Glib::RefPtr<Gtk::TreeSelection> m_refTreeSelection;
 
   class ModelColumns : public Gtk::TreeModelColumnRecord
   {
@@ -64,36 +82,14 @@ public:
 
   ModelColumns m_Columns;
 
-  Gtk::TreeModel::Path m_TreePath;
+  Glib::Threads::Thread *m_WorkerThread;
 
-  Gtk::Window *m_pWindow_Example;
-
-  Glib::RefPtr<Gtk::TreeSelection> m_refTreeSelection;
-
-  void on_quit_click();
-  // void on_select_changed(Gtk::Widget);
-  void on_changed(Glib::RefPtr<Gtk::TreeSelection>);
-  void show_accessible_stream_from_file();
-  //    static bool select_function(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool currently_selected);
-
-  //   virtual void on_treeview_row_activated(const Gtk::TreeModel::Path& path, Gtk::TreeViewColumn* column);
-
-  //    void button_press_event(GTk::Treeview, event):
-  std::string file_to_string(std::string);
-
-  //    void user_function (Gtk::TreeView   ,
-  //                    Gtk::TreePath     ,
-  //                    Gtk::TreeViewColumn ,
-  //                    gpointer           );
-  void on_row(ndn::Name);
-  void handler();
-  void show_ui();
-  void update_available_streams_view();
-  void update_subscribed_streams_view();
-
-  void processDataCallback(const std::vector<std::string> &updates);
-  void processSubscriptionCallback(const std::unordered_set<ndn::Name> &streams);
-  // void on_row(Glib::RefPtr<Gtk::Button>);
+  bool m_shall_stop;
+  bool m_has_stopped;
+  double m_fraction_done;
+  Glib::ustring m_message;
+  mutable Glib::Threads::Mutex m_Mutex;
+  Glib::Dispatcher m_Dispatcher;
 };
 
 #endif
