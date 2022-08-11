@@ -46,6 +46,9 @@ public:
 
 
 private:
+  static std::list<std::string>
+  getFilters(ConfigSection &section);
+
   static std::pair<std::string, std::string>
   parseAttribute(const std::string& attribute);
 
