@@ -198,7 +198,7 @@ PolicyParser::parseSection(ConfigSection& section) {
                             allowDenyWarning.push_back(warn);
                         }
                     }
-                    // checks if available stream is a child of any of the denied streams
+                    // checks if available stream is a child of any denied stream
                     // if it is, don't add it to the allowed streams list
                     if (available.rfind(denied, 0) == 0) {
                         add = false;
@@ -248,7 +248,7 @@ PolicyParser::parseSection(ConfigSection& section) {
         }
     }
 
-    // putting it all all together
+    // putting it all together
     // AND together all separate conditions made for the output policy
     std::string abePolicy = doStringThing(policy, "AND");
 
@@ -368,24 +368,24 @@ PolicyParser::doStringThing(const std::list<std::string> &list, const std::strin
     return out;
 }
 
-// splitting string into list of strings along delimeter
+// splitting string into list of strings along delimiter
 std::list<std::string> 
-PolicyParser::split(const std::string &basicString, const std::string &delimeter) 
+PolicyParser::split(const std::string &basicString, const std::string &delimiter)
 {
-    std::list<std::string> splittedString;
+    std::list<std::string> splitString;
     std::size_t startIndex = 0;
     std::size_t endIndex;
     std::string val;
-    while ((endIndex = basicString.find(delimeter, startIndex)) < basicString.size()){
+    while ((endIndex = basicString.find(delimiter, startIndex)) < basicString.size()){
         val = basicString.substr(startIndex, endIndex - startIndex);
-        splittedString.push_back(val);
-        startIndex = endIndex + delimeter.size();
+        splitString.push_back(val);
+        startIndex = endIndex + delimiter.size();
     }
     if  (startIndex < basicString.size()) {
         val = basicString.substr(startIndex);
-        splittedString.push_back(val);
+        splitString.push_back(val);
     }
-    return splittedString;
+    return splitString;
 }
 
 std::list<std::string> 
