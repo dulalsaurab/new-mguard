@@ -255,6 +255,15 @@ PolicyParser::parseSection(ConfigSection& section) {
     return {calculatedStreams, abePolicy};
 }
 
+std::list<std::string>
+PolicyParser::getFilters(ConfigSection &section) {
+    std::list<std::string> filters;
+    for (const auto &parameter : section) {
+        filters.push_back(parameter.first);
+    }
+    return filters;
+}
+
 void
 PolicyParser::processAttributeFilter(ConfigSection &section, std::list<std::string> &streams, std::list<std::string> &attributes)
 {
