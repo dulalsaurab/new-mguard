@@ -40,12 +40,15 @@ attributes
     /ndn/org/md2k/ATTRIBUTE/location/SoCal
     /ndn/org/md2k/ATTRIBUTE/location/gym
     /ndn/org/md2k/ATTRIBUTE/location/shopping-mall
-    /ndn/org/md2k/ATTRIBUTE/activity/smoking
+    /ndn/org/md2k/ATTRIBUTE/location/unknown
+    /ndn/org/md2k/ATTRIBUTE/smoking/yes
+    /ndn/org/md2k/ATTRIBUTE/smoking/no
     /ndn/org/md2k/ATTRIBUTE/activity/walking
     /ndn/org/md2k/ATTRIBUTE/activity/running
     /ndn/org/md2k/ATTRIBUTE/activity/eating
     /ndn/org/md2k/ATTRIBUTE/activity/drinking
     /ndn/org/md2k/ATTRIBUTE/activity/sleeping
+    /ndn/org/md2k/ATTRIBUTE/activity/unknown
 }
 
 ; current users
