@@ -23,7 +23,7 @@
 #include <iostream>
 #include <utility>
 
-NDN_LOG_INIT(mguard.parser);
+//NDN_LOG_INIT(mguard.parser);
 
 namespace pt = boost::property_tree;
 namespace mguard {
@@ -154,7 +154,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
 SectionDetail
 PolicyParser::parseSection(ConfigSection& section) {
     // initialize per-policy variables
-    std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
+    std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
 
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
@@ -224,7 +224,7 @@ PolicyParser::parseSection(ConfigSection& section) {
         throw std::runtime_error("No streams allowed by policy");
     }
 
-    calculatedStreams = workingStreams;
+    std::list<std::string> calculatedStreams = workingStreams;
     policy.emplace_back(doStringThing(workingStreams, "OR"));
 
     // attribute processing
