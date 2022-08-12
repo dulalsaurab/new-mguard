@@ -116,7 +116,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     std::list<std::string> streams, policies;
     for (std::pair<std::string, ConfigSection> primaryTree : fullTree) {
         if (primaryTree.first != "policy-id" && primaryTree.first != "requester-names") {
-            SectionDetail parsedAccessControl = parseSection(primaryTree.second);
+            SectionDetail parsedAccessControl = calculatePolicy(parseSection(primaryTree.second));
             for (const std::string &stream: parsedAccessControl.streams) {
                 streams.push_back(stream);
             }
@@ -132,7 +132,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     return {policyID, streams, requesterNames, policy};
 }
 
-SectionDetail
+ParsedSection
 PolicyParser::parseSection(ConfigSection& section) {
     // initialize per-policy variables
     std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
@@ -143,12 +143,17 @@ PolicyParser::parseSection(ConfigSection& section) {
     try {
         processAttributeFilter(section.get_child("deny"), deniedStreams, deniedAttributes);
     }
-    catch (boost::wrapexcept<pt::ptree_bad_path> &exception){
+    catch (boost::wrapexcept<pt::ptree_bad_path> &exception) {
     }
 
-    if (allowedStreams.empty()){
+    if (allowedStreams.empty()) {
         throw std::runtime_error("\"allow\" section needs at least one stream name");
     }
+    return {allowedStreams, deniedStreams, allowedAttributes, deniedAttributes};
+}
+
+SectionDetail
+PolicyParser::calculatePolicy(const ParsedSection& section){
 
     // start of logic for creating abe policy
     std::list<std::string> policy;
@@ -160,7 +165,7 @@ PolicyParser::parseSection(ConfigSection& section) {
     std::list<std::string> allowDenyWarning;
     // add everything under all allowed stream names
     for (const std::string &available: availableStreams) {
-        for (const std::string &allowed: allowedStreams) {
+        for (const std::string &allowed: section.allowedStreams) {
             // if it's allowed and not a duplicate, add it to the list
 
             // if the available stream is a child of the allowed stream, that available stream should be allowed
@@ -170,7 +175,7 @@ PolicyParser::parseSection(ConfigSection& section) {
                   std::end(workingStreams))) {
                 bool add = true;
                 // for each allowed stream, check against the denied streams
-                for (const std::string &denied: deniedStreams) {
+                for (const std::string &denied: section.deniedStreams) {
                     // add to warning if allowed stream is the stream or child of denied stream
                     if (allowed.rfind(denied, 0) == 0) {
                         std::string warn = "WARNING: " + allowed + " is the same stream or a child of the denied stream " + denied;
@@ -209,14 +214,14 @@ PolicyParser::parseSection(ConfigSection& section) {
 
     // attribute processing
     // AND allow attributes
-    if (!allowedAttributes.empty()) {
-        policy.emplace_back(processAttributes(allowedAttributes));
+    if (!section.allowedAttributes.empty()) {
+        policy.emplace_back(processAttributes(section.allowedAttributes));
     }
 
     // OR deny attributes
-    if (!deniedAttributes.empty()) {
+    if (!section.deniedAttributes.empty()) {
         std::list<std::string> workingAttributes = availableAttributes;
-        for (std::string &toRemove : deniedAttributes) {
+        for (const std::string &toRemove : section.deniedAttributes) {
             workingAttributes.remove(toRemove);
         }
         if (!workingAttributes.empty()) {
