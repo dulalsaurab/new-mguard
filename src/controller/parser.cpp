@@ -173,7 +173,6 @@ PolicyParser::parseSection(ConfigSection& section) {
     std::list<std::string> policy;
 
     // stream name processing
-
     std::list<std::string> workingStreams;
 
     // warning variables
