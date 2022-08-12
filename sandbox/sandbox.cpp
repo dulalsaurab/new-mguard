@@ -44,7 +44,7 @@ void testNametree() {
 }
 
 void printOutties(std::map<std::string, std::map<std::string, std::map<std::string, std::list<std::string>>>> outties, std::string stream) {
-    std::cout << "things for stream:\t" << stream << std::endl;
+    std::cout << stream << ":" << std::endl;
     std::cout << "\tallowed streams\t" << std::endl;
     for (const auto& item : outties[stream]["allowed"]["stream"]) {
         std::cout << "\t\t" << item << std::endl;
@@ -61,6 +61,7 @@ void printOutties(std::map<std::string, std::map<std::string, std::map<std::stri
     for (const auto& item : outties[stream]["denied"]["attribute"]) {
         std::cout << "\t\t" << item << std::endl;
     }
+    std::cout << std::endl;
 }
 
 void additionalParser() {
@@ -77,7 +78,7 @@ void additionalParser() {
         map["/org/prefix-c/"].push_back(thing);
     }
 
-    std::list<std::string> allow = {"/org/prefix-a/", "/org/prefix-b/", "/activity/walking", "/org/prefix-c/", "/smoking/yes"};
+    std::list<std::string> allow = {"/org/prefix-a/", "/org/prefix-b/", "/activity/walking"};
     std::list<std::string> deny = {"/location/home"};
 
     // outties[stream][allowed][attribute/stream]
@@ -110,11 +111,10 @@ void additionalParser() {
 
     printOutties(outties, "/org/prefix-a/");
     printOutties(outties, "/org/prefix-b/");
-    printOutties(outties, "/org/prefix-c/");
 }
 
 int main(){
     std::cout << "sandbox run:" << std::endl;
-    testParser();
+    additionalParser();
     return 0;
 }
