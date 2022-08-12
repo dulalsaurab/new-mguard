@@ -44,6 +44,14 @@ struct PolicyDetail
     std::string abePolicy;
 };
 
+struct ParsedSection
+{
+    std::list<std::string> allowedStreams;
+    std::list<std::string> deniedStreams;
+    std::list<std::string> allowedAttributes;
+    std::list<std::string> deniedAttributes;
+};
+
 struct SectionDetail
 {
     std::list<std::string> streams;
@@ -86,8 +94,11 @@ private:
   static std::string 
   processAttributes(const std::list<std::string>& attrList);
 
-  SectionDetail
+  ParsedSection
   parseSection(ConfigSection& section);
+
+  SectionDetail
+  calculatePolicy(const ParsedSection& section);
 
   // information from the available-streams file
   std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
