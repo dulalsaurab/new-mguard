@@ -1,0 +1,5 @@
+/ndn/org/md2k/mguard/dd40c/phone/accelerometer
+/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location 
+/ndn/org/md2k/mguard/dd40c/phone/gyroscope
+/ndn/org/md2k/mguard/dd40c/phone/battery
+/ndn/org/md2k/mguard/dd40c/phone/gps

@@ -28,7 +28,7 @@
       </row>
     </data>
   </object>
-  <object class="GtkBox" id="box">
+  <object class="GtkBox" id="m_box">
     <property name="can_focus">False</property>
     <child type="titlebar">
       <placeholder/>
@@ -107,7 +107,7 @@
                         <property name="model">list_store</property>
                         <child internal-child="selection">
                           <object class="GtkTreeSelection" id="select">
-                             <signal name="changed" handler="on_select_changed" swapped="no"/>
+                            <signal name="changed" handler="on_select_changed" swapped="no"/>
                           </object>
                         </child>
                       </object>
@@ -117,15 +117,16 @@
                 <child>
                   <object class="GtkFixed" id="ss_fixed">
                     <property name="width_request">700</property>
-                    <property name="height_request">200</property>
+                    <property name="height_request">270</property>
                     <property name="visible">True</property>
                     <property name="can_focus">False</property>
                     <child>
                       <object class="GtkScrolledWindow" id="ss_txt_scrl">
-                        <property name="width_request">700  </property>
-                        <property name="height_request">155</property>
+                        <property name="width_request">700</property>
+                        <property name="height_request">250</property>
                         <property name="visible">True</property>
-                              <property name="shadow_type">in</property>
+                        <property name="can_focus">False</property>
+                        <property name="shadow_type">in</property>
                         <child>
                           <object class="GtkTextView" id="ss_detail">
                             <property name="visible">True</property>
@@ -134,9 +135,24 @@
                         </child>
                       </object>
                     </child>
+                    <child>
+                      <object class="GtkButton" id="export_csv">
+                        <property name="label" translatable="yes">Export to CSV</property>
+                        <property name="name">export_csv</property>
+                        <property name="width_request">100</property>
+                        <property name="height_request">11</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                      </object>
+                      <packing>
+                        <property name="x">570</property>
+                        <property name="y">253</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
-                    <property name="y">155</property>
+                    <property name="y">104</property>
                   </packing>
                 </child>
               </object>
@@ -166,7 +182,7 @@
           </packing>
         </child>
         <child>
-          <object class="GtkLabel" id="policy">
+          <object class="GtkLabel" id="m_policy">
             <property name="width_request">100</property>
             <property name="height_request">18</property>
             <property name="visible">True</property>
