@@ -8,6 +8,10 @@ import shutil
 
 BUFFER_SIZE = 1024
 
+# sleep times, configure this after each run
+s_after_metadata = 10
+s_after_first_stream = 20
+s_after_sending_batch = 40
 
 class Sender:
     def __init__(self, port):
@@ -39,16 +43,16 @@ def send_stream(stream_name, data, sender_obj):
     sender_obj.send(metadata)
     # sleep a few seconds after sending the metadata
     #change for 16 min to 20 sec
-    print("Sleeping for 10 second after sending meta data")
-    sleep(20)
+    print("Sleeping for {} second after sending meta data".format(s_after_metadata))
+    sleep(s_after_metadata)
 
     sender_obj.send(data)
     # sleep X seconds after sending the first stream. 
     # this is because the data-adapter needs to process the previous packet i.e. metadata
     #change for 16 min to 100 sec 
-    print("Sleeping for 20 sec after sending first stream")
+    print("Sleeping for {} sec after sending first stream".format(s_after_first_stream))
+    sleep(s_after_first_stream)
 
-    sleep(40)
     sender_obj.close()
 
 def main():
@@ -105,8 +109,9 @@ def main():
         
         print("sending data for batch: {}, completed".format(current_batch))
         current_batch += 1
-        print("Sleeping after sending batch data for 60 seconds")
-        sleep(60)  # testing: sleep for X minute and send another batch
+        
+        print("Sleeping for {} second sending batch data".format(s_after_sending_batch))
+        sleep(s_after_sending_batch)  # testing: sleep for X minute and send another batch
 
     print ("sending data for all the batch completed")
 

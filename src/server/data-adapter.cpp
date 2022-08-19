@@ -1,3 +1,23 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Copyright (c) 2021-2022,  The University of Memphis
+ *
+ * This file is part of mGuard.
+ * See AUTHORS.md for complete list of mGuard authors and contributors.
+ *
+ * mGuard is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * mGuard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include "common.hpp"
 #include "data-adapter.hpp"
 
@@ -154,7 +174,7 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
 void
 DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
 {
-  NDN_LOG_DEBUG("Received data from the receiver");
+  NDN_LOG_DEBUG("Received data from the receiver for streamName: " << streamName);
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
   
   if (streamName == SEMANTIC_LOCATION) {
@@ -226,6 +246,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     if (streamName == NDN_LOCATION_STREAM){
       try { 
         auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+        
         for (auto& attr: semAttr) {
           auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
           NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
@@ -239,6 +260,10 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
     // std::this_thread::sleep_for (std::chrono::milliseconds(20));
+    // if no semantic location associated with this data point, append unknown location attribtue
+    if (semLocAttrList.empty())
+      semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
+
     m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
 }

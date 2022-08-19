@@ -53,7 +53,11 @@ AsyncRepoInserter::AsyncConnectToRepo(std::string repoHost, std::string repoPort
       });
     }
     else {
-      NDN_THROW(std::runtime_error("Repo endpoint cannot be resolved: " << err.message()));
+      // NDN_THROW(std::runtime_error("Repo endpoint cannot be resolved: " << err.message())); 
+      // ---- debug why this line is not working
+      
+      NDN_LOG_TRACE("Repo endpoint cannot be resolved:");
+      exit(-1);
     }
   });  
 }

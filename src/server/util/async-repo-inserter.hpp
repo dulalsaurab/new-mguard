@@ -28,17 +28,22 @@
 #include <ndn-cxx/data.hpp>
 #include <ndn-cxx/util/scheduler.hpp>
 
-
 namespace mguard {
 namespace util {
 namespace bp = boost::asio::ip;
+using AsyncRepoError = boost::system::error_code;
+using AsyncConnectHandler = std::function<void(const AsyncRepoError&)>;
+using AsyncWriteHandler = std::function<void(const ndn::Data&, const AsyncRepoError&)>;
 
 class AsyncRepoInserter : boost::noncopyable
 {
 public:
-  using AsyncRepoError = boost::system::error_code;
-  using AsyncConnectHandler = std::function<void(const AsyncRepoError&)>;
-  using AsyncWriteHandler = std::function<void(const ndn::Data&, const AsyncRepoError&)>;
+
+  class Error : public std::runtime_error
+  {
+  public:
+    using std::runtime_error::runtime_error;
+  };
 
   explicit
   AsyncRepoInserter(boost::asio::io_service& io);
