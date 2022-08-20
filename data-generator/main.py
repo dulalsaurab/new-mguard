@@ -9,9 +9,9 @@ import shutil
 BUFFER_SIZE = 1024
 
 # sleep times, configure this after each run
-s_after_metadata = 10
-s_after_first_stream = 20
-s_after_sending_batch = 40
+s_after_metadata = 20
+s_after_first_stream = 40
+s_after_sending_batch = 60
 
 class Sender:
     def __init__(self, port):
