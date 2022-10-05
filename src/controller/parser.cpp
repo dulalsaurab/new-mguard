@@ -116,7 +116,8 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     std::list<std::string> streams, policies;
     for (std::pair<std::string, ConfigSection> primaryTree : fullTree) {
         if (primaryTree.first != "policy-id" && primaryTree.first != "requester-names") {
-            SectionDetail parsedAccessControl = calculatePolicy(parseSection(primaryTree.second));
+            auto a = parseSection(primaryTree.second);
+            SectionDetail parsedAccessControl = calculatePolicy(a.front());
             for (const std::string &stream: parsedAccessControl.streams) {
                 streams.push_back(stream);
             }
@@ -132,24 +133,59 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     return {policyID, streams, requesterNames, policy};
 }
 
-ParsedSection
+std::list<ParsedSection>
 PolicyParser::parseSection(ConfigSection& section) {
+    std::map<std::string, std::list<std::string>> map;
+    for (const auto thing : {"/ndn/org/md2k/ATTRIBUTE/location/home", "/ndn/org/md2k/ATTRIBUTE/location/work", "/ndn/org/md2k/ATTRIBUTE/location/commuting", "/ndn/org/md2k/ATTRIBUTE/location/casino", "/ndn/org/md2k/ATTRIBUTE/location/oakland", "/ndn/org/md2k/ATTRIBUTE/location/SoCal", "/ndn/org/md2k/ATTRIBUTE/location/gym", "/ndn/org/md2k/ATTRIBUTE/location/shopping-mall", "/ndn/org/md2k/ATTRIBUTE/location/unknown", "/ndn/org/md2k/ATTRIBUTE/smoking/yes", "/ndn/org/md2k/ATTRIBUTE/smoking/no", "/ndn/org/md2k/ATTRIBUTE/activity/walking", "/ndn/org/md2k/ATTRIBUTE/activity/running", "/ndn/org/md2k/ATTRIBUTE/activity/eating", "/ndn/org/md2k/ATTRIBUTE/activity/drinking", "/ndn/org/md2k/ATTRIBUTE/activity/sleeping", "/ndn/org/md2k/ATTRIBUTE/activity/unknown"}) {
+        map["/ndn/org/md2k/"].push_back(thing);
+    }
+
+    std::list<ParsedSection> out;
     // initialize per-policy variables
-    std::list<std::string> allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
+    std::list<std::string> allow, deny;
 
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
-    processAttributeFilter(section.get_child("allow"), allowedStreams, allowedAttributes);
-    try {
-        processAttributeFilter(section.get_child("deny"), deniedStreams, deniedAttributes);
-    }
-    catch (boost::wrapexcept<pt::ptree_bad_path> &exception) {
+    for (const auto& item : section.get_child("allow")) {
+        allow.push_back(item.first);
     }
 
-    if (allowedStreams.empty()) {
-        throw std::runtime_error("\"allow\" section needs at least one stream name");
+    auto a = section.get_child_optional("deny");
+    if (a.has_value()) {
+        for (const auto& item : a.value()) {
+            deny.push_back(item.first);
+        }
     }
-    return {allowedStreams, deniedStreams, allowedAttributes, deniedAttributes};
+
+    for (const auto &thing: map) {
+        std::string stream = thing.first;
+        std::list<std::string> attributes = thing.second;
+        ParsedSection tmp;
+        for (const auto &filter: allow) {
+            if (filter.find(stream) == 0) {
+                tmp.allowedStreams.push_back(filter);
+            } else {
+                for (const auto &attribute: attributes) {
+                    if (attribute.rfind(filter, 0) == 0) {
+                        tmp.allowedAttributes.push_back(filter);
+                    }
+                }
+            }
+        }
+        for (const auto &filter: deny) {
+            if (stream.find(filter) == 0) {
+                tmp.deniedStreams.push_back(filter);
+            } else if (std::find(attributes.begin(), attributes.end(), filter) != std::end(attributes)) {
+                tmp.deniedAttributes.push_back(filter);
+            }
+        }
+        if (tmp.allowedStreams.empty()) {
+            throw std::runtime_error("\"allow\" section needs at least one valid stream name");
+        }
+        out.push_back(tmp);
+    }
+
+    return out;
 }
 
 SectionDetail
@@ -247,27 +283,6 @@ PolicyParser::getFilters(ConfigSection &section) {
         filters.push_back(parameter.first);
     }
     return filters;
-}
-
-void
-PolicyParser::processAttributeFilter(ConfigSection &section, std::list<std::string> &streams, std::list<std::string> &attributes)
-{
-    // go through all filters in the allow/deny section
-    std::string value;
-    for (const auto &parameter : section) {
-        value = parameter.first;
-
-        if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), value) != std::end(availableStreamLevels)) {
-            // is a stream name
-            streams.push_back(value);
-        } else if (std::find(availableAttributes.begin(), availableAttributes.end(), value) != std::end(availableAttributes)) {
-            // is an attribute
-            attributes.push_back(value);
-        } else {
-            // isn't stream or attribute
-            throw std::runtime_error(value + " not an available stream or attribute");
-        }
-    }
 }
 
 std::string
