@@ -88,13 +88,10 @@ private:
   static std::list<std::string> 
   split(const std::string& basicString, const std::string& delimeter);
 
-  void
-  processAttributeFilter(ConfigSection &section, std::list<std::string> &streams, std::list<std::string> &attributes);
-
-  static std::string 
+  static std::string
   processAttributes(const std::list<std::string>& attrList);
 
-  ParsedSection
+  std::list<ParsedSection>
   parseSection(ConfigSection& section);
 
   SectionDetail
