@@ -1,3 +1,23 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Copyright (c) 2021-2022,  The University of Memphis
+ *
+ * This file is part of mGuard.
+ * See AUTHORS.md for complete list of mGuard authors and contributors.
+ *
+ * mGuard is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * mGuard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+
 #include <user/subscriber.hpp>
 #include <common.hpp>
 
@@ -69,12 +89,12 @@ public:
     // automatically subscriber to the respective streams
 
     // A. battery only 
-    subscriptionList.push_back(availableStreams[0]); // battery 
+    // subscriptionList.push_back(availableStreams[0]); // battery 
 
     // all stream
-    // subscriptionList.push_back(availableStreams[0]); // battery
-    // subscriptionList.push_back(availableStreams[1]); // semloc
-    // subscriptionList.push_back(availableStreams[3]); // gps
+    subscriptionList.push_back(availableStreams[0]); // battery
+    subscriptionList.push_back(availableStreams[1]); // semloc
+    subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery

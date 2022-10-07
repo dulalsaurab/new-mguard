@@ -57,5 +57,5 @@ def get_cc(start_time='2022-05-08 21:08:10', end_time='2022-05-08 21:08:10'):
         'battery': battery_stream_name,
         # 'accel': accel_stream_name,
         # 'gyro': gyro_stream_name,
-        # 'gps': gps_stream_name
+        'gps': gps_stream_name
     }

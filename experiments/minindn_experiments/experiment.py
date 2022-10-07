@@ -32,13 +32,20 @@ def importSafebag(node, args, isProducer):
         cmd = "ndnsec import safebag/{} -P lab221".format(node.name.upper()+".sb")
         node.cmd(cmd)
 
-def run_repo_n_generator(node):
+def setTsharkLog(host):
+    # for host in ndn.net.hosts:
+    print ("Setting tshark for host:", host.name)
+    host.cmd('tshark -o ip.defragment:TRUE -o ip.check_checksum:FALSE -ni any -f "udp port 6363" -w {}.pcap &> /dev/null &'.format(host.name))
+    # host.cmd('ndndump -i any &> {}.ndndump &'.format(host.name))
+
+def run_repo(node):
     # run repo
     print ("Starting repo")
     command = "ndn-python-repo -c /home/map901/mguard/mguard/ndn-python-repo.conf > repo.log 2>&1 &"
     node.cmd(command)
     sleep(3) # sleep to init repo properly
 
+def data_generator(node):
     # send data to producer
     print("Starting data generator")
     node.cmd("export SPARK_HOME='/home/map901/.local/lib/python3.8/site-packages/pyspark'")
@@ -106,18 +113,22 @@ if __name__ == '__main__':
         subprocess.run(["cp", "-r", certPath, host_dir])
         subprocess.run(["cp", "-r", safeBagPath, host_dir])
 
+        setTsharkLog(host)
+
     c = ["b", "c", "d", "e"] # these are the consumer, look at testbed.conf topology
     producer = ndn.net["a"]
     # consumers = [ndn.net["b"]]
     consumers =  [ndn.net[x] for x in c]
     # consumers = [producer]
 
+    run_repo(producer)
+
     run_server(producer, args)
     sleep(5)
     run_consumer(consumers)
 
-    # finally start ndn-python-repo
-    run_repo_n_generator(producer)
+    # finally start data generator
+    data_generator(producer)
 
     MiniNDNCLI(ndn.net)
     ndn.stop()
