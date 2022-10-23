@@ -300,6 +300,92 @@ PolicyParser::calculatePolicy(const ParsedSection& section){
         }
     }
 
+    for (const auto &allowedTime: section.allowedTimes) {
+        try {
+            std::stoi(allowedTime.second);
+        } catch (std::invalid_argument) {
+            throw std::runtime_error("not able to convert \"" + allowedTime.second + "\" into an int");
+        }
+        if (allowedTime.second.size() != 10) {
+            throw std::runtime_error("UNIX timestamps are 10 digits. " + allowedTime.second + " is not 10 digits.");
+        }
+
+        if (allowedTime.first == "on") {
+            // policy.push_back("timestamp " + allowedTime.second);
+            // this is a date lookup (inherently semantic)
+        } else if (allowedTime.first == "at") {
+            policy.push_back("time = " + allowedTime.second);
+
+        } else if (allowedTime.first == "before") {
+            policy.push_back("time < " + allowedTime.second);
+
+        } else if (allowedTime.first == "before-include") {
+            policy.push_back("time <= " + allowedTime.second);
+
+        } else if (allowedTime.first == "after") {
+            policy.push_back("time > " + allowedTime.second);
+
+        } else if (allowedTime.first == "after-include") {
+            policy.push_back("time >= " + allowedTime.second);
+
+        } else if (allowedTime.first == "from") {
+            policy.push_back("time >= " + allowedTime.second);
+
+        } else if (allowedTime.first == "to") {
+            policy.push_back("time < " + allowedTime.second);
+
+        } else if (allowedTime.first == "to-include") {
+            policy.push_back("time <= " + allowedTime.second);
+
+        } else {
+            throw std::runtime_error("Something is wrong with the keyword of " + allowedTime.first );
+
+        }
+    }
+
+    for (const auto &deniedTime: section.deniedTimes) {
+        try {
+            std::stoi(deniedTime.second);
+        } catch (std::invalid_argument) {
+            throw std::runtime_error("not able to convert \"" + deniedTime.second + "\" into an int");
+        }
+        if (deniedTime.second.size() != 10) {
+            throw std::runtime_error("UNIX timestamps are 10 digits. " + deniedTime.second + " is not 10 digits.");
+        }
+
+        if (deniedTime.first == "on") {
+            // policy.push_back("timestamp " + deniedTime.second);
+            // this is a date lookup (inherently semantic)
+        } else if (deniedTime.first == "at") {
+            policy.push_back("time > " + deniedTime.second);
+            policy.push_back("time < " + deniedTime.second);
+
+        } else if (deniedTime.first == "before") {
+            policy.push_back("time >= " + deniedTime.second);
+
+        } else if (deniedTime.first == "before-include") {
+            policy.push_back("time > " + deniedTime.second);
+
+        } else if (deniedTime.first == "after") {
+            policy.push_back("time <= " + deniedTime.second);
+
+        } else if (deniedTime.first == "after-include") {
+            policy.push_back("time < " + deniedTime.second);
+
+        } else if (deniedTime.first == "from") {
+            policy.push_back("time < " + deniedTime.second);
+
+        } else if (deniedTime.first == "to") {
+            policy.push_back("time >= " + deniedTime.second);
+
+        } else if (deniedTime.first == "to-include") {
+            policy.push_back("time > " + deniedTime.second);
+
+        } else {
+            throw std::runtime_error("Something is wrong with the keyword of " + deniedTime.first );
+
+        }
+    }
     // putting it all together
     // AND together all separate conditions made for the output policy
     std::string abePolicy = doStringThing(policy, "AND");
