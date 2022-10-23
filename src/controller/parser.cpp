@@ -161,41 +161,53 @@ PolicyParser::parseSection(ConfigSection& section) {
 
     std::list<ParsedSection> out;
     // initialize per-policy variables
-    std::list<std::string> allow, deny;
+    std::list<std::pair<std::string, std::string>> allow, deny;
 
     // NOTE: I should figure out better way to structure this part
     // this could possibly be done with section.get_child_optional()
-    for (const auto& item : section.get_child("allow")) {
-        allow.push_back(item.first);
+    auto allowField = section.get_child("allow");
+    for (const auto& item : allowField) {
+        std::pair<std::string, std::string> tmp;
+        tmp.first = item.first;
+        tmp.second = item.second.data();
+        allow.push_back(tmp);
     }
 
-    auto a = section.get_child_optional("deny");
-    if (a.has_value()) {
-        for (const auto& item : a.value()) {
-            deny.push_back(item.first);
+    auto denyField = section.get_child_optional("deny");
+    if (denyField.has_value()) {
+        for (const auto& item : denyField.value()) {
+            std::pair<std::string, std::string> tmp;
+            tmp.first = item.first;
+            tmp.second = item.second.data();
+            deny.push_back(tmp);
         }
     }
 
+    std::list<std::string> timeKeywords = {"on", "at", "before", "before-include", "after", "after-include", "from", "to"};
     for (const auto &thing: map) {
         std::string stream = thing.first;
         std::list<std::string> attributes = thing.second;
         ParsedSection tmp;
         for (const auto &filter: allow) {
-            if (filter.find(stream) == 0) {
-                tmp.allowedStreams.push_back(filter);
+            if (filter.first.find(stream) == 0) {
+                tmp.allowedStreams.push_back(filter.first);
+            } else if (std::find(timeKeywords.begin(), timeKeywords.end(), filter.first) != std::end(timeKeywords)) {
+                tmp.allowedTimes.push_back(filter);
             } else {
                 for (const auto &attribute: attributes) {
-                    if (attribute.rfind(filter, 0) == 0) {
-                        tmp.allowedAttributes.push_back(filter);
+                    if (attribute.rfind(filter.first, 0) == 0) {
+                        tmp.allowedAttributes.push_back(filter.first);
                     }
                 }
             }
         }
         for (const auto &filter: deny) {
-            if (stream.find(filter) == 0) {
-                tmp.deniedStreams.push_back(filter);
-            } else if (std::find(attributes.begin(), attributes.end(), filter) != std::end(attributes)) {
-                tmp.deniedAttributes.push_back(filter);
+            if (std::find(timeKeywords.begin(), timeKeywords.end(), filter.first) != std::end(timeKeywords)) {
+                tmp.deniedTimes.push_back(filter);
+            } else if (stream.find(filter.first) == 0) {
+                tmp.deniedStreams.push_back(filter.first);
+            } else if (std::find(attributes.begin(), attributes.end(), filter.first) != std::end(attributes)) {
+                tmp.deniedAttributes.push_back(filter.first);
             }
         }
         if (tmp.allowedStreams.empty()) {

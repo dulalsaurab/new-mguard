@@ -50,6 +50,8 @@ struct ParsedSection
     std::list<std::string> deniedStreams;
     std::list<std::string> allowedAttributes;
     std::list<std::string> deniedAttributes;
+    std::list<std::pair<std::string, std::string>> allowedTimes;
+    std::list<std::pair<std::string, std::string>> deniedTimes;
 };
 
 struct SectionDetail
