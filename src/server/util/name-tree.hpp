@@ -114,13 +114,13 @@ private:
   createNode(std::string nodeId, ndn::Name fullName);
 
   void
-  getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore);
+  getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore);
 
   std::pair<TreeNode*, ndn::Name>
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
-  getChildrens(TreeNode* startFrom, std::vector<ndn::Name>& leafs);
+  getChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens);
 
   void
   _delete(TreeNode* nodeptr);
