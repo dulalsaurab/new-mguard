@@ -71,10 +71,8 @@ NameTree::createNode(std::string nodeId, ndn::Name fullName)
 {
   std::cout << "create node " << fullName << std::endl;
   TreeNode *parent_node = new TreeNode;
-  if (parent_node) {
-      parent_node->m_nodeId = nodeId;
-      parent_node->m_fullName = fullName;
-  }
+  parent_node->m_nodeId = nodeId;
+  parent_node->m_fullName = fullName;
   return parent_node;
 }
 
