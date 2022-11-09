@@ -146,14 +146,14 @@ NameTree::getAllLeaves(ndn::Name prefix, const ndn::Name& ignore)
 }
 
 void
-NameTree::getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens)
+NameTree::getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& children)
 {
   if ((*startFrom).m_children.empty())
     return;
   
-  for (auto & it_nt : (*startFrom).m_children) {
-      childrens.push_back(it_nt->m_fullName);
-      getAllChildren(it_nt, childrens);
+  for (TreeNode*& it_nt : (*startFrom).m_children) {
+      children.push_back(it_nt->m_fullName);
+      getAllChildren(it_nt, children);
   }
 }
 
