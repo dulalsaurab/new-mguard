@@ -123,7 +123,7 @@ private:
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
-  getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens);
+  getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& children);
 
   void
   _delete(TreeNode* nodeptr);
