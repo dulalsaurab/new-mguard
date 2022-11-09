@@ -180,6 +180,11 @@ NameTree::getParent(ndn::Name name)
   return *parent_ptr;
 }
 
+bool
+NameTree::isChild(TreeNode *node, const ndn::Name& leaf) {
+    return node == getParent(leaf);
+}
+
 void
 NameTree::_delete(TreeNode* startFrom)
 {
