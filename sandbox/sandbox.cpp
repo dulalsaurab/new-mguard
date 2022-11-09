@@ -37,10 +37,10 @@ void testNametree() {
         nameTree.insertName(leaf);
     }
 
-    ndn::Name denied = "/ndn/org/md2k/ATTRIBUTE/smoking/yes";
+    ndn::Name denied = "/ndn/org/md2k/ATTRIBUTE/smokinggyes";
 
     // fixme: how to determine whether it was found
-    auto deniedNode = nameTree.search(nameTree.getTreeRoot(), denied);
+    auto deniedNode = nameTree.getNode(nameTree.getTreeRoot(), denied);
 }
 
 void printOutties(std::map<std::string, std::map<std::string, std::map<std::string, std::list<std::string>>>> outties, std::string stream) {
@@ -113,8 +113,23 @@ void additionalParser() {
     printOutties(outties, "/org/prefix-b/");
 }
 
+std::pair<int, int> getCurrentDay(int currentTime) {
+    int days = currentTime / 86400;
+    int startDay = days * 86400;
+    int endDay = startDay + 86400;
+    return {startDay, endDay};
+}
+
+
+std::vector<std::string> subtraction(std::vector<std::string> a, std::vector<std::string> b) {
+    // does a - b
+    std::vector<std::string> out;
+    std::sort(a.begin(), a.end());
+    return out;
+}
+
 int main(){
     std::cout << "sandbox run:" << std::endl;
-    additionalParser();
+    testNametree();
     return 0;
 }
