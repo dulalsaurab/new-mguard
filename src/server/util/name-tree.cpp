@@ -112,7 +112,7 @@ ndn::Name
 NameTree::longestPrefixMatch(ndn::Name name)
 {
   std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
-  auto lmp = info.first->m_fullName; // lmp longes matched prefix
+  auto lmp = info.first->m_fullName; // lmp longest matched prefix
   NDN_LOG_INFO("Longest matched prefix: " << lmp);
   return lmp;
 }
@@ -124,7 +124,7 @@ NameTree::getAllLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const
     return;
 
   for (auto & it_nt : (*startFrom).m_children) {
-    if(it_nt->m_children.empty()) // if no childrent then this is the leaf
+    if(it_nt->m_children.empty()) // if no children then this is the leaf
         leafs.push_back(it_nt->m_fullName);
 
     if (it_nt->m_fullName != ignore)
@@ -198,7 +198,7 @@ NameTree::_delete(TreeNode* startFrom)
 void
 NameTree::deleteNode(const ndn::Name& prefix) {
   auto node_ptr = getNode(m_root, prefix);
-  NDN_LOG_INFO("Deleating from start: " << (*node_ptr)->m_nodeId);
+  NDN_LOG_INFO("Deleting from start: " << (*node_ptr)->m_nodeId);
   _delete(*node_ptr);
 
   auto parent = getParent(prefix);
