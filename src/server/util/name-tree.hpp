@@ -109,6 +109,9 @@ public:
   void
   _printTree(TreeNode* startFrom);
 
+  bool
+  isChild(TreeNode* node, const ndn::Name& leaf);
+
 private:
   TreeNode*
   createNode(std::string nodeId, const ndn::Name& fullName);
