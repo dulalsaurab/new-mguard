@@ -416,7 +416,7 @@ PolicyParser::processAttributes(const std::list<std::string>& attrList) {
 
         // because of the previous check, the next steps only happen for the amount of types of attributes listed
 
-        // search through attributes for ones of the same type as the current one
+        // getNode through attributes for ones of the same type as the current one
         // OR attributes of similar types
         for (const std::string& attr : attrList) {
             if (parseAttribute(searching).first == parseAttribute(attr).first) {
