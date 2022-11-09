@@ -72,11 +72,11 @@ public:
 
   /** 
    * @brief Search if a name exist in the tree, return node pointer if the name is found
-   *  @param startFrom node pointer, starting node of the search
-   *  @param name name prefix to search for
+   *  @param startFrom node pointer, starting node of the getNode
+   *  @param name name prefix to getNode for
   */
   ndn::optional<TreeNode*>
-  search(TreeNode* startFrom, ndn::Name name);
+  getNode(TreeNode* startFrom, ndn::Name name);
 
   /** 
    * @brief get all the leaf (names) of a name prefix in the tree
@@ -85,7 +85,7 @@ public:
    *  /aa/ff/kk, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
-  getAllLeafs(ndn::Name prefix, ndn::Name ignore = "/mguard/ignore");
+  getAllLeaves(ndn::Name prefix, const ndn::Name& ignore);
   
   TreeNode*
   getParent(ndn::Name name);
@@ -97,30 +97,30 @@ public:
    *  /aa/ff, /aa/ff/kk, /aa/ff/kk/mm, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
-  getAllChildrens(ndn::Name name);
+  getAllChildren(ndn::Name name);
 
   /* return logest match prefix of a name */
   ndn::Name
   longestPrefixMatch(ndn::Name name);
 
   void
-  deleteNode(ndn::Name prefix);
+  deleteNode(const ndn::Name& prefix);
 
   void
   _printTree(TreeNode* startFrom);
 
 private:
   TreeNode*
-  createNode(std::string nodeId, ndn::Name fullName);
+  createNode(std::string nodeId, const ndn::Name& fullName);
 
   void
-  getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore);
+  getAllLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore);
 
   std::pair<TreeNode*, ndn::Name>
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
-  getChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens);
+  getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens);
 
   void
   _delete(TreeNode* nodeptr);
