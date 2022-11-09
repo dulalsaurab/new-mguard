@@ -22,8 +22,8 @@
 
 #include <ndn-cxx/util/logger.hpp>
 
-#include <optional>
 #include <string>
+#include <utility>
 
 NDN_LOG_INIT(mguard.nametree);
 
@@ -67,17 +67,17 @@ NameTree::insertName(ndn::Name name)
 }
 
 TreeNode*
-NameTree::createNode(std::string nodeId, ndn::Name fullName)
+NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 {
   std::cout << "create node " << fullName << std::endl;
-  TreeNode *parent_node = new TreeNode;
-  parent_node->m_nodeId = nodeId;
+  auto *parent_node = new TreeNode;
+  parent_node->m_nodeId = std::move(nodeId);
   parent_node->m_fullName = fullName;
   return parent_node;
 }
 
 ndn::optional<TreeNode*>
-NameTree::search(TreeNode* startFrom, ndn::Name name)
+NameTree::getNode(TreeNode* startFrom, ndn::Name name)
 {
   std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(startFrom, name);
   return (info.second == "/") ? info.first : nullptr; // return the pointer that has the name
@@ -93,14 +93,14 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
   for (auto it_name = namePrefix.begin(); it_name != namePrefix.end(); ++it_name) {
     NDN_LOG_INFO("Searching name component: " << it_name->toUri() << " : " << (*startFrom).m_nodeId);
     
-    if ((*startFrom).m_children.size() == 0) {// this is leaf  
+    if ((*startFrom).m_children.empty()) {// this is leaf
       return std::make_pair(startFrom, namePrefix);
     }
 
-    for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-      if ((*it_nt)->m_nodeId == it_name->toUri()) {
+    for (auto & it_nt : (*startFrom).m_children) {
+      if (it_nt->m_nodeId == it_name->toUri()) {
         namePrefix = namePrefix.getSubName(1);
-        return getLongestMatchedName((*it_nt), namePrefix);
+        return getLongestMatchedName(it_nt, namePrefix);
       }
     }
  
@@ -118,56 +118,56 @@ NameTree::longestPrefixMatch(ndn::Name name)
 }
 
 void
-NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore)
+NameTree::getAllLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore)
 {
-  if ((*startFrom).m_children.size() == 0)
+  if ((*startFrom).m_children.empty())
     return;
 
-  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-    if((*it_nt)->m_children.size() == 0) // if no childrent then this is the leaf
-        leafs.push_back((*it_nt)->m_fullName);
+  for (auto & it_nt : (*startFrom).m_children) {
+    if(it_nt->m_children.empty()) // if no childrent then this is the leaf
+        leafs.push_back(it_nt->m_fullName);
 
-    if ((*it_nt)->m_fullName != ignore)
-        getLeaves((*it_nt), leafs, ignore);
+    if (it_nt->m_fullName != ignore)
+        getAllLeaves(it_nt, leafs, ignore);
   }
 }
 
 std::vector<ndn::Name>
-NameTree::getAllLeafs(ndn::Name prefix, ndn::Name ignore)
+NameTree::getAllLeaves(ndn::Name prefix, const ndn::Name& ignore)
 {
   std::vector<ndn::Name> leafs;
-  auto node_ptr = search(m_root, prefix);
+  auto node_ptr = getNode(m_root, std::move(prefix));
   if (node_ptr == nullptr) {
     NDN_LOG_INFO("prefix not in the tree");
     return leafs;
   }
-    getLeaves((*node_ptr), leafs, ignore);
+    getAllLeaves((*node_ptr), leafs, ignore);
   return leafs;
 }
 
 void
-NameTree::getChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens)
+NameTree::getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& childrens)
 {
-  if ((*startFrom).m_children.size() == 0)
+  if ((*startFrom).m_children.empty())
     return;
   
-  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-      childrens.push_back((*it_nt)->m_fullName);
-      getChildren((*it_nt), childrens);
+  for (auto & it_nt : (*startFrom).m_children) {
+      childrens.push_back(it_nt->m_fullName);
+      getAllChildren(it_nt, childrens);
   }
 }
 
 std::vector<ndn::Name>
-NameTree::getAllChildrens(ndn::Name name)
+NameTree::getAllChildren(ndn::Name name)
 {
-  std::vector<ndn::Name> childrens;
-  auto node_ptr = search(m_root, name);
+  std::vector<ndn::Name> children;
+  auto node_ptr = getNode(m_root, std::move(name));
   if (node_ptr == nullptr) {
     NDN_LOG_INFO("prefix not in the tree");
-    return childrens;
+    return children;
   }
-    getChildren((*node_ptr), childrens);
-  return childrens;
+    getAllChildren((*node_ptr), children);
+  return children;
 }
 
 TreeNode*
@@ -175,7 +175,7 @@ NameTree::getParent(ndn::Name name)
 {
   // parent of name (full name) "/aa/bb/cc" will be of full name "/aa/bb"
   auto parentPrefix = name.getPrefix(1);
-  auto parent_ptr = search(m_root, parentPrefix);
+  auto parent_ptr = getNode(m_root, parentPrefix);
   NDN_LOG_INFO("parent of prefix: " << name << " = " << (*parent_ptr)->m_nodeId);
   return *parent_ptr;
 }
@@ -183,21 +183,21 @@ NameTree::getParent(ndn::Name name)
 void
 NameTree::_delete(TreeNode* startFrom)
 {
-  if ((*startFrom).m_children.size() == 0) {
+  if ((*startFrom).m_children.empty()) {
     delete startFrom;
     return;
   }
     /* first delete all the subtrees */
-  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-    _delete(*it_nt);
+  for (auto & it_nt : (*startFrom).m_children) {
+    _delete(it_nt);
   } 
   /* finally delete the parent node */
   delete startFrom;
 }
 
 void
-NameTree::deleteNode(ndn::Name prefix) {
-  auto node_ptr = search(m_root, prefix);
+NameTree::deleteNode(const ndn::Name& prefix) {
+  auto node_ptr = getNode(m_root, prefix);
   NDN_LOG_INFO("Deleating from start: " << (*node_ptr)->m_nodeId);
   _delete(*node_ptr);
 
@@ -213,11 +213,11 @@ void
 NameTree::_printTree(TreeNode* startFrom)
 { 
   NDN_LOG_INFO("node: " << (*startFrom).m_nodeId);
-  if ((*startFrom).m_children.size() == 0) {
+  if ((*startFrom).m_children.empty()) {
     return;
   }
-  for (auto it_nt = (*startFrom).m_children.begin(); it_nt != (*startFrom).m_children.end(); ++it_nt) {
-    _printTree(*it_nt);
+  for (auto & it_nt : (*startFrom).m_children) {
+    _printTree(it_nt);
   }
 }
 
