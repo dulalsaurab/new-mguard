@@ -118,22 +118,23 @@ NameTree::longestPrefixMatch(ndn::Name name)
 }
 
 void
-NameTree::getAllLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore)
+NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore)
 {
-  if ((*startFrom).m_children.empty())
-    return;
-
-  for (auto & it_nt : (*startFrom).m_children) {
-    if(it_nt->m_children.empty()) // if no children then this is the leaf
-        leafs.push_back(it_nt->m_fullName);
-
-    if (it_nt->m_fullName != ignore)
-        getAllLeaves(it_nt, leafs, ignore);
-  }
+    for (TreeNode*& it_nt : (*startFrom).m_children) {
+      if (it_nt->m_fullName == ignore) {
+          continue;
+      }
+      // if no children then this is the leaf
+      if(it_nt->m_children.empty()) {
+          leafs.push_back(it_nt->m_fullName);
+      } else {
+          getLeaves(it_nt, leafs, ignore);
+      }
+    }
 }
 
 std::vector<ndn::Name>
-NameTree::getAllLeaves(ndn::Name prefix, const ndn::Name& ignore)
+NameTree::getLeaves(ndn::Name prefix, const ndn::Name& ignore)
 {
   std::vector<ndn::Name> leafs;
   auto node_ptr = getNode(m_root, std::move(prefix));
@@ -141,24 +142,24 @@ NameTree::getAllLeaves(ndn::Name prefix, const ndn::Name& ignore)
     NDN_LOG_INFO("prefix not in the tree");
     return leafs;
   }
-    getAllLeaves((*node_ptr), leafs, ignore);
+    getLeaves((*node_ptr), leafs, ignore);
   return leafs;
 }
 
 void
-NameTree::getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& children)
+NameTree::getChildren(TreeNode* startFrom, std::vector<ndn::Name>& children)
 {
   if ((*startFrom).m_children.empty())
     return;
   
   for (TreeNode*& it_nt : (*startFrom).m_children) {
       children.push_back(it_nt->m_fullName);
-      getAllChildren(it_nt, children);
+      getChildren(it_nt, children);
   }
 }
 
 std::vector<ndn::Name>
-NameTree::getAllChildren(ndn::Name name)
+NameTree::getChildren(ndn::Name name)
 {
   std::vector<ndn::Name> children;
   auto node_ptr = getNode(m_root, std::move(name));
@@ -166,7 +167,7 @@ NameTree::getAllChildren(ndn::Name name)
     NDN_LOG_INFO("prefix not in the tree");
     return children;
   }
-    getAllChildren((*node_ptr), children);
+    getChildren((*node_ptr), children);
   return children;
 }
 
