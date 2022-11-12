@@ -85,7 +85,7 @@ public:
    *  /aa/ff/kk, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
-  getAllLeaves(ndn::Name prefix, const ndn::Name& ignore);
+  getLeaves(ndn::Name prefix, const ndn::Name& ignore);
   
   TreeNode*
   getParent(ndn::Name name);
@@ -97,7 +97,7 @@ public:
    *  /aa/ff, /aa/ff/kk, /aa/ff/kk/mm, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
-  getAllChildren(ndn::Name name);
+  getChildren(ndn::Name name);
 
   /* return logest match prefix of a name */
   ndn::Name
@@ -117,13 +117,13 @@ private:
   createNode(std::string nodeId, const ndn::Name& fullName);
 
   void
-  getAllLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore);
+  getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore);
 
   std::pair<TreeNode*, ndn::Name>
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
-  getAllChildren(TreeNode* startFrom, std::vector<ndn::Name>& children);
+  getChildren(TreeNode* startFrom, std::vector<ndn::Name>& children);
 
   void
   _delete(TreeNode* nodeptr);
