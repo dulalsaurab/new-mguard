@@ -69,7 +69,7 @@ NameTree::insertName(ndn::Name name)
 TreeNode*
 NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 {
-  std::cout << "create node " << fullName << std::endl;
+  NDN_LOG_INFO("create node " << fullName );
   auto *parent_node = new TreeNode;
   parent_node->m_nodeId = std::move(nodeId);
   parent_node->m_fullName = fullName;
@@ -118,10 +118,10 @@ NameTree::longestPrefixMatch(ndn::Name name)
 }
 
 void
-NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const ndn::Name& ignore)
+NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const std::vector<ndn::Name>& ignore)
 {
     for (TreeNode*& it_nt : (*startFrom).m_children) {
-      if (it_nt->m_fullName == ignore) {
+      if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
           continue;
       }
       // if no children then this is the leaf
@@ -134,7 +134,7 @@ NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const nd
 }
 
 std::vector<ndn::Name>
-NameTree::getLeaves(ndn::Name prefix, const ndn::Name& ignore)
+NameTree::getLeaves(ndn::Name prefix, const std::vector<ndn::Name>& ignore)
 {
   std::vector<ndn::Name> leafs;
   auto node_ptr = getNode(m_root, std::move(prefix));
