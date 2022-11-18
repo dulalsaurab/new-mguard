@@ -117,7 +117,7 @@ private:
   createNode(std::string nodeId, const ndn::Name& fullName);
 
   void
-  getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const std::vector<ndn::Name>& ignore);
+  getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore);
 
   std::pair<TreeNode*, ndn::Name>
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);

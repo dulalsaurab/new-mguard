@@ -118,7 +118,7 @@ NameTree::longestPrefixMatch(ndn::Name name)
 }
 
 void
-NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const std::vector<ndn::Name>& ignore)
+NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore)
 {
     for (TreeNode*& it_nt : (*startFrom).m_children) {
       if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
@@ -126,9 +126,9 @@ NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const st
       }
       // if no children then this is the leaf
       if(it_nt->m_children.empty()) {
-          leafs.push_back(it_nt->m_fullName);
+          leaves.push_back(it_nt->m_fullName);
       } else {
-          getLeaves(it_nt, leafs, ignore);
+          getLeaves(it_nt, leaves, ignore);
       }
     }
 }
@@ -136,14 +136,14 @@ NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leafs, const st
 std::vector<ndn::Name>
 NameTree::getLeaves(ndn::Name prefix, const std::vector<ndn::Name>& ignore)
 {
-  std::vector<ndn::Name> leafs;
+  std::vector<ndn::Name> leaves;
   auto node_ptr = getNode(m_root, std::move(prefix));
   if (node_ptr == nullptr) {
     NDN_LOG_INFO("prefix not in the tree");
-    return leafs;
+    return leaves;
   }
-    getLeaves((*node_ptr), leafs, ignore);
-  return leafs;
+    getLeaves((*node_ptr), leaves, ignore);
+  return leaves;
 }
 
 void
