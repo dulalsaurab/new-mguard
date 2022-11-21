@@ -112,6 +112,10 @@ public:
   bool
   isChild(TreeNode* node, const ndn::Name& leaf);
 
+  TreeNode *findNode(ndn::Name target, int& times);
+
+  TreeNode *findNode(std::vector<TreeNode*> children, ndn::Name& target, int& times);
+
 private:
   TreeNode*
   createNode(std::string nodeId, const ndn::Name& fullName);

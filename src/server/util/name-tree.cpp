@@ -108,6 +108,26 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
   }
 }
 
+TreeNode*
+NameTree::findNode(ndn::Name target, int& times) {
+    return findNode(getTreeRoot()->m_children, target, times);
+}
+
+TreeNode*
+NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target, int& times) {
+    std::vector<TreeNode*> next;
+    for (TreeNode* const &child: children) {
+        times ++;
+        if (child->m_nodeId == target){
+            return child;
+        }
+        for (TreeNode* grandChild : child->m_children) {
+            next.push_back(grandChild);
+        }
+    }
+    return findNode(next, target, times);
+}
+
 ndn::Name
 NameTree::longestPrefixMatch(ndn::Name name)
 {
