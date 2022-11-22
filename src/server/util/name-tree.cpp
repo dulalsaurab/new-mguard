@@ -142,16 +142,20 @@ NameTree::longestPrefixMatch(ndn::Name name)
 void
 NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore)
 {
-    for (TreeNode*& it_nt : (*startFrom).m_children) {
-      if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
-          continue;
-      }
-      // if no children then this is the leaf
-      if(it_nt->m_children.empty()) {
-          leaves.push_back(it_nt->m_fullName);
-      } else {
-          getLeaves(it_nt, leaves, ignore);
-      }
+    if (!(*startFrom).m_children.empty()) {
+        for (TreeNode*& it_nt : (*startFrom).m_children) {
+          if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
+              continue;
+          }
+          // if no children then this is the leaf
+          if(it_nt->m_children.empty()) {
+              leaves.push_back(it_nt->m_fullName);
+          } else {
+              getLeaves(it_nt, leaves, ignore);
+          }
+        }
+    } else {
+        leaves.push_back(startFrom->m_fullName);
     }
 }
 
