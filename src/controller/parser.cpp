@@ -33,82 +33,37 @@ namespace parser {
 
 PolicyParser::PolicyParser(const std::basic_string<char>& availableStreams)
 {
-  // store data from input files
-  parseAvailableStreams(availableStreams);
+    // store data from input files
+    parseAvailableStreams(availableStreams, attStreamsTree, requestersTree);
 }
 
 void
-PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath)
+PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requestors)
 {
-  NDN_LOG_INFO("processing available stream path: " << streamsFilePath);
-  // input for available streams
-  availableStreams.clear();
-  availableStreamLevels.clear();
-  allowedRequesters.clear();
-  availableAttributes.clear();
+    NDN_LOG_INFO("processing available stream path: " << streamsFilePath);
+    // input for available streams
+    std::ifstream input(streamsFilePath.c_str());
+    ConfigSection section;
+    boost::property_tree::read_info(input, section);
+    // processing given streams and storing all possible streams
 
-  std::ifstream input(streamsFilePath.c_str());
-  ConfigSection section;
-  boost::property_tree::read_info(input, section);
-  // processing given streams and storing all possible streams
-  std::list<std::string> levels;
-  std::string buildingName;
-  for (const auto &item : section.get_child("available-streams"))
-  {
-    // add stream to list of streams
-    NDN_LOG_TRACE("stream name: " << item.first);
-    availableStreams.push_back(item.first);
-    // adding all parents of given stream to list
-    levels = split(item.first, "/");
-    std::string adding;
-    // all names should start with a /
-    buildingName = "/";
-    for (int index = 0; !levels.empty(); index ++) {
-      adding = levels.front();
-      // then remove it from the list we're grabbing from
-      levels.erase(levels.begin());
-      // first character things
-      if (index == 0 ) {
-        // checking to make sure it starts with a /
-        if (!adding.empty()) {
-            throw std::runtime_error("Parsing available-streams failed: " + item.first + " does not start with /");
-        }
-        // don't add the first one
-        continue;
-      }
-
-      // formatting
-      // store first value in the name you're building
-      buildingName += adding;
-      if (!levels.empty()) {
-        // always add a / after each part of the stream if it's not the very last one
-        buildingName += "/";
-      }
-
-      // skip adding to list if it's not already there. this prevents duplicates
-      if (std::find(availableStreamLevels.begin(), availableStreamLevels.end(), buildingName) != availableStreamLevels.end()) {
-        // buildingName in availableStreamLevels
-        continue;
-      }
-
-      availableStreamLevels.push_back(buildingName);
+    for (const auto &item: section.get_child("available-streams")) {
+        // add stream to list of streams
+        NDN_LOG_TRACE("stream name: " << item.first);
+        streamsAttributes.insertName(item.first);
     }
-  }
+    for (const auto &item : section.get_child("attributes")) {
+        // add stream to list of streams
+        NDN_LOG_TRACE("attribute name: " << item.first);
+        streamsAttributes.insertName(item.first);
+    }
 
-  // store available requesters
-  for (const auto &item : section.get_child("requesters"))
-  {
-    // key,value as "'user', buildingName"
-    allowedRequesters.push_back(item.second.get_value<std::string>());
-  }
-
-  // store attributes
-  for (const auto &attribute : section.get_child("attributes"))
-  {
-    availableAttributes.push_back(attribute.first);
-  }
-
-  input.close();
+    // store available requesters
+    for (const auto &item : section.get_child("requesters")) {
+        // key,value as "'user', buildingName"
+        requestors.insertName(item.second.get_value<std::string>());
+    }
+    input.close();
 }
 
 PolicyDetail
@@ -126,7 +81,8 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
 
     // check given requesters against allowed requesters
     for (const std::string &requester: requesterNames) {
-        if (std::find(allowedRequesters.begin(), allowedRequesters.end(), requester) == std::end(allowedRequesters)) {
+        auto a = requestersTree.getLeaves("", {});
+        if (std::find(a.begin(), a.end(), (ndn::Name)requester) == a.end()) {
             // requester is not in allowedRequesters
             throw std::runtime_error("requester " + requester + " not in given requesters");
         }
@@ -136,7 +92,7 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     for (std::pair<std::string, ConfigSection> primaryTree : fullTree) {
         if (primaryTree.first != "policy-id" && primaryTree.first != "requester-names") {
             auto a = parseSection(primaryTree.second);
-            SectionDetail parsedAccessControl = calculatePolicy(a.front());
+            SectionDetail parsedAccessControl = calculatePolicy(a);
             for (const std::string &stream: parsedAccessControl.streams) {
                 streams.push_back(stream);
             }
@@ -152,14 +108,8 @@ PolicyParser::parsePolicy(const std::basic_string<char>& policyFilePath) {
     return {policyID, streams, requesterNames, policy};
 }
 
-std::list<ParsedSection>
+ParsedSection
 PolicyParser::parseSection(ConfigSection& section) {
-    std::map<std::string, std::list<std::string>> map;
-    for (const auto thing : {"/ndn/org/md2k/ATTRIBUTE/location/home", "/ndn/org/md2k/ATTRIBUTE/location/work", "/ndn/org/md2k/ATTRIBUTE/location/commuting", "/ndn/org/md2k/ATTRIBUTE/location/casino", "/ndn/org/md2k/ATTRIBUTE/location/oakland", "/ndn/org/md2k/ATTRIBUTE/location/SoCal", "/ndn/org/md2k/ATTRIBUTE/location/gym", "/ndn/org/md2k/ATTRIBUTE/location/shopping-mall", "/ndn/org/md2k/ATTRIBUTE/location/unknown", "/ndn/org/md2k/ATTRIBUTE/smoking/yes", "/ndn/org/md2k/ATTRIBUTE/smoking/no", "/ndn/org/md2k/ATTRIBUTE/activity/walking", "/ndn/org/md2k/ATTRIBUTE/activity/running", "/ndn/org/md2k/ATTRIBUTE/activity/eating", "/ndn/org/md2k/ATTRIBUTE/activity/drinking", "/ndn/org/md2k/ATTRIBUTE/activity/sleeping", "/ndn/org/md2k/ATTRIBUTE/activity/unknown"}) {
-        map["/ndn/org/md2k/"].push_back(thing);
-    }
-
-    std::list<ParsedSection> out;
     // initialize per-policy variables
     std::list<std::pair<std::string, std::string>> allow, deny;
 
@@ -184,39 +134,25 @@ PolicyParser::parseSection(ConfigSection& section) {
     }
 
     std::list<std::string> timeKeywords = {"on", "at", "before", "before-include", "after", "after-include", "from", "to"};
-    for (const auto &thing: map) {
-        std::string stream = thing.first;
-        std::list<std::string> attributes = thing.second;
-        ParsedSection tmp;
-        for (const auto &filter: allow) {
-            if (filter.first.find(stream) == 0) {
-                tmp.allowedStreams.push_back(filter.first);
-            } else if (std::find(timeKeywords.begin(), timeKeywords.end(), filter.first) != std::end(timeKeywords)) {
-                tmp.allowedTimes.push_back(filter);
-            } else {
-                for (const auto &attribute: attributes) {
-                    if (attribute.rfind(filter.first, 0) == 0) {
-                        tmp.allowedAttributes.push_back(filter.first);
-                    }
-                }
-            }
+    ParsedSection tmp;
+    for (const auto &filter: allow) {
+        if (std::find(timeKeywords.begin(), timeKeywords.end(), filter.first) != std::end(timeKeywords)) {
+            tmp.allowedTimes.push_back(filter);
+        } else {
+            tmp.allowedNames.push_back(filter.first);
         }
-        for (const auto &filter: deny) {
-            if (std::find(timeKeywords.begin(), timeKeywords.end(), filter.first) != std::end(timeKeywords)) {
-                tmp.deniedTimes.push_back(filter);
-            } else if (stream.find(filter.first) == 0) {
-                tmp.deniedStreams.push_back(filter.first);
-            } else if (std::find(attributes.begin(), attributes.end(), filter.first) != std::end(attributes)) {
-                tmp.deniedAttributes.push_back(filter.first);
-            }
-        }
-        if (tmp.allowedStreams.empty()) {
-            throw std::runtime_error("\"allow\" section needs at least one valid stream name");
-        }
-        out.push_back(tmp);
     }
-
-    return out;
+    for (const auto &filter: deny) {
+        if (std::find(timeKeywords.begin(), timeKeywords.end(), filter.first) != std::end(timeKeywords)) {
+            tmp.deniedTimes.push_back(filter);
+        } else {
+            tmp.deniedNames.push_back(filter.first);
+        }
+    }
+    if (tmp.allowedNames.empty()) {
+        throw std::runtime_error("\"allow\" section needs at least one valid name");
+    }
+    return tmp;
 }
 
 SectionDetail
@@ -225,50 +161,42 @@ PolicyParser::calculatePolicy(const ParsedSection& section){
     // start of logic for creating abe policy
     std::list<std::string> policy;
 
-    // stream name processing
-    std::list<std::string> workingStreams;
+    ndn::Name attrName = attStreamsTree.findNode("ATTRIBUTE")->m_fullName;
 
-    // warning variables
-    std::list<std::string> allowDenyWarning;
-    // add everything under all allowed stream names
-    for (const std::string &available: availableStreams) {
-        for (const std::string &allowed: section.allowedStreams) {
-            // if it's allowed and not a duplicate, add it to the list
+    NameTree allowedTree;
 
-            // if the available stream is a child of the allowed stream, that available stream should be allowed
-            if ((available.rfind(allowed, 0) == 0) &&
-                // if the available stream isn't already in workingStreams
-                (std::find(workingStreams.begin(), workingStreams.end(), available) ==
-                  std::end(workingStreams))) {
-                bool add = true;
-                // for each allowed stream, check against the denied streams
-                for (const std::string &denied: section.deniedStreams) {
-                    // add to warning if allowed stream is the stream or child of denied stream
-                    if (allowed.rfind(denied, 0) == 0) {
-                        std::string warn = "WARNING: " + allowed + " is the same stream or a child of the denied stream " + denied;
-                        if (std::find(allowDenyWarning.begin(), allowDenyWarning.end(), warn) == std::end(allowDenyWarning)) {
-                            allowDenyWarning.push_back(warn);
-                        }
-                    }
-                    // checks if available stream is a child of any denied stream
-                    // if it is, don't add it to the allowed streams list
-                    if (available.rfind(denied, 0) == 0) {
-                        add = false;
-                        break;
-                    }
-                }
-
-                // if it passed all checks against the denied streams, add it to the list
-                if (add) {
-                    workingStreams.push_back(available);
-                }
-            }
+    for (const auto &a : section.allowedNames) {
+        for (const auto &leaf: attStreamsTree.getLeaves(a, {attrName})) {
+            allowedTree.insertName(leaf);
         }
     }
+    NameTree allowedAttributes, allowedStreams;
 
-    // warning for denied stream covering all of an allowed stream
-    for (const std::string& warning : allowDenyWarning) {
-        NDN_LOG_WARN(warning);
+
+    for (const auto &a : allowedTree.getLeaves(attrName, {})) {
+        allowedAttributes.insertName(a);
+    }
+    for (const auto &a : allowedTree.getLeaves("", {attrName})) {
+        allowedStreams.insertName(a);
+    }
+
+    NameTree deniedTree;
+    for (const auto &a : section.deniedNames) {
+        deniedTree.insertName(a);
+    }
+    NameTree deniedAttributes, deniedStreams;
+
+    for (const auto &a : deniedTree.getLeaves(attrName, {})) {
+        deniedAttributes.insertName(a);
+    }
+    for (const auto &a : deniedTree.getLeaves("", {attrName})) {
+        deniedStreams.insertName(a);
+    }
+
+    std::list<std::string> workingStreams;
+    // get allowed streams while ignoring the denied ones
+    for (auto &a:  allowedStreams.getLeaves("", deniedStreams.getLeaves("", {}))) {
+        workingStreams.push_back(a.toUri());
     }
 
     // error for if no streams are allowed
@@ -276,27 +204,37 @@ PolicyParser::calculatePolicy(const ParsedSection& section){
         throw std::runtime_error("No streams allowed by policy");
     }
 
-    std::list<std::string> calculatedStreams = workingStreams;
     policy.emplace_back(doStringThing(workingStreams, "OR"));
 
     // attribute processing
-    // AND allow attributes
-    if (!section.allowedAttributes.empty()) {
-        policy.emplace_back(processAttributes(section.allowedAttributes));
+    auto root = allowedAttributes.findNode("ATTRIBUTE");
+    if (root != nullptr) {
+        for (const auto &type: root->m_children) {
+            std::list<std::string> tmp;
+            for (const auto &value: type->m_children) {
+                tmp.push_back(value->m_fullName.toUri());
+            }
+            if (!tmp.empty()) {
+                policy.emplace_back(doStringThing(tmp, "OR"));
+            }
+        }
     }
 
-    // OR deny attributes
-    if (!section.deniedAttributes.empty()) {
-        std::list<std::string> workingAttributes = availableAttributes;
-        for (const std::string &toRemove : section.deniedAttributes) {
-            workingAttributes.remove(toRemove);
-        }
-        if (!workingAttributes.empty()) {
-            policy.emplace_back(doStringThing(workingAttributes, "OR"));
-        } else {
-            // all attributes are denied
-            policy.clear();
-            throw std::runtime_error("Cannot deny all attributes");
+    root = deniedAttributes.findNode("ATTRIBUTE");
+    if (root != nullptr) {
+        for (const auto &type : root->m_children) {
+            std::vector<ndn::Name> denied;
+            for (const auto &value: type->m_children) {
+                denied.push_back(value->m_fullName);
+            }
+            auto tmpMaster = attStreamsTree.getLeaves(type->m_fullName.toUri(), denied);
+            std::list<std::string> tmp;
+            for (const auto &item: tmpMaster) {
+                tmp.push_back(item.toUri());
+            }
+            if (!tmp.empty()) {
+                policy.emplace_back(doStringThing(tmp, "OR"));
+            }
         }
     }
 
@@ -390,7 +328,7 @@ PolicyParser::calculatePolicy(const ParsedSection& section){
     // AND together all separate conditions made for the output policy
     std::string abePolicy = doStringThing(policy, "AND");
 
-    return {calculatedStreams, abePolicy};
+    return {workingStreams, abePolicy};
 }
 
 std::list<std::string>

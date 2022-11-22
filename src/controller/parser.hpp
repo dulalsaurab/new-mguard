@@ -21,6 +21,7 @@
 #define MGUARD_PARSER_HPP
 
 //#include "common.hpp"
+#include "server/util/name-tree.hpp"
 
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/util/logger.hpp>
@@ -46,10 +47,8 @@ struct PolicyDetail
 
 struct ParsedSection
 {
-    std::list<std::string> allowedStreams;
-    std::list<std::string> deniedStreams;
-    std::list<std::string> allowedAttributes;
-    std::list<std::string> deniedAttributes;
+    std::list<std::string> allowedNames;
+    std::list<std::string> deniedNames;
     std::list<std::pair<std::string, std::string>> allowedTimes;
     std::list<std::pair<std::string, std::string>> deniedTimes;
 };
@@ -61,6 +60,7 @@ struct SectionDetail
 };
 
 using ConfigSection = boost::property_tree::ptree;
+using NameTree = util::nametree::NameTree;
 
 class PolicyParser
 {
@@ -68,7 +68,7 @@ public:
   explicit PolicyParser(const std::basic_string<char>& availableStreams);
 
   void
-  parseAvailableStreams(const std::basic_string<char>& streamsFilePath);
+  parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requestors);
 
   PolicyDetail
   parsePolicy(const std::basic_string<char>& policyFilePath);
@@ -93,15 +93,14 @@ private:
   static std::string
   processAttributes(const std::list<std::string>& attrList);
 
-  std::list<ParsedSection>
+  ParsedSection
   parseSection(ConfigSection& section);
 
   SectionDetail
   calculatePolicy(const ParsedSection& section);
 
   // information from the available-streams file
-  std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
-
+  NameTree attStreamsTree, requestersTree;
 };
 
 } // namespace parser
