@@ -28,20 +28,36 @@ void testParser() {
     std::cout << "\t" << a.abePolicy << std::endl;
 }
 
+using NameTree = mguard::util::nametree::NameTree;
 void testNametree() {
-    mguard::util::nametree::NameTree nameTree;
+    NameTree nameTree;
 
-    auto leaves = {"/ndn/org/md2k/ATTRIBUTE/location/home", "/ndn/org/md2k/ATTRIBUTE/location/work", "/ndn/org/md2k/ATTRIBUTE/location/commuting", "/ndn/org/md2k/ATTRIBUTE/location/casino", "/ndn/org/md2k/ATTRIBUTE/location/oakland", "/ndn/org/md2k/ATTRIBUTE/location/SoCal", "/ndn/org/md2k/ATTRIBUTE/location/gym", "/ndn/org/md2k/ATTRIBUTE/location/shopping-mall", "/ndn/org/md2k/ATTRIBUTE/smoking/yes", "/ndn/org/md2k/ATTRIBUTE/smoking/no", "/ndn/org/md2k/ATTRIBUTE/activity/walking", "/ndn/org/md2k/ATTRIBUTE/activity/running", "/ndn/org/md2k/ATTRIBUTE/activity/eating", "/ndn/org/md2k/ATTRIBUTE/activity/drinking", "/ndn/org/md2k/ATTRIBUTE/activity/sleeping"};
+    auto leaves = {"/else/ndn/org/md2k/mguard/dd40c/phone/accelerometer", "/else/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location", "/else/ndn/org/md2k/mguard/dd40c/phone/gyroscope", "/else/ndn/org/md2k/mguard/dd40c/phone/battery", "/else/ndn/org/md2k/mguard/dd40c/phone/gps", "/else/five/ndn/org/md2k/mguard/dd40c/phone/accelerometer", "/else/five/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location", "/else/five/ndn/org/md2k/mguard/dd40c/phone/gyroscope", "/else/ndn/five/org/md2k/mguard/dd40c/phone/battery", "/else/ndn/five/org/five/md2k/mguard/dd40c/phone/gps", "/else/ndn/four/org/md2k/five/mguard/dd40c/phone/accelerometer", "/else/ndn/four/org/md2k/mguard/five/dd40c/data_analysis/gps_episodes_and_semantic_location", "/else/ndn/four/org/md2k/mguard/dd40c/phone/gyroscope", "/ndn/four/org/md2k/mguard/dd40c/phone/battery", "/ndn/four/org/md2k/mguard/dd40c/phone/gps", "/else/else/something/ndn/org/md2k/ATTRIBUTE/activity/unknown", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/home", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/work", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/commuting", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/casino", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/oakland", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/SoCal", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/gym", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/shopping-mall", "/else/else/something/ndn/org/md2k/ATTRIBUTE/location/unknown", "/else/else/something/ndn/org/md2k/ATTRIBUTE/smoking/yes", "/else/else/something/ndn/org/md2k/ATTRIBUTE/smoking/no", "/else/else/something/ndn/org/md2k/ATTRIBUTE/activity/walking", "/else/else/something/ndn/org/md2k/ATTRIBUTE/activity/running", "/else/else/something/ndn/org/md2k/ATTRIBUTE/activity/eating", "/else/else/something/ndn/org/md2k/ATTRIBUTE/activity/drinking", "/else/else/something/ndn/org/md2k/ATTRIBUTE/activity/sleeping", "/something/something"};
+
 
     for (const auto &leaf : leaves) {
         nameTree.insertName(leaf);
     }
+//
+//    std::vector<ndn::Name> denied = {"/ndn/org/md2k/ATTRIBUTE/smoking/no", "/ndn/org/md2k/ATTRIBUTE/location/home"};
+//
+////     fixme: how to determine whether it was found
+////    auto deniedNode = attStreamsTree.getNode(attStreamsTree.getTreeRoot(), denied);
+//    auto a = attStreamsTree.getLeaves("/ndn/org/md2k/", denied);
+//    for (const auto &item: a) {
+//        std::cout << item << std::endl;
+//    }
 
-    ndn::Name denied = "/ndn/org/md2k/ATTRIBUTE/smokinggyes";
-
-    // fixme: how to determine whether it was found
-    auto deniedNode = nameTree.getNode(nameTree.getTreeRoot(), denied);
+//    ndn::Name b = "ATTRIBUTE";
+    auto a = nameTree.getNode(nameTree.getTreeRoot(), "/else/ndn/org/md2k/mguard/dd40c/phone/accelerometer");
+//    nameTree._printTree(nameTree.getTreeRoot());
+    std::cout << (a == nullptr) << std::endl;
 }
+
+//NameTree
+//subtract(NameTree aye, NameTree bee){
+//    auto leaves = bee.getLeaves()
+//}
 
 void printOutties(std::map<std::string, std::map<std::string, std::map<std::string, std::list<std::string>>>> outties, std::string stream) {
     std::cout << stream << ":" << std::endl;
@@ -130,6 +146,6 @@ std::vector<std::string> subtraction(std::vector<std::string> a, std::vector<std
 
 int main(){
     std::cout << "sandbox run:" << std::endl;
-    testNametree();
+    testParser();
     return 0;
 }
