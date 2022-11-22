@@ -226,6 +226,7 @@ NameTree::_delete(TreeNode* startFrom)
 
 void
 NameTree::deleteNode(const ndn::Name& prefix) {
+  // FIXME: this doesn't seem to work right. might delete more than it's supposed to
   auto node_ptr = getNode(m_root, prefix);
   NDN_LOG_INFO("Deleting from start: " << (*node_ptr)->m_nodeId);
   _delete(*node_ptr);
