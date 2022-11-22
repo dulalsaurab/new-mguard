@@ -109,15 +109,14 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
 }
 
 TreeNode*
-NameTree::findNode(ndn::Name target, int& times) {
-    return findNode(getTreeRoot()->m_children, target, times);
+NameTree::findNode(ndn::Name target) {
+    return findNode(getTreeRoot()->m_children, target);
 }
 
 TreeNode*
-NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target, int& times) {
+NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target) {
     std::vector<TreeNode*> next;
     for (TreeNode* const &child: children) {
-        times ++;
         if (child->m_nodeId == target){
             return child;
         }
@@ -125,7 +124,7 @@ NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target, int& time
             next.push_back(grandChild);
         }
     }
-    return findNode(next, target, times);
+    return findNode(next, target);
 }
 
 ndn::Name
