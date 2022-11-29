@@ -5,7 +5,7 @@ Current Policy Structure
 ```
 policy-id             id
 requester-names       requester-names
-attribute-filters
+attribute-policy-1
 {
     allow
     {
@@ -22,7 +22,23 @@ attribute-filters
         ...
     }
 }
-
+attribute-policy-2
+{
+    allow
+    {
+        /attribute/7
+        /attribute/8
+        /attribute/9
+        ...
+    }
+    deny
+    {
+        /attribute/10
+        /attribute/11
+        /attribute/12
+        ...
+    }
+}
 ```
 
 Specification Detail
