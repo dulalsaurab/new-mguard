@@ -9,9 +9,28 @@ import shutil
 BUFFER_SIZE = 1024
 
 # sleep times, configure this after each run
-s_after_metadata = 20
+s_after_metadata = 10
 s_after_first_stream = 40
-s_after_sending_batch = 60
+s_after_sending_batch = 10
+
+'''
+# these numbers should be sufficient
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+rows   | n.steams | s_after_metadata | s_after_first_stream |  s_after_sending_batch |
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+n.rows |   50     |                  |                      |                        |
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+n.rows |   100    |      10          |        20            |         10             |
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+n.rows |   150    |                  |                      |                        |
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+n.rows |   200    |                  |                      |                        |
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+n.rows |   250    |                  |                      |                        |
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+n.rows |   300    |      10          |         40           |          10            |
+
+'''
 
 class Sender:
     def __init__(self, port):
@@ -23,7 +42,6 @@ class Sender:
 
     def close(self):
         self.conn.close()
-
 
 def get_sender():
     port = 8808
@@ -42,7 +60,6 @@ def send_stream(stream_name, data, sender_obj):
 
     sender_obj.send(metadata)
     # sleep a few seconds after sending the metadata
-    #change for 16 min to 20 sec
     print("Sleeping for {} second after sending meta data".format(s_after_metadata))
     sleep(s_after_metadata)
 
@@ -64,7 +81,7 @@ def main():
 
     :var: total_number_of_batches int number of times we will generate the data and send it
     """
-    total_number_of_batches = 5
+    total_number_of_batches = 3
 
     current_batch = 1
     while current_batch <= total_number_of_batches:
@@ -76,7 +93,7 @@ def main():
 
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
         #50
-        # end_time = '2022-05-0{} 10:0:51'.format(current_batch)
+        end_time = '2022-05-0{} 10:0:51'.format(current_batch)
         #100
         # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
         # 150
@@ -87,10 +104,12 @@ def main():
         # end_time = '2022-05-0{} 10:04:11'.format(current_batch)
         # 300 
         # end_time = '2022-05-0{} 10:05:01'.format(current_batch)
+        # 350
+        # end_time = '2022-05-0{} 10:05:51'.format(current_batch)
         # 400 
         # end_time = '2022-05-0{} 10:06:41'.format(current_batch)
         # 500 
-        end_time = '2022-05-0{} 10:08:21'.format(current_batch)
+        # end_time = '2022-05-0{} 10:08:21'.format(current_batch)
 
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
 

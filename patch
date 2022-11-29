@@ -1,0 +1,153 @@
+diff --git a/data/org-md2k-mguard-dd40c-phone-gps.csv b/data/org-md2k-mguard-dd40c-phone-gps.csv
+index 969f6a1..26eeae4 100644
+--- a/data/org-md2k-mguard-dd40c-phone-gps.csv
++++ b/data/org-md2k-mguard-dd40c-phone-gps.csv
+@@ -1,5 +1,2 @@
+ timestamp,localtime,latitude,longitude,altitude,speed,bearing,accuracy,user
+-2019-09-01 16:40:59,2019-09-01 21:40:59,35.16469085,-90.00852654,88,4.132139,147.415856,23.365826,
+-2019-09-01 16:43:59,2019-09-01 21:43:59,35.16531218,-90.00891728,86,1.794506,24.945611,16.492118,
+-2019-09-01 16:52:59,2019-09-01 21:52:59,35.16406762,-90.00730429,93,4.524904,315.913603,14.629894,
+-2019-09-01 16:57:59,2019-09-01 21:57:59,35.16374127,-90.00804133,91,4.426964,277.499131,20.834382
+\ No newline at end of file
++2019-09-01 16:40:59,2019-09-01 21:40:59,35.16469085,-90.00852654,88,4.132139,147.415856,23.365826
+\ No newline at end of file
+diff --git a/src/controller/controller.cpp b/src/controller/controller.cpp
+index 342adaa..575e4ba 100644
+--- a/src/controller/controller.cpp
++++ b/src/controller/controller.cpp
+@@ -37,6 +37,8 @@ Controller::processPolicy(std::string policyPath)
+     NDN_LOG_DEBUG("Getting key and storing policy details for user: " << requester);
+ 
+     auto requesterCert = m_keyChain.getPib().getIdentity("/org/md2k/A").getDefaultKey().getDefaultCertificate();
++    NDN_LOG_DEBUG("cert: " << requesterCert); //only for debugging
++
+     NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);
+     m_attrAuthority.addNewPolicy(requesterCert, policyDetail.abePolicy);
+ 
+diff --git a/src/controller/parser.cpp b/src/controller/parser.cpp
+index 6934c5c..8d906d2 100644
+--- a/src/controller/parser.cpp
++++ b/src/controller/parser.cpp
+@@ -326,7 +326,7 @@ bool PolicyParser::generateABEPolicy() {
+             return false;
+         }
+         calculatedStreams = workingStreams;
+-        policy.emplace_back(doStringThing(workingStreams, "OR"));
++        policy.emplace_back(doStringThing(workingStreams, "or"));
+     }
+ 
+     // attribute processing
+@@ -342,7 +342,7 @@ bool PolicyParser::generateABEPolicy() {
+             workingAttributes.remove(toRemove);
+         }
+         if (!workingAttributes.empty()) {
+-            policy.emplace_back(doStringThing(workingAttributes, "OR"));
++            policy.emplace_back(doStringThing(workingAttributes, "or"));
+         } else {
+             // all attributes are denied
+             policy.clear();
+@@ -385,7 +385,7 @@ PolicyParser::processAttributes(const std::list<std::string>& attrList) {
+         for (std::string attr : attrList) {
+             if (isAlike(searching, attr)) {
+                 if (!building.empty()) {
+-                    building += " OR ";
++                    building += " or "; // "or" or "OR" ?
+                 }
+                 building += attr;
+                 alreadyCounted.push_back(attr);
+diff --git a/src/server/data-adapter.cpp b/src/server/data-adapter.cpp
+index f994f86..9f1fcb4 100644
+--- a/src/server/data-adapter.cpp
++++ b/src/server/data-adapter.cpp
+@@ -19,8 +19,7 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix, const
+   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
+   NDN_LOG_DEBUG ("Producer cert: " << m_producerCert);
+   NDN_LOG_DEBUG ("---------------------------------------------");
+-  NDN_LOG_DEBUG ("ABE authority cert: " << m_ABE_authorityCert);
+-  
++  NDN_LOG_DEBUG ("ABE authority cert: " << m_ABE_authorityCert); 
+ }
+ 
+ void
+diff --git a/src/server/publisher.cpp b/src/server/publisher.cpp
+index 2ea6cbe..b7b9e93 100644
+--- a/src/server/publisher.cpp
++++ b/src/server/publisher.cpp
+@@ -46,9 +46,10 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
+     std::shared_ptr<ndn::Data> enc_data, ckData;
+     try {
+         NDN_LOG_DEBUG("Encrypting data: " << dataName);
+-        unsigned char* byteptr = reinterpret_cast<unsigned char *>(&data);
+-        auto dataSufix = dataName.getSubName(2);
+-        NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
++        std::string ee = "hello world";
++        unsigned char* byteptr = reinterpret_cast<unsigned char *>(&ee);
++        auto dataSuffix = dataName.getSubName(2);
++        NDN_LOG_TRACE("--------- data suffix: " << dataSuffix);
+        
+         // ----- just for debugging
+         NDN_LOG_TRACE("--------- Attributes used to encrypt data: ");
+@@ -58,7 +59,7 @@ Publisher::publish(ndn::Name dataName, std::string data, util::Stream& stream)
+         }
+         // -------- 
+ 
+-        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSufix, stream.getAttributes(), byteptr, sizeof(byteptr));
++        std::tie(ckData, enc_data) = m_abe_producer.produce(dataSuffix, stream.getAttributes(), byteptr, sizeof(byteptr));
+     }
+     catch(const std::exception& e) {
+       NDN_LOG_ERROR("Encryption failled");
+diff --git a/src/server/util/stream.cpp b/src/server/util/stream.cpp
+index 41cfc76..ee3099d 100644
+--- a/src/server/util/stream.cpp
++++ b/src/server/util/stream.cpp
+@@ -4,7 +4,7 @@
+ namespace mguard {
+ namespace util {
+ 
+-int MANIFEST_BATCH_SIZE = 4;
++int MANIFEST_BATCH_SIZE = 1;
+ 
+ Stream::Stream(const ndn::Name& name, std::vector<std::string>& attributeSet, const std::string& path)
+ : m_name(name)
+diff --git a/src/user/subscriber.cpp b/src/user/subscriber.cpp
+index caa2a31..26637ed 100644
+--- a/src/user/subscriber.cpp
++++ b/src/user/subscriber.cpp
+@@ -27,9 +27,9 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
+ , m_syncUpdateCallback(syncUpdateCallback)
+ {
+   NDN_LOG_DEBUG("Subscriber initialized");
+-  
++  std::this_thread::sleep_for (std::chrono::seconds(2));
++  m_abe_consumer.obtainDecryptionKey();
+   // sleep for abe initilization 
+-  std::this_thread::sleep_for (std::chrono::seconds(1));
+ 
+   // get policy details from controller
+   try {
+@@ -42,10 +42,11 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix,
+   {
+     NDN_LOG_ERROR("error: " << e.what()); 
+   }
+-
++  std::this_thread::sleep_for (std::chrono::seconds(3));
+   // This starts the consumer side by sending a hello interest to the producer
+   // When the producer responds with hello data, receivedHelloData is called
+   m_psync_consumer.sendHelloInterest();
++  
+ }
+ 
+ void
+diff --git a/tests/unit-tests/data-adapter.t.cpp b/tests/unit-tests/data-adapter.t.cpp
+index 7999519..640795f 100644
+--- a/tests/unit-tests/data-adapter.t.cpp
++++ b/tests/unit-tests/data-adapter.t.cpp
+@@ -2,7 +2,7 @@
+ 
+ #include <server/data-adapter.hpp>
+ #include <server/util/stream.hpp>
+-#include <server/common.hpp>
++#include "common.hpp"
+ 
+ #include <ndn-cxx/util/dummy-client-face.hpp>
+ 

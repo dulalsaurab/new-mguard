@@ -1,0 +1,60 @@
+; md2k streams naming conventions
+; {
+   ; raw-stream <namespace>--<study-name>--<participant-id>--<device-name>--<sensor>--<attachment>
+   ; derived-stream <namespace>--<study-name>--<participant-id>--<algorithm/package name>
+; }
+
+;ndn data streams naming conventions
+; {
+   ; raw-stream <namespace>/<study-name>/<participant-id>/<device-name>/<sensor>/<attachment>
+   ; derived-stream <namespace>/<study-name>/<participant-id>/<algorithm/package name>
+; }
+
+
+;available md2k streams
+; {
+  ; org.md2k--mperf--dd40c--PHONE--LOCATION
+  ; org.md2k--mperf--dd40c--PHONE--ACCELEROMETER
+  ; org.md2k--mperf--dd40c--PHONE--GYROSCOPE
+  ; org.md2k--mperf--dd40c--MOTION_SENSE--ACCELEROMETER--LEFT_WRIST
+  ; org.md2k--mperf--dd40c--data_analysis--gps_episodes_and_semantic_location
+; }
+
+;md2k streams converted into ndn data streams
+available-streams
+{ 
+  /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+  /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+  /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+  /ndn/org/md2k/mguard/dd40c/phone/battery
+  /ndn/org/md2k/mguard/dd40c/phone/gps
+}
+
+attributes
+{
+    /ndn/org/md2k/attribute/location/home
+    /ndn/org/md2k/attribute/location/work
+    /ndn/org/md2k/attribute/location/commuting
+    /ndn/org/md2k/attribute/location/casino
+    /ndn/org/md2k/attribute/location/oakland
+    /ndn/org/md2k/attribute/location/SoCal
+    /ndn/org/md2k/attribute/location/gym
+    /ndn/org/md2k/attribute/location/shopping-mall
+    /ndn/org/md2k/attribute/activity/smoking
+    /ndn/org/md2k/attribute/activity/walking
+    /ndn/org/md2k/attribute/activity/running
+    /ndn/org/md2k/attribute/activity/eating
+    /ndn/org/md2k/attribute/activity/drinking
+    /ndn/org/md2k/attribute/activity/sleeping
+}
+
+; current users
+requesters
+{
+  user /ndn/org/md2k/A
+  user /ndn/org/md2k/B
+  user /ndn/org/md2k/C
+  user /ndn/org/md2k/D
+  user /ndn/org/md2k/E
+  user /ndn/org/md2k/F
+}

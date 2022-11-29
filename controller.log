@@ -1,0 +1,25 @@
+1653000148.957970 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653000148.958020 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653000148.958027 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653000148.958031 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653000148.958037 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653000148.958307  INFO: [nacabe.AttributeAuthority] Using KP-ABE
+1653000148.965277  INFO: [mguard.Controller] policy path: policies/policy1
+1653000148.965483 DEBUG: [mguard.parser] policyID: 1 abePolicy: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653000148.965496 DEBUG: [mguard.Controller] from policy info: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653000148.965499 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653000148.965513 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653000148.965526 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653000148.965536 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653000148.965550 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653000148.965562 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/A
+1653000148.965572 DEBUG: [mguard.Controller] ABE policy for policy id: 1: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653000148.965779 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/B
+1653000148.965793 DEBUG: [mguard.Controller] ABE policy for policy id: 1: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653000148.965875 TRACE: [mguard.Controller] data consumer: /ndn/org/md2k/A ABE policy: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653000148.965891 TRACE: [mguard.Controller] data consumer: /ndn/org/md2k/B ABE policy: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653000148.965896  INFO: [mguard.Controller] Setting interest filter on: /ndn/org/md2k/mguard/controller
+1653000148.968425 TRACE: [nacabe.AttributeAuthority] Prefix /ndn/org/md2k/mguard/aa registered successfully
+1653000148.968506 TRACE: [nacabe.AttributeAuthority] InterestFilter /ndn/org/md2k/mguard/aa/PUBPARAMS set
+1653000148.968533 TRACE: [nacabe.AttributeAuthority] InterestFilter /ndn/org/md2k/mguard/aa/DKEY set
+1653000148.968888  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/controller
