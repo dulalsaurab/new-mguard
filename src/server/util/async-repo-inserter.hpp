@@ -16,38 +16,51 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-
-#include <ndn-cxx/face.hpp>
-#include <ndn-cxx/util/logger.hpp>
+ 
+#ifndef MGUARD_UTIL_ASYNC_REPO_INSERTER_HPP
+#define MGUARD_UTIL_ASYNC_REPO_INSERTER_HPP
 
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
-#include <iostream>
-#include <chrono>
-#include <deque>
+#include <queue>
 
-/**
- * A repo inserter using TCP bulk insertion protocol
- */
+#include <ndn-cxx/face.hpp>
+#include <ndn-cxx/data.hpp>
+#include <ndn-cxx/util/scheduler.hpp>
 
 namespace mguard {
 namespace util {
+namespace bp = boost::asio::ip;
+using AsyncRepoError = boost::system::error_code;
+using AsyncConnectHandler = std::function<void(const AsyncRepoError&)>;
+using AsyncWriteHandler = std::function<void(const ndn::Data&, const AsyncRepoError&)>;
 
-class RepoInserter 
+class AsyncRepoInserter : boost::noncopyable
 {
 public:
 
-  RepoInserter(std::string repoHost = "localhost", std::string repoPort = "7376");
+  class Error : public std::runtime_error
+  {
+  public:
+    using std::runtime_error::runtime_error;
+  };
 
-  bool
-  writeDataToRepo(const ndn::Data &data);
-  
+  explicit
+  AsyncRepoInserter(boost::asio::io_service& io);
+
+  void
+  AsyncConnectToRepo(std::string repoHost, std::string repoPort, const AsyncConnectHandler& connectHandler);
+
+  void
+  AsyncWriteDataToRepo(const ndn::Data& data, const AsyncWriteHandler& writeHandler);
+
 private:
-  std::string m_repoHost;
-  std::string m_repoPort;
-  boost::asio::io_service m_ioService;
+  boost::asio::io_service& m_io;
+  bp::tcp::resolver m_resolv;
+  std::shared_ptr<bp::tcp::socket> m_socket;
 };
 
 } // util
 } // mguard
+
+#endif

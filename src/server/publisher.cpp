@@ -1,3 +1,22 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Copyright (c) 2021-2022,  The University of Memphis
+ *
+ * This file is part of mGuard.
+ * See AUTHORS.md for complete list of mGuard authors and contributors.
+ *
+ * mGuard is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * mGuard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "publisher.hpp"
 #include "common.hpp"
 
@@ -14,16 +33,20 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 : m_face(face)
 , m_keyChain(keyChain)
 , m_scheduler(m_face.getIoService())
-
 // 40 = expected number of entries also will be used as IBF size
 // syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
 , m_partialProducer(40, m_face, "/ndn/org/md2k", "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest")
+, m_asyncRepoInserter(m_face.getIoService())
 
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
 , m_authorityCert(attrAuthorityCertificate)
 , m_abe_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
+
+  m_asyncRepoInserter.AsyncConnectToRepo("0.0.0.0", "7376", std::bind(&Publisher::connectHandler, this, _1));
+  std::this_thread::sleep_for (std::chrono::seconds(1));
+  NDN_LOG_DEBUG("Connecting to repo...");
   // --------------- in duscussion, only for testing----------
   // Discussion: we will add all the possible stream to the psync at the begnning
   // this is for the current testing and experiment only, the design needs to be better
@@ -38,6 +61,24 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 
   // sleep to init kp-abe producer
   std::this_thread::sleep_for (std::chrono::seconds(1));
+}
+
+void
+Publisher::connectHandler(const mguard::util::AsyncRepoError& err)
+{
+  if (!err)
+    NDN_LOG_DEBUG("Connection successful");
+  else
+    NDN_LOG_DEBUG("Connection failled");
+}
+
+void
+Publisher::writeHandler(const ndn::Data& data, const mguard::util::AsyncRepoError& err)
+{
+  if (!err)
+    NDN_LOG_DEBUG(data.getName() << " inserted into the repo");
+  else
+    NDN_LOG_DEBUG("failed to insert: " << data.getName());
 }
 
 void
@@ -131,9 +172,13 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
 
   try {
     NDN_LOG_INFO("start repo insertion for name: " << enc_data->getName());
-    if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
+
+    m_asyncRepoInserter.AsyncWriteDataToRepo(*ckData, std::bind(&Publisher::writeHandler, this, _1, _2));
+    m_asyncRepoInserter.AsyncWriteDataToRepo(*enc_data, std::bind(&Publisher::writeHandler, this, _1, _2));
+
+    // if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
       // clearBuffer();
-      NDN_LOG_DEBUG("data and cKdata insertion completed for name: " << enc_data->getName()); 
+      // NDN_LOG_DEBUG("data and cKdata insertion completed for name: " << enc_data->getName()); 
   }
   catch(const std::exception& e) {
       NDN_LOG_ERROR("data and cKdata insertion failed");
@@ -177,12 +222,15 @@ Publisher::publishManifest(util::Stream& stream)
       // std::vector<ndn::Data> manifest;
       // manifest.push_back(*manifestData);
       NDN_LOG_INFO("start repo insertion for name: " << manifestData->getName());
-      if (m_repoInserter.writeDataToRepo(*manifestData)) {
-        NDN_LOG_DEBUG("manifest data insertion completed for name :" << manifestData->getName());
-        m_temp.clear(); // clear temp variable
-        stream.resetManifestList(); // clear manifest list
-        m_wire.reset(); // reset the wire for new content
-      }
+      m_asyncRepoInserter.AsyncWriteDataToRepo(*manifestData, std::bind(&Publisher::writeHandler, this, _1, _2));
+
+      // if (m_repoInserter.writeDataToRepo(*manifestData)) {
+      // NDN_LOG_DEBUG("manifest data insertion completed for name :" << manifestData->getName());
+
+      m_temp.clear(); // clear temp variable
+      stream.resetManifestList(); // clear manifest list
+      m_wire.reset(); // reset the wire for new content
+      // }
   }
   catch(const std::exception& e) {
     NDN_LOG_ERROR("Failed to insert mainfest into the repo");

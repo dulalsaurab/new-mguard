@@ -1,9 +1,28 @@
+/* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
+/*
+ * Copyright (c) 2021-2022,  The University of Memphis
+ *
+ * This file is part of mGuard.
+ * See AUTHORS.md for complete list of mGuard authors and contributors.
+ *
+ * mGuard is free software: you can redistribute it and/or modify it under the terms
+ * of the GNU Lesser General Public License as published by the Free Software Foundation,
+ * either version 3 of the License, or (at your option) any later version.
+ *
+ * mGuard is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
+ * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR
+ * PURPOSE.  See the GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License along with
+ * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #ifndef MGUARD_PUBLISHER_HPP
 #define MGUARD_PUBLISHER_HPP
 
 #include "file-processor.hpp"
 #include "util/stream.hpp"
-#include "util/repo-inserter.hpp"
+#include "util/async-repo-inserter.hpp"
 
 #include <PSync/partial-producer.hpp>
 #include <nac-abe/attribute-authority.hpp>
@@ -11,6 +30,9 @@
 
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/util/logger.hpp>
+
+#include <boost/asio.hpp>
+#include <boost/asio/ip/tcp.hpp>
 
 #include <unordered_map>
 #include <iostream>
@@ -29,11 +51,15 @@ public:
               const ndn::security::Certificate& producerCert,
               const ndn::security::Certificate& attrAuthorityCertificate);
 
+  
+  void
+  connectHandler(const mguard::util::AsyncRepoError& err);
+  
+  void 
+  writeHandler(const ndn::Data& data, const mguard::util::AsyncRepoError& err);
+
   void
   doUpdate(ndn::Name manifestName);
-
-  // void 
-  // repoWriteHandler(const boost::system::error_code& err, size_t bytes_transferred);
 
   void
   clearBuffer() 
@@ -76,7 +102,7 @@ private:
   std::map<ndn::Name, ndn::scheduler::ScopedEventId>m_scheduledIds;
   mutable ndn::Block m_wire;
   psync::PartialProducer m_partialProducer;
-  util::RepoInserter m_repoInserter;
+  util::AsyncRepoInserter m_asyncRepoInserter;
 
   std::vector<ndn::Name> m_temp;
   ndn::Name m_attrAuthorityPrefix;
