@@ -23,7 +23,7 @@
 #include <iostream>
 #include <utility>
 
-//NDN_LOG_INIT(mguard.parser);
+NDN_LOG_INIT(mguard.parser);
 
 namespace pt = boost::property_tree;
 namespace mguard {
