@@ -90,7 +90,7 @@ ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes
     NDN_LOG_DEBUG("All the expected data is not received");
   }
 
-  // todo: error wont occure once the above function is fixed
+  // todo: error wont occur once the above function is fixed
   if (err)
     NDN_LOG_DEBUG("Error: " << err);
   

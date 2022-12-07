@@ -106,7 +106,7 @@ if __name__ == '__main__':
     # enable logs in all the nodes
     for host in ndn.net.hosts:
         # host.cmd("export NDN_LOG=psync.*=TRACE:mguard.*=TRACE:nacabe.*=TRACE:ndn.*=TRACE")
-        host.cmd("export NDN_LOG=psync.*=NONE:mguard.*=TRACE:nacabe.*=TRACE")
+        host.cmd("export NDN_LOG=psync.*=DEBUG:mguard.*=TRACE:nacabe.*=TRACE")
 
         # copy certs and safe bags in the node folder
         host_dir = args.workDir+"/"+host.name
