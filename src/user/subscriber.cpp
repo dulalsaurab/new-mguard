@@ -258,7 +258,8 @@ Subscriber::wireDecode(const ndn::Block& wire)
       if(!checkConvergence())
         NDN_THROW(Error("Public params or private key is absent, can't decrypt the data"));
 
-      m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
+      m_abe_consumer.consume(dataName.getPrefix(-1), 
+                             bind(&Subscriber::abeOnData, this, _1),
                              bind(&Subscriber::abeOnError, this, _1));
       NDN_LOG_DEBUG("data names: " << dataName);
     }
