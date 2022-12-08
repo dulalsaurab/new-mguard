@@ -115,6 +115,7 @@ void mywindow::showUI()
   set_title("MGuard");
   set_default_size(800, 400);
   show_all();
+  // sleep(20);
   std::cout << "Shows everything" << std::endl;
 }
 

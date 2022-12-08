@@ -176,6 +176,22 @@ Subscriber::subscribe(ndn::Name streamName)
 }
 
 void
+Subscriber::unsubscribe(ndn::Name streamName)
+{
+  // convert the streamName into manifest, because that's what is published by the sync
+  streamName.append("manifest");
+  auto it = m_availableStreams.find(streamName);
+  if (it != m_availableStreams.end()) {
+    NDN_LOG_INFO("Stream: " << streamName << " not available for unsubscription");
+    // schedule a hello interest in next 200 seconds
+    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
+    return;
+  }
+  NDN_LOG_INFO("Unsubscribing to: " << streamName);
+  m_psync_consumer.removeSubscription(streamName);
+}
+
+void
 Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
 {
   // store all the streams names and their latest seq number
@@ -185,6 +201,7 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   }
 
   // subscribe to streams present in the subscription list
+
   for (auto stream : m_subscriptionList) {
     subscribe(stream);
   }
@@ -258,23 +275,25 @@ Subscriber::wireDecode(const ndn::Block& wire)
       if(!checkConvergence())
         NDN_THROW(Error("Public params or private key is absent, can't decrypt the data"));
 
-      m_abe_consumer.consume(dataName.getPrefix(-1), 
-                             bind(&Subscriber::abeOnData, this, _1),
-                             bind(&Subscriber::abeOnError, this, _1));
+      m_abe_consumer.consume(dataName.getPrefix(-1),
+                             bind(&Subscriber::abeOnData, this, _1, _2),
+                             bind(&Subscriber::abeOnError, this, _1, _2));
+
       NDN_LOG_DEBUG("data names: " << dataName);
     }
   }
 }
 
 void
-Subscriber::abeOnData(const ndn::Buffer& buffer)
+Subscriber::abeOnData(const ndn::Buffer& buffer, const ndn::Name& name)
 {
   auto applicationData = std::string(buffer.begin(), buffer.end());
   NDN_LOG_DEBUG ("Received Data " << applicationData);
   m_ApplicationDataCallback({applicationData});
 }
+
 void
-Subscriber::abeOnError(const std::string& errorMessage)
+Subscriber::abeOnError(const std::string& errorMessage, const ndn::Name& name)
 {
   NDN_LOG_DEBUG ("ABE failled to fetch and encrypt data");
 }
