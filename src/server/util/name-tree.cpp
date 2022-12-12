@@ -25,11 +25,11 @@
 #include <string>
 #include <utility>
 
-NDN_LOG_INIT(mguard.nametree);
-
 namespace mguard{
 namespace util {
 namespace nametree {
+
+NDN_LOG_INIT(mguard.nametree);
 
 NameTree::NameTree()
 {
