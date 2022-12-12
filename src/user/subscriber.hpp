@@ -116,7 +116,7 @@ public:
   subscribe(ndn::Name streamName);
   
   void
-  unsubscribe(const ndn::Name& topic);
+  unsubscribe(ndn::Name streamName);
 
   void
   receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams);
@@ -132,10 +132,10 @@ public:
 
   // abe callbacks
   void
-  abeOnData(const ndn::Buffer& buffer);
+  abeOnData(const ndn::Buffer& buffer, const ndn::Name& name);
   
   void 
-  abeOnError(const std::string& errorMessage);
+  abeOnError(const std::string& errorMessage, const ndn::Name& name);
 
 private:
   ndn::Face m_face;
@@ -147,6 +147,7 @@ private:
   ndn::Name m_controllerPrefix;
   std::unordered_map<ndn::Name, uint64_t> m_prefixToLowSeq;
   std::vector<ndn::Name> m_subscriptionList;
+  bool m_subscribe;
 
   // available streams are the ones received from psync
   // and eligible streams are determined from the policy

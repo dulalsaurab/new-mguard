@@ -47,6 +47,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
   m_asyncRepoInserter.AsyncConnectToRepo("0.0.0.0", "7376", std::bind(&Publisher::connectHandler, this, _1));
   std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Connecting to repo...");
+
   // --------------- in duscussion, only for testing----------
   // Discussion: we will add all the possible stream to the psync at the begnning
   // this is for the current testing and experiment only, the design needs to be better
@@ -117,19 +118,6 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
   }
 }
 
-// void 
-// Publisher::repoWriteHandler(const boost::system::error_code& err, size_t bytes_transferred)
-// {
-//   if (!err) {
-//       NDN_LOG_DEBUG("Data of size: " << bytes_transferred << " inserted to the repo");
-//       NDN_LOG_DEBUG("data and cKdata insertion completed"); 
-      
-//   } else {
-//       NDN_LOG_ERROR("data insertion failed" << "\n");
-//       // socket_.close();
-//   }
-// }
-
 void
 Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
                    std::vector<std::string> semLocAttrList)
@@ -166,19 +154,14 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
   NDN_LOG_INFO("full name of the data: " << enc_data->getFullName() << " and size: " << enc_data->getContent().size());
   NDN_LOG_INFO("full name of the ckData: " << ckData->getFullName() << " and size: " << ckData->getContent().size());
 
-  // store the data into a buffer to insert it later into the repo, the insertion uses tcp bulk insertion protocol
-  // m_dataBuffer.push_back(*enc_data);
-  // m_ckBuffer.push_back(*ckData);
+  
 
   try {
     NDN_LOG_INFO("start repo insertion for name: " << enc_data->getName());
-
+    
+    // insert data and CK data into repo
     m_asyncRepoInserter.AsyncWriteDataToRepo(*ckData, std::bind(&Publisher::writeHandler, this, _1, _2));
     m_asyncRepoInserter.AsyncWriteDataToRepo(*enc_data, std::bind(&Publisher::writeHandler, this, _1, _2));
-
-    // if ((m_repoInserter.writeDataToRepo(*enc_data)) && (m_repoInserter.writeDataToRepo(*ckData)))
-      // clearBuffer();
-      // NDN_LOG_DEBUG("data and cKdata insertion completed for name: " << enc_data->getName()); 
   }
   catch(const std::exception& e) {
       NDN_LOG_ERROR("data and cKdata insertion failed");
@@ -211,26 +194,18 @@ Publisher::publishManifest(util::Stream& stream)
   auto manifestData = std::make_shared<ndn::Data>(dataName);
   
   m_temp = stream.getManifestList();
-
   manifestData->setContent(wireEncode());
-
   NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size() << " and seqNumber: " << prevSeqNum + 1);
   
   m_keyChain.sign(*manifestData);
 
   try {
-      // std::vector<ndn::Data> manifest;
-      // manifest.push_back(*manifestData);
       NDN_LOG_INFO("start repo insertion for name: " << manifestData->getName());
       m_asyncRepoInserter.AsyncWriteDataToRepo(*manifestData, std::bind(&Publisher::writeHandler, this, _1, _2));
-
-      // if (m_repoInserter.writeDataToRepo(*manifestData)) {
-      // NDN_LOG_DEBUG("manifest data insertion completed for name :" << manifestData->getName());
 
       m_temp.clear(); // clear temp variable
       stream.resetManifestList(); // clear manifest list
       m_wire.reset(); // reset the wire for new content
-      // }
   }
   catch(const std::exception& e) {
     NDN_LOG_ERROR("Failed to insert mainfest into the repo");
@@ -271,5 +246,4 @@ Publisher::wireEncode(ndn::EncodingImpl<TAG> &encoder) const
   
   return totalLength;
 }
-
 } //mguard
