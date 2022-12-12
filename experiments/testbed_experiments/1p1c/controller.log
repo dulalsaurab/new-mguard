@@ -1,0 +1,129 @@
+1653068732.629941 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653068732.630026 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653068732.630036 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653068732.630043 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653068732.630056 TRACE: [mguard.parser] stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653068732.630512  INFO: [nacabe.AttributeAuthority] Using KP-ABE
+1653068732.639947  INFO: [mguard.Controller] policy path: policies/policy1
+1653068732.640198 DEBUG: [mguard.parser] policyID: 1 abePolicy: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653068732.640214 DEBUG: [mguard.Controller] from policy info: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653068732.640217 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653068732.640233 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653068732.640247 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653068732.640258 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653068732.640271 TRACE: [mguard.Controller] Streams got from parser: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653068732.640281 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/A
+1653068732.640291 DEBUG: [mguard.Controller] ABE policy for policy id: 1: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653068732.640526 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/B
+1653068732.640540 DEBUG: [mguard.Controller] ABE policy for policy id: 1: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653068732.640630 TRACE: [mguard.Controller] data consumer: /ndn/org/md2k/A ABE policy: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653068732.640647 TRACE: [mguard.Controller] data consumer: /ndn/org/md2k/B ABE policy: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps)
+1653068732.640653  INFO: [mguard.Controller] Setting interest filter on: /ndn/org/md2k/mguard/controller
+1653068732.643508 TRACE: [nacabe.AttributeAuthority] Prefix /ndn/org/md2k/mguard/aa registered successfully
+1653068732.643681 TRACE: [nacabe.AttributeAuthority] InterestFilter /ndn/org/md2k/mguard/aa/PUBPARAMS set
+1653068732.643744 TRACE: [nacabe.AttributeAuthority] InterestFilter /ndn/org/md2k/mguard/aa/DKEY set
+1653068732.644009  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/controller
+1653068776.540451  INFO: [nacabe.AttributeAuthority] on public params request: /ndn/org/md2k/mguard/aa/PUBPARAMS
+1653068776.540634 DEBUG: [nacabe.AttributeAuthority] before sign
+1653068776.544200 TRACE: [nacabe.AttributeAuthority] Reply public params request.
+1653068776.544221 TRACE: [nacabe.AttributeAuthority] Pub params size: 609
+1653068876.777973  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01A
+1653068876.778110  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/A/KEY/%F8e%F1%EE%20%B7%E7%CA/local/v=1652670311596
+1653068876.787963  INFO: [mguard.Controller] Interest received: /ndn/org/md2k/mguard/controller/ndn/org/md2k/A name: /ndn/org/md2k/mguard/controller
+1653068876.787994  INFO: [mguard.Controller] Consumer name: /ndn/org/md2k/A
+1653068876.788017 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653068876.788026 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653068876.788032 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653068876.788038 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653068876.788045 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653068876.788057 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653068876.788066 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653068876.788073 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653068876.788079 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653068876.788088 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653068876.791795 DEBUG: [mguard.Controller] Data sent for :/ndn/org/md2k/mguard/controller/ndn/org/md2k/A
+1653074334.126108  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01B
+1653074334.126203  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/B/KEY/%5C%84%AC%92%12%129%D1/local/v=1652992178428
+1653074334.135505  INFO: [mguard.Controller] Interest received: /ndn/org/md2k/mguard/controller/ndn/org/md2k/B name: /ndn/org/md2k/mguard/controller
+1653074334.135533  INFO: [mguard.Controller] Consumer name: /ndn/org/md2k/B
+1653074334.135556 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653074334.135563 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653074334.135569 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653074334.135576 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653074334.135583 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653074334.135591 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653074334.135597 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653074334.135603 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653074334.135610 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653074334.135618 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653074334.137364 DEBUG: [mguard.Controller] Data sent for :/ndn/org/md2k/mguard/controller/ndn/org/md2k/B
+1653074343.344455  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01A
+1653074343.344549  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/A/KEY/%F8e%F1%EE%20%B7%E7%CA/local/v=1652670311596
+1653074608.148160  INFO: [nacabe.AttributeAuthority] on public params request: /ndn/org/md2k/mguard/aa/PUBPARAMS
+1653074608.148258 DEBUG: [nacabe.AttributeAuthority] before sign
+1653074608.150077 TRACE: [nacabe.AttributeAuthority] Reply public params request.
+1653074608.150091 TRACE: [nacabe.AttributeAuthority] Pub params size: 609
+1653074806.230486  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01B
+1653074806.230586  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/B/KEY/%5C%84%AC%92%12%129%D1/local/v=1652992178428
+1653074806.239519  INFO: [mguard.Controller] Interest received: /ndn/org/md2k/mguard/controller/ndn/org/md2k/B name: /ndn/org/md2k/mguard/controller
+1653074806.239545  INFO: [mguard.Controller] Consumer name: /ndn/org/md2k/B
+1653074806.239559 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653074806.239565 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653074806.239571 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653074806.239578 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653074806.239586 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653074806.239593 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653074806.239599 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653074806.239606 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653074806.239613 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653074806.239621 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653074806.241441 DEBUG: [mguard.Controller] Data sent for :/ndn/org/md2k/mguard/controller/ndn/org/md2k/B
+1653074823.324084  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01A
+1653074823.324182  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/A/KEY/%F8e%F1%EE%20%B7%E7%CA/local/v=1652670311596
+1653074823.333543  INFO: [mguard.Controller] Interest received: /ndn/org/md2k/mguard/controller/ndn/org/md2k/A name: /ndn/org/md2k/mguard/controller
+1653074823.333576  INFO: [mguard.Controller] Consumer name: /ndn/org/md2k/A
+1653074823.333591 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653074823.333598 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653074823.333604 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653074823.333610 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653074823.333618 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653074823.333625 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653074823.333631 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653074823.333638 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653074823.333645 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653074823.333654 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653074823.335468 DEBUG: [mguard.Controller] Data sent for :/ndn/org/md2k/mguard/controller/ndn/org/md2k/A
+1653076917.371183  INFO: [nacabe.AttributeAuthority] on public params request: /ndn/org/md2k/mguard/aa/PUBPARAMS
+1653076917.371239 DEBUG: [nacabe.AttributeAuthority] before sign
+1653076917.372177 TRACE: [nacabe.AttributeAuthority] Reply public params request.
+1653076917.372185 TRACE: [nacabe.AttributeAuthority] Pub params size: 609
+1653076966.734037  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01B
+1653076966.734116  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/B/KEY/%5C%84%AC%92%12%129%D1/local/v=1652992178428
+1653076966.743389  INFO: [mguard.Controller] Interest received: /ndn/org/md2k/mguard/controller/ndn/org/md2k/B name: /ndn/org/md2k/mguard/controller
+1653076966.743418  INFO: [mguard.Controller] Consumer name: /ndn/org/md2k/B
+1653076966.743432 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653076966.743439 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653076966.743445 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653076966.743451 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653076966.743458 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653076966.743465 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653076966.743472 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653076966.743479 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653076966.743486 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653076966.743493 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653076966.745250 DEBUG: [mguard.Controller] Data sent for :/ndn/org/md2k/mguard/controller/ndn/org/md2k/B
+1653076968.550929  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%13%08%03ndn%08%03org%08%04md2k%08%01A
+1653076968.551024  INFO: [nacabe.AttributeAuthority] Find consumer(decryptor) certificate: /ndn/org/md2k/A/KEY/%F8e%F1%EE%20%B7%E7%CA/local/v=1652670311596
+1653076968.559838  INFO: [mguard.Controller] Interest received: /ndn/org/md2k/mguard/controller/ndn/org/md2k/A name: /ndn/org/md2k/mguard/controller
+1653076968.559864  INFO: [mguard.Controller] Consumer name: /ndn/org/md2k/A
+1653076968.559877 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653076968.559884 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653076968.559890 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653076968.559896 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653076968.559903 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653076968.559910 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gps
+1653076968.559916 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/battery
+1653076968.559922 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+1653076968.559928 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+1653076968.559936 DEBUG: [mguard.Controller]  Encoding stream name: /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+1653076968.561532 DEBUG: [mguard.Controller] Data sent for :/ndn/org/md2k/mguard/controller/ndn/org/md2k/A

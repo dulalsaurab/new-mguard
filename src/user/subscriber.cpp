@@ -52,38 +52,22 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)  
 {
-  std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
-  std::this_thread::sleep_for (std::chrono::seconds(3));
+
   // get policy details from controller
   try {
     ndn::Name interestName = m_controllerPrefix;
     interestName.append(m_consumerPrefix);
-    NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
-    expressInterest(interestName, true);
+    // schedule policy interest after 2 second, giving cushion to obtain decryption key
+    m_scheduler.schedule(2_s, [=] { 
+      NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
+      expressInterest(interestName, true);
+      });
   }
   catch (const std::exception& e) {
     NDN_LOG_ERROR("error: " << e.what());
   }
-  // This starts the consumer side by sending a hello interest to the producer
-  // When the producer responds with hello data, receivedHelloData is called
-  // m_psync_consumer.sendHelloInterest();
-}
-
-bool
-Subscriber::checkConvergence()
-{
-  int counter = 0;
-  while (counter < 3) // wait for 6 seconds max, else return false
-  {
-    if(m_abe_consumer.readyForDecryption())
-      return true;
-    m_abe_consumer.obtainDecryptionKey();
-    ++counter;
-    std::this_thread::sleep_for (std::chrono::seconds(3));
-  }
-  return false;
 }
 
 void
@@ -113,6 +97,21 @@ Subscriber::stop()
 {
   NDN_LOG_DEBUG("Shutting down face: ");
   m_face.shutdown();
+}
+
+bool
+Subscriber::checkConvergence()
+{
+  int counter = 0;
+  while (counter < 3) // wait for 6 seconds max, else return false
+  {
+    if(m_abe_consumer.readyForDecryption())
+      return true;
+    m_abe_consumer.obtainDecryptionKey(); // do we need to call this again ??
+    ++counter;
+    std::this_thread::sleep_for (std::chrono::seconds(2));
+  }
+  return false;
 }
 
 void
@@ -176,6 +175,22 @@ Subscriber::subscribe(ndn::Name streamName)
 }
 
 void
+Subscriber::unsubscribe(ndn::Name streamName)
+{
+  // convert the streamName into manifest, because that's what is published by the sync
+  streamName.append("manifest");
+  auto it = m_availableStreams.find(streamName);
+  if (it != m_availableStreams.end()) {
+    NDN_LOG_INFO("Stream: " << streamName << " not available for unsubscription");
+    // schedule a hello interest in next 200 seconds
+    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
+    return;
+  }
+  NDN_LOG_INFO("Unsubscribing to: " << streamName);
+  m_psync_consumer.removeSubscription(streamName);
+}
+
+void
 Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
 {
   // store all the streams names and their latest seq number
@@ -188,7 +203,6 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   for (auto stream : m_subscriptionList) {
     subscribe(stream);
   }
-  // m_psync_consumer.sendSyncInterest();
 }
 
 void
@@ -252,28 +266,33 @@ Subscriber::wireDecode(const ndn::Block& wire)
                                    ndn::to_string(it->type())));
       }
     }
-    // we got all the data names for this manifest, now lets fetch the actual data
+    // we got all the data names for this manifest, now lets fetch the actual payload
     for (const auto& dataName : tempNameBuffer)
     {
       if(!checkConvergence())
         NDN_THROW(Error("Public params or private key is absent, can't decrypt the data"));
 
-      m_abe_consumer.consume(dataName.getPrefix(-1), bind(&Subscriber::abeOnData, this, _1),
-                             bind(&Subscriber::abeOnError, this, _1));
+      m_abe_consumer.consume(dataName.getPrefix(-1),
+                             bind(&Subscriber::abeOnData, this, _1, _2),
+                             bind(&Subscriber::abeOnError, this, _1, _2));
+
       NDN_LOG_DEBUG("data names: " << dataName);
     }
   }
 }
 
 void
-Subscriber::abeOnData(const ndn::Buffer& buffer)
+Subscriber::abeOnData(const ndn::Buffer& buffer, const ndn::Name& name)
 {
   auto applicationData = std::string(buffer.begin(), buffer.end());
-  NDN_LOG_DEBUG ("Received Data " << applicationData);
+  NDN_LOG_DEBUG ("Received Data " << applicationData );
+  NDN_LOG_DEBUG ("Received Name" << name);
+
   m_ApplicationDataCallback({applicationData});
 }
+
 void
-Subscriber::abeOnError(const std::string& errorMessage)
+Subscriber::abeOnError(const std::string& errorMessage, const ndn::Name& name)
 {
   NDN_LOG_DEBUG ("ABE failled to fetch and encrypt data");
 }

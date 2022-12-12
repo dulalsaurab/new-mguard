@@ -30,6 +30,9 @@ def configure(conf):
     conf.check_cfg(package='libndn-cxx', args=['--cflags', '--libs'], uselib_store='NDN_CXX',
                    pkg_config_path=pkg_config_path)
 
+    conf.check_cfg(package='gtkmm-3.0', args=['--cflags', '--libs'], uselib_store='gtkmm', pkg_config_path=pkg_config_path)
+
+
     boost_libs = ['system', 'iostreams', 'filesystem', 'regex']
     
     if conf.env.WITH_TESTS:
@@ -64,7 +67,7 @@ def build(bld):
               vnum=VERSION,
               cnum=VERSION,
               source=bld.path.ant_glob('src/**/*.cpp'),
-              use='NDN_CXX BOOST PSYNC NAC-ABE',
+              use='NDN_CXX BOOST PSYNC NAC-ABE gtkmm',
               includes='./src',
               export_includes='./src')
 

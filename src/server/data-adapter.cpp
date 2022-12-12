@@ -90,7 +90,7 @@ ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes
     NDN_LOG_DEBUG("All the expected data is not received");
   }
 
-  // todo: error wont occure once the above function is fixed
+  // todo: error wont occur once the above function is fixed
   if (err)
     NDN_LOG_DEBUG("Error: " << err);
   
@@ -193,7 +193,6 @@ DataAdapter::run()
   try {
     m_face.processEvents(); // block mode
     // face1.getIoService().run(); //go in block mode sync --- (interest/waits for data)
-
   }
   catch (const std::exception& ex)
   {
@@ -258,9 +257,9 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
       }
     }
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    // let sleep for 10ms before publishing the new data. This is ease the route registration and repo insertion
-    // std::this_thread::sleep_for (std::chrono::milliseconds(20));
-    // if no semantic location associated with this data point, append unknown location attribtue
+  
+    // if no semantic location associated with this data point, append unknown location attribtue ???
+    // but every data point should have associated location attribute?? 
     if (semLocAttrList.empty())
       semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
 
