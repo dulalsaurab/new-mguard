@@ -66,8 +66,13 @@ public:
   void
   processSubscriptionCallback(const std::unordered_set<ndn::Name>& streams)
   {
+    
+     // wait until keys are fetched? 
     // check for convergence.
-    m_subscriber.checkConvergence();
+    if (!m_subscriber.checkConvergence()) {
+      NDN_LOG_DEBUG("couldnt fetch appropriate keys, exiting");
+      exit(-1);
+    }
 
     // stop the process event
     m_subscriber.stop();
@@ -92,9 +97,9 @@ public:
     // subscriptionList.push_back(availableStreams[0]); // battery 
 
     // all stream
-    subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[0]); // battery
     subscriptionList.push_back(availableStreams[1]); // semloc
-    subscriptionList.push_back(availableStreams[3]); // gps
+    // subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
@@ -110,6 +115,8 @@ public:
       // m_subscriber.subscribe(s);
       NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
     }
+
+
     // uncomment if: taking input from user ----------------------------------------------
     
     // std::vector<int> input; //
@@ -136,15 +143,10 @@ public:
     m_subscriber.setSubscriptionList(subscriptionList);
     // run the processevent again, this time with sync as well
     m_subscriber.run(true);
-    // m_subscriber.run();
-
   }
 
   void
-  handler()
-  {
-    m_subscriber.run();
-  }
+  handler() { m_subscriber.run(); }
 
 private:
   ndn::Face m_face;
@@ -154,7 +156,6 @@ private:
 int
 main(int argc, char* argv[])
 {
-
   std::string applicationPrefix;
   std::string certPath;
 
