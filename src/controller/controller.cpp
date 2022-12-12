@@ -48,7 +48,7 @@ Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPre
   for(auto& it : m_policyMap)
     NDN_LOG_TRACE("data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
 
-  // set interest filter on cert (aa cert, controller cert, and controller prefix)
+  // set interest filter on controller prefix
   setInterestFilter(m_controllerPrefix);
 
 }
