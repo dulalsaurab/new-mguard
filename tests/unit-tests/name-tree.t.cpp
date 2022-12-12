@@ -1,4 +1,4 @@
-#include "test-common.hpp"
+#include "../test-common.hpp"
 
 #include <server/util/name-tree.hpp>
 #include <common.hpp>
