@@ -66,9 +66,9 @@ BOOST_AUTO_TEST_CASE(Constructor)
     BOOST_CHECK(!nameTree.isChild(nameTree.findNode("/aa/bb"), "/aa/bb/dd"));
 
     // findNode
-    std::cout << nameTree.findNode("/aa/ff") << std::endl;
-//    BOOST_CHECK(nameTree.findNode("/aa/bb/cc/dd") == nullptr);
-    std::cout << nameTree.findNode("/aa/bb/cc") << std::endl;
+    BOOST_CHECK(nameTree.findNode("/aa/ff")->m_fullName == "/aa/ff");
+    BOOST_CHECK(nameTree.findNode("/aa/bb/cc/dd") == nullptr);
+    BOOST_CHECK(nameTree.findNode("/aa/bb/cc")->m_fullName == "/aa/bb/cc");
 
     BOOST_CHECK(true);
 }
