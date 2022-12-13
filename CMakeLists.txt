@@ -16,7 +16,7 @@ endif(HAVE_TESTS)
 # dependencies
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(NDN_CXX REQUIRED libndn-cxx)
-pkg_check_modules(NAC_ABE REQUIRED libnac-abe)
+#pkg_check_modules(NAC_ABE REQUIRED libnac-abe)
 pkg_check_modules(PSYNC REQUIRED PSync)
 
 # files
@@ -34,7 +34,8 @@ add_compile_definitions(MGUARD_CMAKE_BUILD)
 link_directories(${NDN_CXX_LIBRARY_DIRS})
 
 # target
-add_library(mguard SHARED ${NAC_ABE_LIB_SOURCE_FILES})
+#add_library(mguard SHARED ${NAC_ABE_LIB_SOURCE_FILES})
+add_executable(mguard sandbox/sandbox.cpp)
 target_compile_options(mguard PUBLIC ${NDN_CXX_CFLAGS} ${NAC_ABE_CFLAGS} ${PSYNC_CFLAGS})
 target_link_libraries(mguard PUBLIC ${NDN_CXX_LIBRARIES} ${NAC_ABE_LIBRARIES} ${PSYNC_LIBRARIES})
 
@@ -50,8 +51,8 @@ set(PKG_CONFIG_LIBS
 set(PKG_CONFIG_CFLAGS
         "-I\${includedir} -DMGUARD_CMAKE_BUILD"
         )
-configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake-pkgconfig.pc.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}.pc")
+#configure_file("${CMAKE_CURRENT_SOURCE_DIR}/cmake-pkgconfig.pc.in"
+#        "${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}.pc")
 
 include(GNUInstallDirs)
 install(TARGETS mguard
