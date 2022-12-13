@@ -1,7 +1,6 @@
 #include "../test-common.hpp"
 
 #include <server/util/name-tree.hpp>
-#include <common.hpp>
 
 using namespace ndn;
 
@@ -14,38 +13,41 @@ BOOST_FIXTURE_TEST_SUITE(TestNameTree, mguard::tests::IdentityTimeFixture)
 
 BOOST_AUTO_TEST_CASE(Constructor)
 {
-    util::nametree::NameTree nametree;
-    nametree.insertName("/aa/bb/cc");
-    nametree.insertName("/aa/bb/ee");
-    nametree.insertName("/aa/ff/mm/cc");
-    nametree.insertName("/aa/ff/kk");
-    nametree.insertName("/aa/ke");
-    auto root = nametree.getTreeRoot();
-//
-//    BOOST_CHECK(nametree.search(root, "/aa/bb/cc") != nullptr);
-//
-//    BOOST_CHECK(nametree.search(root, "/aa/ke") != nullptr);
-//
-//    BOOST_CHECK(nametree.search(root, "/aa/kk/ee") == nullptr);
+    util::nametree::NameTree nameTree;
 
-    std::cout << "Longest prefix match for prefix: " << "/aa/ff/mm/cc/oo "  << nametree.longestPrefixMatch("/aa/ff/mm/cc/oo") << std::endl;
+    // build the tree
+    nameTree.insertName("/aa/bb/cc");
+    nameTree.insertName("/aa/bb/ee");
+    nameTree.insertName("/aa/ff/mm/cc");
+    nameTree.insertName("/aa/ff/kk");
+    nameTree.insertName("/aa/ke");
 
-//    auto vec; //= nametree.getAllLeafs("/aa/ff");
-//    for (auto& v: vec)
-//        std::cout << v << std::endl;
-//
-////    vec = nametree.getAllLeafs("/aa", "/aa/ff");
-//    std::cout << "next round" << std::endl;
-//    for (auto& v: vec)
-//        std::cout << v << std::endl;
-//
+    // testing the tree
 
-    nametree.deleteNode("/aa/ff");
+    // getTreeRoot
+    BOOST_CHECK(nameTree.getTreeRoot()->m_fullName == "/");
 
-//    BOOST_CHECK(nametree.search(root, "/aa/ff/mm") == nullptr);
-//    BOOST_CHECK(nametree.search(root, "/aa/ke") != nullptr);
-//    BOOST_CHECK(nametree.search(root, "/aa/ff") == nullptr);
+    // getNode
+    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb").value()->m_fullName == "/aa/bb");
+    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/cc").value() == nullptr);
 
+    // getLeaves
+    for (const ndn::Name &name : nameTree.getLeaves("/aa/ff", {})) {
+        BOOST_CHECK(name == (ndn::Name)"/aa/ff/mm/cc" || name == (ndn::Name)"/aa/ff/kk");
+    }
+
+    // getParent
+    BOOST_CHECK(nameTree.getParent("/aa/ke")->m_fullName == "/aa");
+    BOOST_CHECK(nameTree.getParent("/aa/ff/mm/cc")->m_fullName == "/aa/ff/mm");
+
+    // getChildren
+
+    // longestPrefixMatch
+    // deleteNode
+    // isChild
+    // findNode
+
+    BOOST_CHECK(true);
 }
 
 BOOST_AUTO_TEST_SUITE_END() //TestDataAdapter
