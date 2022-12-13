@@ -47,33 +47,8 @@ BOOST_AUTO_TEST_CASE(Constructor)
                 requester == "/ndn/org/md2k/C" ||
                 requester == "/ndn/org/md2k/D" ||
                 requester == "/ndn/org/md2k/E" ||
+                requester == "/ndn/org/md2k/F"
         );
-    }
-
-    result = parser.parsePolicy("tests/unit-tests/parser-resources/policy1");
-    BOOST_CHECK(result.policyIdentifier == "1");
-    BOOST_CHECK(result.abePolicy == "((/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND /ndn/org/md2k/ATTRIBUTE/location/gym) OR (/ndn/org/md2k/mguard/dd40c/phone/battery AND /ndn/org/md2k/ATTRIBUTE/location/commuting))");
-    for (const std::string &stream : result.streams) {
-        BOOST_CHECK(
-                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
-                stream == "/ndn/org/md2k/mguard/dd40c/phone/battery"
-        );
-    }
-    for (const std::string &requester : result.requesters) {
-        BOOST_CHECK(requester == "/ndn/org/md2k/A");
-    }
-
-    result = parser.parsePolicy("tests/unit-tests/parser-resources/policy1");
-    BOOST_CHECK(result.policyIdentifier == "1");
-    BOOST_CHECK(result.abePolicy == "((/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND /ndn/org/md2k/ATTRIBUTE/location/gym) OR (/ndn/org/md2k/mguard/dd40c/phone/battery AND /ndn/org/md2k/ATTRIBUTE/location/commuting))");
-    for (const std::string &stream : result.streams) {
-        BOOST_CHECK(
-                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
-                stream == "/ndn/org/md2k/mguard/dd40c/phone/battery"
-                );
-    }
-    for (const std::string &requester : result.requesters) {
-        BOOST_CHECK(requester == "/ndn/org/md2k/A");
     }
 
 }
