@@ -1,4 +1,3 @@
-
 # cmake version to be used
 cmake_minimum_required(VERSION 3.5)
 
@@ -35,8 +34,7 @@ add_compile_definitions(MGUARD_CMAKE_BUILD)
 link_directories(${NDN_CXX_LIBRARY_DIRS})
 
 # target
-add_executable(mguard sandbox/sandbox.cpp)
-#add_library(mguard SHARED ${NAC_ABE_LIB_SOURCE_FILES})
+add_library(mguard SHARED ${NAC_ABE_LIB_SOURCE_FILES})
 target_compile_options(mguard PUBLIC ${NDN_CXX_CFLAGS} ${NAC_ABE_CFLAGS} ${PSYNC_CFLAGS})
 target_link_libraries(mguard PUBLIC ${NDN_CXX_LIBRARIES} ${NAC_ABE_LIBRARIES} ${PSYNC_LIBRARIES})
 
@@ -65,3 +63,4 @@ install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mguard
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}.pc"
         DESTINATION lib/pkgconfig)
+
