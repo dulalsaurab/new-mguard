@@ -8,7 +8,7 @@ namespace mguard {
 namespace parser {
 namespace tests {
 
-BOOST_FIXTURE_TEST_SUITE(TestNameTree, mguard::tests::IdentityTimeFixture)
+BOOST_FIXTURE_TEST_SUITE(TestParser, mguard::tests::IdentityTimeFixture)
 
 BOOST_AUTO_TEST_CASE(Constructor)
 {
