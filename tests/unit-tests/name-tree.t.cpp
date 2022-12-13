@@ -33,7 +33,10 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
     // getLeaves
     for (const ndn::Name &name : nameTree.getLeaves("/aa/ff", {})) {
-        BOOST_CHECK(name == (ndn::Name)"/aa/ff/mm/cc" || name == (ndn::Name)"/aa/ff/kk");
+        BOOST_CHECK(
+                name == (ndn::Name)"/aa/ff/mm/cc" ||
+                name == (ndn::Name)"/aa/ff/kk"
+                );
     }
 
     // getParent
@@ -41,10 +44,22 @@ BOOST_AUTO_TEST_CASE(Constructor)
     BOOST_CHECK(nameTree.getParent("/aa/ff/mm/cc")->m_fullName == "/aa/ff/mm");
 
     // getChildren
+    for (const ndn::Name &child : nameTree.getChildren("/aa")) {
+        BOOST_CHECK(
+                child.equals("/aa/bb") ||
+                child.equals("/aa/ff") ||
+                child.equals("/aa/ke")
+                );
+    }
 
     // longestPrefixMatch
+    BOOST_CHECK(nameTree.longestPrefixMatch("/aa/bb/aa").equals("/aa/bb"));
+    BOOST_CHECK(nameTree.longestPrefixMatch("/aa/bb/aa/bb").equals("/aa/bb"));
+    BOOST_CHECK(nameTree.longestPrefixMatch("/aa/ff/mm/cc/dd").equals("/aa/ff/mm/cc"));
     // deleteNode
     // isChild
+    BOOST_CHECK(nameTree.isChild(nameTree.getTreeRoot(), "/aa"));
+    BOOST_CHECK(!nameTree.isChild(nameTree.getTreeRoot(), "/aa/bb"));
     // findNode
 
     BOOST_CHECK(true);
