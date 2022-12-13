@@ -28,6 +28,41 @@ BOOST_AUTO_TEST_CASE(Constructor)
         BOOST_CHECK(requester == "/ndn/org/md2k/A");
     }
 
+    result = parser.parsePolicy("tests/unit-tests/parser-resources/policy2");
+    BOOST_CHECK(result.policyIdentifier == "1");
+    BOOST_CHECK(result.abePolicy == "((/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps))");
+    for (const std::string &stream : result.streams) {
+        BOOST_CHECK(
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/gyroscope" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/battery" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/gps"
+        );
+    }
+    for (const std::string &requester : result.requesters) {
+        BOOST_CHECK(
+                requester == "/ndn/org/md2k/A" ||
+                requester == "/ndn/org/md2k/B" ||
+                requester == "/ndn/org/md2k/C" ||
+                requester == "/ndn/org/md2k/D" ||
+                requester == "/ndn/org/md2k/E" ||
+        );
+    }
+
+    result = parser.parsePolicy("tests/unit-tests/parser-resources/policy1");
+    BOOST_CHECK(result.policyIdentifier == "1");
+    BOOST_CHECK(result.abePolicy == "((/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND /ndn/org/md2k/ATTRIBUTE/location/gym) OR (/ndn/org/md2k/mguard/dd40c/phone/battery AND /ndn/org/md2k/ATTRIBUTE/location/commuting))");
+    for (const std::string &stream : result.streams) {
+        BOOST_CHECK(
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/battery"
+        );
+    }
+    for (const std::string &requester : result.requesters) {
+        BOOST_CHECK(requester == "/ndn/org/md2k/A");
+    }
+
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy1");
     BOOST_CHECK(result.policyIdentifier == "1");
     BOOST_CHECK(result.abePolicy == "((/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND /ndn/org/md2k/ATTRIBUTE/location/gym) OR (/ndn/org/md2k/mguard/dd40c/phone/battery AND /ndn/org/md2k/ATTRIBUTE/location/commuting))");
