@@ -1,0 +1,32 @@
+; brief: A, B shall be able to access data from the accelerometer stream
+
+policy-id           5
+requester-names     /ndn/org/md2k/E,/ndn/org/md2k/F
+attribute-filters
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+    }
+}
+
+; AFTER PARSING
+;
+; Policy ID
+;   5
+; Data Consumers
+;   A,B
+; Accessible Streams
+;   org.md2k/mperf/dd40c/phone/location
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery
+;
+; ABE policy
+;   (   org.md2k/mperf/dd40c/phone/location
+;   OR  org.md2k/mperf/dd40c/phone/accelerometer
+;   OR  org.md2k/mperf/dd40c/phone/gyroscope
+;   OR  org.md2k/mperf/dd40c/phone/battery )
+;
+;   Alt /attribute/device/phone
+;
