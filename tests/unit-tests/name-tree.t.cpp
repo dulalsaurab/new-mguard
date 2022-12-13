@@ -40,9 +40,9 @@ BOOST_AUTO_TEST_CASE(Constructor)
     }
 
     // getParent
-    BOOST_CHECK(nameTree.getParent("/aa/ke")->m_fullName == "/aa");
-    BOOST_CHECK(nameTree.getParent("/aa/ff/mm/cc")->m_fullName == "/aa/ff/mm");
-    BOOST_CHECK(nameTree.getParent("/aa/ff/mm")->m_fullName == "/aa/ff");
+    BOOST_CHECK(((ndn::Name)"/aa").equals(nameTree.getParent("/aa/ke")->m_fullName));
+    BOOST_CHECK(((ndn::Name)"/aa/ff/mm").equals(nameTree.getParent("/aa/ff/mm/cc")->m_fullName));
+    BOOST_CHECK(((ndn::Name)"/aa/ff").equals(nameTree.getParent("/aa/ff/mm")->m_fullName));
 
     // getChildren
     for (const ndn::Name &child : nameTree.getChildren("/aa")) {
