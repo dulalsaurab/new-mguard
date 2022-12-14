@@ -1,6 +1,6 @@
 ; brief: D shall be able to access all the streams under org.md2k when a participant is at work
 
-policy-id           4
+policy-id           8
 requester-names     /ndn/org/md2k/A,/ndn/org/md2k/B,/ndn/org/md2k/C,/ndn/org/md2k/D,/ndn/org/md2k/E
 attribute-filters
 {

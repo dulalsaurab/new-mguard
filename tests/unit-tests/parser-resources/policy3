@@ -1,6 +1,6 @@
 ; B shall only access battery stream
 
-policy-id           2
+policy-id           3
 requester-names     /ndn/org/md2k/A,/ndn/org/md2k/B,/ndn/org/md2k/C,/ndn/org/md2k/D,/ndn/org/md2k/E       ;or data-requester-user-id or data-requester-group-id
 attribute-filters
 {
