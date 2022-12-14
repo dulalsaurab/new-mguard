@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     // policy 3
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy3");
     BOOST_CHECK(result.policyIdentifier == "3");
-    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/battery)");
+    BOOST_CHECK(result.abePolicy == "/ndn/org/md2k/mguard/dd40c/phone/battery");
     for (const std::string &stream : result.streams) {
         BOOST_CHECK(
                 stream == "/ndn/org/md2k/mguard/dd40c/phone/battery"
