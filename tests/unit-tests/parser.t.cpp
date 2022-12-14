@@ -206,6 +206,23 @@ BOOST_AUTO_TEST_CASE(Constructor)
                 requester == "/ndn/org/md2k/A"
         );
     }
+
+    // policy 13
+    result = parser.parsePolicy("tests/unit-tests/parser-resources/policy13");
+    BOOST_CHECK(result.policyIdentifier == "13");
+    BOOST_CHECK(result.abePolicy == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer and (time > 5 AND time < 6)");
+    for (const std::string &stream : result.streams) {
+        BOOST_CHECK(
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer"
+        );
+
+    }
+    for (const std::string &requester : result.requesters) {
+        BOOST_CHECK(
+                requester == "/ndn/org/md2k/A"
+        );
+    }
+
 }
 BOOST_AUTO_TEST_SUITE_END()
 }

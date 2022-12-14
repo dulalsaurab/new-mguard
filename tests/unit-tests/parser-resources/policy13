@@ -1,0 +1,11 @@
+policy-id           13
+requester-names     /ndn/org/md2k/A
+attribute-filters
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+        from 5 to 6
+    }
+}
+
