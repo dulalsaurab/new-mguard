@@ -14,6 +14,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
 {
     // NOTE: a list of attributes in the ABE policy is only surrounded with () if there is more than one attribute.
     // if it is just a single attribute added to the policy, there are no parentheses
+    // times are separated by AND, so they are single values not surrounded with ()
 
     PolicyParser parser("tests/unit-tests/parser-resources/available_streams");
     PolicyDetail result;
@@ -210,7 +211,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     // policy 13
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy13");
     BOOST_CHECK(result.policyIdentifier == "13");
-    BOOST_CHECK(result.abePolicy == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer and (time >= 1000000000 AND time < 2000000000)");
+    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND time >= 1000000000 AND time < 2000000000)");
     for (const std::string &stream : result.streams) {
         BOOST_CHECK(
                 stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer"
