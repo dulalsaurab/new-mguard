@@ -24,10 +24,10 @@ attribute-filters
 ;   org.md2k/mperf/dd40c/phone/battery
 ;
 ; ABE policy
-    (   org.md2k/mperf/dd40c/phone/location
-    OR  org.md2k/mperf/dd40c/phone/accelerometer
-    OR  org.md2k/mperf/dd40c/phone/gyroscope
-    OR  org.md2k/mperf/dd40c/phone/battery )
-    AND
-    (   attribute/location/work )
+;    (   org.md2k/mperf/dd40c/phone/location
+;    OR  org.md2k/mperf/dd40c/phone/accelerometer
+;    OR  org.md2k/mperf/dd40c/phone/gyroscope
+;    OR  org.md2k/mperf/dd40c/phone/battery )
+;    AND
+;    (   attribute/location/work )
 
