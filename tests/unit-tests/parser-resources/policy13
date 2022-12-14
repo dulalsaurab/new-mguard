@@ -5,7 +5,7 @@ attribute-filters
     allow
     {
         /ndn/org/md2k/mguard/dd40c/phone/accelerometer
-        from 5000000000 to 6000000000
+        from 1000000000 to 2000000000
     }
 }
 
