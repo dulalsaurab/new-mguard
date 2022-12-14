@@ -12,6 +12,9 @@ BOOST_FIXTURE_TEST_SUITE(TestParser, mguard::tests::IdentityTimeFixture)
 
 BOOST_AUTO_TEST_CASE(Constructor)
 {
+    // NOTE: a list of attributes in the ABE policy is only surrounded with () if there is more than one attribute.
+    // if it is just a single attribute added to the policy, there are no parentheses
+
     PolicyParser parser("tests/unit-tests/parser-resources/available_streams");
     PolicyDetail result;
 
