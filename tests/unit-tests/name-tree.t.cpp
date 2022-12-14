@@ -58,12 +58,28 @@ BOOST_AUTO_TEST_CASE(Constructor)
     BOOST_CHECK(nameTree.longestPrefixMatch("/aa/bb/aa/bb").equals("/aa/bb"));
     BOOST_CHECK(nameTree.longestPrefixMatch("/aa/ff/mm/cc/dd").equals("/aa/ff/mm/cc"));
 
-    // deleteNode
-
     // isChild
     BOOST_CHECK(nameTree.isChild(nameTree.getTreeRoot(), "/aa/bb"));
     BOOST_CHECK(nameTree.isChild(nameTree.findNode("/aa/bb"), "/aa/bb/cc"));
     BOOST_CHECK(!nameTree.isChild(nameTree.findNode("/aa/bb"), "/aa/bb/dd"));
+
+    // deleteNode
+    nameTree.deleteNode("/aa/ke");
+    for (const ndn::Name &name : nameTree.getLeaves("/", {})) {
+        BOOST_CHECK(
+        (
+                name.equals("/aa/bb/cc") ||
+                name.equals("/aa/bb/ee") ||
+                name.equals("/aa/ff/mm/cc") ||
+                name.equals("/aa/ff/kk")
+                )
+                &&
+                !name.equals("/aa/ke")
+        );
+    }
+    nameTree.insertName("/aa/ke");
+
+
 
     // findNode
     // this breaks so bad that the unit tests stop
