@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     // policy 3
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy3");
     BOOST_CHECK(result.policyIdentifier == "3");
-    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/battery)");
+    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/battery");
     for (const std::string &stream : result.streams) {
         BOOST_CHECK(
                 stream == "/ndn/org/md2k/mguard/dd40c/phone/battery"
@@ -75,9 +75,12 @@ BOOST_AUTO_TEST_CASE(Constructor)
     // policy 4
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy4");
     BOOST_CHECK(result.policyIdentifier == "4");
-    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location) AND (/ndn/org/md2k/ATTRIBUTE/location/work)");
+    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location)");
     for (const std::string &stream : result.streams) {
         BOOST_CHECK(
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location" ||
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/gyroscope" ||
                 stream == "/ndn/org/md2k/mguard/dd40c/phone/battery"
         );
     }
@@ -116,7 +119,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     // policy 8
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy8");
     BOOST_CHECK(result.policyIdentifier == "8");
-    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer)");
+    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location) AND (/ndn/org/md2k/ATTRIBUTE/location/work)");
     for (const std::string &stream : result.streams) {
         BOOST_CHECK(
                 stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
