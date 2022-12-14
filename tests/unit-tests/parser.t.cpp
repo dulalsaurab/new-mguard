@@ -30,7 +30,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy2");
     BOOST_CHECK(result.policyIdentifier == "1");
-    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location");
+    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location)");
     for (const std::string &stream : result.streams) {
         BOOST_CHECK(
                 stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer" ||
