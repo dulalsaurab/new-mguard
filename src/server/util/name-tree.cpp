@@ -43,7 +43,7 @@ NameTree::insertName(ndn::Name name)
 {
   // check if the name already exist in the tree
   NDN_LOG_INFO("Trying to insert name: " << name);
-  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
+  auto info = getLongestMatchedName(m_root, name);
   auto prefixNotIn = info.second;
   auto parent = info.first;
   NDN_LOG_DEBUG("prefix not in tree: " << prefixNotIn << " parent: " << parent->m_fullName);
@@ -79,7 +79,7 @@ NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 ndn::optional<TreeNode*>
 NameTree::getNode(TreeNode* startFrom, ndn::Name name)
 {
-  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(startFrom, name);
+  auto info = getLongestMatchedName(startFrom, name);
   return (info.second == "/") ? info.first : nullptr; // return the pointer that has the name
 }
 
@@ -90,15 +90,15 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
   if (namePrefix.toUri() == "/") 
     return std::make_pair(startFrom, namePrefix);
 
-  for (auto it_name = namePrefix.begin(); it_name != namePrefix.end(); ++it_name) {
-    NDN_LOG_INFO("Searching name component: " << it_name->toUri() << " : " << (*startFrom).m_nodeId);
+  for (auto& it_name: namePrefix) {
+    NDN_LOG_INFO("Searching name component: " << it_name.toUri() << " : " << (*startFrom).m_nodeId);
     
     if ((*startFrom).m_children.empty()) {// this is leaf
       return std::make_pair(startFrom, namePrefix);
     }
 
     for (auto & it_nt : (*startFrom).m_children) {
-      if (it_nt->m_nodeId == it_name->toUri()) {
+      if (it_nt->m_nodeId == it_name.toUri()) {
         namePrefix = namePrefix.getSubName(1);
         return getLongestMatchedName(it_nt, namePrefix);
       }
@@ -109,31 +109,33 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
 }
 
 TreeNode*
-NameTree::findNode(ndn::Name target) {
-    return findNode(getTreeRoot()->m_children, target);
+NameTree::findNode(ndn::Name target) 
+{
+  return findNode(getTreeRoot()->m_children, target);
 }
 
 TreeNode*
-NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target) {
-    std::vector<TreeNode*> next;
-    for (TreeNode* const &child: children) {
-        if (child->m_nodeId == target){
-            return child;
-        }
-        for (TreeNode* grandChild : child->m_children) {
-            next.push_back(grandChild);
-        }
-    }
-    if (next.empty()){
-        return nullptr;
-    }
-    return findNode(next, target);
+NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target)
+{
+  std::vector<TreeNode*> next;
+  for (TreeNode* const &child: children) {
+      if (child->m_nodeId == target){
+          return child;
+      }
+      for (TreeNode* grandChild : child->m_children) {
+          next.push_back(grandChild);
+      }
+  }
+  if (next.empty()){
+      return nullptr;
+  }
+  return findNode(next, target);
 }
 
 ndn::Name
 NameTree::longestPrefixMatch(ndn::Name name)
 {
-  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
+  auto info = getLongestMatchedName(m_root, name);
   auto lmp = info.first->m_fullName; // lmp longest matched prefix
   NDN_LOG_INFO("Longest matched prefix: " << lmp);
   return lmp;
@@ -142,21 +144,21 @@ NameTree::longestPrefixMatch(ndn::Name name)
 void
 NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore)
 {
-    if (!(*startFrom).m_children.empty()) {
-        for (TreeNode*& it_nt : (*startFrom).m_children) {
-          if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
-              continue;
-          }
-          // if no children then this is the leaf
-          if(it_nt->m_children.empty()) {
-              leaves.push_back(it_nt->m_fullName);
-          } else {
-              getLeaves(it_nt, leaves, ignore);
-          }
+  if (!(*startFrom).m_children.empty()) {
+      for (TreeNode*& it_nt : (*startFrom).m_children) {
+        if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
+            continue;
         }
-    } else {
-        leaves.push_back(startFrom->m_fullName);
-    }
+        // if no children then this is the leaf
+        if(it_nt->m_children.empty()) {
+            leaves.push_back(it_nt->m_fullName);
+        } else {
+            getLeaves(it_nt, leaves, ignore);
+        }
+      }
+  } else {
+      leaves.push_back(startFrom->m_fullName);
+  }
 }
 
 std::vector<ndn::Name>

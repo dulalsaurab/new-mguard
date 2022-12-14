@@ -112,9 +112,11 @@ public:
   bool
   isChild(TreeNode* node, const ndn::Name& leaf);
 
-  TreeNode *findNode(ndn::Name target);
+  TreeNode*
+  findNode(ndn::Name target);
 
-  TreeNode *findNode(std::vector<TreeNode*> children, ndn::Name& target);
+  TreeNode*
+  findNode(std::vector<TreeNode*> children, ndn::Name& target);
 
 private:
   TreeNode*

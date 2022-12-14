@@ -30,7 +30,8 @@ def configure(conf):
     conf.check_cfg(package='libndn-cxx', args=['--cflags', '--libs'], uselib_store='NDN_CXX',
                    pkg_config_path=pkg_config_path)
 
-    conf.check_cfg(package='gtkmm-3.0', args=['--cflags', '--libs'], uselib_store='gtkmm', pkg_config_path=pkg_config_path)
+    conf.check_cfg(package='gtkmm-3.0', args=['--cflags', '--libs'],
+                   uselib_store='gtkmm', pkg_config_path=pkg_config_path)
 
 
     boost_libs = ['system', 'iostreams', 'filesystem', 'regex']
