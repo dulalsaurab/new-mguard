@@ -1,0 +1,19 @@
+policy-id           12
+requester-names     /ndn/org/md2k/A
+attribute-filters
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+        /ndn/org/md2k/ATTRIBUTE/location/work
+        /ndn/org/md2k/ATTRIBUTE/location/gym
+        /ndn/org/md2k/ATTRIBUTE/activity/eating
+        /ndn/org/md2k/ATTRIBUTE/activity/drinking
+    }
+    deny
+    {
+        /ndn/org/md2k/ATTRIBUTE/activity/walking
+        /ndn/org/md2k/ATTRIBUTE/activity/running
+        /ndn/org/md2k/ATTRIBUTE/smoking/no
+    }
+}
