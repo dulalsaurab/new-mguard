@@ -175,7 +175,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
         );
     }
 
-    // policy 10
+    // policy 11
     result = parser.parsePolicy("tests/unit-tests/parser-resources/policy11");
     BOOST_CHECK(result.policyIdentifier == "11");
     BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND (/ndn/org/md2k/ATTRIBUTE/location/work OR /ndn/org/md2k/ATTRIBUTE/location/gym) AND (/ndn/org/md2k/ATTRIBUTE/activity/eating OR /ndn/org/md2k/ATTRIBUTE/activity/drinking OR /ndn/org/md2k/ATTRIBUTE/activity/sleeping OR /ndn/org/md2k/ATTRIBUTE/activity/unknown) AND /ndn/org/md2k/ATTRIBUTE/smoking/yes)");
