@@ -159,6 +159,21 @@ BOOST_AUTO_TEST_CASE(Constructor)
         );
     }
 
+    // policy 10
+    result = parser.parsePolicy("tests/unit-tests/parser-resources/policy10");
+    BOOST_CHECK(result.policyIdentifier == "10");
+    BOOST_CHECK(result.abePolicy == "(/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND /ndn/org/md2k/ATTRIBUTE/location/work AND (/ndn/org/md2k/ATTRIBUTE/activity/eating OR /ndn/org/md2k/ATTRIBUTE/activity/drinking OR /ndn/org/md2k/ATTRIBUTE/activity/sleeping OR /ndn/org/md2k/ATTRIBUTE/activity/unknown) AND /ndn/org/md2k/ATTRIBUTE/smoking/yes)");
+    for (const std::string &stream : result.streams) {
+        BOOST_CHECK(
+                stream == "/ndn/org/md2k/mguard/dd40c/phone/accelerometer"
+        );
+
+    }
+    for (const std::string &requester : result.requesters) {
+        BOOST_CHECK(
+                requester == "/ndn/org/md2k/A"
+        );
+    }
 }
 BOOST_AUTO_TEST_SUITE_END()
 }
