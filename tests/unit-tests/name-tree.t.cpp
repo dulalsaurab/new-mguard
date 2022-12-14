@@ -79,7 +79,14 @@ BOOST_AUTO_TEST_CASE(Constructor)
     }
     nameTree.insertName("/aa/ke");
 
-
+    nameTree.deleteNode("/aa/bb");
+    for (const ndn::Name &name : nameTree.getLeaves("/", {})) {
+        BOOST_CHECK(
+                name.equals("/aa/ff/mm/cc") ||
+                name.equals("/aa/ff/kk") ||
+                name.equals("/aa/ke")
+        );
+    }
 
     // findNode
     // this breaks so bad that the unit tests stop
