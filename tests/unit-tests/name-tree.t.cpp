@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     nameTree.deleteNode("/aa/ke");
     for (const ndn::Name &name : nameTree.getLeaves("/aa", {})) {
         BOOST_CHECK(
-                !name.equals("/aa/ke")
+                name.equals("/aa/ke")
         );
     }
     nameTree.insertName("/aa/ke");
