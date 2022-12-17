@@ -58,10 +58,10 @@ BOOST_AUTO_TEST_CASE(Constructor)
     BOOST_CHECK(nameTree.longestPrefixMatch("/aa/bb/aa/bb").equals("/aa/bb"));
     BOOST_CHECK(nameTree.longestPrefixMatch("/aa/ff/mm/cc/dd").equals("/aa/ff/mm/cc"));
 
-    // isChild
+    // isDirectChild
     BOOST_CHECK(nameTree.isDirectChild(nameTree.getTreeRoot(), "/aa"));
     BOOST_CHECK(nameTree.isDirectChild(nameTree.findNode("/aa/bb"), "/aa/bb/cc"));
-    BOOST_CHECK(!nameTree.isDirectChild(nameTree.findNode("/aa/bb"), "/aa/bb/dd"));
+    BOOST_CHECK(nameTree.isDirectChild(nameTree.findNode("/aa/bb"), "/aa/bb/dd"));
 
     // deleteNode
     nameTree.deleteNode("/aa/ke");
