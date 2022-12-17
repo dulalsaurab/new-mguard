@@ -117,7 +117,7 @@ TreeNode*
 NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target) {
     std::vector<TreeNode*> next;
     for (TreeNode* const &child: children) {
-        if (child->m_nodeId == target){
+        if (child->m_fullName == target){
             return child;
         }
         for (TreeNode* grandChild : child->m_children) {
