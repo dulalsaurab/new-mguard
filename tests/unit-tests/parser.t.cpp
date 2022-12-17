@@ -240,7 +240,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
                 requester == "/ndn/org/md2k/A"
         );
     }
-    parser.parseAttribute("/ndn/org/md2k");
+
 }
 BOOST_AUTO_TEST_SUITE_END()
 }
