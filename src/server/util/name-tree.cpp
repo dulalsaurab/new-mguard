@@ -201,7 +201,7 @@ TreeNode*
 NameTree::getParent(ndn::Name name)
 {
   // parent of name (full name) "/aa/bb/cc" will be of full name "/aa/bb"
-  auto parentPrefix = name.getPrefix(1);
+  auto parentPrefix = name.getPrefix(-1);
   auto parent_ptr = getNode(m_root, parentPrefix);
   NDN_LOG_INFO("parent of prefix: " << name << " = " << (*parent_ptr)->m_nodeId);
   return *parent_ptr;
