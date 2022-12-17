@@ -29,6 +29,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
     // getNode
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb").value()->m_fullName == "/aa/bb");
+    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb/cc").value()->m_fullName == "/aa/bb/cc");
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/cc").value() == nullptr);
 
     // getLeaves
