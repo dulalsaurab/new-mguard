@@ -33,11 +33,10 @@ BOOST_AUTO_TEST_CASE(Constructor)
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/cc").value() == nullptr);
 
     // findNode
-//    BOOST_CHECK(nameTree.findNode("/aa/bb/cc")->m_fullName.equals("/aa/bb/cc"));
-//    BOOST_CHECK(nameTree.findNode("/aa/bb/ee")->m_fullName.equals("/aa/bb/ee"));
-//    BOOST_CHECK(nameTree.findNode("/aa/ff/kk")->m_fullName.equals("/aa/ff/kk"));
-//    BOOST_CHECK(nameTree.findNode("/aa/ff/mm/cc")->m_fullName.equals("/aa/ff/mm/cc"));
-//    BOOST_CHECK(nameTree.findNode("/aa/ke")->m_fullName.equals("/aa/ke"));
+    BOOST_CHECK(nameTree.findNode("bb")->m_fullName.equals("/aa/bb"));
+    BOOST_CHECK(nameTree.findNode("ff")->m_fullName.equals("/aa/ff"));
+    BOOST_CHECK(nameTree.findNode("mm")->m_fullName.equals("/aa/ff/mm"));
+    BOOST_CHECK(nameTree.findNode("ke")->m_fullName.equals("/aa/ke"));
 
     // getLeaves
     for (const ndn::Name &name : nameTree.getLeaves("/aa/ff", {})) {
