@@ -193,7 +193,9 @@ NameTree::getChildren(ndn::Name name)
     NDN_LOG_INFO("prefix not in the tree");
     return children;
   }
-    getChildren((*node_ptr), children);
+  for (const auto &child : (*node_ptr)->m_children) {
+      children.push_back(child->m_fullName);
+  }
   return children;
 }
 
