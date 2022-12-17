@@ -210,7 +210,7 @@ NameTree::getParent(ndn::Name name)
 }
 
 bool
-NameTree::isChild(TreeNode *node, const ndn::Name& leaf) {
+NameTree::isDirectChild(TreeNode *node, const ndn::Name& leaf) {
     // todo: change to ndn name operation instead of node operation
     return node == getParent(leaf);
 }

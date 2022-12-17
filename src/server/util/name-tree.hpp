@@ -110,7 +110,7 @@ public:
   _printTree(TreeNode* startFrom);
 
   bool
-  isChild(TreeNode* node, const ndn::Name& leaf);
+  isDirectChild(TreeNode* node, const ndn::Name& leaf);
 
   TreeNode *findNode(ndn::Name target);
 
