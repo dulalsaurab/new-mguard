@@ -88,11 +88,6 @@ BOOST_AUTO_TEST_CASE(Constructor)
         );
     }
 
-    // findNode
-    // this breaks so bad that the unit tests stop
-//    BOOST_CHECK(nameTree.findNode("/aa/ff")->m_fullName == "/aa/ff");
-//    BOOST_CHECK(nameTree.findNode("/aa/bb/cc/dd") == nullptr);
-//    BOOST_CHECK(nameTree.findNode("/aa/bb/cc")->m_fullName == "/aa/bb/cc");
 }
 
 BOOST_AUTO_TEST_SUITE_END() //TestDataAdapter
