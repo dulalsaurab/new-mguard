@@ -61,8 +61,8 @@ BOOST_AUTO_TEST_CASE(Constructor)
 
     // isDirectChild
     BOOST_CHECK(nameTree.isDirectChild(nameTree.getTreeRoot(), "/aa"));
-    BOOST_CHECK(nameTree.isDirectChild(nameTree.findNode("/aa/bb"), "/aa/bb/cc"));
-    BOOST_CHECK(nameTree.isDirectChild(nameTree.findNode("/aa/bb"), "/aa/bb/dd"));
+    BOOST_CHECK(nameTree.isDirectChild(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb").value(), "/aa/bb/cc"));
+    BOOST_CHECK(nameTree.isDirectChild(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb").value(), "/aa/bb/dd"));
 
     // deleteNode
     nameTree.deleteNode("/aa/ke");
