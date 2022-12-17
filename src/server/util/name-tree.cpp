@@ -124,9 +124,9 @@ NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target) {
             next.push_back(grandChild);
         }
     }
-//    if (next.empty()){
-//        return nullptr;
-//    }
+    if (next.empty()){
+        return nullptr;
+    }
     return findNode(next, target);
 }
 
