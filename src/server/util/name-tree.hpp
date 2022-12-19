@@ -101,7 +101,7 @@ public:
 
   /* return logest match prefix of a name */
   ndn::Name
-  getLongestPrefixMatch(ndn::Name &name);
+  getLongestPrefixMatch(ndn::Name name);
 
   void
   deleteNode(const ndn::Name& prefix);

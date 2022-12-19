@@ -131,7 +131,7 @@ NameTree::findNode(const std::vector<TreeNode*>& children, ndn::Name& target) {
 }
 
 ndn::Name
-NameTree::getLongestPrefixMatch(ndn::Name &name)
+NameTree::getLongestPrefixMatch(ndn::Name name)
 {
   std::pair<TreeNode*, ndn::Name> info = getLongestPrefixMatch(m_root, name);
   auto lmp = info.first->m_fullName; // lmp longest matched prefix

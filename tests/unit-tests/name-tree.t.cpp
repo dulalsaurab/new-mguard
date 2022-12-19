@@ -61,9 +61,9 @@ BOOST_AUTO_TEST_CASE(Constructor)
     }
 
     // longestPrefixMatch
-    BOOST_CHECK(nameTree.longestPrefixMatch("/aa/bb/aa").equals("/aa/bb"));
-    BOOST_CHECK(nameTree.longestPrefixMatch("/aa/bb/aa/bb").equals("/aa/bb"));
-    BOOST_CHECK(nameTree.longestPrefixMatch("/aa/ff/mm/cc/dd").equals("/aa/ff/mm/cc"));
+    BOOST_CHECK(nameTree.getLongestPrefixMatch("/aa/bb/aa").equals("/aa/bb"));
+    BOOST_CHECK(nameTree.getLongestPrefixMatch("/aa/bb/aa/bb").equals("/aa/bb"));
+    BOOST_CHECK(nameTree.getLongestPrefixMatch("/aa/ff/mm/cc/dd").equals("/aa/ff/mm/cc"));
 
     // isDirectChild
     BOOST_CHECK(nameTree.isDirectChild(nameTree.getTreeRoot(), "/aa"));
