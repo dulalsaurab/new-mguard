@@ -256,13 +256,14 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
         NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
       }
     }
-    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-  
+
     // if no semantic location associated with this data point, append unknown location attribtue ???
-    // but every data point should have associated location attribute?? 
+    // but every data point should have associated location attribute?? but every data point needs to have 
+    // location attribute
     if (semLocAttrList.empty())
       semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
-
+    
+    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     m_publisher.publish(dataName, data, stream, semLocAttrList);
   }
 }

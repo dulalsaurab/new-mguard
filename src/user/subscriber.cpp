@@ -26,6 +26,8 @@
 #include <boost/algorithm/string.hpp>
 
 #include <iostream>
+#include <vector>
+#include <algorithm>
 
 NDN_LOG_INIT(mguard.subscriber);
 
@@ -50,7 +52,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
                   // 10_s hello interset lifetime, 1600_ms sync interest life time
                   // for us, the subscription happens at the begnning so we dont need to send hello interest that often 
 , m_ApplicationDataCallback(callback)
-, m_subCallback(subCallback)  
+, m_subCallback(subCallback)
 {
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
@@ -59,7 +61,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
   try {
     ndn::Name interestName = m_controllerPrefix;
     interestName.append(m_consumerPrefix);
-    // schedule policy interest after 2 second, giving cushion to obtain decryption key
+    // schedule policy interest after 2 second, cushion to obtain the decryption key
     m_scheduler.schedule(2_s, [=] { 
       NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
       expressInterest(interestName, true);
@@ -68,22 +70,15 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
   catch (const std::exception& e) {
     NDN_LOG_ERROR("error: " << e.what());
   }
+
 }
 
 void
-Subscriber::run(bool runSync)
+Subscriber::run()
 {
   try {
     NDN_LOG_INFO("Starting Face");
-
-    if (runSync) {
-      m_psync_consumer.sendHelloInterest();
-      m_psync_consumer.sendSyncInterest();
-      // sleep some time for sync to kick in
-      // NDN_LOG_DEBUG("sleeping 5 seconds for sync to converge");
-      // std::this_thread::sleep_for (std::chrono::seconds(5));
-    }
-    m_face.processEvents();
+    m_face_thread = std::thread([this] { m_face.processEvents(); });
   }
   catch (const std::exception& ex)
   {
@@ -166,7 +161,7 @@ Subscriber::subscribe(ndn::Name streamName)
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
     NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
-    // schedule a hello interest in next 200 seconds
+    // schedule a hello interest in next 200 milliseconds
     m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
     return;
   }
@@ -177,16 +172,19 @@ Subscriber::subscribe(ndn::Name streamName)
 void
 Subscriber::unsubscribe(ndn::Name streamName)
 {
-  // convert the streamName into manifest, because that's what is published by the sync
-  streamName.append("manifest");
-  auto it = m_availableStreams.find(streamName);
-  if (it != m_availableStreams.end()) {
+  if (std::find(m_subscriptionList.begin(),
+                m_subscriptionList.end(),
+                streamName) == m_subscriptionList.end()){
+
     NDN_LOG_INFO("Stream: " << streamName << " not available for unsubscription");
-    // schedule a hello interest in next 200 seconds
-    m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
-    return;
   }
+  
+  m_subscriptionList.erase(std::remove(m_subscriptionList.begin(), 
+                                       m_subscriptionList.end(), 
+                                       streamName), m_subscriptionList.end());
+
   NDN_LOG_INFO("Unsubscribing to: " << streamName);
+  streamName.append("manifest"); // sync uses streamName + manifest
   m_psync_consumer.removeSubscription(streamName);
 }
 
@@ -250,6 +248,11 @@ Subscriber::wireDecode(const ndn::Block& wire)
                                    ndn::to_string(it->type())));
       }
     }
+    // received data from the controller, perform following action
+    // 1. start syncronization 
+    // 2. send eligibleStreams back to consumer for subscription choice
+    m_psync_consumer.sendHelloInterest();
+    m_psync_consumer.sendSyncInterest();
     m_subCallback({m_eligibleStreams});
   }
   if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardPublisher)
