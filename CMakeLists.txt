@@ -1,4 +1,3 @@
-
 # cmake version to be used
 cmake_minimum_required(VERSION 3.5)
 
@@ -65,3 +64,4 @@ install(DIRECTORY src/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/mguard
 
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/lib${PROJECT_NAME}.pc"
         DESTINATION lib/pkgconfig)
+

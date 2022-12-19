@@ -2,7 +2,7 @@
 
 policy-id           1
 requester-names     /ndn/org/md2k/A
-attribute-filters
+accel-gym
 {
     allow
     {
@@ -10,7 +10,7 @@ attribute-filters
         /ndn/org/md2k/ATTRIBUTE/location/gym
     }
 }
-attribute-filters
+battery-commute
 {
     allow
     {
