@@ -43,7 +43,7 @@ NameTree::insertName(ndn::Name name)
 {
   // check if the name already exist in the tree
   NDN_LOG_INFO("Trying to insert name: " << name);
-  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
+  std::pair<TreeNode*, ndn::Name> info = getLongestPrefixMatch(m_root, name);
   auto prefixNotIn = info.second;
   auto parent = info.first;
   NDN_LOG_DEBUG("prefix not in tree: " << prefixNotIn << " parent: " << parent->m_fullName);
@@ -79,18 +79,18 @@ NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 ndn::optional<TreeNode*>
 NameTree::getNode(TreeNode* startFrom, ndn::Name name)
 {
-  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(startFrom, name);
+  std::pair<TreeNode*, ndn::Name> info = getLongestPrefixMatch(startFrom, name);
   return (info.second == "/") ? info.first : nullptr; // return the pointer that has the name
 }
 
 std::pair<TreeNode*, ndn::Name>
-NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
+NameTree::getLongestPrefixMatch(TreeNode* startFrom, ndn::Name& namePrefix)
 {
   NDN_LOG_INFO("Searching name prefix: " << namePrefix.toUri());
   if (namePrefix.toUri() == "/") 
     return std::make_pair(startFrom, namePrefix);
 
-  for (auto it_name = namePrefix.begin(); it_name != namePrefix.end(); ++it_name) {
+  for (auto it_name = namePrefix.begin(); it_name != namePrefix.end();) {
     NDN_LOG_INFO("Searching name component: " << it_name->toUri() << " : " << (*startFrom).m_nodeId);
     
     if ((*startFrom).m_children.empty()) {// this is leaf
@@ -100,7 +100,7 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
     for (auto & it_nt : (*startFrom).m_children) {
       if (it_nt->m_nodeId == it_name->toUri()) {
         namePrefix = namePrefix.getSubName(1);
-        return getLongestMatchedName(it_nt, namePrefix);
+        return getLongestPrefixMatch(it_nt, namePrefix);
       }
     }
  
@@ -114,7 +114,7 @@ NameTree::findNode(ndn::Name target) {
 }
 
 TreeNode*
-NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target) {
+NameTree::findNode(const std::vector<TreeNode*>& children, ndn::Name& target) {
     std::vector<TreeNode*> next;
     for (TreeNode* const &child: children) {
         if (child->m_nodeId == target){
@@ -131,9 +131,9 @@ NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target) {
 }
 
 ndn::Name
-NameTree::longestPrefixMatch(ndn::Name name)
+NameTree::getLongestPrefixMatch(ndn::Name &name)
 {
-  std::pair<TreeNode*, ndn::Name> info = getLongestMatchedName(m_root, name);
+  std::pair<TreeNode*, ndn::Name> info = getLongestPrefixMatch(m_root, name);
   auto lmp = info.first->m_fullName; // lmp longest matched prefix
   NDN_LOG_INFO("Longest matched prefix: " << lmp);
   return lmp;

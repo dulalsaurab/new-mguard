@@ -101,7 +101,7 @@ public:
 
   /* return logest match prefix of a name */
   ndn::Name
-  longestPrefixMatch(ndn::Name name);
+  getLongestPrefixMatch(ndn::Name &name);
 
   void
   deleteNode(const ndn::Name& prefix);
@@ -114,17 +114,17 @@ public:
 
   TreeNode *findNode(ndn::Name target);
 
-  TreeNode *findNode(std::vector<TreeNode*> children, ndn::Name& target);
+  TreeNode *findNode(const std::vector<TreeNode*>& children, ndn::Name& target);
 
 private:
-  TreeNode*
+  static TreeNode*
   createNode(std::string nodeId, const ndn::Name& fullName);
 
   void
   getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore);
 
   std::pair<TreeNode*, ndn::Name>
-  getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
+  getLongestPrefixMatch(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
   getChildren(TreeNode* startFrom, std::vector<ndn::Name>& children);
