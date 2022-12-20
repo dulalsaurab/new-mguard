@@ -79,7 +79,11 @@ NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 ndn::optional<TreeNode*>
 NameTree::getNode(TreeNode* startFrom, ndn::Name name)
 {
-  auto info = getLongestPrefixMatch(startFrom, name);
+<<<<<<<<< Temporary merge branch 1
+  auto info = getLongestMatchedName(startFrom, name);
+=========
+  std::pair<TreeNode*, ndn::Name> info = getLongestPrefixMatch(startFrom, name);
+>>>>>>>>> Temporary merge branch 2
   return (info.second == "/") ? info.first : nullptr; // return the pointer that has the name
 }
 
@@ -90,8 +94,13 @@ NameTree::getLongestPrefixMatch(TreeNode* startFrom, ndn::Name& namePrefix)
   if (namePrefix.toUri() == "/") 
     return std::make_pair(startFrom, namePrefix);
 
+<<<<<<<<< Temporary merge branch 1
   for (auto& it_name: namePrefix) {
     NDN_LOG_INFO("Searching name component: " << it_name.toUri() << " : " << (*startFrom).m_nodeId);
+=========
+  for (auto it_name = namePrefix.begin(); it_name != namePrefix.end();) {
+    NDN_LOG_INFO("Searching name component: " << it_name->toUri() << " : " << (*startFrom).m_nodeId);
+>>>>>>>>> Temporary merge branch 2
     
     if ((*startFrom).m_children.empty()) {// this is leaf
       return std::make_pair(startFrom, namePrefix);
@@ -109,16 +118,17 @@ NameTree::getLongestPrefixMatch(TreeNode* startFrom, ndn::Name& namePrefix)
 }
 
 TreeNode*
-NameTree::findNode(ndn::Name target)
+NameTree::findNode(ndn::Name target) 
 {
   return findNode(getTreeRoot()->m_children, target);
 }
 
 TreeNode*
+<<<<<<<<< Temporary merge branch 1
 NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target)
 {
   std::vector<TreeNode*> next;
-  for (TreeNode* &child: children) {
+  for (TreeNode* const &child: children) {
       if (child->m_nodeId == target){
           return child;
       }
@@ -130,12 +140,32 @@ NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target)
       return nullptr;
   }
   return findNode(next, target);
+=========
+NameTree::findNode(const std::vector<TreeNode*>& children, ndn::Name& target) {
+    std::vector<TreeNode*> next;
+    for (TreeNode* const &child: children) {
+        if (child->m_nodeId == target){
+            return child;
+        }
+        for (TreeNode* grandChild : child->m_children) {
+            next.push_back(grandChild);
+        }
+    }
+    if (next.empty()){
+        return nullptr;
+    }
+    return findNode(next, target);
+>>>>>>>>> Temporary merge branch 2
 }
 
 ndn::Name
 NameTree::getLongestPrefixMatch(ndn::Name name)
 {
-  auto info = getLongestPrefixMatch(m_root, name);
+<<<<<<<<< Temporary merge branch 1
+  auto info = getLongestMatchedName(m_root, name);
+=========
+  std::pair<TreeNode*, ndn::Name> info = getLongestPrefixMatch(m_root, name);
+>>>>>>>>> Temporary merge branch 2
   auto lmp = info.first->m_fullName; // lmp longest matched prefix
   NDN_LOG_INFO("Longest matched prefix: " << lmp);
   return lmp;
@@ -145,19 +175,19 @@ void
 NameTree::getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore)
 {
   if (!(*startFrom).m_children.empty()) {
-    for (TreeNode*& it_nt : (*startFrom).m_children) {
-      if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
-          continue;
+      for (TreeNode*& it_nt : (*startFrom).m_children) {
+        if (std::find(ignore.begin(), ignore.end(), it_nt->m_fullName) != ignore.end()) {
+            continue;
+        }
+        // if no children then this is the leaf
+        if(it_nt->m_children.empty()) {
+            leaves.push_back(it_nt->m_fullName);
+        } else {
+            getLeaves(it_nt, leaves, ignore);
+        }
       }
-      // if no children then this is the leaf
-      if(it_nt->m_children.empty()) {
-          leaves.push_back(it_nt->m_fullName);
-      } else {
-          getLeaves(it_nt, leaves, ignore);
-      }
-    }
   } else {
-    leaves.push_back(startFrom->m_fullName);
+      leaves.push_back(startFrom->m_fullName);
   }
 }
 
@@ -196,7 +226,7 @@ NameTree::getChildren(ndn::Name name)
     return children;
   }
   for (const auto &child : (*node_ptr)->m_children) {
-    children.push_back(child->m_fullName);
+      children.push_back(child->m_fullName);
   }
   return children;
 }
