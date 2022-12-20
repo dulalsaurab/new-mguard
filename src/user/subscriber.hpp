@@ -27,6 +27,7 @@
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
 
+#include <functional>
 #include <string>
 #include <chrono>
 #include <thread>
@@ -64,12 +65,16 @@ public:
              const std::string& aaCertPath, ndn::time::milliseconds syncInterestLifetime,
              const DataCallback& callback, const SubscriptionCallback& subCallback);
 
-
   void
-  run(bool runSync = false);
+  run();
 
   void
   stop();
+
+  ~Subscriber()
+  {
+    m_face_thread.join();
+  }
 
   std::vector<ndn::Name>&
   getSubscriptionList()
@@ -97,7 +102,7 @@ public:
   void
   setSubscriptionList(const std::vector<ndn::Name>& subList)
   {
-    m_subscriptionList = subList; 
+    m_subscriptionList = subList;
   }
 
   bool
@@ -134,13 +139,14 @@ public:
   void
   abeOnData(const ndn::Buffer& buffer, const ndn::Name& name);
   
-  void 
+  void
   abeOnError(const std::string& errorMessage, const ndn::Name& name);
 
 private:
   ndn::Face m_face;
   ndn::security::KeyChain m_keyChain;
   ndn::Scheduler m_scheduler;
+  std::thread m_face_thread;
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;
