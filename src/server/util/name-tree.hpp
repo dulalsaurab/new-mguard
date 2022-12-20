@@ -72,11 +72,11 @@ public:
 
   /** 
    * @brief Search if a name exist in the tree, return node pointer if the name is found
-   *  @param startFrom node pointer, starting node of the search
-   *  @param name name prefix to search for
+   *  @param startFrom node pointer, starting node of the getNode
+   *  @param name name prefix to getNode for
   */
   ndn::optional<TreeNode*>
-  search(TreeNode* startFrom, ndn::Name name);
+  getNode(TreeNode* startFrom, ndn::Name name);
 
   /** 
    * @brief get all the leaf (names) of a name prefix in the tree
@@ -85,7 +85,7 @@ public:
    *  /aa/ff/kk, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
-  getAllLeafs(ndn::Name prefix, ndn::Name ignore = "/mguard/ignore");
+  getLeaves(ndn::Name prefix, const std::vector<ndn::Name>& ignore);
   
   TreeNode*
   getParent(ndn::Name name);
@@ -97,30 +97,39 @@ public:
    *  /aa/ff, /aa/ff/kk, /aa/ff/kk/mm, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
-  getAllChildrens(ndn::Name name);
+  getChildren(ndn::Name name);
 
   /* return logest match prefix of a name */
   ndn::Name
   longestPrefixMatch(ndn::Name name);
 
   void
-  deleteNode(ndn::Name prefix);
+  deleteNode(const ndn::Name& prefix);
 
   void
   _printTree(TreeNode* startFrom);
 
+  bool
+  isChild(TreeNode* node, const ndn::Name& leaf);
+
+  TreeNode*
+  findNode(ndn::Name target);
+
+  TreeNode*
+  findNode(std::vector<TreeNode*> children, ndn::Name& target);
+
 private:
   TreeNode*
-  createNode(std::string nodeId, ndn::Name fullName);
+  createNode(std::string nodeId, const ndn::Name& fullName);
 
   void
-  getLeafs(TreeNode* startFrom, std::vector<ndn::Name>& leafs, ndn::Name ignore);
+  getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore);
 
   std::pair<TreeNode*, ndn::Name>
   getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
-  getChildrens(TreeNode* startFrom, std::vector<ndn::Name>& leafs);
+  getChildren(TreeNode* startFrom, std::vector<ndn::Name>& children);
 
   void
   _delete(TreeNode* nodeptr);

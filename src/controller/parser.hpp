@@ -20,7 +20,8 @@
 #ifndef MGUARD_PARSER_HPP
 #define MGUARD_PARSER_HPP
 
-#include "common.hpp"
+//#include "common.hpp"
+#include "server/util/name-tree.hpp"
 
 #include <ndn-cxx/name.hpp>
 #include <ndn-cxx/util/logger.hpp>
@@ -44,30 +45,41 @@ struct PolicyDetail
     std::string abePolicy;
 };
 
+struct ParsedSection
+{
+    std::list<std::string> allowedNames;
+    std::list<std::string> deniedNames;
+    std::list<std::pair<std::string, std::string>> allowedTimes;
+    std::list<std::pair<std::string, std::string>> deniedTimes;
+};
+
+struct SectionDetail
+{
+    std::list<std::string> streams;
+    std::string abePolicy;
+};
+
 using ConfigSection = boost::property_tree::ptree;
+using NameTree = util::nametree::NameTree;
 
 class PolicyParser
 {
 public:
-  explicit PolicyParser(std::basic_string<char> availableStreams);
+  explicit PolicyParser(const std::basic_string<char>& availableStreams);
 
-  friend std::ostream &operator<<(std::ostream &os, const PolicyParser &parser);
+  void
+  parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requestors);
 
   PolicyDetail
-  getPolicyInfo();
+  parsePolicy(const std::basic_string<char>& policyFilePath);
 
-  bool
-  inputPolicy(const std::basic_string<char>& policyFilePath);
-
-  bool
-  inputStreams(const std::basic_string<char>& streamsFilePath);
 
 private:
-  bool
-  generateABEPolicy();
+  static std::list<std::string>
+  getFilters(ConfigSection &section);
 
-  bool
-  inputStreams();
+  static std::pair<std::string, std::string>
+  parseAttribute(const std::string& attribute);
 
   static std::list<std::string>
   splitRequesters(const std::string& basicString);
@@ -78,30 +90,17 @@ private:
   static std::list<std::string> 
   split(const std::string& basicString, const std::string& delimeter);
 
-  bool 
-  parseAvailableStreams(std::istream &input);
-
-  bool 
-  parsePolicy(std::istream &input);
-
-  void
-  processAttributeFilter(ConfigSection &section, bool isAllowed);
-
-  static bool 
-  isAlike(std::string& attribute, std::string& checking);
-
-  static std::string 
+  static std::string
   processAttributes(const std::list<std::string>& attrList);
 
-  // full path of the config/policy file
-  std::string availableStreamsPath;
+  ParsedSection
+  parseSection(ConfigSection& section);
 
-  std::list<std::string> requesterNames; // this should be a list or array of some sort
-  std::string policyID, abePolicy;
+  SectionDetail
+  calculatePolicy(const ParsedSection& section);
 
-  std::list<std::string> calculatedStreams, allowedStreams, allowedAttributes, deniedStreams, deniedAttributes;
-  std::list<std::string> availableStreamLevels, availableStreams, allowedRequesters, availableAttributes;
-
+  // information from the available-streams file
+  NameTree attStreamsTree, requestersTree;
 };
 
 } // namespace parser
