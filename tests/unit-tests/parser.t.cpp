@@ -1,5 +1,5 @@
 #include "../test-common.hpp"
-#include "DummyParser.h"
+#include "DummyParser.hpp"
 
 #include <controller/parser.hpp>
 

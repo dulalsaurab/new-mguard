@@ -2,7 +2,7 @@
 // Created by adamt on 12/19/2022.
 //
 
-#include "DummyParser.h"
+#include "DummyParser.hpp"
 
 namespace mguard {
     namespace parser {
