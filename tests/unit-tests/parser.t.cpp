@@ -1,5 +1,4 @@
 #include "../test-common.hpp"
-#include "DummyParser.hpp"
 
 #include <controller/parser.hpp>
 
@@ -242,9 +241,6 @@ BOOST_AUTO_TEST_CASE(Constructor)
         );
     }
 
-    DummyParser dummyParser("tests/unit-tests/parser-resources/available_streams");
-
-    PolicyDetail pd = dummyParser.parsePolicy("parser-resources/policy1");
 }
 BOOST_AUTO_TEST_SUITE_END()
 }
