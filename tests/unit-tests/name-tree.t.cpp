@@ -32,9 +32,10 @@ BOOST_AUTO_TEST_CASE(Constructor)
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb").value()->m_fullName == "/aa/bb");
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/bb/cc").value()->m_fullName == "/aa/bb/cc");
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/cc").value() == nullptr);
-    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/ff/mm") == nullptr);
+    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/ff/mm") != nullptr);
     BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/ke") != nullptr);
-    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/ff") == nullptr);
+    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/ff") != nullptr);
+    BOOST_CHECK(nameTree.getNode(nameTree.getTreeRoot(), "/aa/ff/kk/bb") == nullptr);
 
     // findNode
     BOOST_CHECK(nameTree.findNode("bb")->m_fullName.equals("/aa/bb"));
