@@ -38,7 +38,7 @@ PolicyParser::PolicyParser(const std::basic_string<char>& availableStreams)
 }
 
 void
-PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requestors)
+PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requesters)
 {
     NDN_LOG_INFO("processing available stream path: " << streamsFilePath);
     // input for available streams
@@ -61,7 +61,7 @@ PolicyParser::parseAvailableStreams(const std::basic_string<char>& streamsFilePa
     // store available requesters
     for (const auto &item : section.get_child("requesters")) {
         // key,value as "'user', buildingName"
-        requestors.insertName(item.second.get_value<std::string>());
+        requesters.insertName(item.second.get_value<std::string>());
     }
     input.close();
 }

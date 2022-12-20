@@ -67,25 +67,21 @@ public:
   processSubscriptionCallback(const std::unordered_set<ndn::Name>& streams)
   {
     
-     // wait until keys are fetched? 
+     // wait until keys are fetched?
     // check for convergence.
     if (!m_subscriber.checkConvergence()) {
       NDN_LOG_DEBUG("couldnt fetch appropriate keys, exiting");
       exit(-1);
     }
 
-    // stop the process event
-    m_subscriber.stop();
-
     NDN_LOG_INFO("\n\nStreams available for subscription");
     std::vector<ndn::Name> availableStreams, subscriptionList;
     int counter=0;
-    if (streams.size() <= 0)
-    {
+    if (streams.size() <= 0) {
       NDN_LOG_INFO("No eligible stream found for your policy");
     }
-    for (auto &a : streams)
-    {
+    
+    for (auto &a : streams) {
       NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);
     }
@@ -94,19 +90,19 @@ public:
     // automatically subscriber to the respective streams
 
     // A. battery only 
-    // subscriptionList.push_back(availableStreams[0]); // battery 
+    // subscriptionList.push_back(availableStreams[0]); // battery
 
     // all stream
-    // subscriptionList.push_back(availableStreams[0]); // battery
+    subscriptionList.push_back(availableStreams[0]); // battery
     subscriptionList.push_back(availableStreams[1]); // semloc
-    // subscriptionList.push_back(availableStreams[3]); // gps
+    subscriptionList.push_back(availableStreams[3]); // gps
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
     // subscriptionList.push_back(availableStreams[2]); // sem_loc
 
     // accelerometer
-    // subscriptionList.push_back(availableStreams[0]); // battery 
+    // subscriptionList.push_back(availableStreams[0]); // battery
 
     // only work
     // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
@@ -138,11 +134,19 @@ public:
     //     subscriptionList.push_back(availableStreams[ind]);
     // }
    
-    // taking input from user end ----------------------------------------------
+    // taking input from user end----------------------------------------------
 
     m_subscriber.setSubscriptionList(subscriptionList);
-    // run the processevent again, this time with sync as well
-    m_subscriber.run(true);
+    
+    NDN_LOG_DEBUG("---------");
+    for(auto x: m_subscriber.getSubscriptionList())
+      NDN_LOG_DEBUG("stream: "<< x);
+
+    m_subscriber.unsubscribe(availableStreams[3]);
+    
+    NDN_LOG_DEBUG("---------");
+    for(auto x: m_subscriber.getSubscriptionList())
+      NDN_LOG_DEBUG("stream: "<< x);
   }
 
   void
