@@ -91,15 +91,15 @@ public:
   getParent(ndn::Name name);
 
   /** 
-   * @brief get all the childrens (names) of a name prefix in the tree
-   *  @param name name to get childrens for
+   * @brief get all the children (names) of a name prefix in the tree
+   *  @param name name to get children for
    *  for the above example, if the name prefix is aa, this function will return /aa/bb,
    *  /aa/ff, /aa/ff/kk, /aa/ff/kk/mm, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
   getChildren(ndn::Name name);
 
-  /* return logest match prefix of a name */
+  /* return longest match prefix of a name */
   ndn::Name
   getLongestPrefixMatch(ndn::Name name);
 
