@@ -43,7 +43,7 @@ NameTree::insertName(ndn::Name name)
 {
   // check if the name already exist in the tree
   NDN_LOG_INFO("Trying to insert name: " << name);
-  auto info = getLongestMatchedName(m_root, name);
+  auto info = getLongestPrefixMatch(m_root, name);
   auto prefixNotIn = info.second;
   auto parent = info.first;
   NDN_LOG_DEBUG("prefix not in tree: " << prefixNotIn << " parent: " << parent->m_fullName);
