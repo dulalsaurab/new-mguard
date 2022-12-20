@@ -73,13 +73,7 @@ public:
   PolicyDetail
   parsePolicy(const std::basic_string<char>& policyFilePath);
 
-#ifdef WITH_TESTS
-    #define SCOPE public
-#else
-    #define SCOPE  private
-#endif
-
-SCOPE:
+private:
   static std::list<std::string>
   getFilters(ConfigSection &section);
 
