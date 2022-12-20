@@ -241,6 +241,8 @@ BOOST_AUTO_TEST_CASE(Constructor)
         );
     }
 
+    parser.parseAttribute("hello world");
+
 }
 BOOST_AUTO_TEST_SUITE_END()
 }
