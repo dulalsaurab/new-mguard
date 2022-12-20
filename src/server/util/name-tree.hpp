@@ -91,17 +91,17 @@ public:
   getParent(ndn::Name name);
 
   /** 
-   * @brief get all the childrens (names) of a name prefix in the tree
-   *  @param name name to get childrens for
+   * @brief get all the children (names) of a name prefix in the tree
+   *  @param name name to get children for
    *  for the above example, if the name prefix is aa, this function will return /aa/bb,
    *  /aa/ff, /aa/ff/kk, /aa/ff/kk/mm, /aa/ff/kk/mm/cc
   */
   std::vector<ndn::Name>
   getChildren(ndn::Name name);
 
-  /* return logest match prefix of a name */
+  /* return longest match prefix of a name */
   ndn::Name
-  longestPrefixMatch(ndn::Name name);
+  getLongestPrefixMatch(ndn::Name name);
 
   void
   deleteNode(const ndn::Name& prefix);
@@ -110,7 +110,7 @@ public:
   _printTree(TreeNode* startFrom);
 
   bool
-  isChild(TreeNode* node, const ndn::Name& leaf);
+  isDirectChild(TreeNode* node, const ndn::Name& leaf);
 
   TreeNode*
   findNode(ndn::Name target);
@@ -119,14 +119,14 @@ public:
   findNode(std::vector<TreeNode*> children, ndn::Name& target);
 
 private:
-  TreeNode*
+  static TreeNode*
   createNode(std::string nodeId, const ndn::Name& fullName);
 
   void
   getLeaves(TreeNode* startFrom, std::vector<ndn::Name>& leaves, const std::vector<ndn::Name>& ignore);
 
   std::pair<TreeNode*, ndn::Name>
-  getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix);
+  getLongestPrefixMatch(TreeNode* startFrom, ndn::Name& namePrefix);
 
   void
   getChildren(TreeNode* startFrom, std::vector<ndn::Name>& children);

@@ -68,11 +68,10 @@ public:
   explicit PolicyParser(const std::basic_string<char>& availableStreams);
 
   void
-  parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requestors);
+  parseAvailableStreams(const std::basic_string<char>& streamsFilePath, NameTree& streamsAttributes, NameTree& requesters);
 
   PolicyDetail
   parsePolicy(const std::basic_string<char>& policyFilePath);
-
 
 private:
   static std::list<std::string>
@@ -88,7 +87,7 @@ private:
   doStringThing(const std::list<std::string>& list, const std::string& operation);
 
   static std::list<std::string> 
-  split(const std::string& basicString, const std::string& delimeter);
+  split(const std::string& basicString, const std::string& delimiter);
 
   static std::string
   processAttributes(const std::list<std::string>& attrList);

@@ -1,0 +1,28 @@
+; brief: A shall access all the streams under org.md2k
+
+policy-id           2
+requester-names     /ndn/org/md2k/A,/ndn/org/md2k/B,/ndn/org/md2k/C,/ndn/org/md2k/D,/ndn/org/md2k/E        ;if needed, we can have ',' separated list e.g. A, B, C
+attribute-filters
+{
+    allow
+    {
+        /ndn/org/md2k/
+    }
+}
+
+; AFTER PARSING
+;
+; Policy ID
+;   1
+; Data Consumers
+;   A
+; Accessible Streams
+;   org.md2k/mperf/dd40c/phone/location
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery
+;   org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;
+; ABE policy
+;   org.md2k    ;all the data under this stream will be encrypted with stream-name prefix i.e. org.md2k

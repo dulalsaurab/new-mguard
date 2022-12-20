@@ -43,7 +43,7 @@ NameTree::insertName(ndn::Name name)
 {
   // check if the name already exist in the tree
   NDN_LOG_INFO("Trying to insert name: " << name);
-  auto info = getLongestMatchedName(m_root, name);
+  auto info = getLongestPrefixMatch(m_root, name);
   auto prefixNotIn = info.second;
   auto parent = info.first;
   NDN_LOG_DEBUG("prefix not in tree: " << prefixNotIn << " parent: " << parent->m_fullName);
@@ -79,20 +79,20 @@ NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 ndn::optional<TreeNode*>
 NameTree::getNode(TreeNode* startFrom, ndn::Name name)
 {
-  auto info = getLongestMatchedName(startFrom, name);
+  auto info = getLongestPrefixMatch(startFrom, name);
   return (info.second == "/") ? info.first : nullptr; // return the pointer that has the name
 }
 
 std::pair<TreeNode*, ndn::Name>
-NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
+NameTree::getLongestPrefixMatch(TreeNode* startFrom, ndn::Name& namePrefix)
 {
   NDN_LOG_INFO("Searching name prefix: " << namePrefix.toUri());
   if (namePrefix.toUri() == "/") 
     return std::make_pair(startFrom, namePrefix);
 
-  for (auto& it_name: namePrefix) {
+  for (const auto & it_name: namePrefix) {
     NDN_LOG_INFO("Searching name component: " << it_name.toUri() << " : " << (*startFrom).m_nodeId);
-    
+  
     if ((*startFrom).m_children.empty()) {// this is leaf
       return std::make_pair(startFrom, namePrefix);
     }
@@ -100,7 +100,7 @@ NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
     for (auto & it_nt : (*startFrom).m_children) {
       if (it_nt->m_nodeId == it_name.toUri()) {
         namePrefix = namePrefix.getSubName(1);
-        return getLongestMatchedName(it_nt, namePrefix);
+        return getLongestPrefixMatch(it_nt, namePrefix);
       }
     }
  
@@ -133,9 +133,9 @@ NameTree::findNode(std::vector<TreeNode*> children, ndn::Name& target)
 }
 
 ndn::Name
-NameTree::longestPrefixMatch(ndn::Name name)
+NameTree::getLongestPrefixMatch(ndn::Name name)
 {
-  auto info = getLongestMatchedName(m_root, name);
+  auto info = getLongestPrefixMatch(m_root, name);
   auto lmp = info.first->m_fullName; // lmp longest matched prefix
   NDN_LOG_INFO("Longest matched prefix: " << lmp);
   return lmp;
@@ -195,7 +195,9 @@ NameTree::getChildren(ndn::Name name)
     NDN_LOG_INFO("prefix not in the tree");
     return children;
   }
-    getChildren((*node_ptr), children);
+  for (const auto &child : (*node_ptr)->m_children) {
+      children.push_back(child->m_fullName);
+  }
   return children;
 }
 
@@ -203,16 +205,16 @@ TreeNode*
 NameTree::getParent(ndn::Name name)
 {
   // parent of name (full name) "/aa/bb/cc" will be of full name "/aa/bb"
-  auto parentPrefix = name.getPrefix(1);
+  auto parentPrefix = name.getPrefix(-1);
   auto parent_ptr = getNode(m_root, parentPrefix);
   NDN_LOG_INFO("parent of prefix: " << name << " = " << (*parent_ptr)->m_nodeId);
   return *parent_ptr;
 }
 
 bool
-NameTree::isChild(TreeNode *node, const ndn::Name& leaf) {
+NameTree::isDirectChild(TreeNode *node, const ndn::Name& leaf) {
     // todo: change to ndn name operation instead of node operation
-    return node == getParent(leaf);
+    return node != nullptr && node == getParent(leaf);
 }
 
 void

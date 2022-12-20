@@ -1,0 +1,35 @@
+; brief: C shall be able to access all the streams except gps-coordinates streams
+
+policy-id           4
+requester-names     /ndn/org/md2k/A,/ndn/org/md2k/B,/ndn/org/md2k/C,/ndn/org/md2k/D,/ndn/org/md2k/E
+attribute-filters
+{
+    allow
+    {
+        /ndn/org/md2k/
+    }
+    deny
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/gps
+    }
+}
+
+; AFTER PARSING
+;
+; Policy ID
+;   3
+; Data Consumers
+;   C
+; Accessible Streams
+;   org.md2k/mperf/dd40c/phone/accelerometer
+;   org.md2k/mperf/dd40c/phone/gyroscope
+;   org.md2k/mperf/dd40c/phone/battery
+;   org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+;   org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location
+;
+; ABE policy
+;   (   org.md2k/mperf/dd40c/phone/accelerometer
+;   OR  org.md2k/mperf/dd40c/phone/gyroscope
+;   OR  org.md2k/mperf/dd40c/phone/battery
+;   OR  org.md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
+;   OR  org.md2k/mperf/dd40c/cerebralcortex.algo.data_analysis.gps_episodes_and_semantic_location )

@@ -1,0 +1,41 @@
+;md2k streams converted into ndn data streams
+available-streams
+{ 
+  /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+  /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+  /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+  /ndn/org/md2k/mguard/dd40c/phone/battery
+  /ndn/org/md2k/mguard/dd40c/phone/gps
+}
+
+attributes
+{
+    /ndn/org/md2k/ATTRIBUTE/location/home
+    /ndn/org/md2k/ATTRIBUTE/location/work
+    /ndn/org/md2k/ATTRIBUTE/location/commuting
+    /ndn/org/md2k/ATTRIBUTE/location/casino
+    /ndn/org/md2k/ATTRIBUTE/location/oakland
+    /ndn/org/md2k/ATTRIBUTE/location/SoCal
+    /ndn/org/md2k/ATTRIBUTE/location/gym
+    /ndn/org/md2k/ATTRIBUTE/location/shopping-mall
+    /ndn/org/md2k/ATTRIBUTE/location/unknown
+    /ndn/org/md2k/ATTRIBUTE/smoking/yes
+    /ndn/org/md2k/ATTRIBUTE/smoking/no
+    /ndn/org/md2k/ATTRIBUTE/activity/walking
+    /ndn/org/md2k/ATTRIBUTE/activity/running
+    /ndn/org/md2k/ATTRIBUTE/activity/eating
+    /ndn/org/md2k/ATTRIBUTE/activity/drinking
+    /ndn/org/md2k/ATTRIBUTE/activity/sleeping
+    /ndn/org/md2k/ATTRIBUTE/activity/unknown
+}
+
+; current users
+requesters
+{
+  user /ndn/org/md2k/A
+  user /ndn/org/md2k/B
+  user /ndn/org/md2k/C
+  user /ndn/org/md2k/D
+  user /ndn/org/md2k/E
+  user /ndn/org/md2k/F
+}
