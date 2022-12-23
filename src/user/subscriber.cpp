@@ -54,6 +54,8 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
+  loadCert("certs/producer.cert");
+
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
 

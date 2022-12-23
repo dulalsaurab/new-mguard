@@ -42,20 +42,20 @@ void
 NameTree::insertName(ndn::Name name)
 {
   // check if the name already exist in the tree
-  NDN_LOG_INFO("Trying to insert name: " << name);
+  NDN_LOG_TRACE("Trying to insert name: " << name);
   auto info = getLongestMatchedName(m_root, name);
   auto prefixNotIn = info.second;
   auto parent = info.first;
   NDN_LOG_DEBUG("prefix not in tree: " << prefixNotIn << " parent: " << parent->m_fullName);
   if (prefixNotIn.toUri() == "/") {
-    NDN_LOG_INFO("pointer id:" << parent->m_nodeId << " name: " << name << " already present in the tree");
+    NDN_LOG_TRACE("pointer id:" << parent->m_nodeId << " name: " << name << " already present in the tree");
   }
   else {
     auto fullName = ndn::Name(parent->m_fullName);
     auto startFrom = parent;
     for (auto it_name = prefixNotIn.begin(); it_name != prefixNotIn.end(); ++it_name)
     {
-      NDN_LOG_INFO("Inserting name component: " << it_name->toUri());
+      NDN_LOG_TRACE("Inserting name component: " << it_name->toUri());
       // auto m_nodeId = it_name->value();
       std::string nodeId(it_name->toUri());
       fullName = fullName.append(nodeId);
@@ -69,7 +69,7 @@ NameTree::insertName(ndn::Name name)
 TreeNode*
 NameTree::createNode(std::string nodeId, const ndn::Name& fullName)
 {
-  NDN_LOG_INFO("create node " << fullName );
+  NDN_LOG_TRACE("create node " << fullName );
   auto *parent_node = new TreeNode;
   parent_node->m_nodeId = std::move(nodeId);
   parent_node->m_fullName = fullName;
@@ -86,12 +86,12 @@ NameTree::getNode(TreeNode* startFrom, ndn::Name name)
 std::pair<TreeNode*, ndn::Name>
 NameTree::getLongestMatchedName(TreeNode* startFrom, ndn::Name& namePrefix)
 {
-  NDN_LOG_INFO("Searching name prefix: " << namePrefix.toUri());
+  NDN_LOG_TRACE("Searching name prefix: " << namePrefix.toUri());
   if (namePrefix.toUri() == "/") 
     return std::make_pair(startFrom, namePrefix);
 
   for (auto& it_name: namePrefix) {
-    NDN_LOG_INFO("Searching name component: " << it_name.toUri() << " : " << (*startFrom).m_nodeId);
+    NDN_LOG_TRACE("Searching name component: " << it_name.toUri() << " : " << (*startFrom).m_nodeId);
     
     if ((*startFrom).m_children.empty()) {// this is leaf
       return std::make_pair(startFrom, namePrefix);
@@ -137,7 +137,7 @@ NameTree::longestPrefixMatch(ndn::Name name)
 {
   auto info = getLongestMatchedName(m_root, name);
   auto lmp = info.first->m_fullName; // lmp longest matched prefix
-  NDN_LOG_INFO("Longest matched prefix: " << lmp);
+  NDN_LOG_TRACE("Longest matched prefix: " << lmp);
   return lmp;
 }
 
@@ -167,7 +167,7 @@ NameTree::getLeaves(ndn::Name prefix, const std::vector<ndn::Name>& ignore)
   std::vector<ndn::Name> leaves;
   auto node_ptr = getNode(m_root, std::move(prefix));
   if (node_ptr == nullptr) {
-    NDN_LOG_INFO("prefix not in the tree");
+    NDN_LOG_TRACE("prefix not in the tree");
     return leaves;
   }
     getLeaves((*node_ptr), leaves, ignore);
@@ -192,7 +192,7 @@ NameTree::getChildren(ndn::Name name)
   std::vector<ndn::Name> children;
   auto node_ptr = getNode(m_root, std::move(name));
   if (node_ptr == nullptr) {
-    NDN_LOG_INFO("prefix not in the tree");
+    NDN_LOG_TRACE("prefix not in the tree");
     return children;
   }
     getChildren((*node_ptr), children);
@@ -205,7 +205,7 @@ NameTree::getParent(ndn::Name name)
   // parent of name (full name) "/aa/bb/cc" will be of full name "/aa/bb"
   auto parentPrefix = name.getPrefix(1);
   auto parent_ptr = getNode(m_root, parentPrefix);
-  NDN_LOG_INFO("parent of prefix: " << name << " = " << (*parent_ptr)->m_nodeId);
+  NDN_LOG_TRACE("parent of prefix: " << name << " = " << (*parent_ptr)->m_nodeId);
   return *parent_ptr;
 }
 
@@ -234,7 +234,7 @@ void
 NameTree::deleteNode(const ndn::Name& prefix) {
   // FIXME: this doesn't seem to work right. might delete more than it's supposed to
   auto node_ptr = getNode(m_root, prefix);
-  NDN_LOG_INFO("Deleting from start: " << (*node_ptr)->m_nodeId);
+  NDN_LOG_TRACE("Deleting from start: " << (*node_ptr)->m_nodeId);
   _delete(*node_ptr);
 
   auto parent = getParent(prefix);
@@ -248,7 +248,7 @@ NameTree::deleteNode(const ndn::Name& prefix) {
 void
 NameTree::_printTree(TreeNode* startFrom)
 { 
-  NDN_LOG_INFO("node: " << (*startFrom).m_nodeId);
+  NDN_LOG_TRACE("node: " << (*startFrom).m_nodeId);
   if ((*startFrom).m_children.empty()) {
     return;
   }

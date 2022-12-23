@@ -23,6 +23,8 @@
 #include "parser.hpp"
 #include "common.hpp"
 
+#include <ndn-cxx/security/signing-helpers.hpp>
+
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/cache-producer.hpp>
 
@@ -41,8 +43,8 @@ namespace controller {
 class Controller
 {
 public:
-  Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPrefix, 
-             const std::string& aaCertPath,
+  Controller(const ndn::Name& controllerPrefix, const std::string& controllerCertPath,
+             const ndn::Name& aaPrefix, const std::string& aaCertPath,
              const std::map<ndn::Name, std::string>& requesterCertMap,
              const std::string& availableStreamsFilePath);
 
@@ -121,6 +123,7 @@ private:
   mutable ndn::Block m_wire;
   
   const ndn::Name& m_controllerPrefix;
+  ndn::security::Certificate m_controllerCert;
   const ndn::Name& m_aaPrefix;
   const std::map<ndn::Name, std::string> m_requestersCertPath;
   parser::PolicyParser m_policyParser;

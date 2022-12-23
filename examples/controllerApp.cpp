@@ -28,6 +28,7 @@ int main()
   std::string aaPrefix = "/ndn/org/md2k/mguard/aa";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
   std::string aaCertPath = "certs/aa.cert";
+  std::string controllerCertPath = "certs/controller.cert";
 
   std::map<ndn::Name, std::string> requesterCertMap;
   requesterCertMap.emplace("/ndn/org/md2k/A", "certs/A.cert");
@@ -36,7 +37,7 @@ int main()
   // requesterCertMap.emplace("/ndn/org/md2k/D", "certs/D.cert");
   // requesterCertMap.emplace("/ndn/org/md2k/E", "certs/E.cert");
 
-  mguard::controller::Controller mGuardController(controllerPrefix, aaPrefix,
+  mguard::controller::Controller mGuardController(controllerPrefix, controllerCertPath, aaPrefix,
                                                   aaCertPath, requesterCertMap,
                                                   availableStreamsFilePath);
 

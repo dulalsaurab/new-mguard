@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU Lesser General Public License along with
  * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
- 
+
 #include "controller.hpp"
 
 using namespace ndn;
@@ -26,16 +26,19 @@ namespace controller {
 
 NDN_LOG_INIT(mguard.Controller);
 
-Controller::Controller(const ndn::Name& controllerPrefix, const ndn::Name& aaPrefix,
-                       const std::string& aaCertPath,
+Controller::Controller(const ndn::Name& controllerPrefix,
+                       const std::string& controllerCertPath,
+                       const ndn::Name& aaPrefix, const std::string& aaCertPath,
                        const std::map<ndn::Name, std::string>& requestersCertPath,
                        const std::string& availableStreamsFilePath)
 : m_controllerPrefix(controllerPrefix)
+, m_controllerCert(*loadCert(controllerCertPath))
 , m_aaPrefix(aaPrefix)
 , m_requestersCertPath(requestersCertPath)
 , m_policyParser(availableStreamsFilePath)
-, m_attrAuthority(*loadCert(aaCertPath), m_face, m_keyChain) 
+, m_attrAuthority(*loadCert(aaCertPath), m_face, m_keyChain)
 {
+  NDN_LOG_DEBUG("controller certificate: " << m_controllerCert.getIdentity());
   // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
   std::vector<std::string> policyList = {"policies/policy1"}; //, "policies/policy2", "policies/policy3",
                                          // "policies/policy4", "policies/policy5"};
@@ -142,7 +145,7 @@ Controller::sendData(const ndn::Name& name)
   }
   m_temp_policyDetail = it->second;
   replyData.setContent(wireEncode());
-  m_keyChain.sign(replyData);
+  m_keyChain.sign(replyData, signingByCertificate(m_controllerCert));
   m_face.put(replyData);
   NDN_LOG_DEBUG("Data sent for :" << name);
 }
@@ -202,7 +205,7 @@ Controller::wireEncode(ndn::EncodingImpl<TAG> &encoder)
 
   totalLength += encoder.prependVarNumber(totalLength);
   totalLength += encoder.prependVarNumber(mguard::tlv::mGuardController);
-  
+
   return totalLength;
 }
 
