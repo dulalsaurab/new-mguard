@@ -10,33 +10,9 @@ Vagrant.configure("2") do |config|
     vb.memory = "16384"
   end
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
-    sudo apt-get update
-    sudo apt-get -y install gcc-10 g++-10 clang-12 lldb-12 lld-12 build-essential \
-                            pkg-config python3-minimal libboost-all-dev \
-                            libssl-dev libsqlite3-dev libpcap-dev \
-                            libsodium-dev libz-dev \
-                            liblog4cxx-dev libpcap-dev python-is-python3
-    sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 100
-    sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 100
-    sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++-10 100
-    sudo update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100
-    sudo update-alternatives --install /usr/bin/lld lld /usr/bin/lld-12 100
-    sudo update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-12 100
-    git clone https://github.com/named-data/ndn-cxx
-    cd ndn-cxx
-    ./waf configure
-    ./waf
-    sudo ./waf install
-    sudo ldconfig
-    cd ..
-    git clone https://github.com/named-data/NFD
-    cd NFD
-    git submodule update --init
-    ./waf configure
-    ./waf
-    sudo ./waf install
-    sudo cp /usr/local/etc/ndn/nfd.conf.sample /usr/local/etc/ndn/nfd.conf
-    cd ..
+    sudo apt update && sudo apt upgrade
+
+    echo "deb [arch=amd64 trusted=yes] https://nfd-nightly-apt.ndn.today/debian bullseye main" | sudo tee /etc/apt/sources.list.d/nfd-nightly.list
     sudo apt-get -y install libgtest-dev cmake python3-pip
     git clone https://github.com/zeutro/openabe.git
     cd openabe
@@ -52,60 +28,13 @@ Vagrant.configure("2") do |config|
     sudo -E make install
     cd ..
 
-    git clone https://github.com/UCLA-IRL/NAC-ABE.git
-    cd NAC-ABE
-    echo "
-    diff --git a/src/consumer.cpp b/src/consumer.cpp
-    index dfdf9b4..3fc4f62 100644
-    --- a/src/consumer.cpp
-    +++ b/src/consumer.cpp
-    @@ -75,12 +75,13 @@ Consumer::consume(const Name& dataName,
-                       const ErrorCallback& errorCallback)
-     {
-       Interest interest(dataName);
-    -  interest.setMustBeFresh(true);
-    +  // interest.setMustBeFresh(true);
-       interest.setCanBePrefix(true);
-
-       NDN_LOG_INFO(m_cert.getIdentity() << \" Ask for data \" << interest.getName() );
-       m_face.expressInterest(interest,
-                              [=] (const Interest&, const Data& data) {
-    +                          NDN_LOG_INFO(\"Got the data packet back\");
-                                decryptContent(data, consumptionCb, errorCallback);
-                              }, nullptr, nullptr);
-     }
-    @@ -105,10 +106,11 @@ Consumer::decryptContent(const Data& data,
-       NDN_LOG_INFO(\"CK Name is \" << ckName);
-
-       Interest ckInterest(ckName);
-    -  ckInterest.setMustBeFresh(true);
-    +  // ckInterest.setMustBeFresh(true);
-       ckInterest.setCanBePrefix(true);
-       m_face.expressInterest(ckInterest,
-                              [=] (const Interest&, const Data& data) {
-    +                           NDN_LOG_INFO(\"Got the cKData packet back\");
-                                onCkeyData(data, cipherText, successCallBack, errorCallback);
-                              }, nullptr, nullptr);
-     }
-    " > patch.diff
-    git apply patch.diff
+    git clone https://github.com/dulalsaurab/nac-abe
+    git switch everything
+    cd nac-abe
     mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
     sudo make install
-    cd ../../
-    git clone https://github.com/named-data/PSync.git
-    cd PSync
-    ./waf configure
-    ./waf
-    sudo ./waf install
-    cd ..
-
-    git clone https://github.com/named-data/ndn-tools/
-    cd ndn-tools
-    ./waf configure
-    ./waf
-    sudo ./waf install
 
 #   latest development version of ndn-python-repo
     git clone https://github.com/JonnyKong/ndn-python-repo.git
