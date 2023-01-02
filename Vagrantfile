@@ -10,9 +10,10 @@ Vagrant.configure("2") do |config|
     vb.memory = "16384"
   end
   config.vm.provision "shell", privileged: false, inline: <<-SHELL
+    echo "deb [arch=amd64 trusted=yes] https://nfd-nightly-apt.ndn.today/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/nfd-nightly.list
+
     sudo apt update && sudo apt upgrade
 
-    echo "deb [arch=amd64 trusted=yes] https://nfd-nightly-apt.ndn.today/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/nfd-nightly.list
     sudo apt-get -y install libgtest-dev cmake python3-pip
     git clone https://github.com/zeutro/openabe.git
     cd openabe
