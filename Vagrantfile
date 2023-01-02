@@ -14,7 +14,7 @@ Vagrant.configure("2") do |config|
 
     sudo apt update
     sudo apt -y upgrade
-    sudo apt install nfd libndn-cxx libpsync ndn-tools
+    sudo apt -y install nfd libndn-cxx libpsync ndn-tools
     sudo apt -y upgrade
 
     sudo apt-get -y install libgtest-dev cmake python3-pip
