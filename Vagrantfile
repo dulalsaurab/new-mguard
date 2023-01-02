@@ -32,8 +32,8 @@ Vagrant.configure("2") do |config|
     cd ..
 
     git clone https://github.com/dulalsaurab/nac-abe
-    git switch everything
     cd nac-abe
+    git switch everything
     mkdir build && cd build
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
