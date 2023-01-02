@@ -41,8 +41,9 @@ Vagrant.configure("2") do |config|
     cd ../../
 
 #   latest development version of ndn-python-repo
+    sudo apt -y install python3.9
     git clone https://github.com/JonnyKong/ndn-python-repo.git
-    cd ndn-python-repo && /usr/bin/pip3 install -e .
+    cd ndn-python-repo && /usr/bin/python3.9 -m pip install -e .
     cd ..
 
   SHELL
