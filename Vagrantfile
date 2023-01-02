@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
     echo "deb [arch=amd64 trusted=yes] https://nfd-nightly-apt.ndn.today/ubuntu focal main" | sudo tee /etc/apt/sources.list.d/nfd-nightly.list
 
     sudo apt update
-    sudo apt -y install nfd libndn-cxx libpsync ndn-tools
+    sudo apt -y install nfd libndn-cxx-dev libpsync-dev ndn-tools
     sudo apt -y upgrade
 
     sudo apt-get -y install libgtest-dev cmake python3-pip
