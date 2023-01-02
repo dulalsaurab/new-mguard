@@ -38,6 +38,7 @@ Vagrant.configure("2") do |config|
     cmake -DCMAKE_BUILD_TYPE=Release ..
     make
     sudo make install
+    cd ../../
 
 #   latest development version of ndn-python-repo
     git clone https://github.com/JonnyKong/ndn-python-repo.git
