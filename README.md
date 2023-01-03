@@ -27,7 +27,7 @@ Please follow the corresponding links for the installaion details.
 #### Certificates for mGuard Server
 1. mGuard Publisher, identity: `/ndn/org/md2k` (trust anchor)
     - Consumer's certificate will be signed by publiser's cert 
-2. mGuard Controller, identity: `/ndn/org/mguard/controller`
+2. mGuard Controller, identity: `/ndn/org/md2k/mguard/controller`
 3. Attribute Authority, identity: `/ndn/org/mguard/aa`
 
 Run the following command to generate keys (public-private pairs) for each of the above identity
