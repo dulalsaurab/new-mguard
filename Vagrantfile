@@ -75,7 +75,7 @@ Vagrant.configure("2") do |config|
     mv CerebralCortex-Random-Data-Generator CerebralCortexRandomDataGenerator
     pip install findspark
     pip install cerebralcortex-kernel
-    sudo apt install default-jdk
+    sudo apt -y install default-jdk
     cd ..
 
   SHELL
