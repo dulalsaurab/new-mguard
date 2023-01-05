@@ -6,7 +6,16 @@ accel-gym
 {
     allow
     {
-        /ndn/org/md2k/
+        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+        /ndn/org/md2k/ATTRIBUTE/location/gym
+    }
+}
+battery-commute
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/battery
+        /ndn/org/md2k/ATTRIBUTE/location/commuting
     }
 }
 
