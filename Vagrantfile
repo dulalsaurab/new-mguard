@@ -47,7 +47,7 @@ Vagrant.configure("2") do |config|
     cd ..
 
     # installing mGuard
-    git clone https://github.com/dulalsaurab/new-mguard
+    git clone https://github.com/dulalsaurab/new-mguard mguard
     cd mguard
     ./waf configure --with-examples && ./waf build && sudo ./waf install
 
