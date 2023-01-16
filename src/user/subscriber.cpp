@@ -17,7 +17,6 @@
  * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include "subscriber.hpp"
 #include "common.hpp"
 
@@ -54,7 +53,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
-  loadCert("certs/producer.cert");
+  loadCert("certs/producer.cert"); // need this ?? 
 
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
@@ -277,9 +276,10 @@ Subscriber::wireDecode(const ndn::Block& wire)
       if(!checkConvergence())
         NDN_THROW(Error("Public params or private key is absent, can't decrypt the data"));
 
-      m_abe_consumer.consume(dataName.getPrefix(-1),
-                             bind(&Subscriber::abeOnData, this, _1, _2),
-                             bind(&Subscriber::abeOnError, this, _1, _2));
+      auto appDataName = dataName.getPrefix(-1);
+      m_abe_consumer.consume(appDataName,
+                             bind(&Subscriber::abeOnData, this, _1, appDataName),
+                             bind(&Subscriber::abeOnError, this, _1, appDataName));
 
       NDN_LOG_DEBUG("data names: " << dataName);
     }
@@ -287,19 +287,20 @@ Subscriber::wireDecode(const ndn::Block& wire)
 }
 
 void
-Subscriber::abeOnData(const ndn::Buffer& buffer, const ndn::Name& name)
+Subscriber::abeOnData(const ndn::Buffer& buffer, ndn::Name dataName)
 {
   auto applicationData = std::string(buffer.begin(), buffer.end());
-  NDN_LOG_DEBUG ("Received Data " << applicationData );
-  NDN_LOG_DEBUG ("Received Name" << name);
-
-  m_ApplicationDataCallback({applicationData});
+  NDN_LOG_DEBUG ("Received data for name: " << dataName);
+  NDN_LOG_DEBUG ("Data: " << applicationData);
+  std::map<std::string, std::string> temp;
+  temp.insert({dataName.toUri(), applicationData});
+  m_ApplicationDataCallback(temp);
 }
 
 void
 Subscriber::abeOnError(const std::string& errorMessage, const ndn::Name& name)
 {
-  NDN_LOG_DEBUG ("ABE failled to fetch and encrypt data");
+  NDN_LOG_DEBUG ("ABE failled to fetch and encrypt data for name: " << name);
 }
 
 } // subscriber

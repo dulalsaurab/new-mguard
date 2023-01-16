@@ -17,7 +17,6 @@
  * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #ifndef MGUARD_DATA_ADAPTER_HPP
 #define MGUARD_DATA_ADAPTER_HPP
 

@@ -57,16 +57,17 @@ public:
   }
 
   void
-  processDataCallback(const std::vector<std::string>& updates)
+  processDataCallback(const std::map<std::string, std::string>& updates)
   {
-    for (auto &a : updates)
-      NDN_LOG_INFO("received data: " << a);
+    for (auto const& x : updates)
+    {
+      NDN_LOG_INFO("Received data: " << x.second << " for name: " << x.first);
+    }
   }
 
   void
   processSubscriptionCallback(const std::unordered_set<ndn::Name>& streams)
   {
-    
      // wait until keys are fetched?
     // check for convergence.
     if (!m_subscriber.checkConvergence()) {
@@ -76,11 +77,12 @@ public:
 
     NDN_LOG_INFO("\n\nStreams available for subscription");
     std::vector<ndn::Name> availableStreams, subscriptionList;
+  
     int counter=0;
     if (streams.size() <= 0) {
       NDN_LOG_INFO("No eligible stream found for your policy");
     }
-    
+
     for (auto &a : streams) {
       NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);

@@ -42,8 +42,7 @@ struct ApplicationData
   std::string dataRows;
 };
 
-typedef std::function<void(const std::vector<std::string>& updates)> DataCallback;
-
+typedef std::function<void(const std::map<std::string, std::string>& updates)> DataCallback;
 typedef std::function<void(const std::unordered_set<ndn::Name>& streams)> SubscriptionCallback;
 
 
@@ -137,7 +136,7 @@ public:
 
   // abe callbacks
   void
-  abeOnData(const ndn::Buffer& buffer, const ndn::Name& name);
+  abeOnData(const ndn::Buffer& buffer, ndn::Name dataName);
   
   void
   abeOnError(const std::string& errorMessage, const ndn::Name& name);
