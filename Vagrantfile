@@ -34,11 +34,14 @@ Vagrant.configure("2") do |config|
     git clone https://github.com/dulalsaurab/nac-abe
     cd nac-abe
     git switch everything
-    mkdir build && cd build
-    cmake -DCMAKE_BUILD_TYPE=Release ..
-    make
-    sudo make install
-    cd ../../
+    ./waf configure && ./waf build && sudo ./waf install
+    cd ..
+    
+    # mkdir build && cd build
+    # cmake -DCMAKE_BUILD_TYPE=Release ..
+    # make
+    # sudo make install
+    # cd ../../
 
 #   latest development version of ndn-python-repo
     sudo apt -y install python3.9
