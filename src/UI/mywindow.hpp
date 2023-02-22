@@ -8,10 +8,7 @@ class mywindow : public Gtk::Window
 public:
   mywindow(ndn::Name &consumerPrefix, ndn::Name &syncPrefix, ndn::Name &controllerPrefix,
            std::string &consumerCertPath, std::string &aaCertPath); // constructor);
-  virtual ~mywindow() {
-        m_ui_thread.join();
-
-  };
+  virtual ~mywindow();
   static const int view_subscriber_list = -8;
   static const int view_accessble_stream = -9;
   static const int yes_response = -6;
@@ -21,7 +18,7 @@ public:
   std::thread m_ui_thread;
 
   mguard::subscriber::Subscriber m_subscriber;
-
+  std::string gps_episodes_and_semantic_location;
   std::vector<std::string> acc_st = {};
   std::vector<std::string> sub_st = {};
 
@@ -72,6 +69,7 @@ public:
   Glib::RefPtr<Gtk::TreeSelection> m_refTreeSelection;
 
   void on_quit_click();
+  void reloadStreamDataView();
   void change_btn_display();
   // void on_select_changed(Gtk::Widget);
   void on_changed(Glib::RefPtr<Gtk::TreeSelection>);

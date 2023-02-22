@@ -27,15 +27,12 @@ mywindow::mywindow(ndn::Name &consumerPrefix, ndn::Name &syncPrefix, ndn::Name &
                    std::bind(&mywindow::processDataCallback, this, _1),
                    std::bind(&mywindow::processSubscriptionCallback, this, _1))
 {
-    // mywindow::show_ui();
-    mywindow::show_ui();
 
     mywindow::handler();
 }
 
 mywindow::~mywindow()
 {
-    m_ui_thread.join();
 }
 
 void mywindow::on_quit_click()
@@ -168,43 +165,14 @@ void mywindow::processDataCallback(const std::map<std::string, std::string>& upd
 {
     // print the data being shown here
     for (auto  const& x : updates)
-        // std::string stream_name_detail = x.first;
         NDN_LOG_INFO("Received data: " << x.second << " for name: " << x.first);
-     // get name of stream
-        // int firstDelPos = stream_name_detail.find("/data_analysis/") +14 ;
-        // // Find the position of second delimiter
-        // int secondDelPos = stream_name_detail.find("/DATA/");
-        // // Get the substring between two delimiters
-        // std::string strbetweenTwoDels = stream_name_detail.substr(firstDelPos+1, secondDelPos-firstDelPos-1); 
-        // std::cout << strbetweenTwoDels << std::endl;
-        // std::string stream_name = strbetweenTwoDels;
-        // gps_episodes_and_semantic_location.append(x.second);
-        // gps_episodes_and_semantic_location.append("\n");
-
-    // # reload the UI
-
-    // gps_episodes_and_semantic_location.append(x.second);
-
-  
-    // append the value to the stream vector
 
         // std::cout << x << std::endl;
-}
-
-void mywindow::reloadStreamDataView(){
-    Glib::RefPtr<Gtk::TextBuffer> m_refTextBuffer1 = Gtk::TextBuffer::create();
-    std::string whole_file = gps_episodes_and_semantic_location;
-    m_refTextBuffer1->set_text(whole_file);
-    ss_detail->set_buffer(m_refTextBuffer1);
-    show_all();
-
-
 }
   void
   mywindow::handler()
   {
     // mywindow::show_ui();
-    // m_ui_thread = std::thread([this] { mywindow::show_ui(); });
     m_subscriber.run();
   }
 
@@ -216,6 +184,7 @@ void mywindow::reloadStreamDataView(){
 
     if (ui)
     {
+
         ui->get_widget<Gtk::Box>("box", box);
         std::cout << "box" << std::endl;
 
@@ -378,6 +347,7 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
     std::vector<ndn::Name> availableStreams, subscriptionList;
     int counter = 0;
 
+    mywindow::show_ui();
 
     if (streams.size() <= 0)
     {
@@ -390,8 +360,7 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
     }
 
     // mywindow::update_available_streams_view(streams);
-        // mywindow::show_ui();
-
+    
     // print avaliable streams here
     for (auto &a : streams)
     {
@@ -451,12 +420,11 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
     // taking input from user end ----------------------------------------------
 
     m_subscriber.setSubscriptionList(subscriptionList);
-
-
     // run the processevent again, this time with sync as well
     
     // rerunning the process event closes the UI
     // m_subscriber.run(true);
+    // mywindow::show_ui();
 
     // m_subscriber.run();
 }
