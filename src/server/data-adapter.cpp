@@ -27,6 +27,9 @@
 #include <ctime>
 #include <typeinfo>
 
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
+
 // using namespace boost::placeholders;
 
 NDN_LOG_INIT(mguard.DataAdapter);
@@ -40,71 +43,58 @@ ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service,
 {
 }
 
-void 
+void
 ConnectionHandler::start()
 {
-  // this will read the header
-  sock.async_read_some(
-      boost::asio::buffer(data, max_length),
-      boost::bind(&ConnectionHandler::readContent,
-                  shared_from_this(),
-                  boost::asio::placeholders::error,
-                  boost::asio::placeholders::bytes_transferred));
+  async_read(sock, response_,
+             boost::bind(&ConnectionHandler::readHandle,
+             shared_from_this(),
+             boost::asio::placeholders::error,
+             boost::asio::placeholders::bytes_transferred));
 
   sock.async_write_some(
       boost::asio::buffer(message, max_length),
       boost::bind(&ConnectionHandler::writeHandle,
                 shared_from_this(),
-                boost::asio::placeholders::error,
-                boost::asio::placeholders::bytes_transferred));
+		boost::asio::placeholders::error,
+		boost::asio::placeholders::bytes_transferred));
 }
 
 void
-ConnectionHandler::readContent(const boost::system::error_code& err, size_t bytes_transferred)
-{
-  NDN_LOG_INFO("Header received from the socket " << data);
-  boost::split(metaData, data, boost::is_any_of("|"));
-  NDN_LOG_INFO("expected number of chunks: " << getExpectedNumberOfChunks());
-  
-  // todo: need to replace this function, read exact number of bytes as expected 
-  async_read(sock, response_,
-             boost::bind(&ConnectionHandler::readHandle, 
-             shared_from_this(),
-             boost::asio::placeholders::error,
-             boost::asio::placeholders::bytes_transferred));
-}
-
-void 
 ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
-  NDN_LOG_DEBUG("Total number of bytes recevied: " << bytes_transferred);
-  auto expectedBytes = static_cast<size_t> (std::stoi(metaData[2]));
 
-  if (response_.size() <= 0) { // didn't get anything
-      NDN_LOG_DEBUG("Missing content");
-      std::vector<std::string> emptyVector= {};
-      m_onReceiveDataFromClient(emptyVector, ""); // problem receiving content, don't think we need to send callback here??
-    }
-  
-  if (response_.size() != expectedBytes) { // didn't get all the expected bytes  
-    NDN_LOG_DEBUG("All the expected data is not received");
-  }
-
-  // todo: error wont occur once the above function is fixed
   if (err)
     NDN_LOG_DEBUG("Error: " << err);
-  
-  // convert the buffer into string and send it to server
-  std::string resp ((std::istreambuf_iterator<char>(&response_)), std::istreambuf_iterator<char>());
-  m_onReceiveDataFromClient(metaData, resp);
+
+  if (response_.size() <= 0) {
+    NDN_LOG_DEBUG("Missing content");
+    sock.close();
+    return;
+      // std::vector<std::string> emptyVector= {};
+      // m_onReceiveDataFromClient(emptyVector, ""); // problem receiving content, don't think we need to send callback here??
+  }
+
+  std::string dataReceived = boost::asio::buffer_cast<const char*>(response_.data());
+  boost::property_tree::ptree pt;
+  std::istringstream ss(dataReceived);
+  boost::property_tree::read_json(ss, pt);
+  auto headerData = pt.get<std::string>("header");
+  auto payload = pt.get<std::string>("payload");
+
+  boost::split(metaData, headerData, boost::is_any_of("|"));
+
+  NDN_LOG_INFO("Data received for the following metadata: "<< headerData);
+
+  m_onReceiveDataFromClient(metaData, payload);
   sock.close();
 }
 
-void 
+void
 ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
   if (!err) {
-      NDN_LOG_INFO("Server sent Hello message!");
+      NDN_LOG_INFO("Server sent ACK message!");
   } else {
       NDN_LOG_ERROR("error: " << err.message());
       sock.close();
@@ -118,10 +108,10 @@ Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiv
   startAccept();
 }
 
-void 
+void
 Receiver::startAccept()
 {
-  ConnectionHandler::pointer connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_), 
+  ConnectionHandler::pointer connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_),
                                            std::bind(&Receiver::processCallbackFromController, this, _1, _2));
 
   acceptor_.async_accept(connection->socket(),
@@ -142,7 +132,7 @@ Receiver::processCallbackFromController(const std::vector<std::string> metaData,
 }
 
 
-void 
+void
 Receiver::handleAccept(ConnectionHandler::pointer connection, const boost::system::error_code& err)
 {
   if (!err) {
@@ -160,7 +150,7 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
 , m_producerCert(*loadCert(producerCertPath))
 , m_ABE_authorityCert(*loadCert(aaCertPath))
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
-, m_receiver(m_face.getIoService(), 
+, m_receiver(m_face.getIoService(),
             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
 , m_dataBase(lookupDatabase)
 {
@@ -176,7 +166,7 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
 {
   NDN_LOG_DEBUG("Received data from the receiver for streamName: " << streamName);
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
-  
+
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
     NDN_LOG_DEBUG("Received semantic location data");
@@ -196,7 +186,7 @@ DataAdapter::run()
   }
   catch (const std::exception& ex)
   {
-    NDN_LOG_ERROR("Face error: " << ex.what()); 
+    NDN_LOG_ERROR("Face error: " << ex.what());
     NDN_THROW(Error(ex.what()));
   }
 }
@@ -243,9 +233,9 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
 
     std::vector<std::string> semLocAttrList;
     if (streamName == NDN_LOCATION_STREAM){
-      try { 
+      try {
         auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
-        
+
         for (auto& attr: semAttr) {
           auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
           NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
@@ -262,7 +252,7 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     // location attribute
     if (semLocAttrList.empty())
       semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
-    
+
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
     m_publisher.publish(dataName, data, stream, semLocAttrList);
   }

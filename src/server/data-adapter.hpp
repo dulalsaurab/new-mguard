@@ -30,7 +30,7 @@
 #include <nac-abe/cache-producer.hpp>
 
 #include <unordered_map>
-#include <sqlite3.h> 
+#include <sqlite3.h>
 #include <iostream>
 #include <stdlib.h>
 #include <stdio.h>
@@ -60,25 +60,23 @@ using CallbackFromReceiver = std::function<void(const std::string& streamName, c
 class ConnectionHandler : public boost::enable_shared_from_this<ConnectionHandler>
 {
 public:
-  
+
   typedef boost::shared_ptr<ConnectionHandler> pointer;
 
   ConnectionHandler(boost::asio::io_service& io_service, const CallbackFromController& callback);
-  
+
   // creating the pointer
-  static pointer 
-  create(boost::asio::io_service& io_service, const CallbackFromController& callback)
-  {
+  static pointer
+  create(boost::asio::io_service& io_service, const CallbackFromController& callback) {
     return pointer(new ConnectionHandler(io_service, callback));
   }
 
   //socket creation
-  tcp::socket& 
-  socket()
-  {
+  tcp::socket&
+  socket() {
     return sock;
   }
-  
+
   inline int
   getExpectedNumberOfChunks()
   {
@@ -87,48 +85,43 @@ public:
     return std::stoi(metaData[1]);
   }
 
-  void 
+  void
   start();
-
-  // void
-  // readHeader(const boost::system::error_code& err, size_t bytes_transferred);
 
   void
   readContent(const boost::system::error_code& err, size_t bytes_transferred);
-  
+
   void
   readHandle(const boost::system::error_code& err, size_t bytes_transferred);
 
-  void 
+  void
   writeHandle(const boost::system::error_code& err, size_t bytes_transferred);
 
   void
-  resetData()
-  {
-    // data[max_length] = {};
+  resetData() {
     memset(data, 0, sizeof(data));
   }
 
 private:
   tcp::socket sock;
-  std::string message="Hello From Server!";
-  
+  std::string message="ACK From Server!";
+
   enum { max_length = 1024 };
   char data[max_length];
-  
+
   std::vector<std::string> metaData;
   boost::asio::streambuf response_;
   CallbackFromController m_onReceiveDataFromClient;
 
 };
 
-class Receiver 
+class Receiver
 {
 public:
-  
+
   Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback);
 
-  void 
+  void
   startAccept();
 
   void
@@ -152,7 +145,7 @@ public:
                          const std::string& producerCertPath,
                          const ndn::Name& aaPrefix, const std::string& aaCertPath,
                          const std::string& lookupDatabase);
-  
+
   void
   run();
 
@@ -164,7 +157,7 @@ public:
 
   ndn::Name
   makeDataName(ndn::Name streamName, std::string timestamp);
-  
+
   void
   publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet);
 

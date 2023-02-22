@@ -5,6 +5,8 @@ import os
 from time import sleep
 import sys
 import shutil
+import json
+
 
 BUFFER_SIZE = 1024
 
@@ -51,25 +53,25 @@ def get_sender():
 
 
 def send_stream(stream_name, data, sender_obj):
+
     print("Sending data for stream name {}".format(stream_name))
 
     _size = sys.getsizeof(data)
     number_of_chunks = int(_size / BUFFER_SIZE) + 1
+
     metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
     print("Metadata of the stream {}".format(metadata))
 
-    sender_obj.send(metadata)
-    # sleep a few seconds after sending the metadata
-    print("Sleeping for {} second after sending meta data".format(s_after_metadata))
-    sleep(s_after_metadata)
+    data = {'header': metadata, 'payload': data}
+    serialize_data = json.dumps(data)
 
-    sender_obj.send(data)
-    # sleep X seconds after sending the first stream. 
-    # this is because the data-adapter needs to process the previous packet i.e. metadata
-    #change for 16 min to 100 sec 
-    print("Sleeping for {} sec after sending first stream".format(s_after_first_stream))
-    sleep(s_after_first_stream)
+    # send_and_wait_for_ack(metadata)
+    ack = ''
+    while not ack:
+        sender_obj.send(serialize_data)
+        ack = sender_obj.conn.recv(1024).decode()
 
+    print("From server: ", ack)
     sender_obj.close()
 
 def main():
@@ -98,17 +100,17 @@ def main():
         # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
         # 150
         # end_time = '2022-05-0{} 10:02:31'.format(current_batch)
-        # 200 
+        # 200
         # end_time = '2022-05-0{} 10:03:21'.format(current_batch)
-        # 250 
+        # 250
         # end_time = '2022-05-0{} 10:04:11'.format(current_batch)
-        # 300 
+        # 300
         # end_time = '2022-05-0{} 10:05:01'.format(current_batch)
         # 350
         # end_time = '2022-05-0{} 10:05:51'.format(current_batch)
-        # 400 
+        # 400
         # end_time = '2022-05-0{} 10:06:41'.format(current_batch)
-        # 500 
+        # 500
         # end_time = '2022-05-0{} 10:08:21'.format(current_batch)
 
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
@@ -125,10 +127,10 @@ def main():
 
             print("Sample data from the stream: \n", data[:10])
             send_stream(stream_name, data.to_csv(), sender_obj)
-        
+
         print("sending data for batch: {}, completed".format(current_batch))
         current_batch += 1
-        
+
         print("Sleeping for {} second sending batch data".format(s_after_sending_batch))
         sleep(s_after_sending_batch)  # testing: sleep for X minute and send another batch
 

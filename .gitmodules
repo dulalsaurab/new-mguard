@@ -1,0 +1,3 @@
+[submodule "data-generator/CerebralCortexRandomDataGenerator"]
+	path = data-generator/CerebralCortexRandomDataGenerator
+	url = https://github.com/dulalsaurab/CerebralCortex-Random-Data-Generator.git
