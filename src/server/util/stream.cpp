@@ -54,7 +54,7 @@ Stream::updateManifestList(const ndn::Name& dataNameWithDigest)
       m_manifestCounter = 0; // reset the counter
       return true; // time to publish the manifest
     }
-  
+
   ++m_manifestCounter;
   return false;
 }

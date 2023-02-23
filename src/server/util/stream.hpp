@@ -84,22 +84,22 @@ public:
     m_manifestName = name;
   }
 
-	ndn::Name&
-	getManifestName()
+  ndn::Name&
+  getManifestName()
   {
     return m_manifestName;
   }
 
   // stream attribute
-	void
-	setAttributes(std::vector<std::string>& attributeSet)
+  void
+  setAttributes(std::vector<std::string>& attributeSet)
   {
     m_attributeSet = attributeSet;
   }
 
   // stream attribute
-	void
-	updateAttributes(std::vector<std::string>& attributeSet)
+  void
+  updateAttributes(std::vector<std::string>& attributeSet)
   {
     std::vector<std::string> _comb = m_attributeSet;
     _comb.insert(_comb.end(), attributeSet.begin(), attributeSet.end());

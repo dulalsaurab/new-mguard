@@ -40,8 +40,8 @@ DataBase::DataBase(const std::string& databaseName)
                       semantic text not null, \
                       user text not null, \
                       version text);";
-  
-  if (!runQuery(table)) 
+
+  if (!runQuery(table))
   {
     NDN_LOG_INFO("Failed to create table");
     exit(-1);
@@ -142,8 +142,8 @@ DataBase::getRowToInsert(std::string row)
   std::vector<std::string> result;
   std::regex e ("datetime.datetime\\((.*?)\\)");
   // get start and end timestamp format: YYYYMMDDHHMMSS
-  while (std::regex_search(row, m, e)) 
-  {  
+  while (std::regex_search(row, m, e))
+  {
     std::string _timestamp(m[1]); // e.g. 2019, 9, 1, 23, 34, 59
     boost::trim(_timestamp); // remove whitespaces
     std::vector<std::string> strs;
@@ -157,7 +157,7 @@ DataBase::getRowToInsert(std::string row)
     }
     // TODO handle this in a better way
     // python doesnt display the seconds from datetime object if the second value is 0
-    // thus need to append the seconds value if its missing in the timestamp 
+    // thus need to append the seconds value if its missing in the timestamp
     // https://stackoverflow.com/questions/49508862/how-to-add-missing-seconds-to-a-datetime-object
     if(strs.size() < 6 ){
       temp += "00";
@@ -182,7 +182,7 @@ DataBase::insertRows(const std::vector<std::string>& dataSet)
     NDN_LOG_INFO("Couldn't open database");
     return;
   }
-  
+
   std::string query = "INSERT INTO lookup (start, end, semantic, user, version) VALUES";
   std::string value = "";
   // for (auto& row : dataSet)

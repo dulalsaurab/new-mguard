@@ -173,8 +173,8 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
     m_dataBase.insertRows(content);
   }
   // TODO: ---> streamName, streamName ?
-  m_streams.emplace(streamName, streamName);
-  publishDataUnit(m_streams.find(streamName)->second, content);
+  // m_streams.emplace(streamName, streamName);
+  publishDataUnit(streamName, content);
 }
 
 void
@@ -206,9 +206,9 @@ DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 }
 
 void
-DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
+DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string>& dataSet)
 {
-  auto streamName = stream.getName();
+  // auto streamName = stream.getName();	
   NDN_LOG_INFO("Processing stream: " << streamName);
   bool isLast = false;
   for (auto data : dataSet)
@@ -228,33 +228,39 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
       NDN_LOG_DEBUG("Converted timestamp format: " << timestamp);
     }
 
-    auto dataName = makeDataName(streamName, timestamp);
-    NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
+    // auto dataName = makeDataName(streamName, timestamp);
+    // NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
+    
+    // here we only check semantic location table, need to modify this
+    // one possible solution: implement getAttribute function, which will check all the possible lookups and get all attribute that will be applied
 
-    std::vector<std::string> semLocAttrList;
-    if (streamName == NDN_LOCATION_STREAM){
-      try {
-        auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
-
-        for (auto& attr: semAttr) {
-          auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
-          NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
-          semLocAttrList.push_back(_semLocAttr.toUri());
-        }
+    std::vector<std::string> attrList;
+    // if (streamName == NDN_LOCATION_STREAM){
+    try {
+      auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+      if (semAttr.empty()) {
+        NDN_LOG_DEBUG("Context attribute doesn't exist for this data");
       }
-      catch (const std::exception& ex) {
-        NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+
+      for (auto& attr: semAttr) {
+        auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
+        NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
+        attrList.push_back(_semLocAttr.toUri());
       }
     }
+    catch (const std::exception& ex) {
+      NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+    }
 
+    // }
     // if no semantic location associated with this data point, append unknown location attribtue ???
     // but every data point should have associated location attribute?? but every data point needs to have 
     // location attribute
-    if (semLocAttrList.empty())
-      semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
+    // if (semttrList.empty()) { NDN_LOG_DEBUG("Semantic loaction attribute doesn't exist for this data"); }
+    //  semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
 
     //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    m_publisher.publish(dataName, data, stream, semLocAttrList);
+    m_publisher.publish(data, attrList);
   }
 }
 

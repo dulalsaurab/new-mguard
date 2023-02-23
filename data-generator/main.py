@@ -1,38 +1,14 @@
 from generator import get_cc
 
 import socket
-import os
 from time import sleep
 import sys
-import shutil
+import os
 import json
+import shutil
 
-
-BUFFER_SIZE = 1024
-
-# sleep times, configure this after each run
-s_after_metadata = 10
-s_after_first_stream = 40
-s_after_sending_batch = 10
-
-'''
-# these numbers should be sufficient
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-rows   | n.steams | s_after_metadata | s_after_first_stream |  s_after_sending_batch |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-n.rows |   50     |                  |                      |                        |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-n.rows |   100    |      10          |        20            |         10             |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-n.rows |   150    |                  |                      |                        |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-n.rows |   200    |                  |                      |                        |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-n.rows |   250    |                  |                      |                        |
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-n.rows |   300    |      10          |         40           |          10            |
-
-'''
+# sleep X seconds after sending each bath, configure as per need
+s_after_sending_batch = 20
 
 class Sender:
     def __init__(self, port):
@@ -56,16 +32,12 @@ def send_stream(stream_name, data, sender_obj):
 
     print("Sending data for stream name {}".format(stream_name))
 
-    _size = sys.getsizeof(data)
-    number_of_chunks = int(_size / BUFFER_SIZE) + 1
-
-    metadata = "{}|{}|{}".format(stream_name, number_of_chunks, _size)
+    metadata = "{}|{}".format(stream_name, sys.getsizeof(data))
     print("Metadata of the stream {}".format(metadata))
 
     data = {'header': metadata, 'payload': data}
     serialize_data = json.dumps(data)
 
-    # send_and_wait_for_ack(metadata)
     ack = ''
     while not ack:
         sender_obj.send(serialize_data)
@@ -75,17 +47,13 @@ def send_stream(stream_name, data, sender_obj):
     sender_obj.close()
 
 def main():
-    """Wrapper code for data generation and transport to producer via socket
-
-    The code below will fetch data for datatime starting from 2022-05-01 till 2022-05-20
-    for each of these dates, data for time range 10:00:00 - 10:00:10 i.e. 10 minutes equivalent of data
-    will be generated and send to data adapter. As said, the process will continue for 20 iterations.
-
-    :var: total_number_of_batches int number of times we will generate the data and send it
-    """
+    '''
+     Wrapper code for data generation and transport to producer via socket
+     :var: total_number_of_batches int number of times we will generate the data and send it
+    '''
     total_number_of_batches = 3
-
     current_batch = 1
+
     while current_batch <= total_number_of_batches:
         # removing the old stream data if exists
         try:
@@ -128,13 +96,13 @@ def main():
             print("Sample data from the stream: \n", data[:10])
             send_stream(stream_name, data.to_csv(), sender_obj)
 
-        print("sending data for batch: {}, completed".format(current_batch))
+        print("Sending data for batch: {}, completed".format(current_batch))
         current_batch += 1
 
         print("Sleeping for {} second sending batch data".format(s_after_sending_batch))
-        sleep(s_after_sending_batch)  # testing: sleep for X minute and send another batch
+        sleep(s_after_sending_batch)
 
-    print ("sending data for all the batch completed")
+    print ("Sending data for all the batch completed")
 
 if __name__ == '__main__':
     main()
