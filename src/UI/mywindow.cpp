@@ -85,11 +85,13 @@ void mywindow::on_changed(Glib::RefPtr<Gtk::TreeSelection> c)
         Gtk::TreeModel::Row row = *iter;
         std::string id = row.get_value(m_Columns.m_id);
 
-        std::stringstream filename;
-        filename << "content" << id << ".txt";
-        std::string whole_file = mywindow::file_to_string(filename.str());
+        // std::stringstream filename;
+        // filename << "content" << id << ".txt";
+        // std::string whole_file = mywindow::file_to_string(filename.str());
 
-        ss_detail->get_buffer()->set_text(whole_file);
+        // ss_detail->get_buffer()->set_text(whole_file);
+        mywindow::reloadStreamDataView();
+
     }
 }
 
@@ -167,19 +169,25 @@ void mywindow::change_btn_display()
 void mywindow::processDataCallback(const std::map<std::string, std::string>& updates)
 {
     // print the data being shown here
-    for (auto  const& x : updates)
-        // std::string stream_name_detail = x.first;
-        NDN_LOG_INFO("Received data: " << x.second << " for name: " << x.first);
-     // get name of stream
-        // int firstDelPos = stream_name_detail.find("/data_analysis/") +14 ;
-        // // Find the position of second delimiter
-        // int secondDelPos = stream_name_detail.find("/DATA/");
-        // // Get the substring between two delimiters
-        // std::string strbetweenTwoDels = stream_name_detail.substr(firstDelPos+1, secondDelPos-firstDelPos-1); 
-        // std::cout << strbetweenTwoDels << std::endl;
-        // std::string stream_name = strbetweenTwoDels;
-        // gps_episodes_and_semantic_location.append(x.second);
-        // gps_episodes_and_semantic_location.append("\n");
+    for (auto  const& x : updates){
+         std::string stream_name_detail = x.first;
+        std::string stream_data = x.second;
+
+
+        NDN_LOG_INFO("Received data: " << stream_data << " for name: " << stream_name_detail);
+
+
+    //  get name of stream
+        int firstDelPos = stream_name_detail.find("/data_analysis/") +14 ;
+        // Find the position of second delimiter
+        int secondDelPos = stream_name_detail.find("/DATA/");
+        // Get the substring between two delimiters
+        std::string strbetweenTwoDels = stream_name_detail.substr(firstDelPos+1, secondDelPos-firstDelPos-1); 
+        std::cout << strbetweenTwoDels << std::endl;
+        std::string stream_name = strbetweenTwoDels;
+        gps_episodes_and_semantic_location.append(x.second);
+        gps_episodes_and_semantic_location.append("\n");
+    }
 
     // # reload the UI
 
@@ -192,6 +200,8 @@ void mywindow::processDataCallback(const std::map<std::string, std::string>& upd
 }
 
 void mywindow::reloadStreamDataView(){
+    std::cout << "reloading the buffer" << std::endl;
+
     Glib::RefPtr<Gtk::TextBuffer> m_refTextBuffer1 = Gtk::TextBuffer::create();
     std::string whole_file = gps_episodes_and_semantic_location;
     m_refTextBuffer1->set_text(whole_file);
