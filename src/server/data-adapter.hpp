@@ -72,10 +72,8 @@ public:
     return pointer(new ConnectionHandler(io_service, callback));
   }
 
-  //socket creation
   tcp::socket& 
-  socket()
-  {
+  socket() {
     return sock;
   }
   
@@ -90,12 +88,6 @@ public:
   void 
   start();
 
-  // void
-  // readHeader(const boost::system::error_code& err, size_t bytes_transferred);
-
-  void
-  readContent(const boost::system::error_code& err, size_t bytes_transferred);
-  
   void
   readHandle(const boost::system::error_code& err, size_t bytes_transferred);
 
@@ -105,21 +97,17 @@ public:
   void
   resetData()
   {
-    // data[max_length] = {};
     memset(data, 0, sizeof(data));
   }
 
 private:
   tcp::socket sock;
-  std::string message="Hello From Server!";
-  
+  std::string message="ACK From Server!";
   enum { max_length = 1024 };
-  char data[max_length];
-  
+  char data[max_length];  
   std::vector<std::string> metaData;
   boost::asio::streambuf response_;
   CallbackFromController m_onReceiveDataFromClient;
-
 };
 
 class Receiver 
@@ -140,14 +128,11 @@ public:
 private:
    tcp::acceptor acceptor_;
    CallbackFromReceiver m_onReceiveDataFromController;
-
 };
 
 class DataAdapter
 {
-
 public:
-
   DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
                          const std::string& producerCertPath,
                          const ndn::Name& aaPrefix, const std::string& aaCertPath,
@@ -159,11 +144,11 @@ public:
   void
   stop();
 
-  void
-  processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent);
-
   ndn::Name
   makeDataName(ndn::Name streamName, std::string timestamp);
+
+  void
+  processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent);
   
   void
   publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet);
@@ -184,7 +169,6 @@ private:
   mguard::Receiver m_receiver;
   std::map<std::string, mguard::util::Stream> m_streams;
   db::DataBase m_dataBase;
-
 };
 
 } // mguard
