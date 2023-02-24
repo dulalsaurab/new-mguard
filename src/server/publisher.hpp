@@ -69,8 +69,13 @@ public:
   }
 
   void
-  publish(ndn::Name& dataName, std::string data, util::Stream& stream,
-          std::vector<std::string> semLocAttrList);
+  // publish(ndn::Name& dataName, std::string data, util::Stream& stream,
+  //         std::vector<std::string> semLocAttrList);
+  
+  publish(ndn::Name& dataName, std::string data, 
+                   std::vector<std::string> attrList,
+                   ndn::Name& streamName);
+
 
   void
   publishManifest(util::Stream& stream);
@@ -116,6 +121,7 @@ private:
 
   std::vector<ndn::Data> m_ckBuffer;
   std::vector<ndn::Data> m_dataBuffer;
+  std::map<ndn::Name, mguard::util::Stream> m_streams;
 };
 
 } // mguard

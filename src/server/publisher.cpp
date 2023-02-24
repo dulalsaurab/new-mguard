@@ -91,6 +91,17 @@ Publisher::doUpdate(ndn::Name namePrefix)
   NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << namePrefix << " sequence Number: " << seqNo);
 }
 
+mguard::util::Stream&
+Publisher::getOrCreateStream(ndn::Name& streamName)
+{
+  auto itr = m_streams.find(streamName);
+  if (itr != m_streams.end()) // already exist
+    return itr->second;
+
+  auto [it, success] = m_streams.emplace(streamName, streamName);
+  return it->second;
+}
+
 void
 Publisher::scheduledManifestForPublication(util::Stream& stream)
 {
@@ -119,46 +130,35 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
 }
 
 void
-Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
-                   std::vector<std::string> semLocAttrList)
-{ 
-  // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
-  // Manifest name: <stream name>/manifest/<seq-num>
-  NDN_LOG_DEBUG("Publishing data: " << data << " and size: " << data.size());
+// Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
+                  //  std::vector<std::string> semLocAttrList)
+Publisher::publish(ndn::Name& dataName, std::string data, 
+                   std::vector<std::string> attrList,
+                   ndn::Name& streamName)
+{
+  NDN_LOG_DEBUG("Publishing data name: " << dataName << " data: " << data << " and size: " << data.size());
 
   std::shared_ptr<ndn::Data> enc_data, ckData;
   try {
       NDN_LOG_DEBUG("Encrypting data: " << dataName);
       auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
       NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-
-      auto attrList = stream.getAttributes();
-
-      // debugging
-      for (auto& a: attrList)
-        NDN_LOG_DEBUG("attribute: " << a);
-
-      if (semLocAttrList.size() > 0)
-        attrList.insert(attrList.end(), semLocAttrList.begin(), semLocAttrList.end());
-
       std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
                                                           {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
-
   }
   catch(const std::exception& e) {
-    NDN_LOG_ERROR("Encryption failled");
+    NDN_LOG_ERROR("Encryption for the data: " << dataName << " failled");
     std::cerr << e.what() << '\n';
-    // return false;
+    return;  // need to throw from here?
   }
+
   //  encrypted data is created, store it in the buffer and publish it
   NDN_LOG_INFO("full name of the data: " << enc_data->getFullName() << " and size: " << enc_data->getContent().size());
   NDN_LOG_INFO("full name of the ckData: " << ckData->getFullName() << " and size: " << ckData->getContent().size());
 
-  
-
   try {
     NDN_LOG_INFO("start repo insertion for name: " << enc_data->getName());
-    
+
     // insert data and CK data into repo
     m_asyncRepoInserter.AsyncWriteDataToRepo(*ckData, std::bind(&Publisher::writeHandler, this, _1, _2));
     m_asyncRepoInserter.AsyncWriteDataToRepo(*enc_data, std::bind(&Publisher::writeHandler, this, _1, _2));
@@ -168,18 +168,36 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
       std::cerr << e.what() << '\n';
   }
 
-  bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
+  if (!USE_MANIFEST) {
+    // if manifest is not used, the dataName is directly published in the sync
+    m_partialProducer.addUserNode(dataName);
+    doUpdate(dataName);
+    return;
+  }
 
+  // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
+  // Manifest name: <stream name>/manifest/<seq-num>
+  // if (!streamName.has_value()){
+  //   NDN_LOG_DEBUG("Stream name missing when publishing data with manifest");
+  //   return;
+  //   // throw here??
+  // }
+
+  auto& stream = getOrCreateStream(streamName);
+
+  NDN_LOG_DEBUG("Manifest name: " << stream.getManifestName());
+
+  bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
   // manifest are publihsed to sync after receiving X (e.g. 10) number of application data or if
   // "t" time has passed after receiving the last application data.
-  if(doPublishManifest) {
-    cancleIfManifestScheduledForPublication(stream.getName());
-    // create manifest data packet, and insert it into the repo
-    publishManifest(stream);
-    doUpdate(stream.getManifestName());
-  }
-  else
+  if (!doPublishManifest) {
     scheduledManifestForPublication(stream);
+    return;
+  }
+  cancleIfManifestScheduledForPublication(stream.getName());
+  // create manifest data packet, and insert it into the repo
+  publishManifest(stream);
+  doUpdate(stream.getManifestName());
 }
 
 void

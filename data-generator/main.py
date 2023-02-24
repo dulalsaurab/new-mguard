@@ -64,7 +64,7 @@ def main():
 
         start_time = '2022-05-0{} 10:00:00'.format(current_batch)
         #50
-        end_time = '2022-05-0{} 10:0:10'.format(current_batch)
+        end_time = '2022-05-0{} 10:0:50'.format(current_batch)
         #100
         # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
         # 150

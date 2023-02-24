@@ -151,7 +151,7 @@ public:
   processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent);
   
   void
-  publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet);
+  publishDataUnit(ndn::Name streamName, const std::vector<std::string>& dataSet);
 
 private:
   ndn::KeyChain m_keyChain;
