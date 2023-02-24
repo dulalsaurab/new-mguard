@@ -18,6 +18,7 @@ public:
   std::thread m_ui_thread;
 
   mguard::subscriber::Subscriber m_subscriber;
+  std::map<std::string, std::string> stream_name_data;
   std::string gps_episodes_and_semantic_location;
   std::vector<std::string> acc_st = {};
   std::vector<std::string> sub_st = {};
@@ -70,9 +71,12 @@ public:
 
   void on_quit_click();
   void reloadStreamDataView();
+  void updateAvailableStreamDataView();
+  void callSubscriber( std::vector<std::string> );
+  void changesubscribedStreamWindow( );
   void change_btn_display();
   // void on_select_changed(Gtk::Widget);
-  void on_changed(Glib::RefPtr<Gtk::TreeSelection>);
+  void on_subscribed_stream_window_selection_changed(Glib::RefPtr<Gtk::TreeSelection>);
   void show_accessible_stream_from_file();
   //    static bool select_function(const Glib::RefPtr<Gtk::TreeModel>& model, const Gtk::TreeModel::Path& path, bool currently_selected);
 

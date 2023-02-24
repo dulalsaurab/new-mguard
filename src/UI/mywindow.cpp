@@ -19,6 +19,7 @@
 using namespace ndn::time_literals;
 
 NDN_LOG_INIT(mguard.ui);
+// # Todo show the streams that we ca nsubscribe to?
 
 mywindow::mywindow(ndn::Name &consumerPrefix, ndn::Name &syncPrefix, ndn::Name &controllerPrefix,
                    std::string &consumerCertPath, std::string &aaCertPath)
@@ -58,6 +59,8 @@ void mywindow::on_quit_click()
     }
 }
 
+
+
 // convert file content to string
 std::string mywindow::file_to_string(std::string filename)
 {
@@ -75,15 +78,17 @@ std::string mywindow::file_to_string(std::string filename)
     return "true";
 }
 
-void mywindow::on_changed(Glib::RefPtr<Gtk::TreeSelection> c)
+void mywindow::on_subscribed_stream_window_selection_changed(Glib::RefPtr<Gtk::TreeSelection> c)
 {
 
-    std::cout << "on changed function" << std::endl;
+    std::cout << "on subscribed stream window changed function" << std::endl;
     Gtk::TreeModel::iterator iter = c->get_selected();
     if (iter) // If anything is selected
     {
         Gtk::TreeModel::Row row = *iter;
         std::string id = row.get_value(m_Columns.m_id);
+        std::string source = row.get_value(m_Columns.m_source);
+        std::cout<< id << source << std::endl;
 
         // std::stringstream filename;
         // filename << "content" << id << ".txt";
@@ -108,9 +113,46 @@ void mywindow::on_row(std::string b)
         sub_st.erase(std::remove(sub_st.begin(), sub_st.end(), b), sub_st.end());
     }
     mywindow::change_btn_display();
+    mywindow::callSubscriber(sub_st);
+    mywindow::changesubscribedStreamWindow();
+
     std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2" << '\n';
 }
 
+void mywindow::callSubscriber(std::vector<std::string> sub_st){
+    // convert the uris to name and send the subscriber call
+    std::vector<ndn::Name> subscriptionList;
+        if  (sub_st.size() > 0) {
+            for (const auto &s : sub_st){
+                subscriptionList.push_back(ndn::Name(s));
+            }
+        m_subscriber.setSubscriptionList(subscriptionList);
+        }
+}
+void mywindow::changesubscribedStreamWindow(){
+
+            for (const auto &s : sub_st){
+
+            auto row = *(list_store->append());
+            row[m_Columns.m_id] = "1";
+            row[m_Columns.m_timestamp] = "02/11/1998";
+            row[m_Columns.m_source] = s;
+            // row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
+
+            }
+// #Fill the list_store model
+        // Add the TreeView's view columns:
+        ss_tv->append_column("id", m_Columns.m_id);
+        ss_tv->append_column("timestamp", m_Columns.m_timestamp);
+        ss_tv->append_column("source", m_Columns.m_source);
+        // ss_tv->append_column("info", m_Columns.m_info);
+
+        m_refTreeSelection = ss_tv->get_selection();
+        // m_refTreeSelection->signal_changed().connect(sigc::mem_fun(*this, &mywindow::on_subscribed_stream_window_selection_changed));
+        m_refTreeSelection->signal_changed().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_subscribed_stream_window_selection_changed), m_refTreeSelection));
+
+// update the list 
+   }
 void mywindow::change_btn_display()
 {
 
@@ -240,14 +282,14 @@ void mywindow::reloadStreamDataView(){
         ss_detail = Glib::RefPtr<Gtk::TextView>::cast_dynamic(
             ui->get_object("ss_detail"));
 
-        acc_st = {"/ndn/org/md2k/mguard/dd40c/phone/accelerometer",
-                  "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location ",
-                  "/ndn/org/md2k/mguard/dd40c/phone/gyroscope",
-                  "/ndn/org/md2k/mguard/dd40c/phone/battery",
-                  "/ndn/org/md2k/mguard/dd40c/phone/gps"};
-        sub_st = {"/ndn/org/md2k/mguard/dd40c/phone/accelerometer",
-                  "/ndn/org/md2k/mguard/dd40c/phone/gyroscope",
-                  "/ndn/org/md2k/mguard/dd40c/phone/gps"};
+        // acc_st = {"/ndn/org/md2k/mguard/dd40c/phone/accelerometer",
+        //           "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location ",
+        //           "/ndn/org/md2k/mguard/dd40c/phone/gyroscope",
+        //           "/ndn/org/md2k/mguard/dd40c/phone/battery",
+        //           "/ndn/org/md2k/mguard/dd40c/phone/gps"};
+        // sub_st = {"/ndn/org/md2k/mguard/dd40c/phone/accelerometer",
+        //           "/ndn/org/md2k/mguard/dd40c/phone/gyroscope",
+        //           "/ndn/org/md2k/mguard/dd40c/phone/gps"};
 
         policy->set_text("Your Policy : /ndn/org/md2k/mguard/dd40c/phone/accelerometer");
         std::cout << "eta samma " << std::endl;
@@ -258,38 +300,38 @@ void mywindow::reloadStreamDataView(){
         ss_tv->set_headers_clickable(true);
         ss_tv->set_headers_visible(true);
 
-        // #Fill the list_store model
-        auto row = *(list_store->append());
-        row[m_Columns.m_id] = "1";
-        row[m_Columns.m_timestamp] = "02/11/1998";
-        row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/accelerometer";
-        row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
+        // // #Fill the list_store model
+        // auto row = *(list_store->append());
+        // row[m_Columns.m_id] = "1";
+        // row[m_Columns.m_timestamp] = "02/11/1998";
+        // row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/accelerometer";
+        // row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
 
-        // #Fill the list_store model
-        row = *(list_store->append());
-        row[m_Columns.m_id] = "2";
-        row[m_Columns.m_timestamp] = "12/12/2021";
-        row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/gyroscope";
-        row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
+        // // #Fill the list_store model
+        // row = *(list_store->append());
+        // row[m_Columns.m_id] = "2";
+        // row[m_Columns.m_timestamp] = "12/12/2021";
+        // row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/gyroscope";
+        // row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
 
-        // #Fill the list_store model
-        row = *(list_store->append());
-        row[m_Columns.m_id] = "3";
-        row[m_Columns.m_timestamp] = "03/02/2020";
-        row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/gps";
-        row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
+        // // #Fill the list_store model
+        // row = *(list_store->append());
+        // row[m_Columns.m_id] = "3";
+        // row[m_Columns.m_timestamp] = "03/02/2020";
+        // row[m_Columns.m_source] = "/ndn/org/md2k/mguard/dd40c/phone/gps";
+        // row[m_Columns.m_info] = "1654907929.430571 DEBUG: [mguard.subscriber] ...";
 
-        // Add the TreeView's view columns:
-        ss_tv->append_column("id", m_Columns.m_id);
-        ss_tv->append_column("timestamp", m_Columns.m_timestamp);
-        ss_tv->append_column("source", m_Columns.m_source);
-        ss_tv->append_column("info", m_Columns.m_info);
+        // // Add the TreeView's view columns:
+        // ss_tv->append_column("id", m_Columns.m_id);
+        // ss_tv->append_column("timestamp", m_Columns.m_timestamp);
+        // ss_tv->append_column("source", m_Columns.m_source);
+        // ss_tv->append_column("info", m_Columns.m_info);
 
 
 
-        m_refTreeSelection = ss_tv->get_selection();
-        // m_refTreeSelection->signal_changed().connect(sigc::mem_fun(*this, &mywindow::on_changed));
-        m_refTreeSelection->signal_changed().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_changed), m_refTreeSelection));
+        // m_refTreeSelection = ss_tv->get_selection();
+        // // m_refTreeSelection->signal_changed().connect(sigc::mem_fun(*this, &mywindow::on_subscribed_stream_window_selection_changed));
+        // m_refTreeSelection->signal_changed().connect(sigc::bind(sigc::mem_fun(*this, &mywindow::on_subscribed_stream_window_selection_changed), m_refTreeSelection));
 
         //   m_button1.signal_clicked().connect(sigc::bind(sigc::mem_fun(*this, &HelloWorld::on_button_clicked), "button 1"));
         //    Gtk::TreeModel::iterator iter = m_refTreeSelection->get_selected();
@@ -309,7 +351,7 @@ void mywindow::reloadStreamDataView(){
 
         as_grid = Glib::RefPtr<Gtk::Grid>::cast_dynamic(
             ui->get_object("as_grid"));
-        mywindow::change_btn_display();
+        // mywindow::change_btn_display();
 
         std::cout << "Hello" << std::endl;
 
@@ -409,13 +451,37 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
 
       NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);
+      acc_st.push_back(a.toUri());
+      stream_name_data[a.toUri()] = "";
     }
+        NDN_LOG_INFO("available st name set ");
+
+    for (auto  const& x : acc_st){
+                NDN_LOG_INFO("available st name set ");
+
+                NDN_LOG_INFO(x);
+
+    
+    }
+ 
+
+
+                // NDN_LOG_INFO(acc_st);
+
+
+    mywindow::change_btn_display();
+    // update hte view with available streams 
+
+
+    // # streams is Name we need it as string 
+    // acc_st = streams;
 
     // these codes are only for testing purposes
     // automatically subscriber to the respective streams
 
     // A. battery only
-    subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // sub_st
 
     // all stream
     // subscriptionList.push_back(availableStreams[0]); // battery
@@ -432,11 +498,11 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
     // only work
     // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
-    for (auto &s : subscriptionList)
-    {
-      // m_subscriber.subscribe(s);
-      NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
-    }
+    // for (auto &s : subscriptionList)
+    // {
+    //   // m_subscriber.subscribe(s);
+    //   NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
+    // }
     // uncomment if: taking input from user ----------------------------------------------
 
     // std::vector<int> input; //
@@ -460,7 +526,7 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
 
     // taking input from user end ----------------------------------------------
 
-    m_subscriber.setSubscriptionList(subscriptionList);
+    // m_subscriber.setSubscriptionList(subscriptionList);
 
 
     // run the processevent again, this time with sync as well
