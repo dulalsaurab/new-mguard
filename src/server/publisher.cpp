@@ -83,38 +83,38 @@ Publisher::writeHandler(const ndn::Data& data, const mguard::util::AsyncRepoErro
 }
 
 void
-Publisher::doUpdate(ndn::Name manifestName)
+Publisher::doUpdate(ndn::Name namePrefix)
 {
-  m_partialProducer.publishName(manifestName);
-  uint64_t seqNo =  m_partialProducer.getSeqNo(manifestName).value();
+  m_partialProducer.publishName(namePrefix);
+  uint64_t seqNo =  m_partialProducer.getSeqNo(namePrefix).value();
   std::cout << "sequence number: " << seqNo << std::endl;
-  NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << manifestName << " sequence Number: " << seqNo);
+  NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << namePrefix << " sequence Number: " << seqNo);
 }
 
 void
 Publisher::scheduledManifestForPublication(util::Stream& stream)
 {
-  auto name = stream.getName();
-  auto itr = m_scheduledIds.find(name);
-  NDN_LOG_DEBUG("Scheduling manifest: " << name << " for publication");
+  auto& manifestName = stream.getManifestName();
+  auto itr = m_scheduledIds.find(manifestName);
+  NDN_LOG_DEBUG("Scheduling manifest: " << manifestName << " for publication");
   
   if (itr != m_scheduledIds.end()) {
-    NDN_LOG_DEBUG("Manifest: " << name << " was already scheduled, updating the schedule");
+    NDN_LOG_DEBUG("Manifest: " << manifestName << " was already scheduled, updating the schedule");
     itr->second.cancel();
     auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
                       publishManifest(stream);
-                      doUpdate(stream.getManifestName());
-                      NDN_LOG_DEBUG("Updated manifest: " << stream.getName() << " via scheduling");
+                      doUpdate(manifestName);
+                      NDN_LOG_DEBUG("Updated manifest: " << manifestName << " via scheduling");
                     });
     itr->second = scheduleId;
   }
   else {
     auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
                       publishManifest(stream);
-                      doUpdate(stream.getManifestName());
-                      NDN_LOG_DEBUG("Updated manifest: " << stream.getName() << " via scheduling");
+                      doUpdate(manifestName);
+                      NDN_LOG_DEBUG("Updated manifest: " << manifestName << " via scheduling");
                     });
-    m_scheduledIds.emplace(name, scheduleId);
+    m_scheduledIds.emplace(manifestName, scheduleId);
   }
 }
 
@@ -167,7 +167,6 @@ Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
       NDN_LOG_ERROR("data and cKdata insertion failed");
       std::cerr << e.what() << '\n';
   }
-
 
   bool doPublishManifest = stream.updateManifestList(enc_data->getFullName());
 

@@ -75,6 +75,9 @@ public:
   void
   publishManifest(util::Stream& stream);
 
+  mguard::util::Stream&
+  getOrCreateStream(ndn::Name& streamName);
+
   void
   scheduledManifestForPublication(util::Stream& stream);
 
