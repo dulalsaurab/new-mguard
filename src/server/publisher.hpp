@@ -69,9 +69,6 @@ public:
   }
 
   void
-  // publish(ndn::Name& dataName, std::string data, util::Stream& stream,
-  //         std::vector<std::string> semLocAttrList);
-  
   publish(ndn::Name& dataName, std::string data, 
                    std::vector<std::string> attrList,
                    ndn::Name& streamName);
@@ -92,7 +89,6 @@ public:
     auto itr = m_scheduledIds.find(name);
     if (itr != m_scheduledIds.end()) {
       itr->second.cancel();
-      // m_scheduledIds.erase(itr); //
     }
   }
   

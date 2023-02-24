@@ -130,8 +130,6 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
 }
 
 void
-// Publisher::publish(ndn::Name& dataName, std::string data, util::Stream& stream,
-                  //  std::vector<std::string> semLocAttrList)
 Publisher::publish(ndn::Name& dataName, std::string data, 
                    std::vector<std::string> attrList,
                    ndn::Name& streamName)

@@ -33,7 +33,7 @@ Stream::Stream(const ndn::Name& streamName)
 , m_manifestCounter (0)
 {
   m_manifestName = m_streamName;
-  m_manifestName.append("manifest");
+  m_manifestName.append("MANIFEST");
 
   NDN_LOG_DEBUG("Stream Name: " << m_streamName);
   NDN_LOG_DEBUG("Manifest name: " << m_manifestName);

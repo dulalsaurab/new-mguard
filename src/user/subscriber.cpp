@@ -158,7 +158,7 @@ void
 Subscriber::subscribe(ndn::Name streamName)
 {
   // convert the streamName into manifest, because that's what is published by the sync
-  streamName.append("manifest");
+  streamName.append("MANIFEST");
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
     NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
@@ -185,7 +185,7 @@ Subscriber::unsubscribe(ndn::Name streamName)
                                        streamName), m_subscriptionList.end());
 
   NDN_LOG_INFO("Unsubscribing to: " << streamName);
-  streamName.append("manifest"); // sync uses streamName + manifest
+  streamName.append("MANIFEST"); // sync uses streamName + manifest
   m_psync_consumer.removeSubscription(streamName);
 }
 
