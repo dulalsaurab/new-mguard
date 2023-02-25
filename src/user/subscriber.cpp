@@ -71,7 +71,6 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
   catch (const std::exception& e) {
     NDN_LOG_ERROR("error: " << e.what());
   }
-
 }
 
 void

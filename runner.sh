@@ -1,7 +1,7 @@
-export NDN_LOG=mguard.*=DEBUG:nacabe.*=TRACE:psync.*=DEBUG
+export NDN_LOG=mguard.*=DEBUG:nacabe.*=TRACE
 
 
-rm debugging/*setUpdateManifestName
+rm debugging/*
 
 
 nfd-stop
@@ -23,6 +23,7 @@ sleep 1
 sleep 1
 
 valgrind --leak-check=full --log-file=valgrind-out.txt ./build/examples/mguard-producerApp > debugging/p.log 2>&1 &
+./build/examples/mguard-producerApp > debugging/p.log 2>&1 &
 
 sleep 1
 

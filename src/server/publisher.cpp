@@ -18,7 +18,7 @@
  */
 
 #include "publisher.hpp"
-#include "common.hpp"
+#include "src/common.hpp"
 
 #include <boost/bind.hpp>
 
@@ -138,7 +138,7 @@ Publisher::publish(ndn::Name& dataName, std::string data,
 
   std::shared_ptr<ndn::Data> enc_data, ckData;
   try {
-      NDN_LOG_DEBUG("Encrypting data: " << dataName);
+      NDN_LOG_DEBUG("Encrypting data: " << dataName << " with attributes: " << vectorToString(attrList));
       auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
       NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
       std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,

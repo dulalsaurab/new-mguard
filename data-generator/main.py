@@ -94,7 +94,7 @@ def main():
             # data1 = data
             # data1.to_csv(str(current_batch) + '_' + stream_name, index=False)
 
-            print("Sample data from the stream: \n", data[:10])
+            print("Sample data from the stream: \n", data)
             send_stream(stream_name, data.to_csv(), sender_obj)
             
             sleep(2)

@@ -100,7 +100,7 @@ DataBase::getSemanticLocations(const std::string& timestamp, const std::string& 
   // creating the query based on given timestamp and userID
   std::string tmpQuery = "select distinct semantic from lookup where start <= ";
   tmpQuery += timestamp;
-  tmpQuery += " and end >= ";
+  tmpQuery += " and end > ";
   tmpQuery += timestamp;
   tmpQuery += ";";
 
@@ -129,7 +129,7 @@ DataBase::getSemanticLocations(const std::string& timestamp, const std::string& 
   closeDataBase();
 
   for (auto& a: out)
-    NDN_LOG_TRACE("sem loc attr: " << a);
+    NDN_LOG_DEBUG("sem loc attr: " << a);
 
   return out;
 }

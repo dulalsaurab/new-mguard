@@ -11,6 +11,22 @@
 
 namespace mguard {
 
+template <typename T>
+std::string
+vectorToString(const std::vector<T>& vec)
+{
+  std::stringstream ss;
+  ss << "[";
+  for (size_t i = 0; i < vec.size(); ++i) {
+      ss << vec[i];
+      if (i != vec.size() - 1) {
+          ss << ", ";
+      }
+  }
+  ss << "]";
+  return ss.str();
+}
+
 inline
 std::shared_ptr<ndn::security::Certificate>
 loadCert(const std::string& certLoc)

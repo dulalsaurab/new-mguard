@@ -79,6 +79,7 @@ public:
     std::vector<ndn::Name> availableStreams, subscriptionList;
   
     int counter=0;
+    auto strm_size = streams.size();
     if (streams.size() <= 0) {
       NDN_LOG_INFO("No eligible stream found for your policy");
     }
@@ -95,9 +96,14 @@ public:
     // subscriptionList.push_back(availableStreams[0]); // battery
 
     // all stream
-    subscriptionList.push_back(availableStreams[0]); // battery
-    subscriptionList.push_back(availableStreams[1]); // semloc
-    subscriptionList.push_back(availableStreams[3]); // gps
+
+        for (std::size_t a = 0; a < strm_size ; a++){
+          subscriptionList.push_back(availableStreams[a]);
+        }
+    // subscriptionList.push_back(availableStreams[0]); // battery
+    // subscriptionList.push_back(availableStreams[1]); // semloc
+    // subscriptionList.push_back(availableStreams[3]); // gps
+      
 
     // not gps
     // subscriptionList.push_back(availableStreams[0]); // battery
@@ -139,16 +145,18 @@ public:
     // taking input from user end----------------------------------------------
 
     m_subscriber.setSubscriptionList(subscriptionList);
-    
-    NDN_LOG_DEBUG("---------");
-    for(auto x: m_subscriber.getSubscriptionList())
-      NDN_LOG_DEBUG("stream: "<< x);
 
-    m_subscriber.unsubscribe(availableStreams[3]);
+    // unsubscribe thing is here
+
+    // NDN_LOG_DEBUG("---------");
+    // for(auto x: m_subscriber.getSubscriptionList())
+    //   NDN_LOG_DEBUG("stream: "<< x);
+
+    // m_subscriber.unsubscribe(availableStreams[3]);
     
-    NDN_LOG_DEBUG("---------");
-    for(auto x: m_subscriber.getSubscriptionList())
-      NDN_LOG_DEBUG("stream: "<< x);
+    // NDN_LOG_DEBUG("---------");
+    // for(auto x: m_subscriber.getSubscriptionList())
+    //   NDN_LOG_DEBUG("stream: "<< x);
   }
 
   void
