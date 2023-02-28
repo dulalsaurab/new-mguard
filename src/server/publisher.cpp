@@ -36,7 +36,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 // 40 = expected number of entries also will be used as IBF size
 // syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
 , m_partialProducer(m_face, m_keyChain, 40, "/ndn/org/md2k",
-                                "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest")
+                    "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest")
 , m_asyncRepoInserter(m_face.getIoService())
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
