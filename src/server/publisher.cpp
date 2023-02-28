@@ -36,7 +36,7 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 // 40 = expected number of entries also will be used as IBF size
 // syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
 , m_partialProducer(m_face, m_keyChain, 40, "/ndn/org/md2k",
-                    "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest")
+                    "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST")
 , m_asyncRepoInserter(m_face.getIoService())
 , m_producerPrefix(producerPrefix)
 , m_producerCert(producerCert)
@@ -55,13 +55,13 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
   // of the stream during the experiment, and thus keeps sending hello interest (causes a lot of overhead)
   // second, if we send hello interest less frequently, the overall data retrival delay increases.
   
-  ndn::Name p1 ("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
-  ndn::Name p2 ("/ndn/org/md2k/mguard/dd40c/phone/battery/manifest");
-  ndn::Name p3 ("/ndn/org/md2k/mguard/dd40c/phone/gps/manifest");
+  ndn::Name p1 ("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST");
+  ndn::Name p2 ("/ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST");
+  ndn::Name p3 ("/ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST");
 
   // m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
-  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/manifest");
-  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/manifest");
+  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST");
+  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST");
     
   m_partialProducer.updateSeqNo(p1, rand() % 1000); 
   m_partialProducer.updateSeqNo(p2, rand() % 1000); 
