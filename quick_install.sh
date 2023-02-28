@@ -1,18 +1,24 @@
 # installing mGuard
 ./waf configure --with-examples
 ./waf build && sudo ./waf install
-sudo ldconfig
 
 # Creating Identifies/Certificates
-
-# publisher
 ndnsec key-gen -t r /ndn/org/md2k
-# controller
-ndnsec key-gen -t r /mguard/controller
-# Consumer
+ndnsec cert-dump -i /ndn/org/md2k > certs/producer.cert
+
+ndnsec key-gen -t r /ndn/org/md2k/mguard/controller
+ndnsec cert-dump -i /ndn/org/md2k/mguard/controller > certs/controller.cert
+
+ndnsec key-gen -t r /ndn/org/md2k/mguard/aa
+ndnsec cert-dump -i /ndn/org/md2k/mguard/aa > certs/aa.cert
+
 ndnsec key-gen -t r /ndn/org/md2k/A
-# Attribute Authority
-ndnsec key-gen -t r /mguard/aa
+ndnsec sign-req /ndn/org/md2k/A > A.ndncsr
+
+ndnsec cert-gen -s /ndn/org/md2k -i /ndn/org/md2k A.ndncsr > A.cert
+
+cp A.cert certs/
+ndnsec cert-install A.cert
 
 # md2k data generator
 cd data-generator || exit

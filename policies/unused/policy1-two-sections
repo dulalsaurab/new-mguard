@@ -1,0 +1,32 @@
+; brief: /ndn/org/md2k/A should have access to dd40c's phone's accelerometer stream when they are at the gym, as well as their phone's battery stream while they are commuting
+
+policy-id           1
+requester-names     /ndn/org/md2k/A
+accel-gym
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+        /ndn/org/md2k/ATTRIBUTE/location/gym
+    }
+}
+battery-commute
+{
+    allow
+    {
+        /ndn/org/md2k/mguard/dd40c/phone/battery
+        /ndn/org/md2k/ATTRIBUTE/location/commuting
+    }
+}
+
+;parser output
+;
+;policy id:
+;        1
+;requesters:
+;        /ndn/org/md2k/A
+;streams:
+;        /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+;        /ndn/org/md2k/mguard/dd40c/phone/battery
+;abe policy:
+;        ((/ndn/org/md2k/mguard/dd40c/phone/accelerometer AND (/ndn/org/md2k/ATTRIBUTE/location/gym)) OR (/ndn/org/md2k/mguard/dd40c/phone/battery AND (/ndn/org/md2k/ATTRIBUTE/location/commuting)))
