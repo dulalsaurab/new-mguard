@@ -37,7 +37,7 @@ int main()
     // requesterCertMap.emplace("/ndn/org/md2k/remote", "certs/remote.cert");
 
   // requesterCertMap.emplace("/ndn/org/md2k/B", "certs/B.cert");
-  // requesterCertMap.emplace("/ndn/org/md2k/C", "certs/C.cert");
+  requesterCertMap.emplace("/ndn/org/md2k/C", "certs/C.cert");
   // requesterCertMap.emplace("/ndn/org/md2k/D", "certs/D.cert");
   // requesterCertMap.emplace("/ndn/org/md2k/E", "certs/E.cert");
 

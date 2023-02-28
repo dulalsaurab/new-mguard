@@ -29,7 +29,7 @@ vectorToString(const std::vector<T>& vec)
 
 inline
 std::shared_ptr<ndn::security::Certificate>
-loadCert(const std::string& certLoc, ndn::security::KeyChain& keyChain)
+loadCert(const std::string& certLoc)
 {
   std::ifstream input_file(certLoc);
   std::string certStr((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());

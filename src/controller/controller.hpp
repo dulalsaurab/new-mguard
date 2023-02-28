@@ -21,7 +21,7 @@
 #define MGUARD_CONTROLLER_HPP
 
 #include "parser.hpp"
-#include "common.hpp"
+#include "../common.hpp"
 
 #include <ndn-cxx/security/signing-helpers.hpp>
 

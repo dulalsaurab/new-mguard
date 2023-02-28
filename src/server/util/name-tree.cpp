@@ -18,7 +18,7 @@
  */
  
 #include "name-tree.hpp"
-#include "common.hpp"
+#include "../../common.hpp"
 
 #include <ndn-cxx/util/logger.hpp>
 

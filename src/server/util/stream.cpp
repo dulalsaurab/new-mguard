@@ -19,7 +19,7 @@
 
 
 #include "stream.hpp"
-#include "common.hpp"
+#include "../../common.hpp"
 
 #include <ndn-cxx/util/logger.hpp>
 

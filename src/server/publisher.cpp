@@ -18,7 +18,7 @@
  */
 
 #include "publisher.hpp"
-#include "src/common.hpp"
+#include "../common.hpp"
 
 #include <boost/bind.hpp>
 
