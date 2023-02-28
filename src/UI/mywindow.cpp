@@ -166,6 +166,8 @@ void mywindow::change_btn_display()
         as_grid->remove(*children[a]);
     }
 
+    std::cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@2" << '\n';
+
     for (long unsigned int s = 0; s < acc_st.size(); s++)
     {
 
@@ -454,7 +456,6 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
       acc_st.push_back(a.toUri());
       stream_name_data[a.toUri()] = "";
     }
-        NDN_LOG_INFO("available st name set ");
 
     for (auto  const& x : acc_st){
                 NDN_LOG_INFO("available st name set ");
@@ -463,7 +464,8 @@ void mywindow::processSubscriptionCallback(const std::unordered_set<ndn::Name>& 
 
     
     }
- 
+    NDN_LOG_INFO("completed ");
+
 
 
                 // NDN_LOG_INFO(acc_st);
