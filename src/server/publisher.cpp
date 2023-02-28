@@ -63,9 +63,9 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
   m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST");
   m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST");
     
-  m_partialProducer.updateSeqNo(p1, rand() % 1000); 
-  m_partialProducer.updateSeqNo(p2, rand() % 1000); 
-  m_partialProducer.updateSeqNo(p3, rand() % 1000); 
+  m_partialProducer.updateSeqNo(p1, rand() % 100); 
+  m_partialProducer.updateSeqNo(p2, rand() % 100); 
+  m_partialProducer.updateSeqNo(p3, rand() % 100); 
   // -------------------------
 
   // sleep to init kp-abe producer

@@ -62,9 +62,9 @@ def main():
         except FileNotFoundError:
             print('No existing data to be deleted')
 
-        start_time = '2022-05-0{} 10:00:00'.format(current_batch)
+        start_time = '1993-05-0{} 10:00:00'.format(current_batch)
         #50
-        end_time = '2022-05-0{} 10:0:50'.format(current_batch)
+        end_time = '1993-05-0{} 10:0:50'.format(current_batch)
         #100
         # end_time = '2022-05-0{} 10:01:41'.format(current_batch)
         # 150
