@@ -33,13 +33,13 @@ Controller::Controller(const ndn::Name& controllerPrefix,
                        const std::map<ndn::Name, std::string>& requestersCertPath,
                        const std::string& availableStreamsFilePath)
 : m_controllerPrefix(controllerPrefix)
-, m_controllerCert(*loadCert(controllerCertPath))
+, m_controllerCert(*loadCert(controllerCertPath, m_keyChain))
 , m_aaPrefix(aaPrefix)
 , m_requestersCertPath(requestersCertPath)
 , m_policyParser(availableStreamsFilePath)
-, m_attrAuthority(*loadCert(aaCertPath), m_face, m_keyChain)
+, m_attrAuthority(*loadCert(aaCertPath, m_keyChain), m_face, m_keyChain)
 {
-  NDN_LOG_DEBUG("controller certificate: " << m_controllerCert.getIdentity());
+  NDN_LOG_DEBUG("Controller certificate: " << m_controllerCert);
   
   for(auto& policy : policyList) {
     NDN_LOG_INFO("policy path: " << policy);
@@ -86,12 +86,15 @@ Controller::processPolicy(const std::string& policyPath)
     try
     {
       auto path = getRequesterCertPath(requester);
-      if (path.empty())
+      if (path.empty()) {
+        NDN_LOG_DEBUG("Policy path does't exist: ");
         continue;
+
+      }
 
       // auto requesterCert = m_keyChain.getPib().getIdentity(requester).getDefaultKey().getDefaultCertificate();
       NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);
-      m_attrAuthority.addNewPolicy(*loadCert(path), policyDetail.abePolicy);
+      m_attrAuthority.addNewPolicy(*loadCert(path, m_keyChain), policyDetail.abePolicy);
       policyDetails policyD = {policyDetail.policyIdentifier, tempStreams, policyDetail.abePolicy};
       m_policyMap.insert(std::pair <ndn::Name, policyDetails> (requester, policyD));
     }

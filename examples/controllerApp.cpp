@@ -32,8 +32,10 @@ int main()
   std::vector<std::string> policyList = {"policies/policy2"}; //, "policies/policy2", "policies/policy3",
 
   std::map<ndn::Name, std::string> requesterCertMap;
-  requesterCertMap.emplace("/ndn/org/md2k/A", "certs/A.cert");
+  requesterCertMap.emplace("/ndn/org/md2k/F", "certs/F.cert");
   requesterCertMap.emplace("/ndn/org/md2k/local", "certs/local.cert");
+    // requesterCertMap.emplace("/ndn/org/md2k/remote", "certs/remote.cert");
+
   // requesterCertMap.emplace("/ndn/org/md2k/B", "certs/B.cert");
   // requesterCertMap.emplace("/ndn/org/md2k/C", "certs/C.cert");
   // requesterCertMap.emplace("/ndn/org/md2k/D", "certs/D.cert");

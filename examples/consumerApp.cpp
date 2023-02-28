@@ -202,7 +202,6 @@ main(int argc, char* argv[])
         usage(visibleOptDesc);
       }
     }
-
   }
   catch (const po::error& e) {
     std::cerr << "ERROR: " << e.what() << std::endl;

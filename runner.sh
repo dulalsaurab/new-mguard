@@ -5,8 +5,12 @@ rm debugg/*
 
 sleep 2
 
+sudo ldconfig
+
+#sudo pkill -f -e -c mguard
 sudo killall mguard-controllerApp
 sudo killall mguard-producerApp
+
 sudo killall ndn-python-repo
 
 nfdc cs erase /ndn/org/md2k
@@ -38,4 +42,4 @@ python data-generator/main.py > debugg/generator.log 2>&1 &
 
 sleep 0.1
 
-mguard-consumerApp -c certs/local.cert -p /ndn/org/md2k/local > debugg/consumer.log 2>&1 &
+# mguard-consumerApp -c certs/local.cert -p /ndn/org/md2k/local > debugg/consumer.log 2>&1 &

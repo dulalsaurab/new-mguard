@@ -149,8 +149,8 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
                          const std::string& lookupDatabase)
 : m_face(face)
 , m_producerPrefix(producerPrefix)
-, m_producerCert(*loadCert(producerCertPath))
-, m_ABE_authorityCert(*loadCert(aaCertPath))
+, m_producerCert(*loadCert(producerCertPath, m_keyChain))
+, m_ABE_authorityCert(*loadCert(aaCertPath, m_keyChain))
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
 , m_receiver(m_face.getIoService(), 
             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))

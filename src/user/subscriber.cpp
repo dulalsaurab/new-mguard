@@ -42,7 +42,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_syncPrefix(syncPrefix)
 , m_controllerPrefix(controllerPrefix)
 
-, m_abe_consumer(m_face, m_keyChain, *loadCert(consumerCertPath), *loadCert(aaCertPath))
+, m_abe_consumer(m_face, m_keyChain, *loadCert(consumerCertPath, m_keyChain), *loadCert(aaCertPath, m_keyChain))
 
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
@@ -53,7 +53,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
-  loadCert("certs/producer.cert"); // need this ?? 
+  loadCert("certs/producer.cert", m_keyChain); // need this ?? 
 
   NDN_LOG_DEBUG("Subscriber initialized");
   m_abe_consumer.obtainDecryptionKey();
