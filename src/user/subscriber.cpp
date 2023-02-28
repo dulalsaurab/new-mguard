@@ -195,6 +195,8 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   for (const auto& it: availStreams) {
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
+    
+    setLowSeqOfPrefix(it.first, it.second);
   }
 
   // subscribe to streams present in the subscription list

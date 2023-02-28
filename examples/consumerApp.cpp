@@ -61,7 +61,36 @@ public:
   {
     for (auto const& x : updates)
     {
+      std::string stream_name_detail = x.first;
+      std::string stream_data = x.second;
+
       NDN_LOG_INFO("Received data: " << x.second << " for name: " << x.first);
+      // get name of stream
+      int firstDelPos = stream_name_detail.find("/data_analysis/") +14 ;
+      // Find the position of second delimiter
+      int secondDelPos = stream_name_detail.find("/DATA/");
+      // Get the substring between two delimiters
+      std::string strbetweenTwoDels = stream_name_detail.substr(firstDelPos+1, secondDelPos-firstDelPos-1); 
+      // std::cout << strbetweenTwoDels << std::endl;
+
+      std::string stream_name = strbetweenTwoDels;
+      stream_name_data[stream_name].append(x.second);
+      stream_name_data[stream_name].append("\n");
+
+      
+      // gps_episodes_and_semantic_location.append(x.second);
+      // gps_episodes_and_semantic_location.append("\n");
+    }
+    writeToFile();
+  }
+  void writeToFile(){
+
+    std::ofstream file("output.txt");
+    for (auto element :stream_name_data)
+    {
+
+    file << element.first;
+    file << element.second;
     }
   }
 
@@ -89,13 +118,13 @@ public:
       availableStreams.push_back(a);
     }
 
-    // these codes are only for testing purposes
-    // automatically subscriber to the respective streams
+    // // these codes are only for testing purposes
+    // // automatically subscriber to the respective streams
 
-    // A. battery only 
-    // subscriptionList.push_back(availableStreams[0]); // battery
+    // // A. battery only 
+    // // subscriptionList.push_back(availableStreams[0]); // battery
 
-    // all stream
+    // // all stream
 
         for (std::size_t a = 0; a < strm_size ; a++){
           subscriptionList.push_back(availableStreams[a]);
@@ -105,15 +134,15 @@ public:
     // subscriptionList.push_back(availableStreams[3]); // gps
       
 
-    // not gps
-    // subscriptionList.push_back(availableStreams[0]); // battery
-    // subscriptionList.push_back(availableStreams[2]); // sem_loc
+    // // not gps
+    // // subscriptionList.push_back(availableStreams[0]); // battery
+    // // subscriptionList.push_back(availableStreams[2]); // sem_loc
 
-    // accelerometer
-    // subscriptionList.push_back(availableStreams[0]); // battery
+    // // accelerometer
+    // // subscriptionList.push_back(availableStreams[0]); // battery
 
-    // only work
-    // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
+    // // only work
+    // // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
 
     for (auto& s: subscriptionList) {
       // m_subscriber.subscribe(s);
@@ -125,6 +154,8 @@ public:
     
     // std::vector<int> input; //
     // std::cout << "enter selection, enter any char to stop" << std::endl;
+
+
     // while(!std::cin.fail())
     // {
     //     int value;
@@ -132,14 +163,21 @@ public:
     //     if(!std::cin.fail())
     //       input.push_back(value);
     // }
+    
     // std::cout << "\n" << std::endl;
+    // for (auto k : input){
+    // std::cout <<" values of k"<< k << std::endl;
+    // }
+
     // std::cout << "Subscribed to the stream/s" << std::endl;
     // for (auto k : input)
     // {
     //   auto ind = k-1;
-    //   std::cout << k << ": " << availableStreams[ind] << std::endl;
+    //   std::cout <<"k is"<< k << ": " << availableStreams[ind] << std::endl;
     //   if (availableStreams[ind] != "/") // todo: fix this
     //     subscriptionList.push_back(availableStreams[ind]);
+    //     NDN_LOG_DEBUG("Subscribed to the stream/s" << availableStreams[ind]); // << std::endl;
+
     // }
    
     // taking input from user end----------------------------------------------
@@ -165,6 +203,8 @@ public:
 private:
   ndn::Face m_face;
   mguard::subscriber::Subscriber m_subscriber;
+  std::map<std::string, std::string> stream_name_data;
+
 };
 
 int

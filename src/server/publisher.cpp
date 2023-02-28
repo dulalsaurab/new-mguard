@@ -55,9 +55,17 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
   // of the stream during the experiment, and thus keeps sending hello interest (causes a lot of overhead)
   // second, if we send hello interest less frequently, the overall data retrival delay increases.
   
+  ndn::Name p1 ("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
+  ndn::Name p2 ("/ndn/org/md2k/mguard/dd40c/phone/battery/manifest");
+  ndn::Name p3 ("/ndn/org/md2k/mguard/dd40c/phone/gps/manifest");
+
   // m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
   m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/manifest");
   m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/manifest");
+    
+  m_partialProducer.updateSeqNo(p1, rand() % 1000); 
+  m_partialProducer.updateSeqNo(p2, rand() % 1000); 
+  m_partialProducer.updateSeqNo(p3, rand() % 1000); 
   // -------------------------
 
   // sleep to init kp-abe producer
@@ -83,10 +91,10 @@ Publisher::writeHandler(const ndn::Data& data, const mguard::util::AsyncRepoErro
 }
 
 void
-Publisher::doUpdate(ndn::Name namePrefix)
+Publisher::doUpdate(ndn::Name namePrefix, uint64_t currSeqNum)
 {
-  m_partialProducer.publishName(namePrefix);
-  uint64_t seqNo =  m_partialProducer.getSeqNo(namePrefix).value();
+  m_partialProducer.publishName(namePrefix, currSeqNum+1);
+  auto seqNo =  m_partialProducer.getSeqNo(namePrefix).value();
   std::cout << "sequence number: " << seqNo << std::endl;
   NDN_LOG_DEBUG("Publish sync update for the name/manifest: " << namePrefix << " sequence Number: " << seqNo);
 }
@@ -113,16 +121,16 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
     NDN_LOG_DEBUG("Manifest: " << manifestName << " was already scheduled, updating the schedule");
     itr->second.cancel();
     auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
-                      publishManifest(stream);
-                      doUpdate(manifestName);
+                      
+                      doUpdate(manifestName, publishManifest(stream));
                       NDN_LOG_DEBUG("Updated manifest: " << manifestName << " via scheduling");
                     });
     itr->second = scheduleId;
   }
   else {
     auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
-                      publishManifest(stream);
-                      doUpdate(manifestName);
+                      // publishManifest(stream);
+                      doUpdate(manifestName, publishManifest(stream));
                       NDN_LOG_DEBUG("Updated manifest: " << manifestName << " via scheduling");
                     });
     m_scheduledIds.emplace(manifestName, scheduleId);
@@ -169,7 +177,8 @@ Publisher::publish(ndn::Name& dataName, std::string data,
   if (!USE_MANIFEST) {
     // if manifest is not used, the dataName is directly published in the sync
     m_partialProducer.addUserNode(dataName);
-    doUpdate(dataName);
+    uint64_t currSeqNum =  m_partialProducer.getSeqNo(dataName).value();
+    doUpdate(dataName, currSeqNum);
     return;
   }
 
@@ -194,23 +203,27 @@ Publisher::publish(ndn::Name& dataName, std::string data,
   }
   cancleIfManifestScheduledForPublication(stream.getName());
   // create manifest data packet, and insert it into the repo
-  publishManifest(stream);
-  doUpdate(stream.getManifestName());
+  // auto currSeqNum = publishManifest(stream);
+  doUpdate(stream.getManifestName(), publishManifest(stream));
 }
 
-void
+uint64_t
 Publisher::publishManifest(util::Stream& stream)
 {
   auto dataName = stream.getManifestName();
   m_partialProducer.addUserNode(dataName);
 
-  auto prevSeqNum = m_partialProducer.getSeqNo(stream.getManifestName()).value();
-  dataName.appendNumber(prevSeqNum + 1);
+  uint64_t currSeqNum =  m_partialProducer.getSeqNo(dataName).value();
+
+  if (currSeqNum == 0)
+    currSeqNum = rand() % 1000;
+
+  dataName.appendNumber(currSeqNum + 1);
   auto manifestData = std::make_shared<ndn::Data>(dataName);
   
   m_temp = stream.getManifestList();
   manifestData->setContent(wireEncode());
-  NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size() << " and seqNumber: " << prevSeqNum + 1);
+  NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size() << " and seqNumber: " << currSeqNum + 1);
   
   m_keyChain.sign(*manifestData);
 
@@ -226,6 +239,7 @@ Publisher::publishManifest(util::Stream& stream)
     NDN_LOG_ERROR("Failed to insert mainfest into the repo");
     std::cerr << e.what() << '\n';
   }
+  return currSeqNum; // this is next sequence number
 }
 
 const ndn::Block&

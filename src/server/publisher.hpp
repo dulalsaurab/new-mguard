@@ -59,7 +59,7 @@ public:
   writeHandler(const ndn::Data& data, const mguard::util::AsyncRepoError& err);
 
   void
-  doUpdate(ndn::Name manifestName);
+  doUpdate(ndn::Name namePrefix, uint64_t currSeqNum);
 
   void
   clearBuffer() 
@@ -74,7 +74,7 @@ public:
                    ndn::Name& streamName);
 
 
-  void
+  uint64_t
   publishManifest(util::Stream& stream);
 
   mguard::util::Stream&
