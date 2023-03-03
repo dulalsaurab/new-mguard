@@ -36,7 +36,7 @@ loadCert(const std::string& certLoc)
   std::istringstream ss(certStr);
   auto cert = ndn::io::load<ndn::security::Certificate>(ss);
   
-  std::cout << "cert: " << *cert << std::endl;
+  // std::cout << "cert: " << *cert << std::endl;
   return cert;
 }
 
