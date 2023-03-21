@@ -18,7 +18,7 @@
  */
 
 
-#include "common.hpp"
+#include "../common.hpp"
 #include "data-adapter.hpp"
 
 #include <iostream>
@@ -26,8 +26,10 @@
 #include <sstream>
 #include <ctime>
 #include <typeinfo>
+#include <optional>
 
-// using namespace boost::placeholders;
+#include <boost/property_tree/ptree.hpp>
+#include <boost/property_tree/json_parser.hpp>
 
 NDN_LOG_INIT(mguard.DataAdapter);
 
@@ -40,16 +42,15 @@ ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service,
 {
 }
 
-void 
+void
 ConnectionHandler::start()
 {
-  // this will read the header
-  sock.async_read_some(
-      boost::asio::buffer(data, max_length),
-      boost::bind(&ConnectionHandler::readContent,
-                  shared_from_this(),
-                  boost::asio::placeholders::error,
-                  boost::asio::placeholders::bytes_transferred));
+  // this might be causing error aiso:2, refer log for more detail. 
+  async_read(sock, response_,
+             boost::bind(&ConnectionHandler::readHandle,
+             shared_from_this(),
+             boost::asio::placeholders::error,
+             boost::asio::placeholders::bytes_transferred));
 
   sock.async_write_some(
       boost::asio::buffer(message, max_length),
@@ -59,44 +60,35 @@ ConnectionHandler::start()
                 boost::asio::placeholders::bytes_transferred));
 }
 
-void
-ConnectionHandler::readContent(const boost::system::error_code& err, size_t bytes_transferred)
-{
-  NDN_LOG_INFO("Header received from the socket " << data);
-  boost::split(metaData, data, boost::is_any_of("|"));
-  NDN_LOG_INFO("expected number of chunks: " << getExpectedNumberOfChunks());
-  
-  // todo: need to replace this function, read exact number of bytes as expected 
-  async_read(sock, response_,
-             boost::bind(&ConnectionHandler::readHandle, 
-             shared_from_this(),
-             boost::asio::placeholders::error,
-             boost::asio::placeholders::bytes_transferred));
-}
-
 void 
 ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
-  NDN_LOG_DEBUG("Total number of bytes recevied: " << bytes_transferred);
-  auto expectedBytes = static_cast<size_t> (std::stoi(metaData[2]));
-
-  if (response_.size() <= 0) { // didn't get anything
-      NDN_LOG_DEBUG("Missing content");
-      std::vector<std::string> emptyVector= {};
-      m_onReceiveDataFromClient(emptyVector, ""); // problem receiving content, don't think we need to send callback here??
-    }
+  NDN_LOG_DEBUG("bytes_transferred: " << bytes_transferred);
   
-  if (response_.size() != expectedBytes) { // didn't get all the expected bytes  
-    NDN_LOG_DEBUG("All the expected data is not received");
+  if (err) {
+    NDN_LOG_DEBUG("Error: " << err);
+    // sock.close();
+    // return; // SD: is this a better way to handle ?
   }
 
-  // todo: error wont occur once the above function is fixed
-  if (err)
-    NDN_LOG_DEBUG("Error: " << err);
-  
-  // convert the buffer into string and send it to server
-  std::string resp ((std::istreambuf_iterator<char>(&response_)), std::istreambuf_iterator<char>());
-  m_onReceiveDataFromClient(metaData, resp);
+  if (response_.size() <= 0) {
+    NDN_LOG_DEBUG("Missing content");
+    sock.close();
+    return; // SD: is this a better way to handle ?
+  }
+
+  std::string dataReceived = boost::asio::buffer_cast<const char*>(response_.data());
+  boost::property_tree::ptree pt;
+  std::istringstream ss(dataReceived);
+  boost::property_tree::read_json(ss, pt);
+  auto headerData = pt.get<std::string>("header");
+  auto payload = pt.get<std::string>("payload");
+
+  boost::split(metaData, headerData, boost::is_any_of("|"));
+
+  NDN_LOG_INFO("Data received for the following metadata: "<< headerData);
+
+  m_onReceiveDataFromClient(metaData, payload);
   sock.close();
 }
 
@@ -171,6 +163,13 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
   NDN_LOG_DEBUG ("ABE authority cert: " << m_ABE_authorityCert);
 }
 
+ndn::Name
+DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
+{
+  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << " and timestamp: " << timestamp);
+  return streamName.append("DATA").append(timestamp);
+}
+
 void
 DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
 {
@@ -183,16 +182,16 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
     m_dataBase.insertRows(content);
   }
   // TODO: ---> streamName, streamName ?
-  m_streams.emplace(streamName, streamName);
-  publishDataUnit(m_streams.find(streamName)->second, content);
+  // m_streams.emplace(streamName, streamName);
+  auto streamNDNName = std::regex_replace(streamName, std::regex("--"), "/"); // convert to ndn name
+  publishDataUnit(streamNDNName, content);
 }
 
 void
 DataAdapter::run()
 {
   try {
-    m_face.processEvents(); // block mode
-    // face1.getIoService().run(); //go in block mode sync --- (interest/waits for data)
+    m_face.processEvents();
   }
   catch (const std::exception& ex)
   {
@@ -208,19 +207,10 @@ DataAdapter::stop()
   m_face.shutdown();
 }
 
-ndn::Name
-DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
-{
-  NDN_LOG_TRACE("Creating data name from streamName: " << streamName << " and timestamp: " << timestamp);
-  return streamName.append("DATA").append(timestamp);
-}
-
 void
-DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string>& dataSet)
+DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string>& dataSet)
 {
-  auto streamName = stream.getName();
   NDN_LOG_INFO("Processing stream: " << streamName);
-  bool isLast = false;
   for (auto data : dataSet)
   {
     char timestamp [80];
@@ -241,30 +231,31 @@ DataAdapter::publishDataUnit(util::Stream& stream, const std::vector<std::string
     auto dataName = makeDataName(streamName, timestamp);
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
 
-    std::vector<std::string> semLocAttrList;
-    if (streamName == NDN_LOCATION_STREAM){
-      try { 
-        auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
-        
+    /*
+      here we only check semantic location table, need to modify this
+      one possible solution: implement getAttribute function, which will check all
+      the possible lookups and get all attribute that will be applied
+    */
+    std::vector<std::string> attrList= {streamName.toUri()};
+    try {
+      auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+      if (!semAttr.empty()){
         for (auto& attr: semAttr) {
           auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);
           NDN_LOG_TRACE("Semanantic location attribute: " << _semLocAttr);
-          semLocAttrList.push_back(_semLocAttr.toUri());
+          attrList.push_back(_semLocAttr.toUri());
         }
       }
-      catch (const std::exception& ex) {
-        NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+      else {
+        NDN_LOG_DEBUG("Context attribute doesn't exist for this data");
       }
     }
+    catch (const std::exception& ex) {
+      NDN_LOG_DEBUG("Couldn't get semantic location attribute for timestamp: " << timestamp);
+    }
 
-    // if no semantic location associated with this data point, append unknown location attribtue ???
-    // but every data point should have associated location attribute?? but every data point needs to have 
-    // location attribute
-    if (semLocAttrList.empty())
-      semLocAttrList.push_back("/ndn/org/md2k/attribute/unknown");
-    
-    //TODO: need to change this, don't want to pass stream here, but rather just the attributes.
-    m_publisher.publish(dataName, data, stream, semLocAttrList);
+    // std::optional<ndn::Name> name = streamName;
+    m_publisher.publish(dataName, data, attrList, streamName);
   }
 }
 

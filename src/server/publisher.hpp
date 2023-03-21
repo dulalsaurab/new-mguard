@@ -59,7 +59,7 @@ public:
   writeHandler(const ndn::Data& data, const mguard::util::AsyncRepoError& err);
 
   void
-  doUpdate(ndn::Name manifestName);
+  doUpdate(ndn::Name namePrefix, uint64_t currSeqNum);
 
   void
   clearBuffer() 
@@ -69,11 +69,16 @@ public:
   }
 
   void
-  publish(ndn::Name& dataName, std::string data, util::Stream& stream,
-          std::vector<std::string> semLocAttrList);
+  publish(ndn::Name& dataName, std::string data, 
+                   std::vector<std::string> attrList,
+                   ndn::Name& streamName);
 
-  void
+
+  uint64_t
   publishManifest(util::Stream& stream);
+
+  mguard::util::Stream&
+  getOrCreateStream(ndn::Name& streamName);
 
   void
   scheduledManifestForPublication(util::Stream& stream);
@@ -84,7 +89,6 @@ public:
     auto itr = m_scheduledIds.find(name);
     if (itr != m_scheduledIds.end()) {
       itr->second.cancel();
-      // m_scheduledIds.erase(itr); //
     }
   }
   
@@ -113,6 +117,7 @@ private:
 
   std::vector<ndn::Data> m_ckBuffer;
   std::vector<ndn::Data> m_dataBuffer;
+  std::map<ndn::Name, mguard::util::Stream> m_streams;
 };
 
 } // mguard

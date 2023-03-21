@@ -11,6 +11,22 @@
 
 namespace mguard {
 
+template <typename T>
+std::string
+vectorToString(const std::vector<T>& vec)
+{
+  std::stringstream ss;
+  ss << "[";
+  for (size_t i = 0; i < vec.size(); ++i) {
+      ss << vec[i];
+      if (i != vec.size() - 1) {
+          ss << ", ";
+      }
+  }
+  ss << "]";
+  return ss.str();
+}
+
 inline
 std::shared_ptr<ndn::security::Certificate>
 loadCert(const std::string& certLoc)
@@ -19,6 +35,8 @@ loadCert(const std::string& certLoc)
   std::string certStr((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
   std::istringstream ss(certStr);
   auto cert = ndn::io::load<ndn::security::Certificate>(ss);
+  
+  // std::cout << "cert: " << *cert << std::endl;
   return cert;
 }
 

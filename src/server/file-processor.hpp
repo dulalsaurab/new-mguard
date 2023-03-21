@@ -21,7 +21,7 @@
 #ifndef MGUARD_FILE_PROCESSOR_HPP
 #define MGUARD_FILE_PROCESSOR_HPP
 
-#include "common.hpp"
+#include "../common.hpp"
 
 #include <ndn-cxx/face.hpp>
 

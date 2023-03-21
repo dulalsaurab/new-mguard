@@ -21,7 +21,7 @@
 #define MGUARD_CONTROLLER_HPP
 
 #include "parser.hpp"
-#include "common.hpp"
+#include "../common.hpp"
 
 #include <ndn-cxx/security/signing-helpers.hpp>
 
@@ -44,6 +44,7 @@ class Controller
 {
 public:
   Controller(const ndn::Name& controllerPrefix, const std::string& controllerCertPath,
+             const std::vector<std::string>& policyList,
              const ndn::Name& aaPrefix, const std::string& aaCertPath,
              const std::map<ndn::Name, std::string>& requesterCertMap,
              const std::string& availableStreamsFilePath);
