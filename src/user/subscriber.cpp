@@ -18,7 +18,7 @@
  */
 
 #include "subscriber.hpp"
-#include "common.hpp"
+#include "../common.hpp"
 
 #include <nac-abe/attribute-authority.hpp>
 
@@ -71,7 +71,6 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
   catch (const std::exception& e) {
     NDN_LOG_ERROR("error: " << e.what());
   }
-
 }
 
 void
@@ -158,7 +157,7 @@ void
 Subscriber::subscribe(ndn::Name streamName)
 {
   // convert the streamName into manifest, because that's what is published by the sync
-  streamName.append("manifest");
+  streamName.append("MANIFEST");
   auto it = m_availableStreams.find(streamName);
   if (it == m_availableStreams.end()) {
     NDN_LOG_INFO("Stream: " << streamName << " not available for subscription");
@@ -185,7 +184,7 @@ Subscriber::unsubscribe(ndn::Name streamName)
                                        streamName), m_subscriptionList.end());
 
   NDN_LOG_INFO("Unsubscribing to: " << streamName);
-  streamName.append("manifest"); // sync uses streamName + manifest
+  streamName.append("MANIFEST"); // sync uses streamName + manifest
   m_psync_consumer.removeSubscription(streamName);
 }
 
@@ -196,6 +195,8 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   for (const auto& it: availStreams) {
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
+    
+    setLowSeqOfPrefix(it.first, it.second);
   }
 
   // subscribe to streams present in the subscription list

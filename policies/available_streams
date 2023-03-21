@@ -54,6 +54,8 @@ attributes
 ; current users
 requesters
 {
+  user /ndn/org/md2k/local
+  user /ndn/org/md2k/remote
   user /ndn/org/md2k/A
   user /ndn/org/md2k/B
   user /ndn/org/md2k/C

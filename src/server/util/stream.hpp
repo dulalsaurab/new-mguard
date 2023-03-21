@@ -32,7 +32,7 @@ static inline
 ndn::Name
 getNdnNameFromSemanticLocationName(std::string md2kname)
 {
-  ndn::Name semLocAttr("/ndn/org/md2k/attribute/location");
+  ndn::Name semLocAttr("/ndn/org/md2k/ATTRIBUTE/location");
   semLocAttr.append(md2kname);
   return semLocAttr;
 }
@@ -40,7 +40,7 @@ getNdnNameFromSemanticLocationName(std::string md2kname)
 class Stream
 {
 public:
-  Stream(const std::string& md2kName, std::vector<std::string> attributeSet = {});
+  Stream(const ndn::Name& streamName);
 
   /*
    This function will update the manifest list and send status whether it is reedy to be published or not
@@ -69,13 +69,7 @@ public:
   ndn::Name&
   getName()
   {
-    return m_name;
-  }
-
-	std::string&
-	getMD2KName()
-  {
-    return m_md2kName;
+    return m_streamName;
   }
 
   void
@@ -90,35 +84,9 @@ public:
     return m_manifestName;
   }
 
-  // stream attribute
-	void
-	setAttributes(std::vector<std::string>& attributeSet)
-  {
-    m_attributeSet = attributeSet;
-  }
-
-  // stream attribute
-	void
-	updateAttributes(std::vector<std::string>& attributeSet)
-  {
-    std::vector<std::string> _comb = m_attributeSet;
-    _comb.insert(_comb.end(), attributeSet.begin(), attributeSet.end());
-    m_attributeSet = _comb;
-  }
-
-  // TODO: data points from a same stream can be encrypted with different set 
-  // of attribtues, need to consider it in the future
-  std::vector<std::string>&
-  getAttributes()
-  {
-    return m_attributeSet;
-  }
-
 private:
-  std::string m_md2kName;
-  ndn::Name m_name;
-  ndn::Name m_manifestName; // will contain the manifest name with latest sequence number
-  std::vector<std::string> m_attributeSet;
+  ndn::Name m_streamName;
+  ndn::Name m_manifestName;
   std::vector<ndn::Name> m_manifestList;
   int m_manifestCounter;
 

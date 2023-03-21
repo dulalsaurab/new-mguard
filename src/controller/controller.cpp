@@ -28,6 +28,7 @@ NDN_LOG_INIT(mguard.Controller);
 
 Controller::Controller(const ndn::Name& controllerPrefix,
                        const std::string& controllerCertPath,
+                       const std::vector<std::string>& policyList,
                        const ndn::Name& aaPrefix, const std::string& aaCertPath,
                        const std::map<ndn::Name, std::string>& requestersCertPath,
                        const std::string& availableStreamsFilePath)
@@ -38,22 +39,17 @@ Controller::Controller(const ndn::Name& controllerPrefix,
 , m_policyParser(availableStreamsFilePath)
 , m_attrAuthority(*loadCert(aaCertPath), m_face, m_keyChain)
 {
-  NDN_LOG_DEBUG("controller certificate: " << m_controllerCert.getIdentity());
-  // TODO: list the policy path into mGuard configuration file or in the common.hpp, and process all the streams
-  std::vector<std::string> policyList = {"policies/policy1"}; //, "policies/policy2", "policies/policy3",
-                                         // "policies/policy4", "policies/policy5"};
-
-  for(auto& policy : policyList)
-  {
+  NDN_LOG_DEBUG("Controller certificate: " << m_controllerCert);
+  
+  for(auto& policy : policyList) {
     NDN_LOG_INFO("policy path: " << policy);
     processPolicy(policy);
   }
+
   for(auto& it : m_policyMap)
     NDN_LOG_TRACE("data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
 
-  // set interest filter on controller prefix
   setInterestFilter(m_controllerPrefix);
-
 }
 
 void
@@ -90,8 +86,11 @@ Controller::processPolicy(const std::string& policyPath)
     try
     {
       auto path = getRequesterCertPath(requester);
-      if (path.empty())
+      if (path.empty()) {
+        NDN_LOG_DEBUG("Policy path does't exist: ");
         continue;
+
+      }
 
       // auto requesterCert = m_keyChain.getPib().getIdentity(requester).getDefaultKey().getDefaultCertificate();
       NDN_LOG_DEBUG ("ABE policy for policy id: " << policyDetail.policyIdentifier << ": " << policyDetail.abePolicy);

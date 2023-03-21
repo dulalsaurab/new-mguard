@@ -20,7 +20,6 @@
 #ifndef MGUARD_PARSER_HPP
 #define MGUARD_PARSER_HPP
 
-//#include "common.hpp"
 #include "server/util/name-tree.hpp"
 
 #include <ndn-cxx/name.hpp>

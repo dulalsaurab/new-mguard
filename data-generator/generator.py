@@ -48,9 +48,9 @@ def get_cc(start_time='2022-05-08 21:08:10', end_time='2022-05-08 21:08:10'):
     gen_location_data(cc, study_name=study_name, user_id=user_id, gps_stream_name=gps_stream_name,
                       location_stream_name=semantic_location_stream_name, start_time=start_time, end_time=end_time_gps)
     # gen_accel_gyro_data(cc, study_name=study_name, user_id=user_id, stream_name=accel_stream_name,
-                        # start_time=start_time, end_time=end_time)
+    #                     start_time=start_time, end_time=end_time)
     # gen_accel_gyro_data(cc, study_name=study_name, user_id=user_id, stream_name=gyro_stream_name, start_time=start_time,
-                        # end_time=end_time)
+    #                     end_time=end_time)
 
     return cc, {
         'semantic_location': semantic_location_stream_name,
