@@ -29,10 +29,10 @@ int main()
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
   std::string aaCertPath = "certs/aa.cert";
   std::string controllerCertPath = "certs/controller.cert";
-  std::vector<std::string> policyList = {"policies/policy2"}; //, "policies/policy2", "policies/policy3",
+  std::vector<std::string> policyList = {"policies/policy3"}; //, "policies/policy2", "policies/policy3",
 
   std::map<ndn::Name, std::string> requesterCertMap;
-  requesterCertMap.emplace("/ndn/org/md2k/F", "certs/F.cert");
+  // requesterCertMap.emplace("/ndn/org/md2k/F", "certs/F.cert");
   requesterCertMap.emplace("/ndn/org/md2k/local", "certs/local.cert");
   
   // requesterCertMap.emplace("/ndn/org/md2k/remote", "certs/remote.cert");

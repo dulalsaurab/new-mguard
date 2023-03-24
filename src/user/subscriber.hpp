@@ -34,6 +34,8 @@
 
 using namespace ndn::time_literals;
 
+const ndn::time::milliseconds SYNC_INTEREST_LIFETIME = 1600_ms;
+
 namespace mguard {
 
 struct ApplicationData
@@ -44,7 +46,6 @@ struct ApplicationData
 
 typedef std::function<void(const std::map<std::string, std::string>& updates)> DataCallback;
 typedef std::function<void(const std::unordered_set<ndn::Name>& streams)> SubscriptionCallback;
-
 
 namespace subscriber {
 namespace tlv {
@@ -59,10 +60,24 @@ public:
 class Subscriber
 {
 public:
+  
+  /*
+  @brief mGuard subscriber, helps subscription/unsubscription to data streams and 
+    receive data securly based on consumer's policy
+  @param consumerPrefix The prefix of the consumer, also consumer's identity
+  @param syncPrefix The prefix of the sync group
+  @param controllerPrefix The prefix of mGuardController
+  @param consumerCertPath The Path to consumer certificate
+  @param aaCertPath The Path to attribute authority certificate, need to obtain out-of-band/bootstrapping? 
+  @param syncInterestLifetime Lifetime of the sync interest, if not specified, default of 4_s will be used
+  @param callback Callback to send application data to the consumer
+  @param subCallback Callback to send available stream for subscription to the consumer
+  */
   Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPrefix,
              const ndn::Name& controllerPrefix, const std::string& consumerCertPath,
-             const std::string& aaCertPath, ndn::time::milliseconds syncInterestLifetime,
-             const DataCallback& callback, const SubscriptionCallback& subCallback);
+             const std::string& aaCertPath, const DataCallback& callback,
+             const SubscriptionCallback& subCallback,
+             const ndn::time::microseconds syncInterestLifetime = SYNC_INTEREST_LIFETIME);
 
   void
   run();
@@ -70,27 +85,54 @@ public:
   void
   stop();
 
-  ~Subscriber()
-  {
+  ~Subscriber() {
     m_face_thread.join();
   }
 
+  /**
+   * @brief Get the subscription list of the current user
+     m_subscriptionList contains all the daa stream the consumer has subscribed to
+  */
   std::vector<ndn::Name>&
-  getSubscriptionList()
-  {
+  getSubscriptionList() {
     return m_subscriptionList;
   }
 
+  /**
+   * @brief This method adds a stream to the subscription list if not added already
+   * @param name Data stream name
+    @return 
+  */
+  void
+  addToSubscriptionList(const ndn::Name& name) {
+    auto it = std::find(m_subscriptionList.begin(), m_subscriptionList.end(), name);
+    if (it != m_subscriptionList.end())
+      m_subscriptionList.emplace_back();
+  }
+
+  /**
+   * @brief This method returns highest recorded sequenc number of a manifest
+   *  or Data stream (identified by preifx) that is already fetched by the consumer.
+   *  If it was not recored (meaning the prefix wasn't received earlier via sync)
+   *  it will return NOT_AVAILABLE (i.e. -1) 
+   * 
+   * @param prefix Manifest or Stream name received via Sync update
+  */
   uint64_t
-  getLowSeqOfPrefix(const ndn::Name& prefix)
-  {
+  getHighSeqFetchedOfPrefix(const ndn::Name& prefix) {
     auto it = m_prefixToLowSeq.find(prefix);
     return (it == m_prefixToLowSeq.end()) ? NOT_AVAILABLE : it->second;
   }
 
+  /**
+   * @brief This methods sets the highest sequence number of a prefix (i.e. manifest) or 
+   *  data stream that is already received via sync updates. 
+   * @param prefix Manifest or Data Stream name
+   * @param seqNum highest sequence number fetched by the consumer
+    @return 
+  */
   void
-  setLowSeqOfPrefix(const ndn::Name& prefix, uint64_t seqNum)
-  {
+  setHighSeqFetchedOfPrefix(const ndn::Name& prefix, uint64_t seqNum) {
     auto it = m_prefixToLowSeq.find(prefix);
     if (it == m_prefixToLowSeq.end()) // prefix doesn't exist in the map
       m_prefixToLowSeq.emplace(prefix, seqNum);
@@ -98,45 +140,99 @@ public:
       it->second = seqNum;
   }
 
+  /**
+   * @brief Set the subscription list for the current consumer
+   * m_subscriptionList contains all the daa stream the consumer has subscribed to
+   * @param subList A vector containing all the stream name that's been subscribed
+   *  by the consumer
+  */
   void
-  setSubscriptionList(const std::vector<ndn::Name>& subList)
-  {
+  setSubscriptionList(const std::vector<ndn::Name>& subList) {
     m_subscriptionList = subList;
   }
 
+public:
+  /**
+   * @brief Subscribe to a Data stream or a Manifest
+   * @param streamname The name of the stream to subscribe to
+  */
+  void
+  subscribe(ndn::Name& streamName);
+  
+  /**
+   * @brief Unsubscribe to a Data stream or a Manifest
+   * @param streamname The name of the stream to un-subscribe to
+  */
+  void
+  unsubscribe(ndn::Name& streamName);
+
+  /**
+   * @brief This method check if the decryption is already fetched by the consumer
+   * It will internally call NAC-ABE's readyForDecryption() to get the information
+   * @return bool True if available else false
+  */
   bool
   checkConvergence();
 
+private:
+  
   void
   expressInterest(const ndn::Name& name, bool canBePrefix = false, bool mustBeFresh = false);
 
+  /**
+   * @brief This method will fetch the application data through NAC-ABE using 
+   *  NAC-ABE consume(..) API. Callback abeOnData or abeOnError will be called after
+   *  the async fetching.
+   * @param name Application data name
+   * 
+  */
+  void
+  fetchABEData(const ndn::Name& name);
+
+  /**
+   * @brief Callback on expressInterest once the data is received
+   *  The data can be from the mGuardController or mGuardPublisher
+   * @param interest Interest that was sent to fetch the data
+   * @param data Data received
+    @return 
+  */
   void
   onData(const ndn::Interest& interest, const ndn::Data& data);
 
+  /**
+   * @brief 
+  */
   void
   onTimeout(const ndn::Interest& interest);
 
-  void
-  subscribe(ndn::Name streamName);
-  
-  void
-  unsubscribe(ndn::Name streamName);
-
+  /**
+   * @brief Sync Callback after receiving hello data. 
+   * @param availStreams Contains stream/manifest name as well as it 
+   * latest sequence number
+    @return 
+  */
   void
   receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams);
 
+  /**
+   * @brief Sync Callback after receiving sync data.
+   * @param updates Contains stream/manifest name as well as its latest
+   * published sequence number
+    @return 
+  */
   void
   receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updates);
-
-  void
-  sendInterest();
   
   void
   wireDecode(const ndn::Block& wire);
 
-  // abe callbacks
+  // NAC-ABE callbacks
+  /**
+   * @brief 
+    @return 
+  */
   void
-  abeOnData(const ndn::Buffer& buffer, ndn::Name dataName);
+  abeOnData(const ndn::Buffer& buffer, const ndn::Name& dataName);
   
   void
   abeOnError(const std::string& errorMessage, const ndn::Name& name);
@@ -152,14 +248,12 @@ private:
   ndn::Name m_controllerPrefix;
   std::unordered_map<ndn::Name, uint64_t> m_prefixToLowSeq;
   std::vector<ndn::Name> m_subscriptionList;
-  bool m_subscribe;
 
   // available streams are the ones received from psync
   // and eligible streams are determined from the policy
   std::unordered_map<ndn::Name, uint64_t> m_availableStreams; // name, sequence number
   std::unordered_set<ndn::Name> m_eligibleStreams;
   std::map<ndn::Name, int> m_retransmissionCount;
-  ndn::nacabe::algo::PrivateKey decryptionKey;
   ndn::nacabe::Consumer m_abe_consumer;
 
   psync::Consumer m_psync_consumer;
