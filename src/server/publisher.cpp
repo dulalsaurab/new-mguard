@@ -150,7 +150,9 @@ Publisher::publish(ndn::Name& dataName, std::string data,
       auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
       NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
       std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
-                                                          {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()});
+                                                          {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()},
+                                                           ndn::security::signingWithSha256()
+                                                          );
   }
   catch(const std::exception& e) {
     NDN_LOG_ERROR("Encryption for the data: " << dataName << " failled");

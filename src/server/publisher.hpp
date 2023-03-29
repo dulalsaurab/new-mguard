@@ -30,6 +30,7 @@
 
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/security/signing-helpers.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>

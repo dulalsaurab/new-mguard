@@ -51,20 +51,33 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
                    std::bind(&Subscriber::receivedSyncUpdates, this, _1),
                    3, 0.001, 1_s, SYNC_INTEREST_LIFETIME) 
                    /* 3 = expected number of prefix to subscriber to, need to handle this differently later
-                      1_s hello interset lifetime, 1600_ms sync interest life time */
+                      1_s hello interset lifetime, SYNC_INTEREST_LIFETIME = 1600_ms sync interest life time */
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
-  loadCert("certs/producer.cert"); // need this ?? 
+  m_psync_consumer.sendHelloInterest();
+  // loadCert("certs/producer.cert"); // need this ?? 
+  
+  /*
+    In this constructor (code below), first, we get the consumer's decryption key by calling
+    obtainedDecryptionKey(). Calling this method from here (the application) has a few problems.
+    First, this method should be called internally by NAC-ABE. I'm not sure why it was exposed
+    to the consumer by the NAC-ABE library. Second, it doesn't provide a success/failure callback,
+    so the caller won't have any idea if the key was fetched successfully or not. Because of these
+    issues, we schedule readyForDecryption() to check if the public params and decryption key have
+    been successfully fetched by NAC-ABE after 2 seconds, and then we fetch policy details from
+    the controller after an additional 2 seconds.
+  */
 
   NDN_LOG_DEBUG("Subscriber initialized, fetching decryption key");
   m_abe_consumer.obtainDecryptionKey();
 
   m_scheduler.schedule(2_s, [=] {
     NDN_LOG_DEBUG("Check to see if the key is fetched");
-    if (!m_abe_consumer.readyForDecryption())
+    if (!m_abe_consumer.readyForDecryption()){
       NDN_LOG_ERROR("error: Failed to fetch decryption, exiting consumer.....");
       exit(-1);
+    }
   });
 
   // get policy details from controller
@@ -72,15 +85,14 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
     ndn::Name interestName = m_controllerPrefix;
     interestName.append(m_consumerPrefix);
     // schedule policy interest after 2 second, cushion to obtain the decryption key
-    // m_scheduler.schedule(2_s, [=] { 
-    NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
-    expressInterest(interestName, true);
-      // });
+    m_scheduler.schedule(4_s, [=] { 
+      NDN_LOG_DEBUG("Getting policy detail data, send interest: " << interestName);
+      expressInterest(interestName, true);
+    });
   }
   catch (const std::exception& e) {
     NDN_LOG_ERROR("error: " << e.what());
   }
-  m_psync_consumer.sendHelloInterest();
 }
 
 void
@@ -110,11 +122,11 @@ Subscriber::checkConvergence()
   int counter = 0;
   while (counter < 3) // wait for 6 seconds max, else return false
   {
+    std::this_thread::sleep_for (std::chrono::seconds(2));
     if(m_abe_consumer.readyForDecryption())
       return true;
-    // m_abe_consumer.obtainDecryptionKey(); // do we need to call this again ??
+
     ++counter;
-    std::this_thread::sleep_for (std::chrono::seconds(2));
   }
   return false;
 }
@@ -174,8 +186,9 @@ Subscriber::subscribe(ndn::Name& streamName)
     m_scheduler.schedule(200_ms, [=] { m_psync_consumer.sendHelloInterest();});
     return;
   }
-  NDN_LOG_INFO("Subscribing to: " << streamName);
+  NDN_LOG_INFO("Sending subscription of " << streamName << " to sync");
   m_psync_consumer.addSubscription(streamName, it->second);
+  // m_psync_consumer.sendSyncInterest(); // surprise why psync can't do this internally ??
 
   // add to subscription list if not added earlier
   addToSubscriptionList(streamName);
@@ -207,14 +220,14 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
   for (const auto& it: availStreams) {
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
-    
+
     setHighSeqFetchedOfPrefix(it.first, it.second);
   }
 
   // subscribe to streams present in the subscription list
-  for (auto stream : m_subscriptionList) {
-    subscribe(stream);
-  }
+  for (auto stream : m_subscriptionList) { subscribe(stream); }
+
+  m_psync_consumer.sendSyncInterest();
 }
 
 void
@@ -247,7 +260,6 @@ Subscriber::receivedSyncUpdates(const std::vector<psync::MissingDataInfo>& updat
       } else {
         fetchABEData(interestName);
       }
-      expressInterest(interestName, true);
     }
     // update lowSequnece number, set it to current high
     setHighSeqFetchedOfPrefix(update.prefix, update.highSeq+1);
@@ -259,8 +271,7 @@ Subscriber::wireDecode(const ndn::Block& wire)
 {
   wire.parse();
   auto val = wire.elements_begin();
-  if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardController)
-  {
+  if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardController) {
     NDN_LOG_DEBUG ("Received data from controller");
     m_eligibleStreams.clear();
     val->parse();
@@ -273,25 +284,18 @@ Subscriber::wireDecode(const ndn::Block& wire)
                                    ndn::to_string(it->type())));
       }
     }
-    // received data from the controller, perform following action
-    // 1. start syncronization 
-    // 2. send eligibleStreams back to consumer for subscription choice
-    // m_psync_consumer.sendHelloInterest();
-    // m_psync_consumer.sendSyncInterest();
     m_subCallback({m_eligibleStreams});
   }
 
-  
-  if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardPublisher)
-  {
-    // if its matches mGuardPublisher tlv, it will be the manifest data coz publisher only creates manifest packets
-    std::vector<ndn::Name> tempNameBuffer;
+  if (val != wire.elements_end() && val->type() == mguard::tlv::mGuardPublisher) {
+    // If its matches mGuardPublisher tlv, it will be the manifest data because
+    // publisher only creates manifest packets
     NDN_LOG_DEBUG ("Received data from publisher");
     val->parse();
     for (auto it = val->elements_begin(); it != val->elements_end(); ++it) {
       if (it->type() == ndn::tlv::Name) {
-        tempNameBuffer.emplace_back(*it);
-        const ndn::Name& dataName = readString(*it);
+        ndn::Name dataName(*it);
+        NDN_LOG_DEBUG("Fetch data: " << dataName);
         fetchABEData(dataName.getPrefix(-1));
       }
       else {
@@ -299,20 +303,7 @@ Subscriber::wireDecode(const ndn::Block& wire)
                                    ndn::to_string(it->type())));
       }
     }
-    // we got all the data names for this manifest, now lets fetch the actual payload
-    // for (const auto& dataName : tempNameBuffer)
-    // {
-      // if(!checkConvergence())
-      //   NDN_THROW(Error("Public params or private key is absent, can't decrypt the data"));
-      // auto appDataName = dataName.getPrefix(-1);
-      // fetchABEData(dataName.getPrefix(-1));
-      // m_abe_consumer.consume(appDataName,
-      //                        bind(&Subscriber::abeOnData, this, _1, appDataName),
-      //                        bind(&Subscriber::abeOnError, this, _1, appDataName));
-      // NDN_LOG_TRACE("data names: " << dataName);
-    // }
   }
-
 }
 
 void

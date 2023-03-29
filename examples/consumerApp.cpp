@@ -76,15 +76,8 @@ public:
   void
   processSubscriptionCallback(const std::unordered_set<ndn::Name>& streams)
   {
-     // wait until keys are fetched?
-    // check for convergence.
-    if (!m_subscriber.checkConvergence()) {
-      NDN_LOG_DEBUG("couldnt fetch appropriate keys, exiting");
-      exit(-1);
-    }
-
+  
     std::cout<< "\n\nStreams available for subscription" <<std::endl;
-
     NDN_LOG_INFO("\n\nStreams available for subscription");
     std::vector<ndn::Name> availableStreams, subscriptionList;
   
@@ -92,9 +85,10 @@ public:
     if (streams.size() <= 0) {
       NDN_LOG_INFO("No eligible stream found for your policy");
     }
+    
+    NDN_LOG_INFO("Stream/s available for subscription");
 
     for (auto &a : streams) {
-      std::cout<< ++counter << ": " << a << std::endl ;
       NDN_LOG_INFO(++counter << ": " << a);
       availableStreams.push_back(a);
     }
@@ -133,41 +127,33 @@ public:
     // uncomment if: taking input from user ----------------------------------------------
     
     std::vector<int> input; //
-    std::cout << "enter selection, enter any char to stop" << std::endl;
+    NDN_LOG_INFO("enter selection, enter any char to stop");
 
-
-    while(!std::cin.fail())
-    {
-        int value;
-        std::cin >> value;
-        if(!std::cin.fail())
-          input.push_back(value);
+    while(!std::cin.fail()) {
+      int value;
+      std::cin >> value;
+      if(!std::cin.fail())
+        input.push_back(value);
     }
 
-    std::cout << "Subscribed to the stream/s" << std::endl;
+    NDN_LOG_INFO("Subscribed to the stream/s");
     for (auto k : input)
     {
       auto ind = k-1;
-      // std::cout <<"k is"<< k << ": " << availableStreams[ind] << std::endl;
       if (availableStreams[ind] != "/") // todo: fix this
         m_subscriber.subscribe(availableStreams[ind]);
-        // subscriptionList.push_back(availableStreams[ind]);
-      std::cout<<"Subscribed to the stream/s" << availableStreams[ind] <<std::endl; // << std::endl;
-        // NDN_LOG_DEBUG("Subscribed to the stream/s" << availableStreams[ind]); // << std::endl;
+      NDN_LOG_DEBUG("Subscribed to the stream/s" << availableStreams[ind]);
     }
-   
-    // m_subscriber.unsubscribe(availableStreams[3]);
-  
   }
 
   void
-  handler() { m_subscriber.run(); }
+  handler() { 
+    m_subscriber.run(); 
+  }
 
-private:
-  ndn::Face m_face;
-  mguard::subscriber::Subscriber m_subscriber;
-  std::map<std::string, std::string> stream_name_data;
-
+  private:
+    ndn::Face m_face;
+    mguard::subscriber::Subscriber m_subscriber;
 };
 
 int
@@ -214,7 +200,6 @@ main(int argc, char* argv[])
   ndn::Name consumerPrefix(applicationPrefix);
   ndn::Name syncPrefix = "/ndn/org/md2k";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
-  // std::string consumerCertPath = "certs/A.cert";
   std::string aaCertPath = "certs/aa.cert";
   mGuardConsumer consumer (consumerPrefix, syncPrefix, controllerPrefix, certPath, aaCertPath);
   consumer.handler();
