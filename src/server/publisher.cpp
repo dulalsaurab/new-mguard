@@ -29,7 +29,8 @@ namespace mguard {
 Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
                     const ndn::Name& producerPrefix,
                     const ndn::security::Certificate& producerCert,
-                    const ndn::security::Certificate& attrAuthorityCertificate)
+                    const ndn::security::Certificate& attrAuthorityCertificate,
+                    const std::vector<std::string>& streamsToPublish)
 : m_face(face)
 , m_keyChain(keyChain)
 , m_scheduler(m_face.getIoService())
@@ -43,30 +44,27 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 , m_authorityCert(attrAuthorityCertificate)
 , m_abe_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
-
-  m_asyncRepoInserter.AsyncConnectToRepo("0.0.0.0", "7376", std::bind(&Publisher::connectHandler, this, _1));
+  m_asyncRepoInserter.AsyncConnectToRepo(std::bind(&Publisher::connectHandler, this, _1));
   std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Connecting to repo...");
 
+  if (streamsToPublish.empty()) {
+    NDN_LOG_DEBUG("Streams to publish (streamsToPublish) cannot be empty");
+    NDN_THROW(Error("Streams to publish (streamsToPublish) cannot be empty"));
+  }
+
   // --------------- in duscussion, only for testing----------
-  // Discussion: we will add all the possible stream to the psync at the begnning
-  // this is for the current testing and experiment only, the design needs to be better
+  // Discussion: we will add all the possible stream to the psync at the begnning.
+  // This is for the current testing and experiment only, the design needs to be better
   // reason: consumer kicks in, finds that the stream is still not available (sequential processing)
   // of the stream during the experiment, and thus keeps sending hello interest (causes a lot of overhead)
   // second, if we send hello interest less frequently, the overall data retrival delay increases.
   
-  ndn::Name p1 ("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST");
-  ndn::Name p2 ("/ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST");
-  ndn::Name p3 ("/ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST");
+  for (auto& name: streamsToPublish)
+    m_partialProducer.addUserNode(name);
 
-  // m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/manifest");
-  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST");
-  m_partialProducer.addUserNode("/ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST");
-    
-  m_partialProducer.updateSeqNo(p1, rand() % 100); 
-  m_partialProducer.updateSeqNo(p2, rand() % 100); 
-  m_partialProducer.updateSeqNo(p3, rand() % 100); 
-  // -------------------------
+  // if we want to start sync with specific sequence number, we can do the following
+  // m_partialProducer.updateSeqNo(<preifx>, <seq-num>);
 
   // sleep to init kp-abe producer
   std::this_thread::sleep_for (std::chrono::seconds(1));
@@ -121,7 +119,6 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
     NDN_LOG_DEBUG("Manifest: " << manifestName << " was already scheduled, updating the schedule");
     itr->second.cancel();
     auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
-                      
                       doUpdate(manifestName, publishManifest(stream));
                       NDN_LOG_DEBUG("Updated manifest: " << manifestName << " via scheduling");
                     });
@@ -129,7 +126,6 @@ Publisher::scheduledManifestForPublication(util::Stream& stream)
   }
   else {
     auto scheduleId = m_scheduler.schedule(MAX_UPDATE_WAIT_TIME, [&] {
-                      // publishManifest(stream);
                       doUpdate(manifestName, publishManifest(stream));
                       NDN_LOG_DEBUG("Updated manifest: " << manifestName << " via scheduling");
                     });
@@ -184,14 +180,6 @@ Publisher::publish(ndn::Name& dataName, std::string data,
     return;
   }
 
-  // create a manifest, and append each <data-name>/<implicit-digetst> to the manifest
-  // Manifest name: <stream name>/manifest/<seq-num>
-  // if (!streamName.has_value()){
-  //   NDN_LOG_DEBUG("Stream name missing when publishing data with manifest");
-  //   return;
-  //   // throw here??
-  // }
-
   auto& stream = getOrCreateStream(streamName);
 
   NDN_LOG_DEBUG("Manifest name: " << stream.getManifestName());
@@ -205,7 +193,6 @@ Publisher::publish(ndn::Name& dataName, std::string data,
   }
   cancleIfManifestScheduledForPublication(stream.getName());
   // create manifest data packet, and insert it into the repo
-  // auto currSeqNum = publishManifest(stream);
   doUpdate(stream.getManifestName(), publishManifest(stream));
 }
 
@@ -225,7 +212,8 @@ Publisher::publishManifest(util::Stream& stream)
   
   m_temp = stream.getManifestList();
   manifestData->setContent(wireEncode());
-  NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size() << " and seqNumber: " << currSeqNum + 1);
+  NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size()
+                 << " and seqNumber: " << currSeqNum + 1);
   
   m_keyChain.sign(*manifestData);
 

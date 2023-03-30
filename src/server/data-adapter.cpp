@@ -45,7 +45,7 @@ ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service,
 void
 ConnectionHandler::start()
 {
-  // this might be causing error aiso:2, refer log for more detail. 
+  // NOTE: This might be causing error aiso:2, refer log for more detail.
   async_read(sock, response_,
              boost::bind(&ConnectionHandler::readHandle,
              shared_from_this(),
@@ -95,12 +95,13 @@ ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes
 void 
 ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
-  if (!err) {
-      NDN_LOG_INFO("Server sent Hello message!");
-  } else {
-      NDN_LOG_ERROR("error: " << err.message());
-      sock.close();
+  if (err) {
+    NDN_LOG_ERROR("error: " << err.message());
+    sock.close();
+    return;
   }
+  NDN_LOG_INFO("Total bytes transfered: " << bytes_transferred);
+  NDN_LOG_INFO("Server sent Hello message!");
 }
 
 Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback)
@@ -113,8 +114,10 @@ Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiv
 void 
 Receiver::startAccept()
 {
-  ConnectionHandler::pointer connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_), 
-                                           std::bind(&Receiver::processCallbackFromController, this, _1, _2));
+  // ConnectionHandler::pointer
+  auto connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_),
+                                              std::bind(&Receiver::processCallbackFromController,
+                                              this, _1, _2));
 
   acceptor_.async_accept(connection->socket(),
                          boost::bind(&Receiver::handleAccept, this, connection,
@@ -123,37 +126,39 @@ Receiver::startAccept()
 
 
 void
-Receiver::processCallbackFromController(const std::vector<std::string> metaData, const std::string& response)
+Receiver::processCallbackFromController(const std::vector<std::string> metaData,
+                                        const std::string& response)
 {
-  // check if the metaData is empty, and there is no response
+  // Check if the metaData is empty, and there is no response
   if (!(response.empty()))
     m_onReceiveDataFromController(metaData[0], response);
 
-  // do nothing
+  // Do nothing
   NDN_LOG_DEBUG("Didn't receive any data from the receiver");
 }
-
 
 void 
 Receiver::handleAccept(ConnectionHandler::pointer connection, const boost::system::error_code& err)
 {
-  if (!err) {
-    connection->start();
-  }
+  if (!err) { connection->start();}
+
   startAccept();
 }
 
 DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
                          const std::string& producerCertPath,
                          const ndn::Name& aaPrefix, const std::string& aaCertPath,
-                         const std::string& lookupDatabase)
+                         const std::string& lookupDatabase,
+                         const std::string& attributeMappintFilePath)
 : m_face(face)
 , m_producerPrefix(producerPrefix)
 , m_producerCert(*loadCert(producerCertPath))
 , m_ABE_authorityCert(*loadCert(aaCertPath))
-, m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
+, m_attrMappingProcessor(attributeMappintFilePath)
+, m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert,
+              m_ABE_authorityCert, m_attrMappingProcessor.getStreamNames())
 , m_receiver(m_face.getIoService(), 
-            std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
+             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
 , m_dataBase(lookupDatabase)
 {
   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
@@ -175,14 +180,13 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
 {
   NDN_LOG_DEBUG("Received data from the receiver for streamName: " << streamName);
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
-  
+
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
     NDN_LOG_DEBUG("Received semantic location data");
     m_dataBase.insertRows(content);
   }
-  // TODO: ---> streamName, streamName ?
-  // m_streams.emplace(streamName, streamName);
+
   auto streamNDNName = std::regex_replace(streamName, std::regex("--"), "/"); // convert to ndn name
   publishDataUnit(streamNDNName, content);
 }
@@ -215,13 +219,14 @@ DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string
   {
     char timestamp [80];
     struct tm tm;
-    // get timestamp from the data row
+
+    // Get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
     auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
     auto timestamp_unprocessed = _tvec[1];
 
-    NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
+    NDN_LOG_DEBUG("Unprocessed data timestamp: " << timestamp_unprocessed);
 
     if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
       std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
@@ -232,13 +237,13 @@ DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
 
     /*
-      here we only check semantic location table, need to modify this
-      one possible solution: implement getAttribute function, which will check all
-      the possible lookups and get all attribute that will be applied
+      Here, we need to modify the semantic location table checking process. One possible
+      solution is to implement a 'getAttribute' function that can check all possible
+      lookups and retrieve all attributes that will be applied
     */
     std::vector<std::string> attrList= {streamName.toUri()};
     try {
-      auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+      auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp));
       if (!semAttr.empty()){
         for (auto& attr: semAttr) {
           auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);

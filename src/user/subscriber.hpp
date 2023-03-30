@@ -227,10 +227,6 @@ private:
   wireDecode(const ndn::Block& wire);
 
   // NAC-ABE callbacks
-  /**
-   * @brief 
-    @return 
-  */
   void
   abeOnData(const ndn::Buffer& buffer, const ndn::Name& dataName);
   

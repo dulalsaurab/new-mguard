@@ -42,12 +42,12 @@ Controller::Controller(const ndn::Name& controllerPrefix,
   NDN_LOG_DEBUG("Controller certificate: " << m_controllerCert);
   
   for(auto& policy : policyList) {
-    NDN_LOG_INFO("policy path: " << policy);
+    NDN_LOG_INFO("Policy path: " << policy);
     processPolicy(policy);
   }
 
   for(auto& it : m_policyMap)
-    NDN_LOG_TRACE("data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
+    NDN_LOG_TRACE("Data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
 
   setInterestFilter(m_controllerPrefix);
 }

@@ -92,9 +92,9 @@ DataBase::callback(void *NotUsed, int argc, char **argv, char **azColName)
 }
 
 std::vector<std::string>
-DataBase::getSemanticLocations(const std::string& timestamp, const std::string& userID)
+DataBase::getSemanticLocations(const std::string& timestamp)
 {
-  NDN_LOG_DEBUG("getting semantic location for timestamp: " << timestamp << " and user id: " << userID);
+  NDN_LOG_DEBUG("Getting semantic location for timestamp: " << timestamp);
   // output of function
   std::vector<std::string> out;
   // creating the query based on given timestamp and userID
@@ -137,7 +137,6 @@ DataBase::getSemanticLocations(const std::string& timestamp, const std::string& 
 std::vector<std::string>
 DataBase::getRowToInsert(std::string row)
 {
-  // NDN_LOG_TRACE("row to process: " << row);
   std::smatch m;
   std::vector<std::string> result;
   std::regex e ("datetime.datetime\\((.*?)\\)");
@@ -163,7 +162,6 @@ DataBase::getRowToInsert(std::string row)
       temp += "00";
     }
 
-    // NDN_LOG_TRACE("timestamp: " << temp);
     result.push_back(temp);
     row = m.suffix();
   }

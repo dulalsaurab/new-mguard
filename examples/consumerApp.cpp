@@ -17,7 +17,6 @@
  * mGuard, e.g., in COPYING.md file.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 #include <user/subscriber.hpp>
 #include <common.hpp>
 
@@ -93,39 +92,6 @@ public:
       availableStreams.push_back(a);
     }
 
-    // // these codes are only for testing purposes
-    // // automatically subscriber to the respective streams
-
-    // // A. battery only 
-    // // subscriptionList.push_back(availableStreams[0]); // battery
-
-    // // all stream
-
-        // for (std::size_t a = 0; a < strm_size ; a++){
-        //   subscriptionList.push_back(availableStreams[a]);
-        // }
-    // subscriptionList.push_back(availableStreams[0]); // battery
-    // subscriptionList.push_back(availableStreams[1]); // semloc
-    // subscriptionList.push_back(availableStreams[3]); // gps
-      
-
-    // // not gps
-    // // subscriptionList.push_back(availableStreams[0]); // battery
-    // // subscriptionList.push_back(availableStreams[2]); // sem_loc
-
-    // // accelerometer
-    // // subscriptionList.push_back(availableStreams[0]); // battery
-
-    // // only work
-    // // subscriptionList.push_back(availableStreams[0]); // gps, only the one with attribute work should be accessible
-
-    // for (auto& s: subscriptionList) {
-    //   // m_subscriber.subscribe(s);
-    //   NDN_LOG_DEBUG("Subscribed to the stream/s" << s); // << std::endl;
-    // }
-
-    // uncomment if: taking input from user ----------------------------------------------
-    
     std::vector<int> input; //
     NDN_LOG_INFO("enter selection, enter any char to stop");
 

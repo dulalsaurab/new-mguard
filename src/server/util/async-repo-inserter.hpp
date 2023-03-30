@@ -35,6 +35,9 @@ using AsyncRepoError = boost::system::error_code;
 using AsyncConnectHandler = std::function<void(const AsyncRepoError&)>;
 using AsyncWriteHandler = std::function<void(const ndn::Data&, const AsyncRepoError&)>;
 
+const std::string DEFAULT_HOST = "0.0.0.0";
+const std::string DEFAULT_PORT = "7376";
+
 class AsyncRepoInserter : boost::noncopyable
 {
 public:
@@ -49,7 +52,8 @@ public:
   AsyncRepoInserter(boost::asio::io_service& io);
 
   void
-  AsyncConnectToRepo(std::string repoHost, std::string repoPort, const AsyncConnectHandler& connectHandler);
+  AsyncConnectToRepo(const AsyncConnectHandler& connectHandler, const std::string& repoHost = DEFAULT_HOST,
+                     const std::string& repoPort = DEFAULT_PORT);
 
   void
   AsyncWriteDataToRepo(const ndn::Data& data, const AsyncWriteHandler& writeHandler);

@@ -1,6 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2021-2022,  The University of Memphis
+ * Copyright (c) 2021-2023,  The University of Memphis
  *
  * This file is part of mGuard.
  * See AUTHORS.md for complete list of mGuard authors and contributors.
@@ -45,13 +45,12 @@ namespace mguard {
 
 class Publisher
 {
-
 public:
   Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
-              const ndn::Name& producerPrefix,
-              const ndn::security::Certificate& producerCert,
-              const ndn::security::Certificate& attrAuthorityCertificate);
-
+            const ndn::Name& producerPrefix,
+            const ndn::security::Certificate& producerCert,
+            const ndn::security::Certificate& attrAuthorityCertificate,
+            const std::vector<std::string>& streamsToPublish);
   
   void
   connectHandler(const mguard::util::AsyncRepoError& err);
@@ -70,10 +69,8 @@ public:
   }
 
   void
-  publish(ndn::Name& dataName, std::string data, 
-                   std::vector<std::string> attrList,
-                   ndn::Name& streamName);
-
+  publish(ndn::Name& dataName, std::string data, std::vector<std::string> attrList,
+          ndn::Name& streamName);
 
   uint64_t
   publishManifest(util::Stream& stream);

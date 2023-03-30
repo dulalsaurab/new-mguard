@@ -87,6 +87,7 @@ FileProcessor::getVectorByDelimiter(std::string _s, std::string delimiter, int n
 AttributeMappingFileProcessor::AttributeMappingFileProcessor(const std::string& filename)
 : m_filename (filename)
 {
+  processAttributeMappingFile();
 }
 
 bool
