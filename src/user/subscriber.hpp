@@ -26,6 +26,7 @@
 
 #include <ndn-cxx/util/logger.hpp>
 #include <ndn-cxx/face.hpp>
+#include <ndn-cxx/security/validator-config.hpp>
 
 #include <functional>
 #include <string>
@@ -238,6 +239,7 @@ private:
   ndn::security::KeyChain m_keyChain;
   ndn::Scheduler m_scheduler;
   std::thread m_face_thread;
+  ndn::security::ValidatorConfig m_validator;
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;

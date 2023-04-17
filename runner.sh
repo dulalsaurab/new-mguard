@@ -15,13 +15,13 @@ sudo killall ndn-python-repo
 
 nfdc cs erase /ndn/org/md2k
 
-# nfd-stop
+nfd-stop
 
 sleep 2
 
 rm -rf ~/.ndn/ndn-python-repo/sqlite3.db
 
-# nfd-start &>/dev/null
+nfd-start &>/dev/null
 
 sleep 1
 

@@ -35,10 +35,10 @@ NDN_LOG_INIT(mguard.DataAdapter);
 
 namespace mguard {
 
-ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service,
-                                     const CallbackFromController& callback)
+ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service, 
+                                     const Callback& callbackFromController)
 : sock(io_service)
-, m_onReceiveDataFromClient(callback)
+, m_onReceiveDataFromClient(callbackFromController)
 {
 }
 
@@ -81,14 +81,15 @@ ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes
   boost::property_tree::ptree pt;
   std::istringstream ss(dataReceived);
   boost::property_tree::read_json(ss, pt);
-  auto headerData = pt.get<std::string>("header");
+  
+  auto streamMetaData = pt.get<std::string>("header");
+  auto streamName = pt.get<std::string>("header.name");
   auto payload = pt.get<std::string>("payload");
 
-  boost::split(metaData, headerData, boost::is_any_of("|"));
+  NDN_LOG_INFO("Data received for the following stream: "<< streamName);
+  NDN_LOG_TRACE("Metadata of the stream: "<< streamName << " = " << streamMetaData);
 
-  NDN_LOG_INFO("Data received for the following metadata: "<< headerData);
-
-  m_onReceiveDataFromClient(metaData, payload);
+  m_onReceiveDataFromClient(streamName, streamMetaData, payload);
   sock.close();
 }
 
@@ -104,9 +105,9 @@ ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t byte
   NDN_LOG_INFO("Server sent Hello message!");
 }
 
-Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback)
+Receiver::Receiver(boost::asio::io_service& io_service, const Callback& callbackFromReceiver)
 : acceptor_(io_service, tcp::endpoint(tcp::v4(), 8808))
-, m_onReceiveDataFromController(callback)
+, m_onReceiveDataFromController(callbackFromReceiver)
 {
   startAccept();
 }
@@ -117,7 +118,7 @@ Receiver::startAccept()
   // ConnectionHandler::pointer
   auto connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_),
                                               std::bind(&Receiver::processCallbackFromController,
-                                              this, _1, _2));
+                                              this, _1, _2, _3));
 
   acceptor_.async_accept(connection->socket(),
                          boost::bind(&Receiver::handleAccept, this, connection,
@@ -126,12 +127,13 @@ Receiver::startAccept()
 
 
 void
-Receiver::processCallbackFromController(const std::vector<std::string> metaData,
+Receiver::processCallbackFromController(const std::string& streamName,
+                                        const std::string& metaData,
                                         const std::string& response)
 {
   // Check if the metaData is empty, and there is no response
   if (!(response.empty()))
-    m_onReceiveDataFromController(metaData[0], response);
+    m_onReceiveDataFromController(streamName, metaData, response);
 
   // Do nothing
   NDN_LOG_DEBUG("Didn't receive any data from the receiver");
@@ -158,7 +160,7 @@ DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
 , m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert,
               m_ABE_authorityCert, m_attrMappingProcessor.getStreamNames())
 , m_receiver(m_face.getIoService(), 
-             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
+             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2, _3))
 , m_dataBase(lookupDatabase)
 {
   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
@@ -176,7 +178,8 @@ DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 }
 
 void
-DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
+DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& metaData,
+                                         const std::string& streamContent)
 {
   NDN_LOG_DEBUG("Received data from the receiver for streamName: " << streamName);
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
@@ -188,7 +191,7 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
   }
 
   auto streamNDNName = std::regex_replace(streamName, std::regex("--"), "/"); // convert to ndn name
-  publishDataUnit(streamNDNName, content);
+  publishDataUnit(streamNDNName, metaData, content);
 }
 
 void
@@ -212,9 +215,20 @@ DataAdapter::stop()
 }
 
 void
-DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string>& dataSet)
+DataAdapter::publishDataUnit(ndn::Name streamName, const std::string& metaData,
+                             const std::vector<std::string>& dataSet)
 {
   NDN_LOG_INFO("Processing stream: " << streamName);
+
+  // first process/publish the metadata
+  auto metaDataName = streamName;
+  // version number will be extracted from the metaData itself.
+  // right now the information is not available there
+  // naming /<stream-name>/metadata/<version-number>
+  metaDataName.append("metadata/v1");
+  m_publisher.publish(metaDataName, metaData, {streamName.toUri()}, streamName);
+
+  // next, process/publish each individual data stream
   for (auto data : dataSet)
   {
     char timestamp [80];

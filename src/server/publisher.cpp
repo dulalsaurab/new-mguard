@@ -142,13 +142,15 @@ Publisher::publish(ndn::Name& dataName, std::string data,
 
   std::shared_ptr<ndn::Data> enc_data, ckData;
   try {
-      NDN_LOG_DEBUG("Encrypting data: " << dataName << " with attributes: " << vectorToString(attrList));
-      auto dataSufix = dataName.getSubName(3); // gives suffix except /ndn/org/md2k/..... 
-      NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
-      std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
-                                                          {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()},
-                                                           ndn::security::signingWithSha256()
-                                                          );
+    NDN_LOG_DEBUG("Encrypting data: " << dataName << " with attributes: " << vectorToString(attrList));
+    // gives suffix except /ndn/org/md2k/.....
+    // TODO::: we should handle this in a better way
+    auto dataSufix = dataName.getSubName(3);
+    NDN_LOG_TRACE("--------- data suffix: " << dataSufix);
+    std::tie(enc_data, ckData) = m_abe_producer.produce(dataSufix, attrList,
+                                    {reinterpret_cast<const uint8_t *>(data.c_str()), data.size()},
+                                    ndn::security::signingWithSha256()
+                                  );
   }
   catch(const std::exception& e) {
     NDN_LOG_ERROR("Encryption for the data: " << dataName << " failled");
@@ -204,9 +206,10 @@ Publisher::publishManifest(util::Stream& stream)
 
   uint64_t currSeqNum =  m_partialProducer.getSeqNo(dataName).value();
 
+  /* For testing, randomizing sequence number
   if (currSeqNum == 0)
     currSeqNum = rand() % 1000;
-
+  */
   dataName.appendNumber(currSeqNum + 1);
   auto manifestData = std::make_shared<ndn::Data>(dataName);
   

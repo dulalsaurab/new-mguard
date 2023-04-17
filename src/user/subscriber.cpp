@@ -40,6 +40,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
                        const SubscriptionCallback& subCallback,
                        const ndn::time::microseconds syncInterestLifetime)
 : m_scheduler(m_face.getIoService())
+, m_validator(m_face)
 , m_consumerPrefix(consumerPrefix)
 , m_syncPrefix(syncPrefix)
 , m_controllerPrefix(controllerPrefix)
@@ -56,6 +57,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_subCallback(subCallback)
 {
   m_psync_consumer.sendHelloInterest();
+  m_validator.load("certs/trust-schema.conf");
   // loadCert("certs/producer.cert"); // need this ?? 
   
   /*
@@ -148,9 +150,17 @@ void
 Subscriber::onData(const ndn::Interest& interest, const ndn::Data& data)
 {
   NDN_LOG_INFO("Data received for: " << interest.getName());
+  /* With validation */
+  // m_validator.validate(data,
+  //   [=] (const ndn::Data& data) {
+  //     wireDecode(data.getContent());
+  //   },
+  //   [] (const ndn::Data&, const ndn::security::ValidationError& error) {
+  //     std::cerr << "Cannot validate retrieved data: " << error << std::endl;
+  //   });
   wireDecode(data.getContent());
-
 }
+
 void
 Subscriber::onTimeout(const ndn::Interest& interest)
 {
@@ -221,7 +231,7 @@ Subscriber::receivedHelloData(const std::map<ndn::Name, uint64_t>& availStreams)
     NDN_LOG_DEBUG (" stream name: " << it.first << " latest seqNum" << it.second);
     m_availableStreams[it.first] = it.second;
 
-    setHighSeqFetchedOfPrefix(it.first, it.second);
+    // setHighSeqFetchedOfPrefix(it.first, it.second);
   }
 
   // subscribe to streams present in the subscription list

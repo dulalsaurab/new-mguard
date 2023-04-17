@@ -27,17 +27,9 @@ def get_sender():
     sender = Sender(port)
     return sender
 
-def send_stream(stream_name, data, sender_obj):
+def send_stream(data_to_send, sender_obj):
 
-    print("Sending data for stream name {}".format(stream_name))
-
-    metadata = "{}|{}".format(stream_name, sys.getsizeof(data))
-    print("Metadata of the stream {}".format(metadata))
-
-    data = {'header': metadata, 'payload': data}
-    print(data)
-    
-    serialize_data = json.dumps(data)
+    serialize_data = json.dumps(data_to_send)
 
     ack = ''
     while not ack:
@@ -63,6 +55,8 @@ def main():
             print('No existing data to be deleted')
 
         start_time = '1993-05-0{} 10:00:00'.format(current_batch)
+        #10
+        end_time = '1993-05-0{} 10:0:11'.format(current_batch)
         #50
         end_time = '1993-05-0{} 10:0:50'.format(current_batch)
         #100
@@ -83,19 +77,25 @@ def main():
         # end_time = '2022-05-0{} 10:08:21'.format(current_batch)
 
         print("Fetching data for start_time {} and end_time {}".format(start_time, end_time))
-
         cc_obj, streams = get_cc(start_time, end_time)
+
         for stream in streams:
             stream_name = streams[stream]
-            sender_obj = get_sender()
-            data = cc_obj.get_stream(stream_name).toPandas()
+
+            metadata =  cc_obj.get_stream_metadata_by_name(stream_name).to_json()
+            
+            payload = cc_obj.get_stream(stream_name).toPandas()
+            data_to_send = {'header': metadata, 'payload': payload.to_csv()}
 
             # uncomment for debugging
             # data1 = data
             # data1.to_csv(str(current_batch) + '_' + stream_name, index=False)
 
-            print("Sample data from the stream: \n", data)
-            send_stream(stream_name, data.to_csv(), sender_obj)
+            print("Sending data for stream name {}".format(stream_name))
+            print("Metadata of the stream {} = {}".format(stream_name, metadata))
+            
+            sender_obj = get_sender()
+            send_stream(data_to_send, sender_obj)
             
             sleep(2)
 
