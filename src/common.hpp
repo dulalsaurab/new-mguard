@@ -35,15 +35,13 @@ loadCert(const std::string& certLoc)
   std::string certStr((std::istreambuf_iterator<char>(input_file)), std::istreambuf_iterator<char>());
   std::istringstream ss(certStr);
   auto cert = ndn::io::load<ndn::security::Certificate>(ss);
-  
-  // std::cout << "cert: " << *cert << std::endl;
   return cert;
 }
 
 namespace tlv
 {
 
-enum 
+enum
 {
   mGuardContent = 127,
   mGuardPublisher = 128,
@@ -61,7 +59,7 @@ if use_manifest is set to false, manifest will not be used, application data wil
 */
 const bool USE_MANIFEST = true;
 
-// manifest will be published after receiving 10 data units
+// manifest will be published after receiving 50 data units
 const int MANIFEST_BATCH_SIZE = 50;
 
 // if next update is not received withing 200 ms, the manifest will be publised, this can override batch size

@@ -20,7 +20,6 @@
 #ifndef MGUARD_DATABASE_HPP
 #define MGUARD_DATABASE_HPP
 
-// #include "file-processor.hpp"
 #include "stream.hpp"
 
 #include <ndn-cxx/util/logger.hpp>
@@ -61,11 +60,11 @@ public:
   bool
   openDataBase();
   /* 
-    main function that gets the unique semantic locations from the db given a timestamp and userID
-    call this after the database is populated, or else it won't work timestamp is in the format YYYYMMDDHHMMSS
+    Main function that gets the unique semantic locations from the db given a timestamp call this
+    after the database is populated, or else it won't work, timestamp is in the format YYYYMMDDHHMMSS
   */
   std::vector<std::string>
-  getSemanticLocations(const std::string& timestamp, const std::string& userID);
+  getSemanticLocations(const std::string& timestamp);
 
   std::vector<std::string>
   getRowToInsert(std::string row);

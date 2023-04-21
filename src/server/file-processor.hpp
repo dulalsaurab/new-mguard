@@ -51,10 +51,21 @@ public:
   AttributeMappingFileProcessor(const std::string& filename);
 
   std::map<std::string, std::string>& 
-  getStreams()
+  getStreamNamesWithId()
   {
     return m_streams;
   }
+
+  std::vector<std::string>
+  getStreamNames()
+  {
+    std::vector<std::string> streamNames;
+    for (const auto& it : m_streams)
+      streamNames.push_back(it.second);
+
+    return streamNames;
+  }
+
 
   std::map<ndn::Name, mguard::AttributeMappingTable>& 
   getMappingTable()

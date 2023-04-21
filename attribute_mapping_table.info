@@ -3,11 +3,12 @@ streams
 {
   ;<stream-id> <stream-name> 
   1, /ndn/org/md2k/mguard/dd40c/phone/gps_coordinates
-  2, /ndn/org/md2k/mguard/dd40c/phone/accelerometer
-  3, /ndn/org/md2k/mperf/dd40c/motion_sense/accelerometer/left_wrist
-  4, /ndn/org/md2k/mguard/dd40c/phone/gyroscope
-  5, /ndn/org/md2k/mperf/dd40c/data_analysis/gps_episodes_and_semantic_location
-  6, /ndn/org/md2k/mperf/dd40c/data_analysis/physical_acitivity
+  2, /ndn/org/md2k/mguard/dd40c/phone/battery
+  ; 3, /ndn/org/md2k/mguard/dd40c/phone/accelerometer
+  ; 4, /ndn/org/md2k/mguard/dd40c/motion_sense/accelerometer/left_wrist
+  ; 5, /ndn/org/md2k/mguard/dd40c/phone/gyroscope
+  6, /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+  ; 7, /ndn/org/md2k/mguard/dd40c/data_analysis/physical_acitivity
 }
 
 attribute-mapping

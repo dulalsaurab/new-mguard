@@ -1,6 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2021-2022,  The University of Memphis
+ * Copyright (c) 2021-2023,  The University of Memphis
  *
  * This file is part of mGuard.
  * See AUTHORS.md for complete list of mGuard authors and contributors.
@@ -51,25 +51,29 @@ using std::endl;
 #define GET_IO_SERVICE(s) ((s).get_io_service())
 #endif
 
-
 namespace mguard {
 
-using CallbackFromController = std::function<void(const std::vector<std::string> metaData, const std::string response)>;
-using CallbackFromReceiver = std::function<void(const std::string& streamName, const std::string& streamContent)>;
 
+using Callback = std::function<void(const std::string& streamName, const std::string& metaData, 
+                                    const std::string& response)>;
+
+/*
+  @brief ConnectionHandler acts as a server for the data generator module. It
+  handles a connection via a TCP socket.
+*/
 class ConnectionHandler : public boost::enable_shared_from_this<ConnectionHandler>
 {
 public:
   
   typedef boost::shared_ptr<ConnectionHandler> pointer;
 
-  ConnectionHandler(boost::asio::io_service& io_service, const CallbackFromController& callback);
+  ConnectionHandler(boost::asio::io_service& io_service, const Callback& callbackFromController);
   
   // creating the pointer
   static pointer 
-  create(boost::asio::io_service& io_service, const CallbackFromController& callback)
+  create(boost::asio::io_service& io_service, const Callback& callbackFromController)
   {
-    return pointer(new ConnectionHandler(io_service, callback));
+    return pointer(new ConnectionHandler(io_service, callbackFromController));
   }
 
   tcp::socket& 
@@ -107,36 +111,36 @@ private:
   char data[max_length];  
   std::vector<std::string> metaData;
   boost::asio::streambuf response_;
-  CallbackFromController m_onReceiveDataFromClient;
+  Callback m_onReceiveDataFromClient;
 };
 
 class Receiver 
 {
 public:
   
-  Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback);
+  Receiver(boost::asio::io_service& io_service, const Callback& callbackFromReceiver);
 
   void 
   startAccept();
 
   void
-  processCallbackFromController(const std::vector<std::string> metaData, const std::string& response);
+  processCallbackFromController(const std::string& streamName, const std::string& metaData, const std::string& response);
 
   void
   handleAccept(ConnectionHandler::pointer connection, const boost::system::error_code& err);
 
 private:
    tcp::acceptor acceptor_;
-   CallbackFromReceiver m_onReceiveDataFromController;
+   Callback m_onReceiveDataFromController;
 };
 
 class DataAdapter
 {
 public:
   DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
-                         const std::string& producerCertPath,
-                         const ndn::Name& aaPrefix, const std::string& aaCertPath,
-                         const std::string& lookupDatabase);
+              const std::string& producerCertPath, const ndn::Name& aaPrefix,
+              const std::string& aaCertPath, const std::string& lookupDatabase,
+              const std::string& availableStreamFilePath);
   
   void
   run();
@@ -148,10 +152,12 @@ public:
   makeDataName(ndn::Name streamName, std::string timestamp);
 
   void
-  processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent);
+  processCallbackFromReceiver(const std::string& streamName, const std::string& metaData,
+                              const std::string& streamContent);
   
   void
-  publishDataUnit(ndn::Name streamName, const std::vector<std::string>& dataSet);
+  publishDataUnit(ndn::Name streamName, const std::string& metaData,
+                  const std::vector<std::string>& dataSet);
 
 private:
   ndn::KeyChain m_keyChain;
@@ -163,6 +169,7 @@ private:
 
   ndn::security::Certificate m_producerCert;
   ndn::security::Certificate m_ABE_authorityCert;
+  AttributeMappingFileProcessor m_attrMappingProcessor;
 
   mguard::Publisher m_publisher;
   boost::asio::io_service m_ioService;

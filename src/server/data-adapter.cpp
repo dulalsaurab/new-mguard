@@ -35,17 +35,17 @@ NDN_LOG_INIT(mguard.DataAdapter);
 
 namespace mguard {
 
-ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service,
-                                     const CallbackFromController& callback)
+ConnectionHandler::ConnectionHandler(boost::asio::io_service& io_service, 
+                                     const Callback& callbackFromController)
 : sock(io_service)
-, m_onReceiveDataFromClient(callback)
+, m_onReceiveDataFromClient(callbackFromController)
 {
 }
 
 void
 ConnectionHandler::start()
 {
-  // this might be causing error aiso:2, refer log for more detail. 
+  // NOTE: This might be causing error aiso:2, refer log for more detail.
   async_read(sock, response_,
              boost::bind(&ConnectionHandler::readHandle,
              shared_from_this(),
@@ -81,31 +81,33 @@ ConnectionHandler::readHandle(const boost::system::error_code& err, size_t bytes
   boost::property_tree::ptree pt;
   std::istringstream ss(dataReceived);
   boost::property_tree::read_json(ss, pt);
-  auto headerData = pt.get<std::string>("header");
+  
+  auto streamMetaData = pt.get<std::string>("header");
+  auto streamName = pt.get<std::string>("header.name");
   auto payload = pt.get<std::string>("payload");
 
-  boost::split(metaData, headerData, boost::is_any_of("|"));
+  NDN_LOG_INFO("Data received for the following stream: "<< streamName);
+  NDN_LOG_TRACE("Metadata of the stream: "<< streamName << " = " << streamMetaData);
 
-  NDN_LOG_INFO("Data received for the following metadata: "<< headerData);
-
-  m_onReceiveDataFromClient(metaData, payload);
+  m_onReceiveDataFromClient(streamName, streamMetaData, payload);
   sock.close();
 }
 
 void 
 ConnectionHandler::writeHandle(const boost::system::error_code& err, size_t bytes_transferred)
 {
-  if (!err) {
-      NDN_LOG_INFO("Server sent Hello message!");
-  } else {
-      NDN_LOG_ERROR("error: " << err.message());
-      sock.close();
+  if (err) {
+    NDN_LOG_ERROR("error: " << err.message());
+    sock.close();
+    return;
   }
+  NDN_LOG_INFO("Total bytes transfered: " << bytes_transferred);
+  NDN_LOG_INFO("Server sent Hello message!");
 }
 
-Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiver& callback)
+Receiver::Receiver(boost::asio::io_service& io_service, const Callback& callbackFromReceiver)
 : acceptor_(io_service, tcp::endpoint(tcp::v4(), 8808))
-, m_onReceiveDataFromController(callback)
+, m_onReceiveDataFromController(callbackFromReceiver)
 {
   startAccept();
 }
@@ -113,8 +115,10 @@ Receiver::Receiver(boost::asio::io_service& io_service, const CallbackFromReceiv
 void 
 Receiver::startAccept()
 {
-  ConnectionHandler::pointer connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_), 
-                                           std::bind(&Receiver::processCallbackFromController, this, _1, _2));
+  // ConnectionHandler::pointer
+  auto connection = ConnectionHandler::create(GET_IO_SERVICE(acceptor_),
+                                              std::bind(&Receiver::processCallbackFromController,
+                                              this, _1, _2, _3));
 
   acceptor_.async_accept(connection->socket(),
                          boost::bind(&Receiver::handleAccept, this, connection,
@@ -123,37 +127,40 @@ Receiver::startAccept()
 
 
 void
-Receiver::processCallbackFromController(const std::vector<std::string> metaData, const std::string& response)
+Receiver::processCallbackFromController(const std::string& streamName,
+                                        const std::string& metaData,
+                                        const std::string& response)
 {
-  // check if the metaData is empty, and there is no response
+  // Check if the metaData is empty, and there is no response
   if (!(response.empty()))
-    m_onReceiveDataFromController(metaData[0], response);
+    m_onReceiveDataFromController(streamName, metaData, response);
 
-  // do nothing
+  // Do nothing
   NDN_LOG_DEBUG("Didn't receive any data from the receiver");
 }
-
 
 void 
 Receiver::handleAccept(ConnectionHandler::pointer connection, const boost::system::error_code& err)
 {
-  if (!err) {
-    connection->start();
-  }
+  if (!err) { connection->start();}
+
   startAccept();
 }
 
 DataAdapter::DataAdapter(ndn::Face& face, const ndn::Name& producerPrefix,
                          const std::string& producerCertPath,
                          const ndn::Name& aaPrefix, const std::string& aaCertPath,
-                         const std::string& lookupDatabase)
+                         const std::string& lookupDatabase,
+                         const std::string& attributeMappintFilePath)
 : m_face(face)
 , m_producerPrefix(producerPrefix)
 , m_producerCert(*loadCert(producerCertPath))
 , m_ABE_authorityCert(*loadCert(aaCertPath))
-, m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert, m_ABE_authorityCert)
+, m_attrMappingProcessor(attributeMappintFilePath)
+, m_publisher(m_face, m_keyChain, m_producerPrefix, m_producerCert,
+              m_ABE_authorityCert, m_attrMappingProcessor.getStreamNames())
 , m_receiver(m_face.getIoService(), 
-            std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2))
+             std::bind(&DataAdapter::processCallbackFromReceiver, this, _1, _2, _3))
 , m_dataBase(lookupDatabase)
 {
   NDN_LOG_DEBUG ("Initialized data adaptor and publisher");
@@ -171,20 +178,20 @@ DataAdapter::makeDataName(ndn::Name streamName, std::string timestamp)
 }
 
 void
-DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& streamContent)
+DataAdapter::processCallbackFromReceiver(const std::string& streamName, const std::string& metaData,
+                                         const std::string& streamContent)
 {
   NDN_LOG_DEBUG("Received data from the receiver for streamName: " << streamName);
   auto content = m_fileProcessor.getVectorByDelimiter(streamContent, "\n", 1);
-  
+
   if (streamName == SEMANTIC_LOCATION) {
     // insert the data into the lookup table
     NDN_LOG_DEBUG("Received semantic location data");
     m_dataBase.insertRows(content);
   }
-  // TODO: ---> streamName, streamName ?
-  // m_streams.emplace(streamName, streamName);
+
   auto streamNDNName = std::regex_replace(streamName, std::regex("--"), "/"); // convert to ndn name
-  publishDataUnit(streamNDNName, content);
+  publishDataUnit(streamNDNName, metaData, content);
 }
 
 void
@@ -208,20 +215,32 @@ DataAdapter::stop()
 }
 
 void
-DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string>& dataSet)
+DataAdapter::publishDataUnit(ndn::Name streamName, const std::string& metaData,
+                             const std::vector<std::string>& dataSet)
 {
   NDN_LOG_INFO("Processing stream: " << streamName);
+
+  // first process/publish the metadata
+  auto metaDataName = streamName;
+  // version number will be extracted from the metaData itself.
+  // right now the information is not available there
+  // naming /<stream-name>/metadata/<version-number>
+  metaDataName.append("metadata/v1");
+  m_publisher.publish(metaDataName, metaData, {streamName.toUri()}, streamName);
+
+  // next, process/publish each individual data stream
   for (auto data : dataSet)
   {
     char timestamp [80];
     struct tm tm;
-    // get timestamp from the data row
+
+    // Get timestamp from the data row
     std::string delimiter = ",";
     m_tempRow = data;
     auto _tvec = m_fileProcessor.getVectorByDelimiter(m_tempRow, delimiter);
     auto timestamp_unprocessed = _tvec[1];
 
-    NDN_LOG_DEBUG(" unprocessed data timestamp: " << timestamp_unprocessed);
+    NDN_LOG_DEBUG("Unprocessed data timestamp: " << timestamp_unprocessed);
 
     if (strptime(timestamp_unprocessed.c_str(), "%Y-%m-%d %H:%M:%S", &tm)) {
       std::strftime(timestamp,80,"%Y%m%d%H%M%S",&tm);
@@ -232,13 +251,13 @@ DataAdapter::publishDataUnit(ndn::Name streamName, const std::vector<std::string
     NDN_LOG_DEBUG ("Publishing data name: " << dataName << " with timestamp: " << timestamp);
 
     /*
-      here we only check semantic location table, need to modify this
-      one possible solution: implement getAttribute function, which will check all
-      the possible lookups and get all attribute that will be applied
+      Here, we need to modify the semantic location table checking process. One possible
+      solution is to implement a 'getAttribute' function that can check all possible
+      lookups and retrieve all attributes that will be applied
     */
     std::vector<std::string> attrList= {streamName.toUri()};
     try {
-      auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp), "dd40c");
+      auto semAttr = m_dataBase.getSemanticLocations(std::string(timestamp));
       if (!semAttr.empty()){
         for (auto& attr: semAttr) {
           auto _semLocAttr = mguard::util::getNdnNameFromSemanticLocationName(attr);

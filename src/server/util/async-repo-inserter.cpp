@@ -41,7 +41,8 @@ AsyncRepoInserter::AsyncRepoInserter(boost::asio::io_service& io)
 }
 
 void
-AsyncRepoInserter::AsyncConnectToRepo(std::string repoHost, std::string repoPort, const AsyncConnectHandler& connectHandler)
+AsyncRepoInserter::AsyncConnectToRepo(const AsyncConnectHandler& connectHandler, const std::string& repoHost,
+                                      const std::string& repoPort)
 {
   bp::tcp::resolver::query query(repoHost, repoPort);
   m_resolv.async_resolve(query, [this, connectHandler](auto& err, auto& it) {

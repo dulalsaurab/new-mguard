@@ -58,7 +58,7 @@ public:
   }
 
   /*
-    once the manifest is published (inserted list to repo, need to reset it for fresh names)
+    Once the manifest is published (inserted list to repo, need to reset it for fresh names)
   */
   void
   resetManifestList()

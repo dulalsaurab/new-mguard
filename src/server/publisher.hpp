@@ -1,6 +1,6 @@
 /* -*- Mode:C++; c-file-style:"gnu"; indent-tabs-mode:nil; -*- */
 /*
- * Copyright (c) 2021-2022,  The University of Memphis
+ * Copyright (c) 2021-2023,  The University of Memphis
  *
  * This file is part of mGuard.
  * See AUTHORS.md for complete list of mGuard authors and contributors.
@@ -30,6 +30,7 @@
 
 #include <ndn-cxx/face.hpp>
 #include <ndn-cxx/util/logger.hpp>
+#include <ndn-cxx/security/signing-helpers.hpp>
 
 #include <boost/asio.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -44,14 +45,20 @@ namespace mguard {
 
 class Publisher
 {
-
 public:
   Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
-              const ndn::Name& producerPrefix,
-              const ndn::security::Certificate& producerCert,
-              const ndn::security::Certificate& attrAuthorityCertificate);
-
+            const ndn::Name& producerPrefix,
+            const ndn::security::Certificate& producerCert,
+            const ndn::security::Certificate& attrAuthorityCertificate,
+            const std::vector<std::string>& streamsToPublish);
   
+  void
+  onRegistrationSuccess(const ndn::Name& name);
+
+  void
+  onRegistrationFailed(const ndn::Name& name);
+
+
   void
   connectHandler(const mguard::util::AsyncRepoError& err);
   
@@ -69,10 +76,8 @@ public:
   }
 
   void
-  publish(ndn::Name& dataName, std::string data, 
-                   std::vector<std::string> attrList,
-                   ndn::Name& streamName);
-
+  publish(ndn::Name& dataName, std::string data, std::vector<std::string> attrList,
+          ndn::Name& streamName);
 
   uint64_t
   publishManifest(util::Stream& stream);
@@ -103,6 +108,8 @@ private:
   ndn::Face& m_face;
   ndn::security::KeyChain& m_keyChain;
   ndn::Scheduler m_scheduler;
+  ndn::ScopedRegisteredPrefixHandle m_certServeHandle;
+
   std::map<ndn::Name, ndn::scheduler::ScopedEventId>m_scheduledIds;
   mutable ndn::Block m_wire;
   psync::PartialProducer m_partialProducer;
