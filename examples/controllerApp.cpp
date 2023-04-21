@@ -24,7 +24,6 @@ int main()
 {
   // init controller
   std::string availableStreamsFilePath = "policies/available_streams";
-  // std::string policyFilePath = "../policiespolicy1";
   std::string aaPrefix = "/ndn/org/md2k/mguard/aa";
   ndn::Name controllerPrefix = "/ndn/org/md2k/mguard/controller";
   std::string aaCertPath = "certs/aa.cert";

@@ -49,7 +49,17 @@ Controller::Controller(const ndn::Name& controllerPrefix,
   for(auto& it : m_policyMap)
     NDN_LOG_TRACE("Data consumer: " << it.first << " ABE policy: " << it.second.abePolicy);
 
-  setInterestFilter(m_controllerPrefix);
+  auto certName = ndn::security::extractIdentityFromCertName(m_controllerCert.getName());
+
+  NDN_LOG_INFO("Setting interest filter on name: " << certName);
+  m_certServeHandle = m_face.setInterestFilter(ndn::InterestFilter(certName).allowLoopback(false),
+                        [this] (auto&&...) {
+                          m_face.put(this->m_controllerCert);
+                        },
+                        std::bind(&Controller::onRegistrationSuccess, this, _1),
+                        std::bind(&Controller::onRegistrationFailed, this, _1));
+  auto policyName = m_controllerPrefix;
+  setInterestFilter(policyName.append("POLICYDATA"));
 }
 
 void
@@ -131,7 +141,7 @@ Controller::processInterest(const ndn::Name& name, const ndn::Interest& interest
 void
 Controller::sendData(const ndn::Name& name)
 {
-  auto subscriberName = name.getSubName(5);
+  auto subscriberName = name.getSubName(6);
 
   ndn::Data replyData(name);
   // replyData.setFreshnessPeriod(5_s);
@@ -169,7 +179,7 @@ Controller::sendApplicationNack(const ndn::Name& name)
   ndn::Data data(dataName);
   data.setContentType(ndn::tlv::ContentType_Nack);
 
-  m_keyChain.sign(data);
+  m_keyChain.sign(data, signingByCertificate(m_controllerCert));
   m_face.put(data);
 }
 

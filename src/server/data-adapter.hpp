@@ -57,13 +57,6 @@ namespace mguard {
 using Callback = std::function<void(const std::string& streamName, const std::string& metaData, 
                                     const std::string& response)>;
 
-// Callback CallbackFromController myCallback = myCallbackFunction;
-
-// using CallbackFromController = std::function<void(const std::string& streamName, const std::string& metaData, 
-                                                  // const std::string response)>;
-// using CallbackFromReceiver = std::function<void(const std::string& streamName, const std::string& metaData, 
-                                                // const std::string& streamContent)>;
-
 /*
   @brief ConnectionHandler acts as a server for the data generator module. It
   handles a connection via a TCP socket.

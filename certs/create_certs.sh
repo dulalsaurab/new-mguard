@@ -6,9 +6,14 @@ server_certs() {
  ndnsec key-gen -t r /ndn/org/md2k/mguard/controller
  ndnsec key-gen -t r /ndn/org/md2k/mguard/aa
 
- ndnsec cert-dump -i /ndn/org/md2k/mguard/aa > aa.cert
+ ndnsec sign-req /ndn/org/md2k/mguard/controller > controller.ndncsr
+ ndnsec sign-req /ndn/org/md2k/mguard/aa > aa.ndncsr
+
+ ndnsec cert-gen -s /ndn/org/md2k -i /ndn/org/md2k aa.ndncsr > aa.cert
+ ndnsec cert-gen -s /ndn/org/md2k -i /ndn/org/md2k controller.ndncsr > controller.cert
+
  ndnsec cert-dump -i /ndn/org/md2k > producer.cert
- ndnsec cert-dump -i /ndn/org/md2k/mguard/controller > controller.cert
+ ndnsec cert-dump -i /ndn/org/md2k > md2k-trust-anchor.ndncert
 }
 
 consumer_cert() {

@@ -53,6 +53,13 @@ public:
             const std::vector<std::string>& streamsToPublish);
   
   void
+  onRegistrationSuccess(const ndn::Name& name);
+
+  void
+  onRegistrationFailed(const ndn::Name& name);
+
+
+  void
   connectHandler(const mguard::util::AsyncRepoError& err);
   
   void 
@@ -101,6 +108,8 @@ private:
   ndn::Face& m_face;
   ndn::security::KeyChain& m_keyChain;
   ndn::Scheduler m_scheduler;
+  ndn::ScopedRegisteredPrefixHandle m_certServeHandle;
+
   std::map<ndn::Name, ndn::scheduler::ScopedEventId>m_scheduledIds;
   mutable ndn::Block m_wire;
   psync::PartialProducer m_partialProducer;

@@ -34,9 +34,12 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 : m_face(face)
 , m_keyChain(keyChain)
 , m_scheduler(m_face.getIoService())
-// 40 = expected number of entries also will be used as IBF size
-// syncPrefix = /org.md2k/sync, userPrefix = /org.md2k/uprefix <--- this will be changed
-, m_partialProducer(m_face, m_keyChain, 40, "/ndn/org/md2k",
+/*
+  40 = expected number of entries also will be used as IBF size
+  syncPrefix = <producer-prefix> /ndn/org/md2k/, userPrefix = /ndn/org/md2k/mguard....
+  we are using producer's prefix as sync prefix, may need to change this in the future
+*/
+, m_partialProducer(m_face, m_keyChain, 40, producerPrefix,
                     "/ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST")
 , m_asyncRepoInserter(m_face.getIoService())
 , m_producerPrefix(producerPrefix)
@@ -44,6 +47,16 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 , m_authorityCert(attrAuthorityCertificate)
 , m_abe_producer(m_face, m_keyChain, m_producerCert, m_authorityCert)
 {
+  auto certName = ndn::security::extractIdentityFromCertName(m_producerCert.getName());
+
+  NDN_LOG_INFO("Setting interest filter on name: " << certName);
+  m_certServeHandle = m_face.setInterestFilter(ndn::InterestFilter(certName).allowLoopback(false),
+                        [this] (auto&&...) {
+                          m_face.put(this->m_producerCert);
+                        },
+                        std::bind(&Publisher::onRegistrationSuccess, this, _1),
+                        std::bind(&Publisher::onRegistrationFailed, this, _1));
+
   m_asyncRepoInserter.AsyncConnectToRepo(std::bind(&Publisher::connectHandler, this, _1));
   std::this_thread::sleep_for (std::chrono::seconds(1));
   NDN_LOG_DEBUG("Connecting to repo...");
@@ -68,6 +81,18 @@ Publisher::Publisher(ndn::Face& face, ndn::security::KeyChain& keyChain,
 
   // sleep to init kp-abe producer
   std::this_thread::sleep_for (std::chrono::seconds(1));
+}
+
+void
+Publisher::onRegistrationSuccess(const ndn::Name& name)
+{
+  NDN_LOG_INFO("Successfully registered prefix: " << name);
+}
+
+void
+Publisher::onRegistrationFailed(const ndn::Name& name)
+{
+  NDN_LOG_INFO("ERROR: Failed to register prefix " << name << " in local hub's daemon");
 }
 
 void
@@ -218,7 +243,7 @@ Publisher::publishManifest(util::Stream& stream)
   NDN_LOG_DEBUG ("Manifest name: " << dataName << " manifest data size: " << manifestData->getContent().size()
                  << " and seqNumber: " << currSeqNum + 1);
   
-  m_keyChain.sign(*manifestData);
+  m_keyChain.sign(*manifestData, ndn::security::signingByCertificate(m_producerCert));
 
   try {
       NDN_LOG_INFO("start repo insertion for name: " << manifestData->getName());

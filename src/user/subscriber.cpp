@@ -85,6 +85,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
   // get policy details from controller
   try {
     ndn::Name interestName = m_controllerPrefix;
+    interestName.append("POLICYDATA");
     interestName.append(m_consumerPrefix);
     // schedule policy interest after 2 second, cushion to obtain the decryption key
     m_scheduler.schedule(4_s, [=] { 
@@ -151,14 +152,14 @@ Subscriber::onData(const ndn::Interest& interest, const ndn::Data& data)
 {
   NDN_LOG_INFO("Data received for: " << interest.getName());
   /* With validation */
-  // m_validator.validate(data,
-  //   [=] (const ndn::Data& data) {
-  //     wireDecode(data.getContent());
-  //   },
-  //   [] (const ndn::Data&, const ndn::security::ValidationError& error) {
-  //     std::cerr << "Cannot validate retrieved data: " << error << std::endl;
-  //   });
-  wireDecode(data.getContent());
+  m_validator.validate(data,
+    [=] (const ndn::Data& data) {
+      wireDecode(data.getContent());
+    },
+    [] (const ndn::Data&, const ndn::security::ValidationError& error) {
+      std::cerr << "Cannot validate retrieved data: " << error << std::endl;
+  });
+  // wireDecode(data.getContent());
 }
 
 void

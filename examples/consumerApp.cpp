@@ -69,6 +69,7 @@ public:
       std::string stream_name_detail = x.first;
       std::string stream_data = x.second;
       NDN_LOG_INFO("Received data: " << x.second << " for name: " << x.first);
+      NDN_LOG_INFO("Stream: " << stream_name_detail << ", data: " << stream_data);
     }
   }
 
@@ -133,7 +134,8 @@ main(int argc, char* argv[])
 
   visibleOptDesc.add_options()
     ("help,h",      "print this message and exit")
-    ("applicationPrefix,p", po::value<std::string>(&applicationPrefix)->required(), "application prefix, this name needs to match the one controller has")
+    ("applicationPrefix,p", po::value<std::string>(&applicationPrefix)->required(),
+      "application prefix, this name needs to match the one controller has")
     ("certificatePath,c", po::value<std::string>(&certPath), " location of consumer certificate")
   ;
   

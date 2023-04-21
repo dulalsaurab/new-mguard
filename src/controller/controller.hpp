@@ -125,6 +125,8 @@ private:
   
   const ndn::Name& m_controllerPrefix;
   ndn::security::Certificate m_controllerCert;
+  ndn::ScopedRegisteredPrefixHandle m_certServeHandle;
+
   const ndn::Name& m_aaPrefix;
   const std::map<ndn::Name, std::string> m_requestersCertPath;
   parser::PolicyParser m_policyParser;
