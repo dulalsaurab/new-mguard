@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "data-generator/CerebralCortex-Random-Data-Generator/main.py", line 1, in <module>
+    from generator import get_cc
+  File "/home/someone/integration-testing/mguard/data-generator/CerebralCortex-Random-Data-Generator/generator.py", line 1, in <module>
+    from ccrdg.battery_data import gen_battery_data
+  File "/home/someone/integration-testing/mguard/data-generator/CerebralCortex-Random-Data-Generator/ccrdg/battery_data.py", line 27, in <module>
+    from cerebralcortex.core.datatypes import DataStream
+ModuleNotFoundError: No module named 'cerebralcortex'

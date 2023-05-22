@@ -1,0 +1,82 @@
+id: 1, name : /ndn/org/md2k/mguard/dd40c/phone/gps_coordinates
+id: 2, name : /ndn/org/md2k/mguard/dd40c/phone/battery
+id: 6, name : /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location
+name: /attribtues/location/home source 5 column: semantic_location
+name: /attribtues/location/work source 5 column: semantic_location
+name: /attribtues/location/commuting source 5 column: semantic_location
+name: /attribtues/location/casino source 5 column: semantic_location
+name: /attribtues/location/oakland source 5 column: semantic_location
+name: /attribtues/location/SoCal source 5 column: semantic_location
+name: /attribtues/location/gym source 5 column: semantic_location
+name: /attribtues/location/shopping-mall source 5 column: semantic_location
+name: /attribtues/activity/smoking source 5 column: semoking_episodes
+name: /attribtues/activity/walking source 6 column: activity_type
+name: /attribtues/activity/running source 6 column: activity_type
+name: /attribtues/activity/eating source 6 column: activity_type
+name: /attribtues/activity/drinking source 6 column: activity_type
+name: /attribtues/activity/sleeping source 6 column: activity_type
+1684530276.012028 DEBUG: [ndn.security.Pib] Caching default identity /ndn/org/md2k/local
+1684530276.012378 DEBUG: [ndn.security.Identity] Caching default key /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26
+1684530276.012448 DEBUG: [ndn.security.Key] Caching default certificate /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26/self/v=1684526363794
+1684530276.013397  INFO: [nacabe.ParamFetcher] Request public parameters: /ndn/org/md2k/mguard/aa/PUBPARAMS
+1684530276.013551  INFO: [mguard.Publisher] Setting interest filter on name: /ndn/org/md2k
+1684530277.014220 DEBUG: [mguard.Publisher] Connecting to repo...
+1684530278.014529  INFO: [mguard.util.database] Opened Database Successfully!
+1684530278.034412 DEBUG: [mguard.util.database] Database and table crated successfully
+1684530278.034457 DEBUG: [mguard.DataAdapter] Initialized data adaptor and publisher
+1684530278.034462 DEBUG: [mguard.DataAdapter] ---------------------------------------------
+1684530278.034464 DEBUG: [mguard.DataAdapter] Producer cert: Certificate Name:
+  /ndn/org/md2k/KEY/%AC%BC%FE%DDz%08%9F%F7/self/v=1684526362522
+Public Key:
+  Key Type: 2048-bit RSA
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA54fuhWjDfPet2luX2rOs
+  rnNQN9rGSO8uAw8CZSpgDX6X/872JLzXIOMsqsy+KKrgbYN8x98Mywy1tB3EmWlH
+  4nfKo8iv7SMur/uokg8Iax4ii8+TzJpEquX/ErRq8TCaBCbJXJGpY53CsE4gYaIl
+  2S4Ysegcm5EM5gMVwHpQorR5lpFJH094OOjBKldhoKtKKiSyu8n/ZP3EV8norDou
+  Hb72zES7I6RksQjcZ9ynL79paiWO7lYICpLAsada2mwJlzPPFZfqEVuJgVVtR+7C
+  bHe1QcrPiw4C3tNe9IYkA+5U5WJFA5D5O0DRwcSnEwehxDYcrz6JaM20Xobk274t
+  4wIDAQAB
+Validity:
+  Not Before: 2023-05-19T19:59:22
+  Not After: 2043-05-14T19:59:22
+Signature Information:
+  Signature Type: SignatureSha256WithRsa
+  Key Locator: Name=/ndn/org/md2k/KEY/%AC%BC%FE%DDz%08%9F%F7
+  Self-Signed: yes
+1684530278.034625 DEBUG: [mguard.DataAdapter] ---------------------------------------------
+1684530278.034628 DEBUG: [mguard.DataAdapter] ABE authority cert: Certificate Name:
+  /ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739
+Public Key:
+  Key Type: 2048-bit RSA
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA2/gNimJ3Szbk17Yvnxom
+  zQLXdEfliT5NQc7e1fT8L7ol36kwa5CEVhvFNScH4BZQ4qtLLtgLjurmg+NCL9qN
+  Comn+BjQPu+vGv0HvU1tkmO21C5b77VgD+BZRcJvoGc1ZkTDI0IAWtKXuf1saaGl
+  tVbjZG7FfJY3xVxUAIeixuTmCvjNOwbiYRa3wFlMRAthPf4VLoN7OYFdlWoht9bt
+  6PrRJfCyy+W0nLNOMECRpDagecd65/CCeO9wxmraIW6ZfHcsThV4tRrDo4SfQDQ1
+  IbGaftXjcSYFBhwnB2KXZGHKmciDPeMKYpNz3aPXrRkXwly/G7gWh1ltQo6WG6Sq
+  6wIDAQAB
+Validity:
+  Not Before: 2023-05-19T19:59:23
+  Not After: 2024-05-18T19:59:22
+Signature Information:
+  Signature Type: SignatureSha256WithRsa
+  Key Locator: Name=/ndn/org/md2k/KEY/%AC%BC%FE%DDz%08%9F%F7/self/v=1684526362522
+1684530278.034851 DEBUG: [mguard.util.repoClient] Connnection status: Connection refused
+1684530278.034877 DEBUG: [mguard.Publisher] Connection failled
+1684530278.036772  INFO: [nacabe.ParamFetcher] [onAttributePubParams()] Get public parameters for name /ndn/org/md2k/mguard/aa/PUBPARAMS/KP-ABE/v=1684530278035
+1684530278.036803 DEBUG: [ndn.security.Validator] > Start validating data /ndn/org/md2k/mguard/aa/PUBPARAMS/KP-ABE/v=1684530278035
+1684530278.036855 DEBUG: [ndn.security.Validator] > Retrieving /ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739
+1684530278.038221 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%15%07%10%08%03ndn%08%03org%08%04md2kl%01%01/params-sha256=259354e37c0ce716275328d0ee9503c28c4dd2cd05141ed7c9ddf209ea657f6b
+1684530278.038844 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%15%07%10%08%03ndn%08%03org%08%04md2kl%01%01/params-sha256=98a22fd6a35d3a49787ba43af5ec6e1a98c44007d216b70cbdf5e5dc4b89491d
+1684530278.038869  INFO: [mguard.Publisher] Successfully registered prefix: /ndn/org/md2k
+1684530280.114841 DEBUG: [ndn.security.Pib] Caching default identity /ndn/org/md2k/local
+1684530280.114951 DEBUG: [ndn.security.Identity] Caching default key /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26
+1684530280.115002 DEBUG: [ndn.security.Key] Caching default certificate /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26/self/v=1684526363794
+1684530282.036977 DEBUG: [ndn.security.CertificateFetcher] > Timeout while fetching certificate /ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739
+1684530286.037085 DEBUG: [ndn.security.CertificateFetcher] > Timeout while fetching certificate /ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739
+1684530290.037213 DEBUG: [ndn.security.CertificateFetcher] > Timeout while fetching certificate /ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739
+1684530294.037325 DEBUG: [ndn.security.CertificateFetcher] > Timeout while fetching certificate /ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739
+1684530294.037374 DEBUG: [ndn.security.ValidationState] > Cannot retrieve certificate (Timeout after exhausting all retries for `/ndn/org/md2k/mguard/aa/KEY/%3D%F3%9D%85%60O%00%DD/%2Fndn%2Forg%2Fmd2k/v=1684526362739`)
+1684530294.037580 DEBUG: [ndn.security.ValidationState] > Internal error (Validator/policy did not invoke success or failure callback)
+terminate called after throwing an instance of 'boost::exception_detail::clone_impl<boost::exception_detail::error_info_injector<std::runtime_error> >'
+  what():  Fetched public parameters cannot be authenticated: Validator/policy did not invoke success or failure callback

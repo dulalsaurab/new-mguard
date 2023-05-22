@@ -1,5 +1,5 @@
 echo "set mguard and nacabe logs to debug"
-export NDN_LOG=mguard.*=DEBUG:nacabe.*=DEBUG
+export NDN_LOG=ndn.security.*=DEBUG:mguard.*=DEBUG:nacabe.*=DEBUG
 
 echo "reset debug logs"
 rm -rf debug
