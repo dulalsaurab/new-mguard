@@ -56,6 +56,14 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
+//    auto a = *loadCert(consumerCertPath);
+//  auto certName = ndn::security::extractIdentityFromCertName(a.getName());
+//    m_face.setInterestFilter(ndn::InterestFilter(certName).allowLoopback(false),
+//                        [this, a] (auto&&...) {
+//                          m_face.put(a);
+//                        },
+//                        nullptr,
+//                        nullptr);
   m_psync_consumer.sendHelloInterest();
   m_validator.load("certs/trust-schema.conf");
   // loadCert("certs/producer.cert"); // need this ?? 

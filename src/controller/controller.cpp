@@ -70,6 +70,14 @@ Controller::Controller(const ndn::Name& controllerPrefix,
   );
   auto policyName = m_controllerPrefix;
   setInterestFilter(policyName.append("POLICYDATA"));
+//
+//    for (const auto &item: m_requestersCertPath) {
+//      auto certPath = item.second;
+//      auto cert = *loadCert(certPath);
+//      auto id = m_keyChain.getPib().getIdentity(cert.getIdentity());
+//      auto key = id.getKey(cert.getKeyName());
+//      m_keyChain.addCertificate(key, cert);
+//    }
 }
 
 void
