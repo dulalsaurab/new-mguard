@@ -1,1 +1,1993 @@
-./runner.sh: 37: ndn-python-repo: not found
+[2023-05-23 13:58:38,294]DEBUG:Using selector: EpollSelector
+[2023-05-23 13:58:38,294]DEBUG:Connected to NFD node, start running...
+[2023-05-23 13:58:38,310]INFO:TCP insertion handle serving on ('0.0.0.0', 7376)
+[2023-05-23 13:58:38,311]DEBUG:Data received /localhost/nfd/rib/register/h%0A%07%08%08%06mguard/%00%00%01%88I%FADf/A%10%26%0C%16%C5%A7%13/%16%03%1B%01%00/%17%20%93O%0FI%16%60%8A-%95%93M%FC%3E%9D%A0%119%DB%C6e%8D%DA%26%AA%F5w-j%0D%C7%E1%C3
+[2023-05-23 13:58:38,311]DEBUG:Registration for /mguard succeeded: 200 Success
+[2023-05-23 13:58:38,311]INFO:Subscribing to topic (with interest filter): /mguard/insert
+[2023-05-23 13:58:38,311]INFO:Subscribing to topic (with interest filter): /mguard/delete
+[2023-05-23 13:58:42,166]INFO:Accepted new TCP connection
+[2023-05-23 13:58:42,166]INFO:New connection
+[2023-05-23 13:58:53,342]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,342]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,342]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,357]INFO:Added new registered prefix to storage: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,357]INFO:Registered prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,357]INFO:Read handle: listening to /ndn/org/md2k/CK
+[2023-05-23 13:58:53,358]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/metadata%2Fv1
+[2023-05-23 13:58:53,358]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/metadata%2Fv1
+[2023-05-23 13:58:53,358]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,368]INFO:Added new registered prefix to storage: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,368]INFO:Registered prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,368]INFO:Read handle: listening to /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,368]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,368]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,368]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,369]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501232600
+[2023-05-23 13:58:53,369]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501232600
+[2023-05-23 13:58:53,369]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,369]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,369]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,369]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,369]DEBUG:Data received /localhost/nfd/rib/register/h%16%07%14%08%03ndn%08%03org%08%04md2k%08%02CK/%00%00%01%88I%FA%7F-/Z%0C%BE%E1%0F%CElw/%16%03%1B%01%00/%17%20%95%25%BEos%1EL6%EDG%00%26%C1%A7%1D%14%13%22%B9%CC%92%C6%BE%2F%BD%D1%0E%A1%83%F5%9AV
+[2023-05-23 13:58:53,369]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502001200
+[2023-05-23 13:58:53,370]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502001200
+[2023-05-23 13:58:53,370]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,370]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,370]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,370]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,370]DEBUG:Registration for /ndn/org/md2k/CK succeeded: 200 Success
+[2023-05-23 13:58:53,370]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502010000
+[2023-05-23 13:58:53,370]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502010000
+[2023-05-23 13:58:53,370]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,371]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,371]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,371]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,371]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501152000
+[2023-05-23 13:58:53,371]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501152000
+[2023-05-23 13:58:53,371]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,371]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,371]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,371]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,371]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501153000
+[2023-05-23 13:58:53,371]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501153000
+[2023-05-23 13:58:53,371]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,372]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,372]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,372]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,372]DEBUG:Data received /localhost/nfd/rib/register/h%21%07%1F%08%03ndn%08%03org%08%04md2k%08%06mguard%08%05dd40c/%00%00%01%88I%FA%7F%3A/%C5%D1%F9%DD%21%F1_%01/%16%03%1B%01%00/%17%20%DA%BE.%8D%8Bvc%FFTG%A3%2F%1B%C6KG0%DC%24Gu%16%0E%0B%D5%86%C9%FB18%B4%E9
+[2023-05-23 13:58:53,372]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501150000
+[2023-05-23 13:58:53,372]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501150000
+[2023-05-23 13:58:53,372]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,372]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,372]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,372]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,372]DEBUG:Registration for /ndn/org/md2k/mguard/dd40c succeeded: 200 Success
+[2023-05-23 13:58:53,373]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501150200
+[2023-05-23 13:58:53,373]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501150200
+[2023-05-23 13:58:53,373]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,373]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,373]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,373]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,401]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501165000
+[2023-05-23 13:58:53,401]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501165000
+[2023-05-23 13:58:53,401]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,401]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,401]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,401]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,401]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501171200
+[2023-05-23 13:58:53,401]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501171200
+[2023-05-23 13:58:53,401]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,402]INFO:Cache save: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,402]INFO:Inserted data: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,402]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,402]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501154200
+[2023-05-23 13:58:53,402]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501154200
+[2023-05-23 13:58:53,402]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,402]INFO:Cache save: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,402]INFO:Inserted data: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,402]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,402]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501155600
+[2023-05-23 13:58:53,402]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501155600
+[2023-05-23 13:58:53,402]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,402]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,403]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,403]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,403]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501204200
+[2023-05-23 13:58:53,403]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501204200
+[2023-05-23 13:58:53,403]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,403]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,403]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,403]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,403]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501212000
+[2023-05-23 13:58:53,403]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501212000
+[2023-05-23 13:58:53,403]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,403]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,403]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,403]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,404]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501150600
+[2023-05-23 13:58:53,404]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501150600
+[2023-05-23 13:58:53,404]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,404]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,404]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,404]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,404]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501151200
+[2023-05-23 13:58:53,404]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501151200
+[2023-05-23 13:58:53,404]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,404]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,404]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,404]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,405]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501183000
+[2023-05-23 13:58:53,405]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501183000
+[2023-05-23 13:58:53,405]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,405]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,405]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:58:53,405]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,405]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501190000
+[2023-05-23 13:58:53,405]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501190000
+[2023-05-23 13:58:53,405]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,405]INFO:Cache save: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,405]INFO:Inserted data: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,405]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,405]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501161200
+[2023-05-23 13:58:53,406]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501161200
+[2023-05-23 13:58:53,406]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,406]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,406]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,406]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,406]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501163000
+[2023-05-23 13:58:53,406]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501163000
+[2023-05-23 13:58:53,406]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,406]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,406]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,406]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,406]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501220000
+[2023-05-23 13:58:53,406]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501220000
+[2023-05-23 13:58:53,406]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,407]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,407]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:58:53,407]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,407]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501224200
+[2023-05-23 13:58:53,407]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501224200
+[2023-05-23 13:58:53,407]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,407]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,407]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,407]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,407]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501173600
+[2023-05-23 13:58:53,407]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501173600
+[2023-05-23 13:58:53,407]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,407]INFO:Cache save: /ndn/org/md2k/CK/2384816197/ENC-BY//
+[2023-05-23 13:58:53,408]INFO:Inserted data: /ndn/org/md2k/CK/2384816197/ENC-BY//
+[2023-05-23 13:58:53,408]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,408]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501180200
+[2023-05-23 13:58:53,408]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501180200
+[2023-05-23 13:58:53,408]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,408]INFO:Cache save: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,408]INFO:Inserted data: /ndn/org/md2k/CK/520679348/ENC-BY//
+[2023-05-23 13:58:53,408]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,408]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501193200
+[2023-05-23 13:58:53,408]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501193200
+[2023-05-23 13:58:53,408]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,408]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,408]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:58:53,409]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:53,409]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501200600
+[2023-05-23 13:58:53,409]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930501200600
+[2023-05-23 13:58:53,409]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:53,453]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%01
+[2023-05-23 13:58:53,453]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%01
+[2023-05-23 13:58:53,453]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,542]INFO:Cache save: /ndn/org/md2k/CK/142950760/ENC-BY//
+[2023-05-23 13:58:55,542]INFO:Inserted data: /ndn/org/md2k/CK/142950760/ENC-BY//
+[2023-05-23 13:58:55,542]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,542]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/metadata%2Fv1
+[2023-05-23 13:58:55,543]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/metadata%2Fv1
+[2023-05-23 13:58:55,543]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,543]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,544]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,544]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,544]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150045
+[2023-05-23 13:58:55,544]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150045
+[2023-05-23 13:58:55,544]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,545]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,545]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,545]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,545]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150046
+[2023-05-23 13:58:55,545]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150046
+[2023-05-23 13:58:55,545]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,546]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,546]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,546]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,546]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150047
+[2023-05-23 13:58:55,546]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150047
+[2023-05-23 13:58:55,546]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,546]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,547]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,547]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,547]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150048
+[2023-05-23 13:58:55,547]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150048
+[2023-05-23 13:58:55,547]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,547]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,547]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,548]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,548]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150049
+[2023-05-23 13:58:55,548]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150049
+[2023-05-23 13:58:55,548]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,556]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,557]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,557]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,557]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150029
+[2023-05-23 13:58:55,557]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150029
+[2023-05-23 13:58:55,557]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,557]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,557]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,557]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,558]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150030
+[2023-05-23 13:58:55,558]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150030
+[2023-05-23 13:58:55,558]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,558]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,558]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,558]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,558]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150031
+[2023-05-23 13:58:55,558]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150031
+[2023-05-23 13:58:55,558]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,559]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,559]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,559]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,559]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150032
+[2023-05-23 13:58:55,559]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150032
+[2023-05-23 13:58:55,559]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,559]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,559]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,560]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,560]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150009
+[2023-05-23 13:58:55,560]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150009
+[2023-05-23 13:58:55,560]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,560]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,560]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,560]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,561]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150010
+[2023-05-23 13:58:55,561]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150010
+[2023-05-23 13:58:55,561]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,561]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,561]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,561]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,561]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150011
+[2023-05-23 13:58:55,561]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150011
+[2023-05-23 13:58:55,561]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,561]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,562]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,562]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,562]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150012
+[2023-05-23 13:58:55,562]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150012
+[2023-05-23 13:58:55,562]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,562]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,562]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,562]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,563]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150017
+[2023-05-23 13:58:55,563]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150017
+[2023-05-23 13:58:55,563]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,563]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,563]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,563]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,563]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150018
+[2023-05-23 13:58:55,563]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150018
+[2023-05-23 13:58:55,563]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,564]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,564]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,564]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,564]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150019
+[2023-05-23 13:58:55,564]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150019
+[2023-05-23 13:58:55,564]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,564]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,564]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,564]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,565]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150020
+[2023-05-23 13:58:55,565]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150020
+[2023-05-23 13:58:55,565]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,565]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,565]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,565]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,565]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150025
+[2023-05-23 13:58:55,565]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150025
+[2023-05-23 13:58:55,565]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,566]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,566]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,566]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,566]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150026
+[2023-05-23 13:58:55,566]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150026
+[2023-05-23 13:58:55,566]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,566]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,566]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,566]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,566]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150027
+[2023-05-23 13:58:55,566]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150027
+[2023-05-23 13:58:55,566]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,567]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,567]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,567]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,567]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150028
+[2023-05-23 13:58:55,567]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150028
+[2023-05-23 13:58:55,567]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,567]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,567]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,567]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,568]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150033
+[2023-05-23 13:58:55,568]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150033
+[2023-05-23 13:58:55,568]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,568]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,568]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,568]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,568]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150034
+[2023-05-23 13:58:55,568]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150034
+[2023-05-23 13:58:55,568]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,569]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,569]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,569]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,569]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150035
+[2023-05-23 13:58:55,569]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150035
+[2023-05-23 13:58:55,569]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,570]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,570]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,570]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,570]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150036
+[2023-05-23 13:58:55,570]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150036
+[2023-05-23 13:58:55,570]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,571]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,572]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,572]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,573]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150013
+[2023-05-23 13:58:55,573]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150013
+[2023-05-23 13:58:55,574]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,575]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,575]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,575]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,575]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150014
+[2023-05-23 13:58:55,575]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150014
+[2023-05-23 13:58:55,575]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,576]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,576]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,576]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,576]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150015
+[2023-05-23 13:58:55,576]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150015
+[2023-05-23 13:58:55,576]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,576]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,576]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,576]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,577]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150016
+[2023-05-23 13:58:55,577]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150016
+[2023-05-23 13:58:55,577]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,577]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,577]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,577]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,577]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150021
+[2023-05-23 13:58:55,577]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150021
+[2023-05-23 13:58:55,577]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,578]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,578]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,578]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,578]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150022
+[2023-05-23 13:58:55,578]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150022
+[2023-05-23 13:58:55,578]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,578]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,578]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,578]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,578]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150023
+[2023-05-23 13:58:55,578]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150023
+[2023-05-23 13:58:55,578]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,579]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,579]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,579]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,579]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150024
+[2023-05-23 13:58:55,579]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150024
+[2023-05-23 13:58:55,579]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,579]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,579]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,580]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,580]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150041
+[2023-05-23 13:58:55,580]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150041
+[2023-05-23 13:58:55,580]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,580]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,580]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,580]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,580]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150042
+[2023-05-23 13:58:55,580]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150042
+[2023-05-23 13:58:55,580]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,580]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,580]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,581]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,581]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150043
+[2023-05-23 13:58:55,581]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150043
+[2023-05-23 13:58:55,581]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,581]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,581]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,581]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,581]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150044
+[2023-05-23 13:58:55,582]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150044
+[2023-05-23 13:58:55,582]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,582]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,582]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,582]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,582]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150037
+[2023-05-23 13:58:55,582]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150037
+[2023-05-23 13:58:55,582]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,582]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,582]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,582]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,582]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150038
+[2023-05-23 13:58:55,582]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150038
+[2023-05-23 13:58:55,582]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,583]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,583]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,583]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,583]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150039
+[2023-05-23 13:58:55,583]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150039
+[2023-05-23 13:58:55,583]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,583]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,583]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,583]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,583]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150040
+[2023-05-23 13:58:55,583]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150040
+[2023-05-23 13:58:55,583]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,584]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,584]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,584]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,584]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150005
+[2023-05-23 13:58:55,584]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150005
+[2023-05-23 13:58:55,584]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,585]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,585]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,585]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,585]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150006
+[2023-05-23 13:58:55,585]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150006
+[2023-05-23 13:58:55,585]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,585]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,585]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,585]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,585]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150007
+[2023-05-23 13:58:55,585]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150007
+[2023-05-23 13:58:55,585]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,601]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,601]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,602]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,602]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150008
+[2023-05-23 13:58:55,602]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150008
+[2023-05-23 13:58:55,602]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,603]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,603]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,603]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,603]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150001
+[2023-05-23 13:58:55,603]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150001
+[2023-05-23 13:58:55,603]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,603]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,603]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,603]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,604]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150002
+[2023-05-23 13:58:55,604]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150002
+[2023-05-23 13:58:55,604]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,604]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,604]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,604]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,604]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150003
+[2023-05-23 13:58:55,604]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150003
+[2023-05-23 13:58:55,604]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,605]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,605]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:58:55,605]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:55,605]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150004
+[2023-05-23 13:58:55,605]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930501150004
+[2023-05-23 13:58:55,605]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,605]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%01
+[2023-05-23 13:58:55,605]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%01
+[2023-05-23 13:58:55,605]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:55,664]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%02
+[2023-05-23 13:58:55,664]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%02
+[2023-05-23 13:58:55,664]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,695]INFO:Cache save: /ndn/org/md2k/CK/305884506/ENC-BY//
+[2023-05-23 13:58:57,695]INFO:Inserted data: /ndn/org/md2k/CK/305884506/ENC-BY//
+[2023-05-23 13:58:57,695]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,696]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/metadata%2Fv1
+[2023-05-23 13:58:57,696]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/metadata%2Fv1
+[2023-05-23 13:58:57,696]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,696]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,696]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,696]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,697]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154400
+[2023-05-23 13:58:57,697]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154400
+[2023-05-23 13:58:57,697]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,697]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,697]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,697]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,697]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154500
+[2023-05-23 13:58:57,697]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154500
+[2023-05-23 13:58:57,697]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,698]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,698]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,698]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,698]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154600
+[2023-05-23 13:58:57,698]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154600
+[2023-05-23 13:58:57,698]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,698]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,698]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,698]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,699]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154700
+[2023-05-23 13:58:57,699]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154700
+[2023-05-23 13:58:57,699]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,699]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,699]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,699]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,699]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154800
+[2023-05-23 13:58:57,699]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154800
+[2023-05-23 13:58:57,699]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,700]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,700]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,700]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,700]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154900
+[2023-05-23 13:58:57,700]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154900
+[2023-05-23 13:58:57,700]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,700]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,700]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,700]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,701]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150800
+[2023-05-23 13:58:57,701]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150800
+[2023-05-23 13:58:57,701]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,701]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,701]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,701]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,701]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150900
+[2023-05-23 13:58:57,701]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150900
+[2023-05-23 13:58:57,701]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,702]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,702]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,702]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,702]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151000
+[2023-05-23 13:58:57,702]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151000
+[2023-05-23 13:58:57,702]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,702]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,703]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,703]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,703]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151100
+[2023-05-23 13:58:57,703]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151100
+[2023-05-23 13:58:57,703]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,703]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,703]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,703]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,703]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151600
+[2023-05-23 13:58:57,704]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151600
+[2023-05-23 13:58:57,704]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,704]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,704]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,704]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,704]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151700
+[2023-05-23 13:58:57,704]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151700
+[2023-05-23 13:58:57,704]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,742]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,742]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,742]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,742]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151800
+[2023-05-23 13:58:57,742]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151800
+[2023-05-23 13:58:57,742]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,743]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,743]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,743]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,743]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151900
+[2023-05-23 13:58:57,743]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151900
+[2023-05-23 13:58:57,743]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,743]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,743]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,744]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,744]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153600
+[2023-05-23 13:58:57,744]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153600
+[2023-05-23 13:58:57,744]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,744]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,744]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,744]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,745]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153700
+[2023-05-23 13:58:57,745]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153700
+[2023-05-23 13:58:57,745]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,745]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,745]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,745]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,745]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153800
+[2023-05-23 13:58:57,745]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153800
+[2023-05-23 13:58:57,745]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,746]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,746]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,746]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,746]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153900
+[2023-05-23 13:58:57,746]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153900
+[2023-05-23 13:58:57,746]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,746]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,746]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,746]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,747]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151200
+[2023-05-23 13:58:57,747]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151200
+[2023-05-23 13:58:57,747]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,747]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,747]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,747]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,747]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151300
+[2023-05-23 13:58:57,747]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151300
+[2023-05-23 13:58:57,747]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,747]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,747]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,747]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,748]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151400
+[2023-05-23 13:58:57,748]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151400
+[2023-05-23 13:58:57,748]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,748]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,748]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,748]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,748]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151500
+[2023-05-23 13:58:57,748]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501151500
+[2023-05-23 13:58:57,748]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,748]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,748]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,748]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,749]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152400
+[2023-05-23 13:58:57,749]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152400
+[2023-05-23 13:58:57,749]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,749]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,749]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,749]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,749]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152500
+[2023-05-23 13:58:57,749]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152500
+[2023-05-23 13:58:57,750]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,750]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,750]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,750]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,750]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152600
+[2023-05-23 13:58:57,750]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152600
+[2023-05-23 13:58:57,750]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,750]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,750]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,751]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,751]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152700
+[2023-05-23 13:58:57,751]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152700
+[2023-05-23 13:58:57,751]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,751]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,751]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,751]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,751]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150400
+[2023-05-23 13:58:57,752]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150400
+[2023-05-23 13:58:57,752]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,752]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,752]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,752]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,752]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150500
+[2023-05-23 13:58:57,752]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150500
+[2023-05-23 13:58:57,752]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,752]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,752]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,752]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,753]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150600
+[2023-05-23 13:58:57,753]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150600
+[2023-05-23 13:58:57,753]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,753]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,753]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,753]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,753]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150700
+[2023-05-23 13:58:57,753]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150700
+[2023-05-23 13:58:57,753]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,754]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,754]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,754]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,754]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152000
+[2023-05-23 13:58:57,754]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152000
+[2023-05-23 13:58:57,754]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,754]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,754]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,754]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,755]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152100
+[2023-05-23 13:58:57,755]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152100
+[2023-05-23 13:58:57,755]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,755]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,755]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,755]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,755]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152200
+[2023-05-23 13:58:57,755]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152200
+[2023-05-23 13:58:57,755]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,756]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,756]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,756]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,756]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152300
+[2023-05-23 13:58:57,756]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152300
+[2023-05-23 13:58:57,756]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,756]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,756]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,756]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,756]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154000
+[2023-05-23 13:58:57,756]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154000
+[2023-05-23 13:58:57,757]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,757]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,757]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,757]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,757]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154100
+[2023-05-23 13:58:57,757]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154100
+[2023-05-23 13:58:57,757]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,757]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,757]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,757]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,757]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154200
+[2023-05-23 13:58:57,758]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154200
+[2023-05-23 13:58:57,758]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,758]INFO:Cache save: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,758]INFO:Inserted data: /ndn/org/md2k/CK/989901515/ENC-BY//
+[2023-05-23 13:58:57,758]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,758]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154300
+[2023-05-23 13:58:57,758]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501154300
+[2023-05-23 13:58:57,758]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,758]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,759]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,759]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,759]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153200
+[2023-05-23 13:58:57,759]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153200
+[2023-05-23 13:58:57,759]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,759]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,759]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,759]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,759]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153300
+[2023-05-23 13:58:57,759]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153300
+[2023-05-23 13:58:57,759]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,760]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,760]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,760]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,760]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153400
+[2023-05-23 13:58:57,760]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153400
+[2023-05-23 13:58:57,760]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,760]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,760]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,760]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,761]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153500
+[2023-05-23 13:58:57,761]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153500
+[2023-05-23 13:58:57,761]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,761]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,761]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,761]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,761]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150000
+[2023-05-23 13:58:57,761]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150000
+[2023-05-23 13:58:57,761]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,762]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,762]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,762]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,762]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150100
+[2023-05-23 13:58:57,762]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150100
+[2023-05-23 13:58:57,762]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,762]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,762]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,762]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,762]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150200
+[2023-05-23 13:58:57,763]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150200
+[2023-05-23 13:58:57,763]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,763]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,763]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:58:57,763]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,763]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150300
+[2023-05-23 13:58:57,763]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501150300
+[2023-05-23 13:58:57,763]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,763]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,763]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,763]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,763]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152800
+[2023-05-23 13:58:57,763]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152800
+[2023-05-23 13:58:57,764]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,764]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,764]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,764]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,764]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152900
+[2023-05-23 13:58:57,764]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501152900
+[2023-05-23 13:58:57,764]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,764]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,764]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,764]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,765]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153000
+[2023-05-23 13:58:57,765]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153000
+[2023-05-23 13:58:57,765]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,765]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%01
+[2023-05-23 13:58:57,765]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%01
+[2023-05-23 13:58:57,765]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,765]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,765]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:58:57,765]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:58:57,765]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153100
+[2023-05-23 13:58:57,765]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930501153100
+[2023-05-23 13:58:57,765]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:57,815]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%02
+[2023-05-23 13:58:57,816]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%02
+[2023-05-23 13:58:57,816]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:58:58,340]INFO:Cache write back 143 items
+[2023-05-23 13:59:21,298]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,298]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,298]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,299]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/metadata%2Fv1
+[2023-05-23 13:59:21,299]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/metadata%2Fv1
+[2023-05-23 13:59:21,299]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,299]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,299]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,299]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,299]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502155000
+[2023-05-23 13:59:21,299]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502155000
+[2023-05-23 13:59:21,299]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,300]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,300]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,300]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,300]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502174200
+[2023-05-23 13:59:21,300]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502174200
+[2023-05-23 13:59:21,300]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,300]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,300]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,300]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,300]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502170800
+[2023-05-23 13:59:21,300]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502170800
+[2023-05-23 13:59:21,301]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,301]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,301]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,301]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,301]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502182000
+[2023-05-23 13:59:21,301]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502182000
+[2023-05-23 13:59:21,301]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,302]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,302]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,302]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,302]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502151800
+[2023-05-23 13:59:21,302]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502151800
+[2023-05-23 13:59:21,302]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,302]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,302]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,302]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,303]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502150000
+[2023-05-23 13:59:21,303]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502150000
+[2023-05-23 13:59:21,303]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,303]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,303]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,303]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,303]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502150200
+[2023-05-23 13:59:21,303]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502150200
+[2023-05-23 13:59:21,303]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,303]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,303]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,303]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,303]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502163800
+[2023-05-23 13:59:21,304]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502163800
+[2023-05-23 13:59:21,304]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,304]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,304]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,304]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,304]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502153200
+[2023-05-23 13:59:21,304]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502153200
+[2023-05-23 13:59:21,304]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,304]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,304]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,304]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,304]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502161200
+[2023-05-23 13:59:21,304]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502161200
+[2023-05-23 13:59:21,304]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,305]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,305]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:21,305]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,305]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502150800
+[2023-05-23 13:59:21,305]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502150800
+[2023-05-23 13:59:21,305]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,305]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,305]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,305]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,305]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502190200
+[2023-05-23 13:59:21,305]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502190200
+[2023-05-23 13:59:21,305]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,306]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,306]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:21,306]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:21,306]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502194800
+[2023-05-23 13:59:21,306]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930502194800
+[2023-05-23 13:59:21,306]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:21,403]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%02
+[2023-05-23 13:59:21,403]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%02
+[2023-05-23 13:59:21,403]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,389]INFO:Cache save: /ndn/org/md2k/CK/142950760/ENC-BY//
+[2023-05-23 13:59:23,389]INFO:Inserted data: /ndn/org/md2k/CK/142950760/ENC-BY//
+[2023-05-23 13:59:23,389]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,389]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/metadata%2Fv1
+[2023-05-23 13:59:23,389]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/metadata%2Fv1
+[2023-05-23 13:59:23,389]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,390]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,390]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,390]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,390]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150045
+[2023-05-23 13:59:23,390]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150045
+[2023-05-23 13:59:23,390]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,390]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,391]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,391]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,391]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150046
+[2023-05-23 13:59:23,391]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150046
+[2023-05-23 13:59:23,391]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,391]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,391]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,391]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,391]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150047
+[2023-05-23 13:59:23,391]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150047
+[2023-05-23 13:59:23,391]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,392]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,392]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,392]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,392]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150048
+[2023-05-23 13:59:23,392]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150048
+[2023-05-23 13:59:23,392]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,392]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,392]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,392]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,392]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150049
+[2023-05-23 13:59:23,392]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150049
+[2023-05-23 13:59:23,393]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,393]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,393]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,393]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,393]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150029
+[2023-05-23 13:59:23,393]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150029
+[2023-05-23 13:59:23,393]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,393]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,393]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,393]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,393]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150030
+[2023-05-23 13:59:23,393]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150030
+[2023-05-23 13:59:23,393]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,394]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,394]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,394]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,394]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150031
+[2023-05-23 13:59:23,394]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150031
+[2023-05-23 13:59:23,394]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,394]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,394]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,394]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,394]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150032
+[2023-05-23 13:59:23,394]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150032
+[2023-05-23 13:59:23,394]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,394]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,395]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,395]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,395]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150033
+[2023-05-23 13:59:23,395]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150033
+[2023-05-23 13:59:23,395]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,395]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,395]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,395]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,395]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150034
+[2023-05-23 13:59:23,395]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150034
+[2023-05-23 13:59:23,395]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,451]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,451]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,451]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,452]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150035
+[2023-05-23 13:59:23,452]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150035
+[2023-05-23 13:59:23,452]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,452]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,452]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,452]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,452]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150036
+[2023-05-23 13:59:23,452]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150036
+[2023-05-23 13:59:23,452]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,452]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,453]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,453]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,453]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150009
+[2023-05-23 13:59:23,453]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150009
+[2023-05-23 13:59:23,453]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,453]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,453]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,453]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,453]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150010
+[2023-05-23 13:59:23,453]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150010
+[2023-05-23 13:59:23,453]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,453]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,453]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,453]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,454]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150011
+[2023-05-23 13:59:23,454]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150011
+[2023-05-23 13:59:23,454]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,454]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,454]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,454]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,454]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150012
+[2023-05-23 13:59:23,454]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150012
+[2023-05-23 13:59:23,454]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,454]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,454]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,454]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,455]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150017
+[2023-05-23 13:59:23,455]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150017
+[2023-05-23 13:59:23,455]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,455]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,455]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,455]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,455]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150018
+[2023-05-23 13:59:23,455]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150018
+[2023-05-23 13:59:23,455]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,455]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,455]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,455]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,455]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150019
+[2023-05-23 13:59:23,455]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150019
+[2023-05-23 13:59:23,455]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,456]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,456]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,456]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,456]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150020
+[2023-05-23 13:59:23,456]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150020
+[2023-05-23 13:59:23,456]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,456]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,456]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,456]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,456]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150013
+[2023-05-23 13:59:23,456]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150013
+[2023-05-23 13:59:23,456]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,457]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,457]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,457]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,457]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150014
+[2023-05-23 13:59:23,457]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150014
+[2023-05-23 13:59:23,457]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,457]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,457]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,457]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,457]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150015
+[2023-05-23 13:59:23,457]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150015
+[2023-05-23 13:59:23,457]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,457]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,458]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,458]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,458]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150016
+[2023-05-23 13:59:23,458]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150016
+[2023-05-23 13:59:23,458]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,458]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,458]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,458]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,458]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150025
+[2023-05-23 13:59:23,458]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150025
+[2023-05-23 13:59:23,458]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,459]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,459]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,459]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,459]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150026
+[2023-05-23 13:59:23,459]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150026
+[2023-05-23 13:59:23,459]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,459]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,459]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,460]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,460]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150027
+[2023-05-23 13:59:23,460]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150027
+[2023-05-23 13:59:23,460]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,460]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,460]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,460]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,460]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150028
+[2023-05-23 13:59:23,460]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150028
+[2023-05-23 13:59:23,460]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,461]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,461]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,461]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,461]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150021
+[2023-05-23 13:59:23,461]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150021
+[2023-05-23 13:59:23,461]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,461]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,461]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,461]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,461]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150022
+[2023-05-23 13:59:23,462]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150022
+[2023-05-23 13:59:23,462]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,462]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,462]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,462]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,462]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150023
+[2023-05-23 13:59:23,462]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150023
+[2023-05-23 13:59:23,462]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,463]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,463]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,463]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,463]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150024
+[2023-05-23 13:59:23,463]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150024
+[2023-05-23 13:59:23,463]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,463]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,463]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,463]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,463]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150041
+[2023-05-23 13:59:23,463]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150041
+[2023-05-23 13:59:23,463]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,464]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,464]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,464]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,464]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150042
+[2023-05-23 13:59:23,464]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150042
+[2023-05-23 13:59:23,464]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,464]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,464]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,464]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,464]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150043
+[2023-05-23 13:59:23,464]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150043
+[2023-05-23 13:59:23,464]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,464]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,465]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,465]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,465]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150044
+[2023-05-23 13:59:23,465]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150044
+[2023-05-23 13:59:23,465]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,465]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,465]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,465]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,465]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150037
+[2023-05-23 13:59:23,465]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150037
+[2023-05-23 13:59:23,465]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,465]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,466]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,466]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,466]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150038
+[2023-05-23 13:59:23,466]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150038
+[2023-05-23 13:59:23,466]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,466]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,466]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,466]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,466]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150039
+[2023-05-23 13:59:23,466]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150039
+[2023-05-23 13:59:23,466]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,467]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,467]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,467]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,467]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150040
+[2023-05-23 13:59:23,467]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150040
+[2023-05-23 13:59:23,467]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,467]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,467]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,467]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,467]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150001
+[2023-05-23 13:59:23,467]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150001
+[2023-05-23 13:59:23,467]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,468]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,468]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,468]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,468]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150002
+[2023-05-23 13:59:23,468]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150002
+[2023-05-23 13:59:23,468]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,468]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,468]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,468]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,468]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150003
+[2023-05-23 13:59:23,468]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150003
+[2023-05-23 13:59:23,468]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,469]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,469]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,469]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,469]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150004
+[2023-05-23 13:59:23,469]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150004
+[2023-05-23 13:59:23,469]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,469]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,469]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,469]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,470]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150005
+[2023-05-23 13:59:23,470]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150005
+[2023-05-23 13:59:23,470]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,470]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,470]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,470]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,470]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150006
+[2023-05-23 13:59:23,470]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150006
+[2023-05-23 13:59:23,471]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,471]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,471]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,471]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,471]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150007
+[2023-05-23 13:59:23,471]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150007
+[2023-05-23 13:59:23,471]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,471]INFO:Cache save: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,471]INFO:Inserted data: /ndn/org/md2k/CK/982477403/ENC-BY//
+[2023-05-23 13:59:23,472]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:23,472]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150008
+[2023-05-23 13:59:23,472]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930502150008
+[2023-05-23 13:59:23,472]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,472]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%03
+[2023-05-23 13:59:23,472]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%03
+[2023-05-23 13:59:23,472]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:23,506]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%04
+[2023-05-23 13:59:23,506]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%04
+[2023-05-23 13:59:23,506]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,485]INFO:Cache save: /ndn/org/md2k/CK/305884506/ENC-BY//
+[2023-05-23 13:59:25,485]INFO:Inserted data: /ndn/org/md2k/CK/305884506/ENC-BY//
+[2023-05-23 13:59:25,485]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,486]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/metadata%2Fv1
+[2023-05-23 13:59:25,486]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/metadata%2Fv1
+[2023-05-23 13:59:25,486]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,486]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,486]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,486]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,486]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152200
+[2023-05-23 13:59:25,486]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152200
+[2023-05-23 13:59:25,486]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,487]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,487]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,487]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,487]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152300
+[2023-05-23 13:59:25,487]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152300
+[2023-05-23 13:59:25,487]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,487]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,488]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,488]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,488]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152400
+[2023-05-23 13:59:25,488]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152400
+[2023-05-23 13:59:25,488]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,488]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,488]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,488]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,489]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152500
+[2023-05-23 13:59:25,489]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152500
+[2023-05-23 13:59:25,489]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,489]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,489]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,489]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,489]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151000
+[2023-05-23 13:59:25,489]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151000
+[2023-05-23 13:59:25,489]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,490]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,490]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,490]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,490]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151100
+[2023-05-23 13:59:25,490]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151100
+[2023-05-23 13:59:25,490]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,490]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,490]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,491]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,491]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152000
+[2023-05-23 13:59:25,491]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152000
+[2023-05-23 13:59:25,491]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,491]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,491]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,491]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,491]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152100
+[2023-05-23 13:59:25,491]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502152100
+[2023-05-23 13:59:25,492]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,492]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,492]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,492]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,492]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150400
+[2023-05-23 13:59:25,492]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150400
+[2023-05-23 13:59:25,492]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,492]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,492]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,493]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,493]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150500
+[2023-05-23 13:59:25,493]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150500
+[2023-05-23 13:59:25,493]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,493]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,493]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,493]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,493]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151600
+[2023-05-23 13:59:25,493]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151600
+[2023-05-23 13:59:25,494]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,494]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,494]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,494]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,494]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151700
+[2023-05-23 13:59:25,494]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151700
+[2023-05-23 13:59:25,494]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,531]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,531]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,531]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,531]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150200
+[2023-05-23 13:59:25,531]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150200
+[2023-05-23 13:59:25,531]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,532]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,532]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,532]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,532]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150300
+[2023-05-23 13:59:25,532]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150300
+[2023-05-23 13:59:25,532]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,532]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,532]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,532]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,532]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150600
+[2023-05-23 13:59:25,532]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150600
+[2023-05-23 13:59:25,532]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,533]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,533]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,533]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,533]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150700
+[2023-05-23 13:59:25,533]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150700
+[2023-05-23 13:59:25,533]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,533]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,533]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,533]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,533]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151800
+[2023-05-23 13:59:25,534]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151800
+[2023-05-23 13:59:25,534]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,534]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,534]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,534]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,534]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151900
+[2023-05-23 13:59:25,534]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151900
+[2023-05-23 13:59:25,534]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,534]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,534]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,535]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,535]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151400
+[2023-05-23 13:59:25,535]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151400
+[2023-05-23 13:59:25,535]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,535]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,535]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,535]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,535]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151500
+[2023-05-23 13:59:25,535]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151500
+[2023-05-23 13:59:25,535]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,536]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,536]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,536]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,536]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150000
+[2023-05-23 13:59:25,536]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150000
+[2023-05-23 13:59:25,536]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,536]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,536]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,536]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,537]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150100
+[2023-05-23 13:59:25,537]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150100
+[2023-05-23 13:59:25,537]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,537]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,537]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,537]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,537]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151200
+[2023-05-23 13:59:25,537]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151200
+[2023-05-23 13:59:25,537]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,537]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,537]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,537]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,538]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151300
+[2023-05-23 13:59:25,538]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502151300
+[2023-05-23 13:59:25,538]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,538]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,538]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,538]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,538]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150800
+[2023-05-23 13:59:25,538]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150800
+[2023-05-23 13:59:25,538]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,538]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,538]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:25,538]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:25,539]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150900
+[2023-05-23 13:59:25,539]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930502150900
+[2023-05-23 13:59:25,539]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:25,595]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%03
+[2023-05-23 13:59:25,595]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%03
+[2023-05-23 13:59:25,595]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:28,374]INFO:Cache write back 101 items
+[2023-05-23 13:59:48,937]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,937]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,937]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,938]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/metadata%2Fv1
+[2023-05-23 13:59:48,938]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/metadata%2Fv1
+[2023-05-23 13:59:48,938]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,938]INFO:Cache save: /ndn/org/md2k/CK/2384816197/ENC-BY//
+[2023-05-23 13:59:48,938]INFO:Inserted data: /ndn/org/md2k/CK/2384816197/ENC-BY//
+[2023-05-23 13:59:48,938]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,938]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503161700
+[2023-05-23 13:59:48,939]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503161700
+[2023-05-23 13:59:48,939]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,939]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,939]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,939]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,939]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503152600
+[2023-05-23 13:59:48,939]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503152600
+[2023-05-23 13:59:48,939]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,940]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,940]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,940]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,940]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503180700
+[2023-05-23 13:59:48,940]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503180700
+[2023-05-23 13:59:48,940]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,940]INFO:Cache save: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:59:48,940]INFO:Inserted data: /ndn/org/md2k/CK/4094633384/ENC-BY//
+[2023-05-23 13:59:48,940]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,940]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503150000
+[2023-05-23 13:59:48,940]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503150000
+[2023-05-23 13:59:48,940]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,941]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,941]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,941]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,941]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503164000
+[2023-05-23 13:59:48,941]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503164000
+[2023-05-23 13:59:48,941]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,941]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,941]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,941]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,941]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503200100
+[2023-05-23 13:59:48,941]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503200100
+[2023-05-23 13:59:48,941]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,942]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,942]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,942]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,942]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503150200
+[2023-05-23 13:59:48,942]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503150200
+[2023-05-23 13:59:48,942]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,942]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,942]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,942]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,942]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503170600
+[2023-05-23 13:59:48,942]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503170600
+[2023-05-23 13:59:48,942]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,943]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,943]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,943]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,943]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503173500
+[2023-05-23 13:59:48,943]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503173500
+[2023-05-23 13:59:48,943]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,943]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%03
+[2023-05-23 13:59:48,943]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%03
+[2023-05-23 13:59:48,943]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,943]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,943]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,943]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,944]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503184200
+[2023-05-23 13:59:48,944]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503184200
+[2023-05-23 13:59:48,944]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,944]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,944]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,944]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,944]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503192000
+[2023-05-23 13:59:48,944]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503192000
+[2023-05-23 13:59:48,944]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,944]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,944]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,944]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,945]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503150700
+[2023-05-23 13:59:48,945]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503150700
+[2023-05-23 13:59:48,945]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,945]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,945]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,945]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,945]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503151500
+[2023-05-23 13:59:48,945]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503151500
+[2023-05-23 13:59:48,945]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,945]INFO:Cache save: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,945]INFO:Inserted data: /ndn/org/md2k/CK/3161799063/ENC-BY//
+[2023-05-23 13:59:48,945]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,945]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503154000
+[2023-05-23 13:59:48,946]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503154000
+[2023-05-23 13:59:48,946]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,946]INFO:Cache save: /ndn/org/md2k/CK/2384816197/ENC-BY//
+[2023-05-23 13:59:48,946]INFO:Inserted data: /ndn/org/md2k/CK/2384816197/ENC-BY//
+[2023-05-23 13:59:48,946]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,946]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503155700
+[2023-05-23 13:59:48,946]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503155700
+[2023-05-23 13:59:48,946]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,946]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,946]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,946]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,946]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503204500
+[2023-05-23 13:59:48,946]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503204500
+[2023-05-23 13:59:48,946]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:48,947]INFO:Cache save: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,947]INFO:Inserted data: /ndn/org/md2k/CK/1122658652/ENC-BY//
+[2023-05-23 13:59:48,947]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:48,947]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503213200
+[2023-05-23 13:59:48,947]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/DATA/19930503213200
+[2023-05-23 13:59:48,947]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:49,047]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%04
+[2023-05-23 13:59:49,047]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location/MANIFEST/%04
+[2023-05-23 13:59:49,047]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,018]INFO:Cache save: /ndn/org/md2k/CK/142950760/ENC-BY//
+[2023-05-23 13:59:51,018]INFO:Inserted data: /ndn/org/md2k/CK/142950760/ENC-BY//
+[2023-05-23 13:59:51,018]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,018]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/metadata%2Fv1
+[2023-05-23 13:59:51,018]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/metadata%2Fv1
+[2023-05-23 13:59:51,018]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,018]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,018]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,018]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,019]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150045
+[2023-05-23 13:59:51,019]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150045
+[2023-05-23 13:59:51,019]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,019]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,019]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,019]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,019]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150046
+[2023-05-23 13:59:51,019]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150046
+[2023-05-23 13:59:51,019]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,019]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,019]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,019]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,020]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150047
+[2023-05-23 13:59:51,020]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150047
+[2023-05-23 13:59:51,020]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,020]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,020]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,020]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,020]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150048
+[2023-05-23 13:59:51,020]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150048
+[2023-05-23 13:59:51,020]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,020]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,020]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,020]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,021]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150049
+[2023-05-23 13:59:51,021]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150049
+[2023-05-23 13:59:51,021]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,021]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,021]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,021]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,021]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150021
+[2023-05-23 13:59:51,021]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150021
+[2023-05-23 13:59:51,021]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,021]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,021]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,021]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,021]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150022
+[2023-05-23 13:59:51,022]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150022
+[2023-05-23 13:59:51,022]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,022]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,022]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,022]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,022]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150023
+[2023-05-23 13:59:51,022]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150023
+[2023-05-23 13:59:51,022]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,022]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,022]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,022]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,022]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150024
+[2023-05-23 13:59:51,022]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150024
+[2023-05-23 13:59:51,022]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,023]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,023]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,023]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,023]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150009
+[2023-05-23 13:59:51,023]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150009
+[2023-05-23 13:59:51,023]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,081]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,081]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,081]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,082]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150010
+[2023-05-23 13:59:51,082]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150010
+[2023-05-23 13:59:51,082]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,082]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,082]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,082]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,082]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150011
+[2023-05-23 13:59:51,082]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150011
+[2023-05-23 13:59:51,082]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,083]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,083]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,083]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,083]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150012
+[2023-05-23 13:59:51,083]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150012
+[2023-05-23 13:59:51,083]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,083]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,083]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,084]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,084]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150025
+[2023-05-23 13:59:51,084]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150025
+[2023-05-23 13:59:51,084]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,084]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,084]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,084]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,084]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150026
+[2023-05-23 13:59:51,084]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150026
+[2023-05-23 13:59:51,084]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,084]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,085]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,085]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,085]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150027
+[2023-05-23 13:59:51,085]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150027
+[2023-05-23 13:59:51,085]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,085]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,085]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,085]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,086]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150028
+[2023-05-23 13:59:51,086]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150028
+[2023-05-23 13:59:51,086]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,086]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,086]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,086]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,086]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150029
+[2023-05-23 13:59:51,086]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150029
+[2023-05-23 13:59:51,086]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,086]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,086]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,086]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,087]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150030
+[2023-05-23 13:59:51,087]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150030
+[2023-05-23 13:59:51,087]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,087]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,087]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,087]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,087]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150031
+[2023-05-23 13:59:51,087]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150031
+[2023-05-23 13:59:51,087]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,087]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,087]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,087]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,087]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150032
+[2023-05-23 13:59:51,087]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150032
+[2023-05-23 13:59:51,088]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,088]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,088]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,088]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,088]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150033
+[2023-05-23 13:59:51,088]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150033
+[2023-05-23 13:59:51,088]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,088]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,088]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,088]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,088]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150034
+[2023-05-23 13:59:51,088]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150034
+[2023-05-23 13:59:51,088]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,089]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,089]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,089]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,089]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150035
+[2023-05-23 13:59:51,089]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150035
+[2023-05-23 13:59:51,089]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,089]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,089]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,089]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,089]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150036
+[2023-05-23 13:59:51,089]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150036
+[2023-05-23 13:59:51,089]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,089]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,089]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,089]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,090]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150013
+[2023-05-23 13:59:51,090]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150013
+[2023-05-23 13:59:51,090]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,090]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,090]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,090]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,090]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150014
+[2023-05-23 13:59:51,090]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150014
+[2023-05-23 13:59:51,090]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,090]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,090]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,090]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,090]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150015
+[2023-05-23 13:59:51,091]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150015
+[2023-05-23 13:59:51,091]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,091]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,091]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,091]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,091]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150016
+[2023-05-23 13:59:51,091]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150016
+[2023-05-23 13:59:51,091]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,091]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,091]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,091]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,091]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150017
+[2023-05-23 13:59:51,091]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150017
+[2023-05-23 13:59:51,091]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,092]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,092]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,092]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,092]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150018
+[2023-05-23 13:59:51,092]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150018
+[2023-05-23 13:59:51,092]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,092]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,092]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,092]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,092]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150019
+[2023-05-23 13:59:51,092]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150019
+[2023-05-23 13:59:51,092]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,092]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,092]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,093]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,093]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150020
+[2023-05-23 13:59:51,093]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150020
+[2023-05-23 13:59:51,093]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,093]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,093]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,093]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,093]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150005
+[2023-05-23 13:59:51,093]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150005
+[2023-05-23 13:59:51,093]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,093]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,093]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,093]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,094]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150006
+[2023-05-23 13:59:51,094]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150006
+[2023-05-23 13:59:51,094]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,094]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,094]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,094]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,094]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150007
+[2023-05-23 13:59:51,094]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150007
+[2023-05-23 13:59:51,094]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,094]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,094]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,094]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,094]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150008
+[2023-05-23 13:59:51,094]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150008
+[2023-05-23 13:59:51,094]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,095]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,095]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,095]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,095]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150001
+[2023-05-23 13:59:51,095]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150001
+[2023-05-23 13:59:51,095]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,095]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,095]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,095]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,095]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150002
+[2023-05-23 13:59:51,095]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150002
+[2023-05-23 13:59:51,096]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,096]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,096]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,096]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,096]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150003
+[2023-05-23 13:59:51,096]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150003
+[2023-05-23 13:59:51,096]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,096]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,096]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,096]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,096]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150004
+[2023-05-23 13:59:51,097]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150004
+[2023-05-23 13:59:51,097]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,097]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,097]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,097]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,097]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150037
+[2023-05-23 13:59:51,097]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150037
+[2023-05-23 13:59:51,097]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,097]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,097]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,097]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,098]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150038
+[2023-05-23 13:59:51,098]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150038
+[2023-05-23 13:59:51,098]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,098]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,098]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,098]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,098]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150039
+[2023-05-23 13:59:51,098]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150039
+[2023-05-23 13:59:51,098]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,098]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,098]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,098]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,098]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150040
+[2023-05-23 13:59:51,099]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150040
+[2023-05-23 13:59:51,099]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,099]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,099]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,099]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,099]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150041
+[2023-05-23 13:59:51,099]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150041
+[2023-05-23 13:59:51,099]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,099]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,099]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,099]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,099]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150042
+[2023-05-23 13:59:51,099]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150042
+[2023-05-23 13:59:51,099]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,100]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,100]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,100]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,100]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150043
+[2023-05-23 13:59:51,100]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150043
+[2023-05-23 13:59:51,100]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,100]INFO:Cache save: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,100]INFO:Inserted data: /ndn/org/md2k/CK/3971371693/ENC-BY//
+[2023-05-23 13:59:51,100]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:51,100]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150044
+[2023-05-23 13:59:51,100]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/DATA/19930503150044
+[2023-05-23 13:59:51,100]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,100]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%05
+[2023-05-23 13:59:51,100]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%05
+[2023-05-23 13:59:51,101]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:51,132]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%06
+[2023-05-23 13:59:51,132]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/battery/MANIFEST/%06
+[2023-05-23 13:59:51,132]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,109]INFO:Cache save: /ndn/org/md2k/CK/305884506/ENC-BY//
+[2023-05-23 13:59:53,109]INFO:Inserted data: /ndn/org/md2k/CK/305884506/ENC-BY//
+[2023-05-23 13:59:53,109]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,110]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/metadata%2Fv1
+[2023-05-23 13:59:53,110]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/metadata%2Fv1
+[2023-05-23 13:59:53,110]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,110]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,110]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,110]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,110]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151000
+[2023-05-23 13:59:53,111]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151000
+[2023-05-23 13:59:53,111]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,111]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,111]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,111]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,111]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151100
+[2023-05-23 13:59:53,111]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151100
+[2023-05-23 13:59:53,111]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,112]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,112]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,112]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,112]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151200
+[2023-05-23 13:59:53,112]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151200
+[2023-05-23 13:59:53,112]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,112]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,112]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,112]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,113]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151300
+[2023-05-23 13:59:53,113]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151300
+[2023-05-23 13:59:53,113]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,113]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,113]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,113]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,113]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150400
+[2023-05-23 13:59:53,113]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150400
+[2023-05-23 13:59:53,113]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,114]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,114]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,114]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,114]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150500
+[2023-05-23 13:59:53,114]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150500
+[2023-05-23 13:59:53,114]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,114]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,114]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,115]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,115]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150600
+[2023-05-23 13:59:53,115]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150600
+[2023-05-23 13:59:53,115]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,115]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,115]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,115]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,115]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150700
+[2023-05-23 13:59:53,115]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150700
+[2023-05-23 13:59:53,116]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,116]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,116]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,116]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,116]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152400
+[2023-05-23 13:59:53,116]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152400
+[2023-05-23 13:59:53,116]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,116]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,116]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,116]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,117]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152500
+[2023-05-23 13:59:53,117]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152500
+[2023-05-23 13:59:53,117]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,117]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,117]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,117]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,117]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152600
+[2023-05-23 13:59:53,117]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152600
+[2023-05-23 13:59:53,117]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,117]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,117]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,117]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,117]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152700
+[2023-05-23 13:59:53,118]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152700
+[2023-05-23 13:59:53,118]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,118]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,118]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,118]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,118]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153000
+[2023-05-23 13:59:53,118]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153000
+[2023-05-23 13:59:53,118]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,118]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,118]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,118]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,119]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153100
+[2023-05-23 13:59:53,119]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153100
+[2023-05-23 13:59:53,119]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,119]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,119]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,119]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,119]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153200
+[2023-05-23 13:59:53,119]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153200
+[2023-05-23 13:59:53,119]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,120]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,120]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,120]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,120]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153300
+[2023-05-23 13:59:53,120]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503153300
+[2023-05-23 13:59:53,120]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,120]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,120]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,121]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,121]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151800
+[2023-05-23 13:59:53,121]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151800
+[2023-05-23 13:59:53,121]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,121]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,121]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,121]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,121]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151900
+[2023-05-23 13:59:53,122]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151900
+[2023-05-23 13:59:53,122]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,161]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,161]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,161]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,161]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152000
+[2023-05-23 13:59:53,161]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152000
+[2023-05-23 13:59:53,161]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,161]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,161]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,162]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,162]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152100
+[2023-05-23 13:59:53,162]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152100
+[2023-05-23 13:59:53,162]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,162]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,162]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,162]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,162]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150200
+[2023-05-23 13:59:53,162]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150200
+[2023-05-23 13:59:53,162]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,162]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%04
+[2023-05-23 13:59:53,162]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%04
+[2023-05-23 13:59:53,162]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,163]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,163]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,163]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,163]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150300
+[2023-05-23 13:59:53,163]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150300
+[2023-05-23 13:59:53,163]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,163]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,163]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,163]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,163]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151600
+[2023-05-23 13:59:53,163]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151600
+[2023-05-23 13:59:53,163]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,163]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,164]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,164]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,164]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151700
+[2023-05-23 13:59:53,164]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151700
+[2023-05-23 13:59:53,164]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,164]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,164]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,164]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,164]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151400
+[2023-05-23 13:59:53,164]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151400
+[2023-05-23 13:59:53,164]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,164]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,164]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,165]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,165]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151500
+[2023-05-23 13:59:53,165]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503151500
+[2023-05-23 13:59:53,165]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,165]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,165]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,165]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,165]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152800
+[2023-05-23 13:59:53,165]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152800
+[2023-05-23 13:59:53,165]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,165]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,165]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,165]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,165]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152900
+[2023-05-23 13:59:53,166]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152900
+[2023-05-23 13:59:53,166]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,166]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,166]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,166]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,166]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152200
+[2023-05-23 13:59:53,166]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152200
+[2023-05-23 13:59:53,166]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,166]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,166]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,166]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,166]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152300
+[2023-05-23 13:59:53,166]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503152300
+[2023-05-23 13:59:53,166]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,167]INFO:Cache save: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:59:53,167]INFO:Inserted data: /ndn/org/md2k/CK/1349800003/ENC-BY//
+[2023-05-23 13:59:53,167]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,167]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150000
+[2023-05-23 13:59:53,167]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150000
+[2023-05-23 13:59:53,167]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,167]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,167]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,167]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,167]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150100
+[2023-05-23 13:59:53,167]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150100
+[2023-05-23 13:59:53,167]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,167]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,168]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,168]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,168]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150800
+[2023-05-23 13:59:53,168]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150800
+[2023-05-23 13:59:53,168]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,168]INFO:Cache save: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,168]INFO:Inserted data: /ndn/org/md2k/CK/2348087749/ENC-BY//
+[2023-05-23 13:59:53,168]INFO:Try to register prefix: /ndn/org/md2k/CK
+[2023-05-23 13:59:53,168]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150900
+[2023-05-23 13:59:53,168]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/DATA/19930503150900
+[2023-05-23 13:59:53,168]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:53,220]INFO:Cache save: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%05
+[2023-05-23 13:59:53,220]INFO:Inserted data: /ndn/org/md2k/mguard/dd40c/phone/gps/MANIFEST/%05
+[2023-05-23 13:59:53,220]INFO:Try to register prefix: /ndn/org/md2k/mguard/dd40c
+[2023-05-23 13:59:58,416]INFO:Cache write back 118 items

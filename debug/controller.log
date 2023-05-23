@@ -1,86 +1,89 @@
-1684530275.011084  INFO: [mguard.parser] processing available stream path: policies/available_streams
-1684530275.011163 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/mguard/dd40c/phone/accelerometer parent: /
-1684530275.011190 DEBUG: [mguard.nametree] prefix not in tree: /data_analysis/gps_episodes_and_semantic_location parent: /ndn/org/md2k/mguard/dd40c
-1684530275.011218 DEBUG: [mguard.nametree] prefix not in tree: /gyroscope parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.011240 DEBUG: [mguard.nametree] prefix not in tree: /battery parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.011260 DEBUG: [mguard.nametree] prefix not in tree: /gps parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.011280 DEBUG: [mguard.nametree] prefix not in tree: /ATTRIBUTE/location/home parent: /ndn/org/md2k
-1684530275.011302 DEBUG: [mguard.nametree] prefix not in tree: /work parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011322 DEBUG: [mguard.nametree] prefix not in tree: /commuting parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011341 DEBUG: [mguard.nametree] prefix not in tree: /casino parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011361 DEBUG: [mguard.nametree] prefix not in tree: /oakland parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011380 DEBUG: [mguard.nametree] prefix not in tree: /SoCal parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011401 DEBUG: [mguard.nametree] prefix not in tree: /gym parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011422 DEBUG: [mguard.nametree] prefix not in tree: /shopping-mall parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011442 DEBUG: [mguard.nametree] prefix not in tree: /unknown parent: /ndn/org/md2k/ATTRIBUTE/location
-1684530275.011460 DEBUG: [mguard.nametree] prefix not in tree: /smoking/yes parent: /ndn/org/md2k/ATTRIBUTE
-1684530275.011481 DEBUG: [mguard.nametree] prefix not in tree: /no parent: /ndn/org/md2k/ATTRIBUTE/smoking
-1684530275.011500 DEBUG: [mguard.nametree] prefix not in tree: /activity/walking parent: /ndn/org/md2k/ATTRIBUTE
-1684530275.011521 DEBUG: [mguard.nametree] prefix not in tree: /running parent: /ndn/org/md2k/ATTRIBUTE/activity
-1684530275.011541 DEBUG: [mguard.nametree] prefix not in tree: /eating parent: /ndn/org/md2k/ATTRIBUTE/activity
-1684530275.011561 DEBUG: [mguard.nametree] prefix not in tree: /drinking parent: /ndn/org/md2k/ATTRIBUTE/activity
-1684530275.011582 DEBUG: [mguard.nametree] prefix not in tree: /sleeping parent: /ndn/org/md2k/ATTRIBUTE/activity
-1684530275.011603 DEBUG: [mguard.nametree] prefix not in tree: /unknown parent: /ndn/org/md2k/ATTRIBUTE/activity
-1684530275.011617 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/local parent: /
-1684530275.011630 DEBUG: [mguard.nametree] prefix not in tree: /remote parent: /ndn/org/md2k
-1684530275.011645 DEBUG: [mguard.nametree] prefix not in tree: /A parent: /ndn/org/md2k
-1684530275.011653 DEBUG: [mguard.nametree] prefix not in tree: /B parent: /ndn/org/md2k
-1684530275.011668 DEBUG: [mguard.nametree] prefix not in tree: /C parent: /ndn/org/md2k
-1684530275.011675 DEBUG: [mguard.nametree] prefix not in tree: /D parent: /ndn/org/md2k
-1684530275.011691 DEBUG: [mguard.nametree] prefix not in tree: /E parent: /ndn/org/md2k
-1684530275.011707 DEBUG: [mguard.nametree] prefix not in tree: /F parent: /ndn/org/md2k
-1684530275.011785  INFO: [nacabe.AttributeAuthority] Using KP-ABE
-1684530275.013458 DEBUG: [ndn.security.Pib] Caching default identity /ndn/org/md2k/local
-1684530275.013564 DEBUG: [ndn.security.Identity] Caching default key /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26
-1684530275.013618 DEBUG: [ndn.security.Key] Caching default certificate /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26/self/v=1684526363794
-1684530275.014573 DEBUG: [mguard.Controller] Controller certificate: Certificate Name:
-  /ndn/org/md2k/mguard/controller/KEY/A%17%E20%E2D%27W/%2Fndn%2Forg%2Fmd2k/v=1684526362743
+1684868319.139151  INFO: [mguard.parser] processing available stream path: policies/available_streams
+1684868319.139235 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/mguard/dd40c/phone/accelerometer parent: /
+1684868319.139261 DEBUG: [mguard.nametree] prefix not in tree: /data_analysis/gps_episodes_and_semantic_location parent: /ndn/org/md2k/mguard/dd40c
+1684868319.139289 DEBUG: [mguard.nametree] prefix not in tree: /gyroscope parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.139313 DEBUG: [mguard.nametree] prefix not in tree: /battery parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.139334 DEBUG: [mguard.nametree] prefix not in tree: /gps parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.139353 DEBUG: [mguard.nametree] prefix not in tree: /ATTRIBUTE/location/home parent: /ndn/org/md2k
+1684868319.139376 DEBUG: [mguard.nametree] prefix not in tree: /work parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139396 DEBUG: [mguard.nametree] prefix not in tree: /commuting parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139415 DEBUG: [mguard.nametree] prefix not in tree: /casino parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139434 DEBUG: [mguard.nametree] prefix not in tree: /oakland parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139453 DEBUG: [mguard.nametree] prefix not in tree: /SoCal parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139474 DEBUG: [mguard.nametree] prefix not in tree: /gym parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139494 DEBUG: [mguard.nametree] prefix not in tree: /shopping-mall parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139514 DEBUG: [mguard.nametree] prefix not in tree: /unknown parent: /ndn/org/md2k/ATTRIBUTE/location
+1684868319.139532 DEBUG: [mguard.nametree] prefix not in tree: /smoking/yes parent: /ndn/org/md2k/ATTRIBUTE
+1684868319.139552 DEBUG: [mguard.nametree] prefix not in tree: /no parent: /ndn/org/md2k/ATTRIBUTE/smoking
+1684868319.139571 DEBUG: [mguard.nametree] prefix not in tree: /activity/walking parent: /ndn/org/md2k/ATTRIBUTE
+1684868319.139591 DEBUG: [mguard.nametree] prefix not in tree: /running parent: /ndn/org/md2k/ATTRIBUTE/activity
+1684868319.139611 DEBUG: [mguard.nametree] prefix not in tree: /eating parent: /ndn/org/md2k/ATTRIBUTE/activity
+1684868319.139630 DEBUG: [mguard.nametree] prefix not in tree: /drinking parent: /ndn/org/md2k/ATTRIBUTE/activity
+1684868319.139651 DEBUG: [mguard.nametree] prefix not in tree: /sleeping parent: /ndn/org/md2k/ATTRIBUTE/activity
+1684868319.139671 DEBUG: [mguard.nametree] prefix not in tree: /unknown parent: /ndn/org/md2k/ATTRIBUTE/activity
+1684868319.139685 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/local parent: /
+1684868319.139696 DEBUG: [mguard.nametree] prefix not in tree: /remote parent: /ndn/org/md2k
+1684868319.139702 DEBUG: [mguard.nametree] prefix not in tree: /A parent: /ndn/org/md2k
+1684868319.139708 DEBUG: [mguard.nametree] prefix not in tree: /B parent: /ndn/org/md2k
+1684868319.139715 DEBUG: [mguard.nametree] prefix not in tree: /C parent: /ndn/org/md2k
+1684868319.139721 DEBUG: [mguard.nametree] prefix not in tree: /D parent: /ndn/org/md2k
+1684868319.139728 DEBUG: [mguard.nametree] prefix not in tree: /E parent: /ndn/org/md2k
+1684868319.139734 DEBUG: [mguard.nametree] prefix not in tree: /F parent: /ndn/org/md2k
+1684868319.139814  INFO: [nacabe.AttributeAuthority] Using KP-ABE
+1684868319.141621 DEBUG: [ndn.security.Pib] Caching default identity /ndn/org/md2k/local
+1684868319.141748 DEBUG: [ndn.security.Identity] Caching default key /ndn/org/md2k/local/KEY/A%83%2C%DF%E5%04%A1%08
+1684868319.141848 DEBUG: [ndn.security.Key] Caching default certificate /ndn/org/md2k/local/KEY/A%83%2C%DF%E5%04%A1%08/self/v=1684867290046
+1684868319.142875 DEBUG: [mguard.Controller] Controller certificate: Certificate Name:
+  /ndn/org/md2k/mguard/controller/KEY/%A0%944%D6%8B%B1%CB%29/%2Fndn%2Forg%2Fmd2k/v=1684867289002
 Public Key:
   Key Type: 2048-bit RSA
-  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyx94JPTXCIIYIU3AHXiN
-  ogmMuNYTF9MqJGGfpIXcjd3jW5aGAHeQ+Y/XmlN2yGMBDi2UgvzwGlEAPl/fMErT
-  XY6EKQ9qT2V++XDXOBoanOVmP52cHAlkyaz4W/nL6oZvSmgHpnc9fSlAGPG/06Im
-  wUUuu0n7qfbGMVZdqvGxygfYY+ILUNqOt/dFK1xc6C9Coir8AtS1TTF+sYb+bNkl
-  J8ktTjVHziYETyZvIIv+T70uN3CmtY00kgl3mDcXaR994uUuD9fr4C9/cfRTDoPY
-  TEQWMM+m1nCjoaAG1CB+raElEGPeyfgM/t1qnQxitwV1ZWm36uiuhvWw54akKJs0
-  AwIDAQAB
+  MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvlfgLPfxrOQ1+joIwIZM
+  zv8V+8SuL8xohf0meGORqA+H33fY6448Ta9Hz23C2gFEF+UFqciLY/Rs6vcMIW+C
+  n4TDy2PKdL45buWTcttJhtuW/l4ihmWNVT6kj/gfNBZhJO0UjSAhN23IPU4VWISU
+  RRaOXsUYwiDia5gKGy9WNNgHp+POvvY0deGtnUcjazDXY5ZpK3yZLFk+prtKP4+J
+  H6IM4ZkbwpIkPcXFYO2DxwjmYi2KD8CUnwxu5Ui9RQl7QyQ9wn+B3a2VWnvspObi
+  ickE7MTmBYWHYqLhKogaWPziEYnTFyNUO7stFonwLnHccXHxKLCoHH1mLOONNozu
+  5wIDAQAB
 Validity:
-  Not Before: 2023-05-19T19:59:23
-  Not After: 2024-05-18T19:59:22
+  Not Before: 2023-05-23T18:41:30
+  Not After: 2024-05-22T18:41:29
 Signature Information:
   Signature Type: SignatureSha256WithRsa
-  Key Locator: Name=/ndn/org/md2k/KEY/%AC%BC%FE%DDz%08%9F%F7/self/v=1684526362522
-1684530275.014669  INFO: [mguard.Controller] Policy path: policies/policy3
-1684530275.014721 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/mguard/dd40c/phone/accelerometer parent: /
-1684530275.014749 DEBUG: [mguard.nametree] prefix not in tree: /gyroscope parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.014762 DEBUG: [mguard.nametree] prefix not in tree: /battery parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.014772 DEBUG: [mguard.nametree] prefix not in tree: /gps parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.014791 DEBUG: [mguard.nametree] prefix not in tree: /data_analysis/gps_episodes_and_semantic_location parent: /ndn/org/md2k/mguard/dd40c
-1684530275.014812 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/mguard/dd40c/phone/accelerometer parent: /
-1684530275.014837 DEBUG: [mguard.nametree] prefix not in tree: /gyroscope parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.014856 DEBUG: [mguard.nametree] prefix not in tree: /battery parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.014874 DEBUG: [mguard.nametree] prefix not in tree: /gps parent: /ndn/org/md2k/mguard/dd40c/phone
-1684530275.014893 DEBUG: [mguard.nametree] prefix not in tree: /data_analysis/gps_episodes_and_semantic_location parent: /ndn/org/md2k/mguard/dd40c
-1684530275.014909 DEBUG: [mguard.nametree] prefix not in tree: / parent: /
-1684530275.014924 DEBUG: [mguard.Controller] from policy info: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location)
-1684530275.014947 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/A
-1684530275.014959 DEBUG: [mguard.Controller] Policy path does't exist: 
-1684530275.014961 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/B
-1684530275.014963 DEBUG: [mguard.Controller] Policy path does't exist: 
-1684530275.014964 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/C
-1684530275.014966 DEBUG: [mguard.Controller] Policy path does't exist: 
-1684530275.014967 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/D
-1684530275.014969 DEBUG: [mguard.Controller] Policy path does't exist: 
-1684530275.014970 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/E
-1684530275.014972 DEBUG: [mguard.Controller] Policy path does't exist: 
-1684530275.014976  INFO: [mguard.Controller] Setting interest filter on name: /ndn/org/md2k/mguard/controller
-1684530275.015485  INFO: [mguard.Controller] Setting interest filter on: /ndn/org/md2k/mguard/controller/POLICYDATA
-1684530275.017906 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%21%07%1C%08%03ndn%08%03org%08%04md2k%08%06mguard%08%02aal%01%01/params-sha256=73134cfdc216498d9c93605ad904e7fa82ad0d331a85f502c51d05f00ac21bd9
-1684530275.019474 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%29%07%24%08%03ndn%08%03org%08%04md2k%08%06mguard%08%0Acontrollerl%01%01/params-sha256=4e087c9c8524866fa08521e2dfbdf09a6429170f18b8f5bf2fa84324cdd9babf
-1684530275.019497  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/controller
-1684530275.019516 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h5%070%08%03ndn%08%03org%08%04md2k%08%06mguard%08%0Acontroller%08%0APOLICYDATAl%01%01/params-sha256=639c6a2293a3df7cde343ea2b3669b902aa440164594bb96282032375f23617d
-1684530275.019534  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/controller/POLICYDATA
-1684530278.035645  INFO: [nacabe.AttributeAuthority] on public params request: /ndn/org/md2k/mguard/aa/PUBPARAMS
-1684530280.114710  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%26%08%03ndn%08%03org%08%04md2k%08%05local%08%03KEY%08%08Dp%D86%28%D4%3A%26
-1684530280.114752 DEBUG: [nacabe.AttributeAuthority] KeyName --------> /ndn/org/md2k/local/KEY/Dp%D86%28%D4%3A%26
-1684530280.114772  INFO: [nacabe.AttributeAuthority] DKEY Request Interest cannot be authenticated: no certificate for /ndn/org/md2k/local
+  Key Locator: Name=/ndn/org/md2k/KEY/%07%0E%7B%02%E2Q%A1%16/self/v=1684867288834
+1684868319.142967  INFO: [mguard.Controller] Policy path: policies/policy3
+1684868319.143049 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/mguard/dd40c/phone/accelerometer parent: /
+1684868319.143086 DEBUG: [mguard.nametree] prefix not in tree: /gyroscope parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.143106 DEBUG: [mguard.nametree] prefix not in tree: /battery parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.143125 DEBUG: [mguard.nametree] prefix not in tree: /gps parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.143143 DEBUG: [mguard.nametree] prefix not in tree: /data_analysis/gps_episodes_and_semantic_location parent: /ndn/org/md2k/mguard/dd40c
+1684868319.143174 DEBUG: [mguard.nametree] prefix not in tree: /ndn/org/md2k/mguard/dd40c/phone/accelerometer parent: /
+1684868319.143200 DEBUG: [mguard.nametree] prefix not in tree: /gyroscope parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.143236 DEBUG: [mguard.nametree] prefix not in tree: /battery parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.143254 DEBUG: [mguard.nametree] prefix not in tree: /gps parent: /ndn/org/md2k/mguard/dd40c/phone
+1684868319.143273 DEBUG: [mguard.nametree] prefix not in tree: /data_analysis/gps_episodes_and_semantic_location parent: /ndn/org/md2k/mguard/dd40c
+1684868319.143289 DEBUG: [mguard.nametree] prefix not in tree: / parent: /
+1684868319.143312 DEBUG: [mguard.Controller] from policy info: (/ndn/org/md2k/mguard/dd40c/phone/accelerometer OR /ndn/org/md2k/mguard/dd40c/phone/gyroscope OR /ndn/org/md2k/mguard/dd40c/phone/battery OR /ndn/org/md2k/mguard/dd40c/phone/gps OR /ndn/org/md2k/mguard/dd40c/data_analysis/gps_episodes_and_semantic_location)
+1684868319.143336 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/A
+1684868319.143348 DEBUG: [mguard.Controller] Policy path does't exist: 
+1684868319.143350 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/B
+1684868319.143352 DEBUG: [mguard.Controller] Policy path does't exist: 
+1684868319.143353 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/C
+1684868319.143356 DEBUG: [mguard.Controller] Policy path does't exist: 
+1684868319.143357 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/D
+1684868319.143360 DEBUG: [mguard.Controller] Policy path does't exist: 
+1684868319.143379 DEBUG: [mguard.Controller] Getting key and storing policy details for user: /ndn/org/md2k/E
+1684868319.143384 DEBUG: [mguard.Controller] Policy path does't exist: 
+1684868319.143388  INFO: [mguard.Controller] Setting interest filter on name: /ndn/org/md2k/mguard/controller
+1684868319.143965  INFO: [mguard.Controller] Setting interest filter on name: /ndn/org/md2k/mguard/aa
+1684868319.144505  INFO: [mguard.Controller] Setting interest filter on: /ndn/org/md2k/mguard/controller/POLICYDATA
+1684868319.145852 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%21%07%1C%08%03ndn%08%03org%08%04md2k%08%06mguard%08%02aal%01%01/params-sha256=eb16f6e60ff6ea5bb6ddea63af65b1892fb3cb02e5175b1f2546932d61c34724
+1684868319.146202 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%29%07%24%08%03ndn%08%03org%08%04md2k%08%06mguard%08%0Acontrollerl%01%01/params-sha256=495774fe73838bca9c7ce71daf4074f789d6d59ce8dc5024379d9667060bb087
+1684868319.146226  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/controller
+1684868319.146264 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h%21%07%1C%08%03ndn%08%03org%08%04md2k%08%06mguard%08%02aal%01%01/params-sha256=4eb3cfb1bb46704cf868f8ef29680697dcf51c29c1c9d5ca788e0b6a901c750f
+1684868319.146285  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/aa
+1684868319.146303 DEBUG: [ndn.security.Validator] > Start validating data /localhost/nfd/rib/register/h5%070%08%03ndn%08%03org%08%04md2k%08%06mguard%08%0Acontroller%08%0APOLICYDATAl%01%01/params-sha256=a2daaa4282a631a898d4e6601488685ab93fa575989ecd00a9e15e8a5077ea63
+1684868319.146310  INFO: [mguard.Controller] Successfully registered prefix: /ndn/org/md2k/mguard/controller/POLICYDATA
+1684868322.166290  INFO: [nacabe.AttributeAuthority] on public params request: /ndn/org/md2k/mguard/aa/PUBPARAMS
+1684868324.259430  INFO: [nacabe.AttributeAuthority] Got DKEY request: /ndn/org/md2k/mguard/aa/DKEY/%07%26%08%03ndn%08%03org%08%04md2k%08%05local%08%03KEY%08%08A%83%2C%DF%E5%04%A1%08
+1684868324.259488 DEBUG: [nacabe.AttributeAuthority] KeyName --------> /ndn/org/md2k/local/KEY/A%83%2C%DF%E5%04%A1%08
+1684868324.259510  INFO: [nacabe.AttributeAuthority] DKEY Request Interest cannot be authenticated: no certificate for /ndn/org/md2k/local

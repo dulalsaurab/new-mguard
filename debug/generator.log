@@ -1,8 +1,237 @@
-Traceback (most recent call last):
-  File "data-generator/CerebralCortex-Random-Data-Generator/main.py", line 1, in <module>
-    from generator import get_cc
-  File "/home/someone/integration-testing/mguard/data-generator/CerebralCortex-Random-Data-Generator/generator.py", line 1, in <module>
-    from ccrdg.battery_data import gen_battery_data
-  File "/home/someone/integration-testing/mguard/data-generator/CerebralCortex-Random-Data-Generator/ccrdg/battery_data.py", line 27, in <module>
-    from cerebralcortex.core.datatypes import DataStream
-ModuleNotFoundError: No module named 'cerebralcortex'
+23/05/23 13:58:45 WARN Utils: Your hostname, unit resolves to a loopback address: 127.0.1.1; using 172.27.83.55 instead (on interface eth0)
+23/05/23 13:58:45 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/someone/.local/lib/python3.8/site-packages/pyspark/jars/spark-unsafe_2.12-3.1.2.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+23/05/23 13:58:46 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+Using Spark's default log4j profile: org/apache/spark/log4j-defaults.properties
+Setting default log level to "WARN".
+To adjust logging level use sc.setLogLevel(newLevel). For SparkR, use setLogLevel(newLevel).
+[Stage 2:>                                                        (0 + 12) / 12]                                                                                Fetching data for start_time 1993-05-01 10:00:00 and end_time 1993-05-01 10:0:50
+1993-05-01 10:00:00 1993-05-01 10:0:50
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+|          timestamp|          localtime| user|version|            level|voltage|temperature|
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+|1993-05-01 15:00:01|1993-05-01 10:00:01|dd40c|      1|            99.99|   3700|         70|
+|1993-05-01 15:00:02|1993-05-01 10:00:02|dd40c|      1|99.97999999999999|   3700|         70|
+|1993-05-01 15:00:03|1993-05-01 10:00:03|dd40c|      1|99.96999999999998|   3700|         70|
+|1993-05-01 15:00:04|1993-05-01 10:00:04|dd40c|      1|99.95999999999998|   3700|         70|
+|1993-05-01 15:00:05|1993-05-01 10:00:05|dd40c|      1|99.94999999999997|   3700|         70|
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+only showing top 5 rows
+
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+|          timestamp|          localtime| user|version|          latitude|         longitude|altitude|   speed|   bearing| accuracy|
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+|1993-05-01 15:00:00|1993-05-01 20:00:00|dd40c|      1|35.088954418592174|-89.97875642259525|      87|0.462657|255.924623|21.547163|
+|1993-05-01 15:01:00|1993-05-01 20:01:00|dd40c|      1| 35.09099243211266|-89.98005499874989|      92|2.666729| 206.96109|20.796558|
+|1993-05-01 15:02:00|1993-05-01 20:02:00|dd40c|      1| 35.17262889755739| -89.9225572221578|      88|1.477626| 312.65669|14.653267|
+|1993-05-01 15:03:00|1993-05-01 20:03:00|dd40c|      1| 35.17336337786273| -89.9200868766727|      90|1.033984|316.918308|28.650389|
+|1993-05-01 15:04:00|1993-05-01 20:04:00|dd40c|      1| 35.08299188145625|-89.97193695528811|      96|3.623569| 297.93978|10.637492|
+|1993-05-01 15:05:00|1993-05-01 20:05:00|dd40c|      1| 35.08355780234851|-89.97383408191598|      94|3.772122|334.182366|28.031535|
+|1993-05-01 15:06:00|1993-05-01 20:06:00|dd40c|      1| 35.09252261956203|-89.95280779732795|      91|3.818735|194.520729|28.402187|
+|1993-05-01 15:07:00|1993-05-01 20:07:00|dd40c|      1|35.097012356829225|-89.94917373726335|      86|0.215895|333.285757| 15.62271|
+|1993-05-01 15:08:00|1993-05-01 20:08:00|dd40c|      1|35.171010483941835| -89.9587870699883|      99|4.801251|255.323491|27.888304|
+|1993-05-01 15:09:00|1993-05-01 20:09:00|dd40c|      1| 35.17193446444529|-89.95844158324704|      98|2.075875|185.452544| 11.77963|
+|1993-05-01 15:10:00|1993-05-01 20:10:00|dd40c|      1| 35.13304910569678|-89.96487672017014|      92|3.226219|260.708859|11.983642|
+|1993-05-01 15:11:00|1993-05-01 20:11:00|dd40c|      1| 35.13258955065248|-89.96377199544766|      92|2.857912|265.878932|22.991418|
+|1993-05-01 15:12:00|1993-05-01 20:12:00|dd40c|      1| 35.19272493059998|-90.00557225181193|      98|2.397569| 71.581742|27.922327|
+|1993-05-01 15:13:00|1993-05-01 20:13:00|dd40c|      1| 35.19134586463942|-90.00695284477142|      94|3.263212|117.718048|11.444484|
+|1993-05-01 15:14:00|1993-05-01 20:14:00|dd40c|      1| 35.11726028654992|-89.95899188450518|      89|4.686234|299.530599| 12.09218|
+|1993-05-01 15:15:00|1993-05-01 20:15:00|dd40c|      1| 35.11574664852563|-89.95778294950968|      85|2.348652| 78.335587|27.424523|
+|1993-05-01 15:16:00|1993-05-01 20:16:00|dd40c|      1| 35.09188895575608|-90.05610155450526|      99|0.619523|217.814471|24.071473|
+|1993-05-01 15:17:00|1993-05-01 20:17:00|dd40c|      1|35.093149689963404|-90.05719740150244|      86|3.198028| 72.900985|30.288308|
+|1993-05-01 15:18:00|1993-05-01 20:18:00|dd40c|      1|  35.1315626417036|-90.06767986415207|      92|0.003147|345.497547|12.378861|
+|1993-05-01 15:19:00|1993-05-01 20:19:00|dd40c|      1|35.131862633700926|-90.06562545310645|      86|2.477271|267.802892|13.548353|
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+only showing top 20 rows
+
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+|timestamp          |localtime          |user |version|window                                    |semantic_name|
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+|1993-05-01 15:00:00|1993-05-01 20:00:00|dd40c|1      |{1993-05-01 15:00:00, 1993-05-01 15:02:00}|work         |
+|1993-05-01 15:02:00|1993-05-01 20:02:00|dd40c|1      |{1993-05-01 15:02:00, 1993-05-01 15:06:00}|shopping-mall|
+|1993-05-01 15:06:00|1993-05-01 20:06:00|dd40c|1      |{1993-05-01 15:06:00, 1993-05-01 15:12:00}|gym          |
+|1993-05-01 15:12:00|1993-05-01 20:12:00|dd40c|1      |{1993-05-01 15:12:00, 1993-05-01 15:20:00}|shopping-mall|
+|1993-05-01 15:20:00|1993-05-01 20:20:00|dd40c|1      |{1993-05-01 15:20:00, 1993-05-01 15:30:00}|home         |
+|1993-05-01 15:30:00|1993-05-01 20:30:00|dd40c|1      |{1993-05-01 15:30:00, 1993-05-01 15:42:00}|home         |
+|1993-05-01 15:42:00|1993-05-01 20:42:00|dd40c|1      |{1993-05-01 15:42:00, 1993-05-01 15:56:00}|work         |
+|1993-05-01 15:56:00|1993-05-01 20:56:00|dd40c|1      |{1993-05-01 15:56:00, 1993-05-01 16:12:00}|shopping-mall|
+|1993-05-01 16:12:00|1993-05-01 21:12:00|dd40c|1      |{1993-05-01 16:12:00, 1993-05-01 16:30:00}|work         |
+|1993-05-01 16:30:00|1993-05-01 21:30:00|dd40c|1      |{1993-05-01 16:30:00, 1993-05-01 16:50:00}|home         |
+|1993-05-01 16:50:00|1993-05-01 21:50:00|dd40c|1      |{1993-05-01 16:50:00, 1993-05-01 17:12:00}|shopping-mall|
+|1993-05-01 17:12:00|1993-05-01 22:12:00|dd40c|1      |{1993-05-01 17:12:00, 1993-05-01 17:36:00}|work         |
+|1993-05-01 17:36:00|1993-05-01 22:36:00|dd40c|1      |{1993-05-01 17:36:00, 1993-05-01 18:02:00}|work         |
+|1993-05-01 18:02:00|1993-05-01 23:02:00|dd40c|1      |{1993-05-01 18:02:00, 1993-05-01 18:30:00}|home         |
+|1993-05-01 18:30:00|1993-05-01 23:30:00|dd40c|1      |{1993-05-01 18:30:00, 1993-05-01 19:00:00}|shopping-mall|
+|1993-05-01 19:00:00|1993-05-02 00:00:00|dd40c|1      |{1993-05-01 19:00:00, 1993-05-01 19:32:00}|gym          |
+|1993-05-01 19:32:00|1993-05-02 00:32:00|dd40c|1      |{1993-05-01 19:32:00, 1993-05-01 20:06:00}|home         |
+|1993-05-01 20:06:00|1993-05-02 01:06:00|dd40c|1      |{1993-05-01 20:06:00, 1993-05-01 20:42:00}|gym          |
+|1993-05-01 20:42:00|1993-05-02 01:42:00|dd40c|1      |{1993-05-01 20:42:00, 1993-05-01 21:20:00}|shopping-mall|
+|1993-05-01 21:20:00|1993-05-02 02:20:00|dd40c|1      |{1993-05-01 21:20:00, 1993-05-01 22:00:00}|home         |
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+only showing top 20 rows
+
+Sending data for stream name ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location
+Metadata of the stream ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location = {'name': 'ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location', 'study_name': 'mguard', 'description': 'gps sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'window', 'type': 'struct', 'attributes': {'description': 'values are computed over a window duration (window-start-time: timestamp, window-end-time: timestamp + window_duration columns). window duration is in seconds.'}}, {'name': 'semantic_name', 'type': 'string', 'attributes': {'description': 'semantic name of the gps co-ordinate'}}], 'modules': [{'name': 'examples.util.data_helper.gen_location_data', 'version': None, 'authors': [{'nasir ali': 'software@md2k.org'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for stream name ndn--org--md2k--mguard--dd40c--phone--battery
+Metadata of the stream ndn--org--md2k--mguard--dd40c--phone--battery = {'name': 'ndn--org--md2k--mguard--dd40c--phone--battery', 'study_name': 'mguard', 'description': 'battery sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'level', 'type': 'float', 'attributes': {'description': 'current battery charge'}}, {'name': 'voltage', 'type': 'float', 'attributes': {'description': 'current battery voltage level'}}, {'name': 'temperature', 'type': 'float', 'attributes': {'description': 'current battery temperature'}}], 'modules': [{'name': 'battery', 'version': '1.2.4', 'authors': [{'nasir ali': 'software@md2k.com'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for stream name ndn--org--md2k--mguard--dd40c--phone--gps
+Metadata of the stream ndn--org--md2k--mguard--dd40c--phone--gps = {'name': 'ndn--org--md2k--mguard--dd40c--phone--gps', 'study_name': 'mguard', 'description': 'gps sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'latitude', 'type': 'float', 'attributes': {'description': 'gps latitude'}}, {'name': 'longitude', 'type': 'float', 'attributes': {'description': 'gps longitude'}}, {'name': 'altitude', 'type': 'float', 'attributes': {'description': 'gps altitude'}}, {'name': 'speed', 'type': 'float', 'attributes': {'description': 'speed info'}}, {'name': 'bearing', 'type': 'float', 'attributes': {'description': 'bearing info'}}, {'name': 'accuracy', 'type': 'float', 'attributes': {'description': 'accuracy of gps location'}}], 'modules': [{'name': 'examples.util.data_helper.gen_location_data', 'version': None, 'authors': [{'nasir ali': 'software@md2k.org'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for batch: 1, completed
+Sleeping for 20 second sending batch data
+Fetching data for start_time 1993-05-02 10:00:00 and end_time 1993-05-02 10:0:50
+1993-05-02 10:00:00 1993-05-02 10:0:50
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+|          timestamp|          localtime| user|version|            level|voltage|temperature|
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+|1993-05-02 15:00:01|1993-05-02 10:00:01|dd40c|      1|            99.99|   3700|         70|
+|1993-05-02 15:00:02|1993-05-02 10:00:02|dd40c|      1|99.97999999999999|   3700|         70|
+|1993-05-02 15:00:03|1993-05-02 10:00:03|dd40c|      1|99.96999999999998|   3700|         70|
+|1993-05-02 15:00:04|1993-05-02 10:00:04|dd40c|      1|99.95999999999998|   3700|         70|
+|1993-05-02 15:00:05|1993-05-02 10:00:05|dd40c|      1|99.94999999999997|   3700|         70|
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+only showing top 5 rows
+
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+|          timestamp|          localtime| user|version|          latitude|         longitude|altitude|   speed|   bearing| accuracy|
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+|1993-05-02 15:00:00|1993-05-02 20:00:00|dd40c|      1|    35.12835934888|-90.03801550261743|      84|0.197864|167.858141|23.104744|
+|1993-05-02 15:01:00|1993-05-02 20:01:00|dd40c|      1| 35.12973757652813|-90.03908213476512|      91| 4.45395|197.062174|14.052983|
+|1993-05-02 15:02:00|1993-05-02 20:02:00|dd40c|      1| 35.18203825857363| -89.9259908176872|      88|3.910844| 11.632366|13.892037|
+|1993-05-02 15:03:00|1993-05-02 20:03:00|dd40c|      1| 35.18374500883421|-89.92837636100442|      84|2.218802| 27.697233| 12.03847|
+|1993-05-02 15:04:00|1993-05-02 20:04:00|dd40c|      1| 35.18447767806497|-89.93871959025648|      93|4.841812|289.026925|18.310524|
+|1993-05-02 15:05:00|1993-05-02 20:05:00|dd40c|      1| 35.18701100829253| -89.9402921465955|      88|4.221038| 55.924736|27.657232|
+|1993-05-02 15:06:00|1993-05-02 20:06:00|dd40c|      1| 35.11229391446506|-90.00721448617246|      95|4.664247| 64.126595|16.772979|
+|1993-05-02 15:07:00|1993-05-02 20:07:00|dd40c|      1|35.112484514634524|-90.00650200981256|      89|0.293485| 40.903662|23.396487|
+|1993-05-02 15:08:00|1993-05-02 20:08:00|dd40c|      1|35.098367512244536| -89.9646482685314|      87| 2.00512|259.009942|25.067489|
+|1993-05-02 15:09:00|1993-05-02 20:09:00|dd40c|      1|35.098360988392834|-89.96210485454068|      94|2.930021|234.699283|22.923474|
+|1993-05-02 15:10:00|1993-05-02 20:10:00|dd40c|      1|35.096736230630675|-89.91480976149727|      84|  3.6152| 90.303647|19.961943|
+|1993-05-02 15:11:00|1993-05-02 20:11:00|dd40c|      1| 35.09872337842447|-89.91392858998269|      84| 3.91334|306.148912|14.301566|
+|1993-05-02 15:12:00|1993-05-02 20:12:00|dd40c|      1|35.182566217865144|-89.92938441689031|      95|3.618992|217.866533|10.357938|
+|1993-05-02 15:13:00|1993-05-02 20:13:00|dd40c|      1|35.182136929702715|-89.92822089297927|      97|4.003812|159.691979| 12.60732|
+|1993-05-02 15:14:00|1993-05-02 20:14:00|dd40c|      1| 35.16897825202246|-90.02474633559297|      96|2.085605|266.997833|12.409882|
+|1993-05-02 15:15:00|1993-05-02 20:15:00|dd40c|      1|35.166237908606035|-90.02413825398632|      90|3.430931| 55.980836|11.654255|
+|1993-05-02 15:16:00|1993-05-02 20:16:00|dd40c|      1| 35.15921117921452|-90.07383254743108|      84|1.746052|108.363327|18.784047|
+|1993-05-02 15:17:00|1993-05-02 20:17:00|dd40c|      1| 35.15776652741338|-90.07416039454746|      98|2.903103| 35.058375|17.607101|
+|1993-05-02 15:18:00|1993-05-02 20:18:00|dd40c|      1| 35.15240422594027|-90.04081969579389|      98|2.043079| 92.729069|16.096227|
+|1993-05-02 15:19:00|1993-05-02 20:19:00|dd40c|      1| 35.15218049517812|-90.04182994786494|      96|1.305577|101.408756|26.766834|
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+only showing top 20 rows
+
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+|timestamp          |localtime          |user |version|window                                    |semantic_name|
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+|1993-05-02 15:00:00|1993-05-02 20:00:00|dd40c|1      |{1993-05-02 15:00:00, 1993-05-02 15:02:00}|work         |
+|1993-05-02 15:02:00|1993-05-02 20:02:00|dd40c|1      |{1993-05-02 15:02:00, 1993-05-02 15:08:00}|work         |
+|1993-05-02 15:08:00|1993-05-02 20:08:00|dd40c|1      |{1993-05-02 15:08:00, 1993-05-02 15:18:00}|gym          |
+|1993-05-02 15:18:00|1993-05-02 20:18:00|dd40c|1      |{1993-05-02 15:18:00, 1993-05-02 15:32:00}|home         |
+|1993-05-02 15:32:00|1993-05-02 20:32:00|dd40c|1      |{1993-05-02 15:32:00, 1993-05-02 15:50:00}|work         |
+|1993-05-02 15:50:00|1993-05-02 20:50:00|dd40c|1      |{1993-05-02 15:50:00, 1993-05-02 16:12:00}|shopping-mall|
+|1993-05-02 16:12:00|1993-05-02 21:12:00|dd40c|1      |{1993-05-02 16:12:00, 1993-05-02 16:38:00}|gym          |
+|1993-05-02 16:38:00|1993-05-02 21:38:00|dd40c|1      |{1993-05-02 16:38:00, 1993-05-02 17:08:00}|home         |
+|1993-05-02 17:08:00|1993-05-02 22:08:00|dd40c|1      |{1993-05-02 17:08:00, 1993-05-02 17:42:00}|work         |
+|1993-05-02 17:42:00|1993-05-02 22:42:00|dd40c|1      |{1993-05-02 17:42:00, 1993-05-02 18:20:00}|shopping-mall|
+|1993-05-02 18:20:00|1993-05-02 23:20:00|dd40c|1      |{1993-05-02 18:20:00, 1993-05-02 19:02:00}|work         |
+|1993-05-02 19:02:00|1993-05-03 00:02:00|dd40c|1      |{1993-05-02 19:02:00, 1993-05-02 19:48:00}|gym          |
+|1993-05-02 19:48:00|1993-05-03 00:48:00|dd40c|1      |{1993-05-02 19:48:00, 1993-05-02 20:38:00}|gym          |
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+
+Sending data for stream name ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location
+Metadata of the stream ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location = {'name': 'ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location', 'study_name': 'mguard', 'description': 'gps sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'window', 'type': 'struct', 'attributes': {'description': 'values are computed over a window duration (window-start-time: timestamp, window-end-time: timestamp + window_duration columns). window duration is in seconds.'}}, {'name': 'semantic_name', 'type': 'string', 'attributes': {'description': 'semantic name of the gps co-ordinate'}}], 'modules': [{'name': 'examples.util.data_helper.gen_location_data', 'version': None, 'authors': [{'nasir ali': 'software@md2k.org'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for stream name ndn--org--md2k--mguard--dd40c--phone--battery
+Metadata of the stream ndn--org--md2k--mguard--dd40c--phone--battery = {'name': 'ndn--org--md2k--mguard--dd40c--phone--battery', 'study_name': 'mguard', 'description': 'battery sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'level', 'type': 'float', 'attributes': {'description': 'current battery charge'}}, {'name': 'voltage', 'type': 'float', 'attributes': {'description': 'current battery voltage level'}}, {'name': 'temperature', 'type': 'float', 'attributes': {'description': 'current battery temperature'}}], 'modules': [{'name': 'battery', 'version': '1.2.4', 'authors': [{'nasir ali': 'software@md2k.com'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for stream name ndn--org--md2k--mguard--dd40c--phone--gps
+Metadata of the stream ndn--org--md2k--mguard--dd40c--phone--gps = {'name': 'ndn--org--md2k--mguard--dd40c--phone--gps', 'study_name': 'mguard', 'description': 'gps sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'latitude', 'type': 'float', 'attributes': {'description': 'gps latitude'}}, {'name': 'longitude', 'type': 'float', 'attributes': {'description': 'gps longitude'}}, {'name': 'altitude', 'type': 'float', 'attributes': {'description': 'gps altitude'}}, {'name': 'speed', 'type': 'float', 'attributes': {'description': 'speed info'}}, {'name': 'bearing', 'type': 'float', 'attributes': {'description': 'bearing info'}}, {'name': 'accuracy', 'type': 'float', 'attributes': {'description': 'accuracy of gps location'}}], 'modules': [{'name': 'examples.util.data_helper.gen_location_data', 'version': None, 'authors': [{'nasir ali': 'software@md2k.org'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for batch: 2, completed
+Sleeping for 20 second sending batch data
+Fetching data for start_time 1993-05-03 10:00:00 and end_time 1993-05-03 10:0:50
+1993-05-03 10:00:00 1993-05-03 10:0:50
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+|          timestamp|          localtime| user|version|            level|voltage|temperature|
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+|1993-05-03 15:00:01|1993-05-03 10:00:01|dd40c|      1|            99.99|   3700|         70|
+|1993-05-03 15:00:02|1993-05-03 10:00:02|dd40c|      1|99.97999999999999|   3700|         70|
+|1993-05-03 15:00:03|1993-05-03 10:00:03|dd40c|      1|99.96999999999998|   3700|         70|
+|1993-05-03 15:00:04|1993-05-03 10:00:04|dd40c|      1|99.95999999999998|   3700|         70|
+|1993-05-03 15:00:05|1993-05-03 10:00:05|dd40c|      1|99.94999999999997|   3700|         70|
++-------------------+-------------------+-----+-------+-----------------+-------+-----------+
+only showing top 5 rows
+
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+|          timestamp|          localtime| user|version|          latitude|         longitude|altitude|   speed|   bearing| accuracy|
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+|1993-05-03 15:00:00|1993-05-03 20:00:00|dd40c|      1| 35.17559272492312|-89.95804395588559|      87|2.896645|233.404361|19.716441|
+|1993-05-03 15:01:00|1993-05-03 20:01:00|dd40c|      1|  35.1744779062475|-89.95978763266979|      85|2.331476| 327.88782|18.241996|
+|1993-05-03 15:02:00|1993-05-03 20:02:00|dd40c|      1| 35.11135595989186|-90.04876851699089|      87|1.335795|176.871859| 17.88046|
+|1993-05-03 15:03:00|1993-05-03 20:03:00|dd40c|      1| 35.11473540798231|-90.04838904431806|      87|1.003739|  6.494803| 15.97198|
+|1993-05-03 15:04:00|1993-05-03 20:04:00|dd40c|      1|35.098692096918626|-89.98483312885114|      95|0.998339| 47.115123|29.278582|
+|1993-05-03 15:05:00|1993-05-03 20:05:00|dd40c|      1| 35.09906424388175| -89.9834430414755|      84|1.147265| 43.154638|26.712421|
+|1993-05-03 15:06:00|1993-05-03 20:06:00|dd40c|      1|35.107385630024865|-89.98581350711608|      85|1.384176|271.398348|16.365724|
+|1993-05-03 15:07:00|1993-05-03 20:07:00|dd40c|      1| 35.10823550046225|-89.98583651570493|      94|2.109185|168.151635|20.882522|
+|1993-05-03 15:08:00|1993-05-03 20:08:00|dd40c|      1|35.091868589318004|  -90.060946065991|      91|2.875941|244.310214|26.513471|
+|1993-05-03 15:09:00|1993-05-03 20:09:00|dd40c|      1| 35.09088359855793|-90.06258012542727|      90|0.849111|313.933768|23.164864|
+|1993-05-03 15:10:00|1993-05-03 20:10:00|dd40c|      1| 35.13476687688478|-89.87664181423607|      90|4.370773|281.477125|23.721941|
+|1993-05-03 15:11:00|1993-05-03 20:11:00|dd40c|      1|  35.1374760368953| -89.8786088489822|      95|1.546229|251.926067|25.761958|
+|1993-05-03 15:12:00|1993-05-03 20:12:00|dd40c|      1| 35.15879672253518|-89.99373031059777|      83|1.538677|224.923008|17.526408|
+|1993-05-03 15:13:00|1993-05-03 20:13:00|dd40c|      1| 35.15983369158996|-89.99552744494602|      83|1.741403|345.679682|16.807724|
+|1993-05-03 15:14:00|1993-05-03 20:14:00|dd40c|      1| 35.14949153375654|-89.90707369045812|      90|3.600345|141.977327| 28.63836|
+|1993-05-03 15:15:00|1993-05-03 20:15:00|dd40c|      1| 35.15120655894956| -89.9056884535293|      91|0.603517| 25.350389|29.109231|
+|1993-05-03 15:16:00|1993-05-03 20:16:00|dd40c|      1| 35.09568763232687|-89.96515333949971|      94|1.890423| 70.436473|16.322572|
+|1993-05-03 15:17:00|1993-05-03 20:17:00|dd40c|      1|  35.0929105360206|-89.96767792011494|      93|0.241512|142.958654| 20.17764|
+|1993-05-03 15:18:00|1993-05-03 20:18:00|dd40c|      1| 35.13814969252883|-90.01340854315505|      84|3.362496|174.012733|11.918033|
+|1993-05-03 15:19:00|1993-05-03 20:19:00|dd40c|      1|35.139178896199326|-90.01275146773128|      91|1.124458|260.211555|29.925277|
++-------------------+-------------------+-----+-------+------------------+------------------+--------+--------+----------+---------+
+only showing top 20 rows
+
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+|timestamp          |localtime          |user |version|window                                    |semantic_name|
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+|1993-05-03 15:00:00|1993-05-03 20:00:00|dd40c|1      |{1993-05-03 15:00:00, 1993-05-03 15:02:00}|home         |
+|1993-05-03 15:02:00|1993-05-03 20:02:00|dd40c|1      |{1993-05-03 15:02:00, 1993-05-03 15:07:00}|gym          |
+|1993-05-03 15:07:00|1993-05-03 20:07:00|dd40c|1      |{1993-05-03 15:07:00, 1993-05-03 15:15:00}|home         |
+|1993-05-03 15:15:00|1993-05-03 20:15:00|dd40c|1      |{1993-05-03 15:15:00, 1993-05-03 15:26:00}|home         |
+|1993-05-03 15:26:00|1993-05-03 20:26:00|dd40c|1      |{1993-05-03 15:26:00, 1993-05-03 15:40:00}|work         |
+|1993-05-03 15:40:00|1993-05-03 20:40:00|dd40c|1      |{1993-05-03 15:40:00, 1993-05-03 15:57:00}|home         |
+|1993-05-03 15:57:00|1993-05-03 20:57:00|dd40c|1      |{1993-05-03 15:57:00, 1993-05-03 16:17:00}|gym          |
+|1993-05-03 16:17:00|1993-05-03 21:17:00|dd40c|1      |{1993-05-03 16:17:00, 1993-05-03 16:40:00}|shopping-mall|
+|1993-05-03 16:40:00|1993-05-03 21:40:00|dd40c|1      |{1993-05-03 16:40:00, 1993-05-03 17:06:00}|work         |
+|1993-05-03 17:06:00|1993-05-03 22:06:00|dd40c|1      |{1993-05-03 17:06:00, 1993-05-03 17:35:00}|work         |
+|1993-05-03 17:35:00|1993-05-03 22:35:00|dd40c|1      |{1993-05-03 17:35:00, 1993-05-03 18:07:00}|work         |
+|1993-05-03 18:07:00|1993-05-03 23:07:00|dd40c|1      |{1993-05-03 18:07:00, 1993-05-03 18:42:00}|work         |
+|1993-05-03 18:42:00|1993-05-03 23:42:00|dd40c|1      |{1993-05-03 18:42:00, 1993-05-03 19:20:00}|home         |
+|1993-05-03 19:20:00|1993-05-04 00:20:00|dd40c|1      |{1993-05-03 19:20:00, 1993-05-03 20:01:00}|home         |
+|1993-05-03 20:01:00|1993-05-04 01:01:00|dd40c|1      |{1993-05-03 20:01:00, 1993-05-03 20:45:00}|gym          |
+|1993-05-03 20:45:00|1993-05-04 01:45:00|dd40c|1      |{1993-05-03 20:45:00, 1993-05-03 21:32:00}|work         |
+|1993-05-03 21:32:00|1993-05-04 02:32:00|dd40c|1      |{1993-05-03 21:32:00, 1993-05-03 22:22:00}|gym          |
++-------------------+-------------------+-----+-------+------------------------------------------+-------------+
+
+Sending data for stream name ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location
+Metadata of the stream ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location = {'name': 'ndn--org--md2k--mguard--dd40c--data_analysis--gps_episodes_and_semantic_location', 'study_name': 'mguard', 'description': 'gps sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'window', 'type': 'struct', 'attributes': {'description': 'values are computed over a window duration (window-start-time: timestamp, window-end-time: timestamp + window_duration columns). window duration is in seconds.'}}, {'name': 'semantic_name', 'type': 'string', 'attributes': {'description': 'semantic name of the gps co-ordinate'}}], 'modules': [{'name': 'examples.util.data_helper.gen_location_data', 'version': None, 'authors': [{'nasir ali': 'software@md2k.org'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for stream name ndn--org--md2k--mguard--dd40c--phone--battery
+Metadata of the stream ndn--org--md2k--mguard--dd40c--phone--battery = {'name': 'ndn--org--md2k--mguard--dd40c--phone--battery', 'study_name': 'mguard', 'description': 'battery sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'level', 'type': 'float', 'attributes': {'description': 'current battery charge'}}, {'name': 'voltage', 'type': 'float', 'attributes': {'description': 'current battery voltage level'}}, {'name': 'temperature', 'type': 'float', 'attributes': {'description': 'current battery temperature'}}], 'modules': [{'name': 'battery', 'version': '1.2.4', 'authors': [{'nasir ali': 'software@md2k.com'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for stream name ndn--org--md2k--mguard--dd40c--phone--gps
+Metadata of the stream ndn--org--md2k--mguard--dd40c--phone--gps = {'name': 'ndn--org--md2k--mguard--dd40c--phone--gps', 'study_name': 'mguard', 'description': 'gps sample data stream.', 'annotations': [], 'input_streams': [], 'data_descriptor': [{'name': 'timestamp', 'type': 'datetime', 'attributes': {'description': 'utc timestamp of data point collection.'}}, {'name': 'localtime', 'type': 'datetime', 'attributes': {'description': 'local timestamp of data point collection.'}}, {'name': 'user', 'type': 'string', 'attributes': {'description': 'user id'}}, {'name': 'version', 'type': 'int', 'attributes': {'description': 'version of the data'}}, {'name': 'latitude', 'type': 'float', 'attributes': {'description': 'gps latitude'}}, {'name': 'longitude', 'type': 'float', 'attributes': {'description': 'gps longitude'}}, {'name': 'altitude', 'type': 'float', 'attributes': {'description': 'gps altitude'}}, {'name': 'speed', 'type': 'float', 'attributes': {'description': 'speed info'}}, {'name': 'bearing', 'type': 'float', 'attributes': {'description': 'bearing info'}}, {'name': 'accuracy', 'type': 'float', 'attributes': {'description': 'accuracy of gps location'}}], 'modules': [{'name': 'examples.util.data_helper.gen_location_data', 'version': None, 'authors': [{'nasir ali': 'software@md2k.org'}], 'attributes': {'attribute_key': 'attribute_value'}}]}
+Sender initialize
+From server:  ACK From Server!
+Sending data for batch: 3, completed
+Sleeping for 20 second sending batch data
+Sending data for all the batch completed
