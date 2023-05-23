@@ -52,12 +52,22 @@ Controller::Controller(const ndn::Name& controllerPrefix,
   auto certName = ndn::security::extractIdentityFromCertName(m_controllerCert.getName());
 
   NDN_LOG_INFO("Setting interest filter on name: " << certName);
-  m_certServeHandle = m_face.setInterestFilter(ndn::InterestFilter(certName).allowLoopback(false),
+  m_face.setInterestFilter(ndn::InterestFilter(certName).allowLoopback(false),
                         [this] (auto&&...) {
                           m_face.put(this->m_controllerCert);
                         },
                         std::bind(&Controller::onRegistrationSuccess, this, _1),
                         std::bind(&Controller::onRegistrationFailed, this, _1));
+  auto aaCert = *loadCert(aaCertPath);
+  auto aaName = ndn::security::extractIdentityFromCertName(aaCert.getName());
+  NDN_LOG_INFO("Setting interest filter on name: " << aaName);
+  m_face.setInterestFilter(ndn::InterestFilter(aaName).allowLoopback(false),
+                           [aaCert, this](auto&&...) {
+      m_face.put(aaCert);
+  },
+    std::bind(&Controller::onRegistrationSuccess, this, _1),
+     std::bind(&Controller::onRegistrationFailed, this, _1)
+  );
   auto policyName = m_controllerPrefix;
   setInterestFilter(policyName.append("POLICYDATA"));
 }
