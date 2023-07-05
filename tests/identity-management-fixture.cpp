@@ -20,14 +20,11 @@
  */
 
 #include "identity-management-fixture.hpp"
-#include <ndn-cxx/security/additional-description.hpp>
-#include <ndn-cxx/util/io.hpp>
-#include <boost/filesystem.hpp>
 
 namespace ndn {
 namespace tests {
 
-namespace v2 = security::v2;
+namespace v2 = security;
 
 IdentityManagementBaseFixture::~IdentityManagementBaseFixture()
 {
