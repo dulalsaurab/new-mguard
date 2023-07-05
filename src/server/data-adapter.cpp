@@ -191,6 +191,7 @@ DataAdapter::processCallbackFromReceiver(const std::string& streamName, const st
   }
 
   auto streamNDNName = std::regex_replace(streamName, std::regex("--"), "/"); // convert to ndn name
+  NDN_LOG_DEBUG( "publishing data unit " << streamNDNName << " meta: " << metaData << " content: " << streamContent );
   publishDataUnit(streamNDNName, metaData, content);
 }
 
