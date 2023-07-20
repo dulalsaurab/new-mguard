@@ -2,6 +2,7 @@ from generator import get_cc
 
 import socket
 from time import sleep
+import sys
 import os
 import json
 import shutil
@@ -21,7 +22,7 @@ class Sender:
         self.conn.close()
 
 def get_sender():
-    port = 15000
+    port = 8808
     print('Sender initialize')
     sender = Sender(port)
     return sender

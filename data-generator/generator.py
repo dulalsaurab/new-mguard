@@ -1,6 +1,6 @@
-from ccrdg.battery_data import gen_battery_data
-from ccrdg.accel_gyro_data import gen_accel_gyro_data
-from ccrdg.location_data import gen_location_data
+from CerebralCortexRandomDataGenerator.ccrdg.battery_data import gen_battery_data
+from CerebralCortexRandomDataGenerator.ccrdg.accel_gyro_data import gen_accel_gyro_data
+from CerebralCortexRandomDataGenerator.ccrdg.location_data import gen_location_data
 
 import argparse
 from cerebralcortex.kernel import Kernel
