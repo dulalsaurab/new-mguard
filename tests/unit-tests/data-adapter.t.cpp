@@ -1,4 +1,4 @@
-#include "test-common.hpp"
+#include "../test-common.hpp"
 
 #include <server/data-adapter.hpp>
 #include <server/util/stream.hpp>
@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(Constructor)
     std::string timestamp = "20190901113459";
     std::string userID = "dd40c";
     // // this gets the semantic location attributes
-    auto locations = db.getSemanticLocations(timestamp, userID);
+    auto locations = db.getSemanticLocations(timestamp);
     // // this prints them
     for (auto &location: locations) {
         std::cout << location << std::endl;

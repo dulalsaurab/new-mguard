@@ -17,6 +17,8 @@ ndnsec sign-req /ndn/org/md2k/A > A.ndncsr
 
 ndnsec cert-gen -s /ndn/org/md2k -i /ndn/org/md2k A.ndncsr > A.cert
 
+sudo cp /usr/local/etc/ndn/nfd.conf.sample /usr/local/etc/ndn/nfd.conf
+
 cp A.cert certs/
 ndnsec cert-install A.cert
 
@@ -26,5 +28,5 @@ git clone https://github.com/MD2Korg/CerebralCortex-Random-Data-Generator
 mv CerebralCortex-Random-Data-Generator CerebralCortexRandomDataGenerator
 pip install findspark
 pip install cerebralcortex-kernel
-sudo apt install default-jdk
+sudo apt -y install default-jdk
 cd ..

@@ -20,6 +20,8 @@
 #ifndef MGUARD_SUBSCRIBER_HPP
 #define MGUARD_SUBSCRIBER_HPP
 
+#include "../common.hpp"
+
 #include <PSync/consumer.hpp>
 #include <nac-abe/attribute-authority.hpp>
 #include <nac-abe/consumer.hpp>
@@ -51,12 +53,6 @@ typedef std::function<void(const std::unordered_set<ndn::Name>& streams)> Subscr
 namespace subscriber {
 namespace tlv {
 }
-
-class Error : public std::runtime_error
-{
-public:
-  using std::runtime_error::runtime_error;
-};
 
 class Subscriber
 {
@@ -239,7 +235,7 @@ private:
   ndn::security::KeyChain m_keyChain;
   ndn::Scheduler m_scheduler;
   std::thread m_face_thread;
-  ndn::security::ValidatorConfig m_validator;
+  ndn::ValidatorConfig m_validator;
 
   ndn::Name m_consumerPrefix;
   ndn::Name m_syncPrefix;

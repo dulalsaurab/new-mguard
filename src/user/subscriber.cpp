@@ -45,7 +45,7 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_syncPrefix(syncPrefix)
 , m_controllerPrefix(controllerPrefix)
 
-, m_abe_consumer(m_face, m_keyChain, *loadCert(consumerCertPath), *loadCert(aaCertPath))
+, m_abe_consumer(m_face, m_keyChain, m_validator, *loadCert(consumerCertPath), *loadCert(aaCertPath))
 
 , m_psync_consumer(m_syncPrefix, m_face,
                    std::bind(&Subscriber::receivedHelloData, this, _1),
@@ -56,6 +56,14 @@ Subscriber::Subscriber(const ndn::Name& consumerPrefix, const ndn::Name& syncPre
 , m_ApplicationDataCallback(callback)
 , m_subCallback(subCallback)
 {
+//    auto a = *loadCert(consumerCertPath);
+//  auto certName = ndn::security::extractIdentityFromCertName(a.getName());
+//    m_face.setInterestFilter(ndn::InterestFilter(certName).allowLoopback(false),
+//                        [this, a] (auto&&...) {
+//                          m_face.put(a);
+//                        },
+//                        nullptr,
+//                        nullptr);
   m_psync_consumer.sendHelloInterest();
   m_validator.load("certs/trust-schema.conf");
   // loadCert("certs/producer.cert"); // need this ?? 

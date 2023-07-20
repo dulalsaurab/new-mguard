@@ -2,9 +2,9 @@
 
 server_certs() {
  echo "Installing server certs (producer, controller, and attribute authority)"
- ndnsec key-gen -t r /ndn/org/md2k
- ndnsec key-gen -t r /ndn/org/md2k/mguard/controller
- ndnsec key-gen -t r /ndn/org/md2k/mguard/aa
+ ndnsec key-gen /ndn/org/md2k
+ ndnsec key-gen /ndn/org/md2k/mguard/controller
+ ndnsec key-gen /ndn/org/md2k/mguard/aa
 
  ndnsec sign-req /ndn/org/md2k/mguard/controller > controller.ndncsr
  ndnsec sign-req /ndn/org/md2k/mguard/aa > aa.ndncsr
@@ -20,7 +20,7 @@ server_certs() {
 
 consumer_cert() {
   echo "Creating and installing consumer certificate"
-  ndnsec key-gen -t r /ndn/org/md2k/A
+  ndnsec key-gen /ndn/org/md2k/A
   ndnsec sign-req /ndn/org/md2k/A > A.ndncsr
   ndnsec cert-gen -s /ndn/org/md2k -i /ndn/org/md2k A.ndncsr > A.cert
   ndnsec cert-install A.cert

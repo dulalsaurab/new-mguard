@@ -24,6 +24,9 @@
 
 #include <ndn-cxx/security/key-chain.hpp>
 #include <ndn-cxx/security/signing-helpers.hpp>
+#include <ndn-cxx/security/additional-description.hpp>
+#include <ndn-cxx/util/io.hpp>
+#include <boost/filesystem.hpp>
 #include <vector>
 
 namespace ndn {
